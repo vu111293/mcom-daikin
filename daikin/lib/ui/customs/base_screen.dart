@@ -11,7 +11,7 @@ class BaseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(children: <Widget>[
-      Expanded(child: SingleChildScrollView(child: body ?? Container())),
+      Expanded(child: body),
       bottomBar ?? Container()
     ]));
   }

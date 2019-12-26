@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "747360359366",
+    "firebase_url": "https://daikin-cf085.firebaseio.com",
+    "project_id": "daikin-cf085",
+    "storage_bucket": "daikin-cf085.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747360359366:android:85da7dafc270db13b598c7",
+        "android_client_info": {
+          "package_name": "mcom.daikin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747360359366-19sbkkbdt6846prku7fcto1fa80e2c44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE55kdywsQAnrZFkBRFsu-s0jUs9JOnqg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747360359366-19sbkkbdt6846prku7fcto1fa80e2c44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747360359366:android:08c5753657f760e6b598c7",
+        "android_client_info": {
+          "package_name": "mcom.daikin.production"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747360359366-19sbkkbdt6846prku7fcto1fa80e2c44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE55kdywsQAnrZFkBRFsu-s0jUs9JOnqg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747360359366-19sbkkbdt6846prku7fcto1fa80e2c44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

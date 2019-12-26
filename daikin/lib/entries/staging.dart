@@ -15,10 +15,8 @@ void main() {
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
   runZoned<Future<void>>(() async {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
-      runApp(MyApp(
-        appConf: AppConfig(appName: 'Stag - Daikin SmartHouse', appType: AppType.STAGING),
-      ));
-    });
+    runApp(MyApp(
+      appConf: AppConfig(appName: 'Stag - Daikin SmartHouse', appType: AppType.STAGING),
+    ));
   }, onError: Crashlytics.instance.recordError);
 }
