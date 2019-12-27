@@ -18,7 +18,6 @@ class ApplicationBloc implements BlocBase {
 
   AuthBloc get authBloc => _authBloc;
 
-
   @override
   void dispose() {
     _setupStateSubject.close();
@@ -28,13 +27,10 @@ class ApplicationBloc implements BlocBase {
     _authBloc = new AuthBloc();
   }
 
-
   bool get isDoctor => _authBloc?.getUser?.type == 'doctor';
   LUser get getProfile => _authBloc?.getUser;
 
-
   loadBaseData() {
-
     // Simulator
     Future.delayed(Duration(seconds: 3), () {
       addSetupStateAction('done');

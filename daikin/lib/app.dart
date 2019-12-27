@@ -1,5 +1,3 @@
-
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/ui/pages/splash/splash_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -11,19 +9,15 @@ import 'blocs/application_bloc.dart';
 import 'blocs/bloc_provider.dart';
 
 class MyApp extends StatefulWidget {
-
   final AppConfig appConf;
 
-  MyApp({
-    Key key, this.appConf
-  }) : super(key: key);
+  MyApp({Key key, this.appConf}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-
   ApplicationBloc _appBloc;
 //  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 //  var _primaryColor = HexColor(appColor); // This will hold the value of the app main color
@@ -272,13 +266,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 //  }
 }
 
-enum AppStartMode {
-  RESUME, LAUNCH, LIVE
-}
+enum AppStartMode { RESUME, LAUNCH, LIVE }
 
-enum AppType {
-  PRODUCTION, STAGING
-}
+enum AppType { PRODUCTION, STAGING }
 
 class AppConfig {
   final String appName;

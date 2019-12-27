@@ -14,7 +14,6 @@ import 'package:daikin/utils/network_check.dart';
 import 'package:daikin/utils/scale_util.dart';
 import 'package:flutter/material.dart';
 
-
 class SplashScreen extends StatefulWidget {
   final AppType appType;
 
