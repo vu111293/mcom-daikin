@@ -33,6 +33,43 @@ class Category {
       temperature: Random().nextDouble() * 100,
     ),
   ];
+  static List<Category> categoryRooms = <Category>[
+    Category(
+      title: 'Kitchen',
+      deviceCount: Random().nextInt(100),
+      temperature: Random().nextDouble() * 100,
+    ),
+    Category(
+      title: 'Bedroom',
+      deviceCount: Random().nextInt(100),
+      temperature: Random().nextDouble() * 100,
+    ),
+    Category(
+      title: 'Living room',
+      deviceCount: Random().nextInt(100),
+      temperature: Random().nextDouble() * 100,
+    ),
+    Category(
+      title: 'Bathroom',
+      deviceCount: Random().nextInt(100),
+      temperature: Random().nextDouble() * 100,
+    ),
+    Category(
+      title: 'Toilet',
+      deviceCount: Random().nextInt(100),
+      temperature: Random().nextDouble() * 100,
+    ),
+    Category(
+      title: 'Entrance',
+      deviceCount: Random().nextInt(100),
+      temperature: Random().nextDouble() * 100,
+    ),
+    Category(
+      title: 'Garage',
+      deviceCount: Random().nextInt(100),
+      temperature: Random().nextDouble() * 100,
+    ),
+  ];
 
   static List<Category> popularCourseList = <Category>[
     Category(

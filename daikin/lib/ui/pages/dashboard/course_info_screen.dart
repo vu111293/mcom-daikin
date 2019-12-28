@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +53,10 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> with TickerProvider
               children: <Widget>[
                 AspectRatio(
                   aspectRatio: 1.2,
-                  child: Image.asset('assets/design_course/webInterFace.png'),
+                  child: Image.asset(
+                    'assets/hotel/hotel_${Random().nextInt(7)}.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ],
             ),
@@ -274,9 +279,16 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> with TickerProvider
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(AppBar().preferredSize.height),
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: StyleAppTheme.nearlyBlack,
+                    child: Container(
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white30,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: StyleAppTheme.nearlyBlack,
+                      ),
                     ),
                     onTap: () {
                       Navigator.pop(context);

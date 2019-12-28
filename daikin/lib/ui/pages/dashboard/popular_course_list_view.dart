@@ -1,6 +1,5 @@
 import 'package:daikin/constants/constants.dart';
-import 'package:daikin/constants/styleAppTheme.dart';
-import 'package:daikin/ui/pages/home/models/category.dart';
+import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
@@ -65,7 +64,7 @@ class _PopularCourseListViewState extends State<PopularCourseListView> with Tick
                   crossAxisCount: 2,
                   mainAxisSpacing: 20,
                   crossAxisSpacing: 20,
-                  childAspectRatio: MediaQuery.of(context).size.height / 678,
+                  childAspectRatio: MediaQuery.of(context).size.height / 680,
                 ),
               ),
             );
@@ -106,6 +105,7 @@ class CategoryView extends StatelessWidget {
                   callback();
                 },
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -116,16 +116,14 @@ class CategoryView extends StatelessWidget {
                         // color: Colors.blue,
                       ),
                     ),
-                    Center(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(5, 15, 5, 10),
-                        child: Text(
-                          category.title,
-                          textAlign: TextAlign.left,
-                          style: ptTitle(context),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10, 16, 10, 0),
+                      child: Text(
+                        category.title,
+                        textAlign: TextAlign.left,
+                        style: ptSubtitle(context),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
