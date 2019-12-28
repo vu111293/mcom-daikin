@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 ///AppColor
-const String appColor = "#19A611";
+const String appColor = "#00A1E4";
 const String appColor2 = "#2D8D47";
 const String appColorOrange = "#43c366";
 const String appShadowColor = "#00000030";

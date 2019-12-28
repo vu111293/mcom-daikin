@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'blocs/application_bloc.dart';
 import 'blocs/bloc_provider.dart';
+import 'constants/styleAppTheme.dart';
 
 class MyApp extends StatefulWidget {
   final AppConfig appConf;
@@ -70,35 +71,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             const Locale('vi'), // VietNam
           ],
           title: widget.appConf.appName,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            textTheme: StyleAppTheme.textTheme,
+            platform: TargetPlatform.iOS,
+          ),
 //          theme: _theme(),
         ),
       ),
     );
   }
-
-//  ThemeData _theme() {
-//    return Theme.of(context).copyWith(
-//      primaryIconTheme: IconThemeData(color: HexColor(appText)),
-//      iconTheme: IconThemeData(color: HexColor(appText)),
-//      // Define the default Brightness and Colors
-//      brightness: Brightness.light,
-//      primaryColor: _primaryColor,
-//      accentColor: HexColor(appWhite),
-//      inputDecorationTheme: InputDecorationTheme(
-//        labelStyle: Theme.of(context).textTheme.subtitle,
-//        fillColor: _primaryColor,
-//        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: _primaryColor)),
-//      ),
-//      // Define the default buttonTheme. Use this to specify the default
-//      buttonTheme: ButtonThemeData(
-//        buttonColor: _primaryColor,
-//        textTheme: ButtonTextTheme.accent,
-//        shape: StadiumBorder(),
-//        // splashColor: HexColor("#2D8D4715"),
-//        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-//      ),
-//    );
-//  }
 
   // Logic methods
 
