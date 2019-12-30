@@ -121,34 +121,36 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
+          // Container(
+          //   decoration: BoxDecoration(
+          //     image: DecorationImage(image: AssetImage('assets/images/bg_splash.png'), fit: BoxFit.cover),
+          //   ),
+          //   child: BackdropFilter(
+          //     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          //     child: Container(
+          //       decoration: BoxDecoration(color: ptPrimaryColor(context).withOpacity(0.1)),
+          //     ),
+          //   ),
+          // ),
           Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage('assets/images/bg_splash.png'), fit: BoxFit.cover),
-            ),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-              child: Container(
-                decoration: BoxDecoration(color: ptPrimaryColor(context).withOpacity(0.1)),
-              ),
-            ),
-          ),
-          Center(
-            child: Container(
-              width: deviceWidth(context) * 0.8,
-              height: deviceWidth(context) * 0.8,
+            width: deviceWidth(context),
+            height: deviceHeight(context),
+            color: Colors.white,
+            child: Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Image.asset(
-                    'assets/images/logo2.png',
+                    'assets/images/app_logo2.png',
                     fit: BoxFit.contain,
-                    width: deviceWidth(context) * 0.6,
-                    height: deviceWidth(context) * 0.6,
+                    width: deviceWidth(context) * 0.7,
                   ),
                   isConnect
                       ? Container()
                       : Padding(
                           padding: EdgeInsets.only(top: 8.0),
-                          child: RaisedButton(
+                          child: FlatButton(
                             onPressed: () async {
                               bool online = await _connectivity.check();
                               if (online) {
@@ -157,13 +159,9 @@ class _SplashScreenState extends State<SplashScreen> {
                                 BotToast.showText(text: 'Không có kết nối internet');
                               }
                             },
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(color: ptPrimaryColor(context), width: 4, style: BorderStyle.solid),
-                                borderRadius: BorderRadius.circular(10)),
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                             child: Text(
                               "Thử kết nối lại".toUpperCase(),
-                              style: ptBody1(context).copyWith(color: Colors.white),
+                              style: ptBody1(context).copyWith(),
                             ),
                           ),
                         )
