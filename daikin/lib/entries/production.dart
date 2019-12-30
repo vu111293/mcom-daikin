@@ -15,7 +15,7 @@ void main() {
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
   runZoned<Future<void>>(() async {
     runApp(MyApp(
-      appConf: AppConfig(appName: 'Daikin SmartHouse', appType: AppType.PRODUCTION),
+      appConf: AppConfig(appName: 'Daikin SmartHome', appType: AppType.PRODUCTION),
     ));
   }, onError: Crashlytics.instance.recordError);
 }
