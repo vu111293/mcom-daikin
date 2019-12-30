@@ -1,3 +1,4 @@
+import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/utils/hex_color.dart';
@@ -103,7 +104,7 @@ class CategoryView extends StatelessWidget {
                           Expanded(
                             child: Container(
                               decoration: BoxDecoration(
-                                color: HexColor('#F8FAFB'),
+                                color: HexColor(appBorderColor2).withOpacity(0.05),
                                 borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                               ),
                               child: Row(

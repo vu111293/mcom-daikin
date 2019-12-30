@@ -8,6 +8,7 @@ const String appColor = "#00A1E4";
 const String appColor2 = "#EE4B6E";
 const String appShadowColor = "#00000030";
 const String appBorderColor = "#00000005";
+const String appBorderColor2 = "#44C8F5";
 const String appText = "#1D2226";
 const String appText2 = "#8A9EAD";
 const String appText60 = "#1D222660";

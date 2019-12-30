@@ -69,7 +69,7 @@ class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateM
                   crossAxisCount: 2,
                   mainAxisSpacing: 20,
                   crossAxisSpacing: 20,
-                  childAspectRatio: MediaQuery.of(context).size.height / 550,
+                  childAspectRatio: MediaQuery.of(context).size.height / 480,
                 ),
               ),
             );
@@ -116,7 +116,13 @@ class CategoryView extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          randomIcon(),
+                          Image.asset(
+                            category.imagePath,
+                            width: 27,
+                            height: 27,
+                            fit: BoxFit.contain,
+                            color: ptPrimaryColor(context),
+                          ),
                           Container(
                             width: 10,
                             height: 10,
@@ -140,7 +146,7 @@ class CategoryView extends StatelessWidget {
                             Text(
                               category.title,
                               textAlign: TextAlign.left,
-                              style: ptTitle(context),
+                              style: ptTitle(context).copyWith(color: ptPrimaryColor(context)),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),

@@ -43,11 +43,11 @@ class DeviceListViewState extends State<DeviceListView> with TickerProviderState
               child: GridView(
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 children: List<Widget>.generate(
-                  Category.categoryRooms.length,
+                  Category.categoryDevices.length,
                   (int index) {
-                    final int count = Category.categoryRooms.length;
+                    final int count = Category.categoryDevices.length;
                     final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
                       CurvedAnimation(
                         parent: animationController,
@@ -59,17 +59,17 @@ class DeviceListViewState extends State<DeviceListView> with TickerProviderState
                       callback: () {
                         widget.callBack();
                       },
-                      category: Category.categoryRooms[index],
+                      category: Category.categoryDevices[index],
                       animation: animation,
                       animationController: animationController,
                     );
                   },
                 ),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: MediaQuery.of(context).size.height / 550,
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  // childAspectRatio: MediaQuery.of(context).size.height / 600,
                 ),
               ),
             );
@@ -101,36 +101,37 @@ class CategoryView extends StatelessWidget {
           child: Transform(
             transform: Matrix4.translationValues(0.0, 50 * (1.0 - animation.value), 0.0),
             child: Material(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              elevation: 8,
+              elevation: 5,
               shadowColor: Colors.black26,
-              color: Colors.white,
+              color: isSwitched ? HexColor("#44C8F5") : Colors.white,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
               child: InkWell(
                 splashColor: Colors.transparent,
                 onTap: () {
                   callback();
                 },
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          randomIcon(),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(5, 15, 5, 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  '${category.temperature.toStringAsFixed(1)}°C',
-                                  textAlign: TextAlign.left,
-                                  style: ptCaption(context).copyWith(color: HexColor(appColor2)),
-                                ),
-                              ],
-                            ),
+                          Image.asset(
+                            category.imagePath,
+                            width: 16,
+                            height: 16,
+                            fit: BoxFit.contain,
+                            color: isSwitched ? Colors.white : HexColor(appColor),
+                          ),
+                          Text(
+                            '${category.temperature.toStringAsFixed(1)}°C',
+                            textAlign: TextAlign.left,
+                            style: ptOverline(context).copyWith(color: isSwitched ? Colors.white : Colors.black87),
                           ),
                         ],
                       ),
@@ -140,18 +141,32 @@ class CategoryView extends StatelessWidget {
                       Text(
                         category.title,
                         textAlign: TextAlign.left,
-                        style: ptTitle(context),
+                        style: ptBody1(context).copyWith(color: isSwitched ? Colors.white : HexColor(appColor)),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Switch(
-                          value: isSwitched,
-                          onChanged: (value) {
-                            isSwitched = value;
-                          },
-                          activeTrackColor: HexColor(appColor),
-                          inactiveTrackColor: HexColor(appColor2),
-                          activeColor: Colors.white),
+                      Container(
+                          height: 30,
+                          child: Stack(
+                            children: <Widget>[
+                              Positioned(
+                                top: -10,
+                                left: -15,
+                                child: Transform.scale(
+                                  scale: 0.7,
+                                  child: Switch(
+                                    value: isSwitched,
+                                    onChanged: (value) {
+                                      isSwitched = value;
+                                    },
+                                    activeTrackColor: Colors.greenAccent,
+                                    inactiveTrackColor: HexColor(appColor2),
+                                    activeColor: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
                     ],
                   ),
                 ),
