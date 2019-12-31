@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/pages/dashboard/category_list_view.dart';
 import 'package:daikin/ui/pages/dashboard/course_info_screen.dart';
 import 'package:daikin/ui/pages/dashboard/popular_course_list_view.dart';
@@ -58,7 +59,10 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
               SizedBox(
                 height: MediaQuery.of(context).padding.top,
               ),
-              getAppBarUI(),
+              BaseHeaderScreen(
+                title: "Chào Đâu Phải Phát !",
+                subTitle: "Chào mừng bạn đến,",
+              ),
               Container(
                 height: contentScreen(context),
                 child: ListView(
@@ -357,49 +361,6 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
           ),
           const Expanded(
             child: SizedBox(),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget getAppBarUI() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, left: 18, right: 18, bottom: 2),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Good Morning Như',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    letterSpacing: 0.27,
-                    color: StyleAppTheme.darkerText,
-                  ),
-                ),
-                Text(
-                  'Welcome Home,',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    letterSpacing: 0.2,
-                    color: StyleAppTheme.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 56,
-            height: 56,
-            child: Image.asset('assets/images/userImage.png'),
           )
         ],
       ),

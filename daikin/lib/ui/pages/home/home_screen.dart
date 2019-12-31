@@ -1,6 +1,5 @@
 import 'package:daikin/constants/constants.dart';
-import 'package:daikin/constants/styleAppTheme.dart';
-import 'package:daikin/ui/pages/dashboard/course_info_screen.dart';
+import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/pages/home/course_info_device_screen.dart';
 import 'package:daikin/ui/pages/home/rooms_list_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
@@ -31,7 +30,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           SizedBox(
             height: MediaQuery.of(context).padding.top,
           ),
-          getAppBarUI(),
+          BaseHeaderScreen(
+            title: "Nhà",
+            subTitle: "Nhà của bạn bây giờ luôn được bảo đảm !",
+          ),
           Container(
             height: 40,
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -77,49 +79,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       context,
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => CourseInfoDeviceScreen(),
-      ),
-    );
-  }
-
-  Widget getAppBarUI() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0, left: 18, right: 18, bottom: 2),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Home',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    letterSpacing: 0.27,
-                    color: StyleAppTheme.darkerText,
-                  ),
-                ),
-                Text(
-                  'Your home is now unsecured!',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    letterSpacing: 0.2,
-                    color: StyleAppTheme.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 56,
-            height: 56,
-            child: Image.asset('assets/images/userImage.png'),
-          )
-        ],
       ),
     );
   }

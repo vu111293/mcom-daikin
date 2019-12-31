@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/app.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/dialog.dart';
-import 'package:daikin/ui/pages/home/home_screen.dart';
 import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/network_check.dart';
@@ -54,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
     _setupStateStream = _appBloc.setupStateEvent.listen(
       (s) async {
         if (s == 'done') {
+          // Routing().navigate2(context, IntroductionScreen());
           Routing().navigate2(context, MainScreen());
 //          try {
 //            // make auto login or show login page

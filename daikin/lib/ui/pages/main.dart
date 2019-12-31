@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:daikin/constants/constants.dart';
-import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/ui/pages/dashboard/dashboard_screen.dart';
 import 'package:daikin/ui/pages/home/home_screen.dart';
+import 'package:daikin/ui/setting/profile_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,9 +24,7 @@ class MainScreen extends StatelessWidget {
                 Container(
                   color: Colors.lightGreen,
                 ),
-                Container(
-                  color: Colors.red,
-                ),
+                ProfileScreen(),
               ],
             ),
           ),
