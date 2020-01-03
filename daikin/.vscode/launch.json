@@ -5,16 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "staging",
-      "request": "launch",
-      "type": "dart",
-      "program": "lib/entries/staging.dart"
-    },
-    {
       "name": "production",
       "request": "launch",
       "type": "dart",
       "program": "lib/entries/production.dart"
+    },
+    {
+      "name": "staging",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/entries/staging.dart"
     }
   ]
 }

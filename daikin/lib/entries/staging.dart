@@ -15,6 +15,7 @@ void main() {
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
   runZoned<Future<void>>(() async {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent));
     runApp(MyApp(
       appConf: AppConfig(appName: 'Stag - Daikin SmartHome', appType: AppType.STAGING),
     ));
