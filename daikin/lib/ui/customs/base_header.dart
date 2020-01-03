@@ -65,10 +65,9 @@ class BaseHeaderScreen extends StatelessWidget {
                   size: 25.0,
                 )
               : Container(
-                  width: 56,
-                  height: 56,
-                  child: Image.asset('assets/images/userImage.png'),
-                )
+                  width: 50,
+                  height: 50,
+                  child: CircleAvatar(backgroundImage: AssetImage('assets/images/userImage.png')))
         ],
       ),
     );

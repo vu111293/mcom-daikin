@@ -1,5 +1,7 @@
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/ui/setting/profile_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +45,9 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                     height: 20,
                   ),
                   ListTile(
+                    onTap: () {
+                      Routing().navigate2(context, ProfileScreen());
+                    },
                     leading: Container(
                       width: 60,
                       height: 60,
