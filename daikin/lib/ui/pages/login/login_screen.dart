@@ -115,7 +115,7 @@ class LoginScreenState extends State<LoginScreen> {
                       padding: EdgeInsets.only(
                           top: ScaleUtil.getInstance().setHeight(8), bottom: ScaleUtil.getInstance().setHeight(20)),
                       child: Text(
-                        'Hệ thống Bệnh viện Cây ăn quả được thành lập bởi sự hợp tác giữa Viện Cây Ăn Quả Miền Nam & Tập Đoàn Lộc Trời',
+                        'Tận hưởng cuộc sống thoải mái vượt trội và đem lại cảm giác mát lạnh sảng khoái tối ưu.',
                         style: ptSubtitle(context),
                         textAlign: TextAlign.center,
                       ),
