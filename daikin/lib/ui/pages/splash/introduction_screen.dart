@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daikin/constants/constants.dart';
+import 'package:daikin/ui/pages/login/login_screen.dart';
 import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
@@ -111,7 +112,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       GestureDetector(
                           onTap: () {
-                            Routing().navigate2(context, MainScreen());
+                            Routing().navigate2(context, LoginScreen());
                           },
                           child: Text("Bỏ qua".toUpperCase(), style: ptTitle(context).copyWith(color: Colors.white))),
                       GestureDetector(

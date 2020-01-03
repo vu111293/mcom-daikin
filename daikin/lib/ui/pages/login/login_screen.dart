@@ -181,7 +181,7 @@ class LoginScreenState extends State<LoginScreen> {
       showWaitingDialog(context);
       //  PhoneAuthHelper().verifyPhoneNumber(phoneController.text);
       Routing().navigate2(context, ConfirmNumberPhoneScreen(phone: phoneController.text));
-      showAlertDialog(context, 'Đăng nhập thành công');
+      // showAlertDialog(context, 'Đăng nhập thành công');
     } else {
       showAlertDialog(context, 'Vui lòng nhập số điện thoại chính xác');
     }
