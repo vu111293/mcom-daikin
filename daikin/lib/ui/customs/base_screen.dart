@@ -9,10 +9,11 @@ class BaseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(children: <Widget>[
-      Expanded(child: body),
-      bottomBar ?? Container()
-    ]));
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(body: Column(children: <Widget>[Expanded(child: body), bottomBar ?? Container()])),
+    );
   }
 }

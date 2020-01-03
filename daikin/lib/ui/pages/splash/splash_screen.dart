@@ -7,6 +7,8 @@ import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/dialog.dart';
+import 'package:daikin/ui/pages/login/confirm_number_phone_screen.dart';
+import 'package:daikin/ui/pages/login/login_screen.dart';
 import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/pages/splash/introduction_screen.dart';
 import 'package:daikin/ui/route/route/routing.dart';

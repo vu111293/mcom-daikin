@@ -1,10 +1,14 @@
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/pages/main.dart';
+import 'package:daikin/ui/route/route/routing.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
+  bool isLogin;
+  ProfileScreen({Key key, this.isLogin = false}) : super(key: key);
   @override
   ProfileScreenState createState() => ProfileScreenState();
 }
@@ -19,6 +23,9 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
 
   @override
   void initState() {
+    setState(() {
+      _status = !widget.isLogin;
+    });
     super.initState();
   }
 
@@ -42,7 +49,11 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
-                    BaseHeaderScreen(title: "Profile".toUpperCase(), isBack: true),
+                    BaseHeaderScreen(
+                      title: widget.isLogin ? "Update Profile".toUpperCase() : "Profile".toUpperCase(),
+                      isBack: widget.isLogin ? false : true,
+                      hideProfile: true,
+                    ),
                     Padding(
                       padding: EdgeInsets.only(top: 20.0),
                       child: Stack(fit: StackFit.loose, children: <Widget>[
@@ -292,6 +303,9 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                 color: Colors.green,
                 onPressed: () {
                   setState(() {
+                    if (widget.isLogin) {
+                      Routing().navigate2(context, MainScreen());
+                    }
                     _status = true;
                     FocusScope.of(context).requestFocus(FocusNode());
                   });
