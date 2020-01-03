@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    Routing().setContext(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(

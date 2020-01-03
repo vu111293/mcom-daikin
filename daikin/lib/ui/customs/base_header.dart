@@ -6,8 +6,9 @@ class BaseHeaderScreen extends StatelessWidget {
   final String title;
   final String subTitle;
   final bool isBack;
+  final bool hideProfile;
 
-  BaseHeaderScreen({this.title, this.subTitle, this.isBack = false});
+  BaseHeaderScreen({this.title, this.subTitle, this.isBack = false, this.hideProfile = false});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class BaseHeaderScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-          isBack
+          isBack || hideProfile
               ? Icon(
                   Icons.notifications,
                   color: Colors.transparent,
