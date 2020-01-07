@@ -298,13 +298,13 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
               padding: EdgeInsets.only(right: 10.0),
               child: Container(
                   child: RaisedButton(
-                child: Text("Save"),
+                child: widget.isLogin ? Text("Update") : Text("Save"),
                 textColor: Colors.white,
                 color: Colors.green,
                 onPressed: () {
                   setState(() {
                     if (widget.isLogin) {
-                      Routing().navigate2(context, MainScreen());
+                      Routing().navigate2(context, MainScreen(), replace: true);
                     }
                     _status = true;
                     FocusScope.of(context).requestFocus(FocusNode());
@@ -315,25 +315,27 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
             ),
             flex: 2,
           ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Container(
-                  child: RaisedButton(
-                child: Text("Cancel"),
-                textColor: Colors.white,
-                color: Colors.red,
-                onPressed: () {
-                  setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  });
-                },
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-              )),
-            ),
-            flex: 2,
-          ),
+          widget.isLogin
+              ? Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Container(
+                        child: RaisedButton(
+                      child: Text("Cancel"),
+                      textColor: Colors.white,
+                      color: Colors.red,
+                      onPressed: () {
+                        setState(() {
+                          _status = true;
+                          FocusScope.of(context).requestFocus(FocusNode());
+                        });
+                      },
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                    )),
+                  ),
+                  flex: 2,
+                )
+              : SizedBox(),
         ],
       ),
     );

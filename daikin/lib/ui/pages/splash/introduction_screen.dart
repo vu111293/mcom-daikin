@@ -93,7 +93,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                       child: Center(
                         child: RaisedButton(
                           onPressed: () {
-                            Routing().navigate2(context, MainScreen());
+                            Routing().navigate2(context, LoginScreen());
                           },
                           shape: StadiumBorder(),
                           elevation: 0,
