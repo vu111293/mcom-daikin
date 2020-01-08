@@ -12,9 +12,12 @@ class ApplicationBloc implements BlocBase {
 
   Observable<Exception> setupExceptionStream;
 
+  final _deviceIdSubject = BehaviorSubject<String>();
+
   final _setupStateSubject = PublishSubject<String>();
   Stream<String> get setupStateEvent => _setupStateSubject.stream;
   Function(String) get addSetupStateAction => _setupStateSubject.sink.add;
+  Function(String) get setDeviceIdAction => _deviceIdSubject.sink.add;
 
   AuthBloc get authBloc => _authBloc;
 
@@ -27,6 +30,7 @@ class ApplicationBloc implements BlocBase {
     _authBloc = new AuthBloc();
   }
 
+  String get deviceId => _deviceIdSubject.stream.value;
 
   loadBaseData() {
     // Simulator

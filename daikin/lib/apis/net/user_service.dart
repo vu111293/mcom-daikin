@@ -46,7 +46,10 @@ class UserService extends BaseLoopBackApi {
     this.auth.fbToken = fbToken;
     this.auth.accessToken = token;
 
-    return LUser.fromJson((result.data as dynamic)['login']['user']);
+    var user = LUser.fromJson((result.data as dynamic)['login']['user']);
+    this.auth.userId = user.id;
+
+    return user;
   
   }
 

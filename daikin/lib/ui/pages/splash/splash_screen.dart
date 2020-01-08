@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:device_info/device_info.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/app.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
@@ -50,61 +53,66 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future prepareData() async {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
-    await _appBloc.loadBaseData();
 //    await _cacheDeviceId();
     _setupStateStream = _appBloc.setupStateEvent.listen(
       (s) async {
         if (s == 'done') {
-          Routing().navigate2(context, IntroductionScreen());
+          print("@@@@@@@@@@@@@@@@@@@@@@@");
+          // Routing().navigate2(context, IntroductionScreen());
           // Routing().navigate2(context, MainScreen());
-//          try {
-//            // make auto login or show login page
-//            AccessStatus tokenState = await LoopBackAuth().loadAccessToken();
-//            if (tokenState != AccessStatus.TOKEN_VALID) {
-//              _openLoginScreen();
-//            } else {
-////              LUser user = await UserService().getProfile(LoopBackAuth().userId);
-////              _appBloc.authBloc.updateUserAction(user);
-//
-////              Routing().navigate2(context, HomeScreen());
-//
-////              if (widget.appType == AppType.DOCTOR) {
-////                Routing().navigate2(context, AdvisoryScreen(), replace: true);
-////              } else {
-////                if (user.isClientFilledInfo) {
-////                  Routing().navigate2(context, HomeScreen());
-////                } else {
-////                  Routing().navigate2(context, UpdateInfoLoginScreen(), replace: true);
-////                }
-////              }
-//              _setupStateStream.cancel();
-//            }
-//          } catch (e) {
-//            LoopBackAuth().clear();
-//            _openLoginScreen();
-//          }
+          try {
+            // make auto login or show login page
+            AccessStatus tokenState = await LoopBackAuth().loadAccessToken();
+
+            print(tokenState);
+
+            if (tokenState != AccessStatus.TOKEN_VALID) {
+              _openLoginScreen();
+            } else {
+              // LUser user =
+              //     await UserService().getProfile(LoopBackAuth().userId);
+              // _appBloc.authBloc.updateUserAction(user);
+
+              Routing().navigate2(context, MainScreen());
+
+              // if (user.isClientFilledInfo) {
+              //   Routing().navigate2(context, HomeScreen());
+              // } else {
+              //   Routing()
+              //       .navigate2(context, UpdateInfoLoginScreen(), replace: true);
+              // }
+              _setupStateStream.cancel();
+            }
+          } catch (e) {
+            LoopBackAuth().clear();
+            _openLoginScreen();
+          }
         } else {
-          showAlertDialog(context, 'Xãy ra lỗi khi giao tiếp với server. Vui lòng thử lại');
+          showAlertDialog(
+              context, 'Xãy ra lỗi khi giao tiếp với server. Vui lòng thử lại');
         }
       },
     );
+
+    _appBloc.loadBaseData();
+    _cacheDeviceId();
     return Future;
   }
 
-//  _cacheDeviceId() async {
-//    String deviceId;
-//    if (Platform.isAndroid) {
-//      AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
-//      deviceId = androidInfo.androidId;
-//    } else {
-//      IosDeviceInfo iOSInfo = await DeviceInfoPlugin().iosInfo;
-//      deviceId = iOSInfo.identifierForVendor;
-//    }
-//    _appBloc.setDeviceIdAction(deviceId);
-//  }
+  _cacheDeviceId() async {
+    String deviceId;
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+      deviceId = androidInfo.androidId;
+    } else {
+      IosDeviceInfo iOSInfo = await DeviceInfoPlugin().iosInfo;
+      deviceId = iOSInfo.identifierForVendor;
+    }
+    _appBloc.setDeviceIdAction(deviceId);
+  }
 
   _openLoginScreen() {
-//    Routing().navigate2(context, widget.appType == AppType.DOCTOR ? LoginDoctorScreen() : LoginScreen(), replace: true);
+    Routing().navigate2(context, LoginScreen(), replace: true);
   }
 
   @override
@@ -158,7 +166,8 @@ class _SplashScreenState extends State<SplashScreen> {
                               if (online) {
                                 await prepareData();
                               } else {
-                                BotToast.showText(text: 'Không có kết nối internet');
+                                BotToast.showText(
+                                    text: 'Không có kết nối internet');
                               }
                             },
                             child: Text(

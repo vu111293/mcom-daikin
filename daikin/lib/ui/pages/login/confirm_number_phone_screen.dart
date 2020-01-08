@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/ui/pages/home/home_screen.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/ui/setting/profile_screen.dart';
@@ -65,8 +66,8 @@ class ConfirmNumberPhoneScreenState extends State<ConfirmNumberPhoneScreen> {
         String uid = result.user.uid;
         String token = (await result.user.getIdToken()).token;
         print('FB|$uid|$token');
-        // LUser user = await UserService().login('FB|$uid|$token');
-        // _appBloc.getAuthBloc().updateUserAction(user);
+        LUser user = await UserService().login('FB|$uid|$token');
+        _appBloc.authBloc.updateUserAction(user);
         _authStream?.cancel();
         Routing().popToRoot(context);
         Routing().navigate2(context, MainScreen());
