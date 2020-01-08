@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/ui/pages/login/confirm_number_phone_screen.dart';
+import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/phone_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,41 +41,47 @@ class LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-//  _registerFbAuthResult() {
-//    _phoneAuthStream?.cancel();
-//    _phoneAuthStream = PhoneAuthHelper().authStream.listen((result) async {
-//      print(result.status);
-//      print(result.msg);
-//      if (_isLoading) {
-//        Navigator.pop(context);
-//        _isLoading = false;
-//      }
-//      if (result.status == AuthStatus.CodeSent) {
-//        _phoneAuthStream?.cancel();
-//        Routing().navigate2(context, ConfirmNumberPhoneScreen(phone: phoneController.text)).then((v) {
-//          _registerFbAuthResult();
-//        });
-//      } else if (result.status == AuthStatus.Verified) {
-//        String uid = result.user.uid;
-//        String token = (await result.user.getIdToken()).token;
-//        print('FB|$uid|$token');
-//        LUser user = await UserService().login('FB|$uid|$token');
-//        _appBloc.getAuthBloc().updateUserAction(user);
-//        _phoneAuthStream?.cancel();
+  _registerFbAuthResult() {
+    _phoneAuthStream?.cancel();
+    _phoneAuthStream = PhoneAuthUtils().authStream.listen((result) async {
+      print(result.status);
+      print(result.msg);
+      if (_isLoading) {
+        Navigator.pop(context);
+        _isLoading = false;
+      }
+      if (result.status == AuthStatus.CodeSent) {
+        _phoneAuthStream?.cancel();
+        Routing()
+            .navigate2(
+                context, ConfirmNumberPhoneScreen(phone: phoneController.text))
+            .then((v) {
+          _registerFbAuthResult();
+        });
+      } else if (result.status == AuthStatus.Verified) {
+        String uid = result.user.uid;
+        String token = (await result.user.getIdToken()).token;
+        print('FB|$uid|$token');
+        LUser user = await UserService().login('FB|$uid|$token');
+        _appBloc.authBloc.updateUserAction(user);
+        _phoneAuthStream?.cancel();
 
-//        if (user.isClientFilledInfo) {
-//          Routing().popToRoot(context);
-//          Routing().navigate2(context, HomeScreen(), replace: true);
-//        } else {
-//          Routing().navigate2(context, UpdateInfoLoginScreen(), replace: true);
-//        }
-//      } else if (result.status == AuthStatus.Timeout) {
-// //        showAlertDialog(context, 'Lỗi khi kết nối với máy chủ. Vui lòng thử lại');
-//      } else {
-//        showAlertDialog(context, 'Lỗi khi đăng nhập. Vui lòng thử lại');
-//      }
-//    });
-//  }
+        Routing().popToRoot(context);
+        Routing().navigate2(context, MainScreen(), replace: true);
+        //  if (user.isClientFilledInfo) {
+        //    Routing().popToRoot(context);
+        //    Routing().navigate2(context, HomeScreen(), replace: true);
+        //  } else {
+        //    Routing().navigate2(context, UpdateInfoLoginScreen(), replace: true);
+        //  }
+      } else if (result.status == AuthStatus.Timeout) {
+        showAlertDialog(
+            context, 'Lỗi khi kết nối với máy chủ. Vui lòng thử lại');
+      } else {
+        showAlertDialog(context, 'Lỗi khi đăng nhập. Vui lòng thử lại');
+      }
+    });
+  }
 
   @override
   void dispose() {

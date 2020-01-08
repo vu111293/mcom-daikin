@@ -9,22 +9,14 @@ part of 'user.dart';
 LUser _$LUserFromJson(Map<String, dynamic> json) {
   return LUser(
     id: json['_id'] as String,
-    uid: json['uid'] as String,
-    fullName: json['fullName'] as String,
-    phone: json['phone'] as String,
-    email: json['email'] as String,
     address: json['address'] as String,
     avatar: json['avatar'] as String,
-    position: json['position'] as String,
-    plant: json['plant'] as String,
-    area: (json['area'] as num)?.toDouble(),
-    locationLat: json['locationLat'] as int,
-    locationLng: json['locationLng'] as int,
-    type: json['type'] as String,
-    status: json['status'] as String,
-    password: json['password'] as String,
-    updatedAt: json['updatedAt'] as String,
-    createdAt: json['createdAt'] as String,
+    email: json['email'] as String,
+    fullName: json['fullName'] as String,
+    permissions: (json['permissions'] as List).map((e) => e as String).toList(),
+    phone: json['phone'] as String,
+    role: json['role'] as String,
+    uid: json['uid'] as String,
   );
 }
 
@@ -36,16 +28,8 @@ Map<String, dynamic> _$LUserToJson(LUser instance) => <String, dynamic>{
       'email': instance.email,
       'address': instance.address,
       'avatar': instance.avatar,
-      'position': instance.position,
-      'plant': instance.plant,
-      'area': instance.area,
-      'locationLat': instance.locationLat,
-      'locationLng': instance.locationLng,
-      'type': instance.type,
-      'status': instance.status,
-      'password': instance.password,
-      'updatedAt': instance.updatedAt,
-      'createdAt': instance.createdAt,
+      'role': instance.role,
+      'permissions': instance.permissions,
     };
 
 UserModel _$UserModelFromJson(Map<String, dynamic> json) {

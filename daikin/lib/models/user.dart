@@ -17,47 +17,27 @@ class LUser {
   final String email;
   final String address;
   final String avatar;
-  final String position;
-  final String plant;
-  @JsonKey(nullable: true)
-  final double area;
-  final int locationLat;
-  final int locationLng;
-  final String type;
-  final String status;
-  final String password;
-  final String updatedAt;
-  final String createdAt;
+  final String role;
+  final List<String> permissions;
 
   LUser(
-      {this.id,
-      this.uid,
-      this.fullName,
-      this.phone,
-      this.email,
-      this.address,
-      this.avatar,
-      this.position,
-      this.plant,
-      this.area,
-      this.locationLat,
-      this.locationLng,
-      this.type,
-      this.status,
-      this.password,
-      this.updatedAt,
-      this.createdAt});
+      {
+        this.id,
+        this.address,
+        this.avatar,
+        this.email,
+        this.fullName,
+        this.permissions,
+        this.phone,
+        this.role,
+        this.uid
+      });
 
   factory LUser.fromJson(Map<String, dynamic> json) {
     final user = _$LUserFromJson(json);
     return user;
   }
   Map<String, dynamic> toJson() => _$LUserToJson(this);
-
-  bool get isClientFilledInfo => fullName?.isNotEmpty == true && address?.isNotEmpty == true && area != null;
-  bool get isDoctorFilledInfo => fullName?.isNotEmpty == true && address?.isNotEmpty == true && phone?.isNotEmpty == true;
-
-  bool get isEditor => type == 'editor';
 
   LUser copyWith(
       {String id,
@@ -84,17 +64,7 @@ class LUser {
         phone: phone ?? this.phone,
         email: email ?? this.email,
         address: address ?? this.address,
-        avatar: avatar ?? this.avatar,
-        position: position ?? this.position,
-        plant: plant ?? this.plant,
-        area: area ?? this.area,
-        locationLat: locationLat ?? this.locationLat,
-        locationLng: locationLng ?? this.locationLng,
-        type: type ?? this.type,
-        status: status ?? this.status,
-        password: password ?? this.password,
-        updatedAt: updatedAt ?? this.updatedAt,
-        createdAt: createdAt ?? this.createdAt);
+        avatar: avatar ?? this.avatar);
   }
 }
 

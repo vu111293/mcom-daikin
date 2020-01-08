@@ -27,8 +27,6 @@ class ApplicationBloc implements BlocBase {
     _authBloc = new AuthBloc();
   }
 
-  bool get isDoctor => _authBloc?.getUser?.type == 'doctor';
-  LUser get getProfile => _authBloc?.getUser;
 
   loadBaseData() {
     // Simulator
