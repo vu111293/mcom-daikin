@@ -5,19 +5,22 @@ import 'package:daikin/ui/pages/home/rooms_list_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
+import 'package:daikin/ui/pages/home/devices_list_view.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this); // initialise it here
+    _tabController =
+        TabController(length: 2, vsync: this); // initialise it here
   }
 
   @override
@@ -56,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     moveTo();
                   },
                 ),
-                RoomsListView(
+                DevicesListView(
                   callBack: () {
                     moveTo();
                   },
