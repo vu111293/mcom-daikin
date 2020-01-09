@@ -25,7 +25,8 @@ class DashBoardScreen extends StatefulWidget {
   DashBoardScreenState createState() => DashBoardScreenState();
 }
 
-class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProviderStateMixin {
+class DashBoardScreenState extends State<DashBoardScreen>
+    with SingleTickerProviderStateMixin {
   CategoryType categoryType = CategoryType.ui;
   int _current = 0;
   TabController _tabController;
@@ -42,7 +43,8 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this); // initialise it here
+    _tabController =
+        TabController(length: 2, vsync: this); // initialise it here
   }
 
   @override
@@ -73,10 +75,12 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
                               margin: EdgeInsets.all(5.0),
                               decoration: BoxDecoration(
                                 color: Colors.black12,
-                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
                               ),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
                                 child: Image.network(
                                   i,
                                   fit: BoxFit.cover,
@@ -107,12 +111,14 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
                           return Container(
                             width: 16.0,
                             height: 3.0,
-                            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 2.0),
                             decoration: BoxDecoration(
                               color: _current == index
                                   ? HexColor(appColor).withOpacity(0.9)
                                   : Color.fromRGBO(0, 0, 0, 0.2),
-                              borderRadius: BorderRadius.all(Radius.circular(3)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(3)),
                             ),
                           );
                         },
@@ -157,11 +163,13 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('Category', textAlign: TextAlign.left, style: ptTitle(context)),
+              child: Text('Category',
+                  textAlign: TextAlign.left, style: ptTitle(context)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
+              child: Text('All',
+                  textAlign: TextAlign.left, style: ptSubtitle(context)),
             ),
           ],
         ),
@@ -173,11 +181,15 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
             padding: EdgeInsets.all(16),
             children: <Widget>[
               getButtonUI(CategoryType.ui, categoryType == CategoryType.ui),
-              getButtonUI(CategoryType.coding, categoryType == CategoryType.coding),
-              getButtonUI(CategoryType.basic, categoryType == CategoryType.basic),
+              getButtonUI(
+                  CategoryType.coding, categoryType == CategoryType.coding),
+              getButtonUI(
+                  CategoryType.basic, categoryType == CategoryType.basic),
               getButtonUI(CategoryType.ui, categoryType == CategoryType.ui),
-              getButtonUI(CategoryType.coding, categoryType == CategoryType.coding),
-              getButtonUI(CategoryType.basic, categoryType == CategoryType.basic),
+              getButtonUI(
+                  CategoryType.coding, categoryType == CategoryType.coding),
+              getButtonUI(
+                  CategoryType.basic, categoryType == CategoryType.basic),
             ],
           ),
         ),
@@ -189,11 +201,13 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('Running Devices', textAlign: TextAlign.left, style: ptTitle(context)),
+              child: Text('Running Devices',
+                  textAlign: TextAlign.left, style: ptTitle(context)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
+              child: Text('All',
+                  textAlign: TextAlign.left, style: ptSubtitle(context)),
             ),
           ],
         ),
@@ -218,11 +232,13 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('Cameras', textAlign: TextAlign.left, style: ptTitle(context)),
+                child: Text('Cameras',
+                    textAlign: TextAlign.left, style: ptTitle(context)),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
+                child: Text('All',
+                    textAlign: TextAlign.left, style: ptSubtitle(context)),
               ),
             ],
           ),
@@ -260,7 +276,8 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
         borderRadius: BorderRadius.all(Radius.circular(10)),
         elevation: 8,
         shadowColor: Colors.black26,
-        color: isSelected ? StyleAppTheme.nearlyBlue : StyleAppTheme.nearlyWhite,
+        color:
+            isSelected ? StyleAppTheme.nearlyBlue : StyleAppTheme.nearlyWhite,
         child: InkWell(
           splashColor: Colors.white24,
           onTap: () {
@@ -271,7 +288,8 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
           child: Container(
             height: 0,
             child: Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 12, left: 18, right: 18),
+              padding: const EdgeInsets.only(
+                  top: 12, bottom: 12, left: 18, right: 18),
               child: Center(
                 child: Text(
                   txt,
@@ -280,7 +298,9 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
                     letterSpacing: 0.27,
-                    color: isSelected ? StyleAppTheme.nearlyWhite : StyleAppTheme.nearlyBlue,
+                    color: isSelected
+                        ? StyleAppTheme.nearlyWhite
+                        : StyleAppTheme.nearlyBlue,
                   ),
                 ),
               ),
