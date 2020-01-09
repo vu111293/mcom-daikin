@@ -67,9 +67,7 @@ class _DeviceDetailState extends State<DeviceDetailScreen> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            currentStateDevice
-                ? 'Thiết bị tưới cây đang hoạt động'
-                : 'Nhấn để tắt và mở thiết bị',
+            currentStateDevice ? 'Thiết bị tưới cây đang hoạt động' : 'Nhấn để tắt và mở thiết bị',
             style: StyleAppTheme.title.copyWith(color: Colors.grey),
           ),
         ),
