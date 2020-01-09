@@ -13,8 +13,7 @@ class SettingScreen extends StatefulWidget {
   SettingScreenState createState() => SettingScreenState();
 }
 
-class SettingScreenState extends State<SettingScreen>
-    with SingleTickerProviderStateMixin {
+class SettingScreenState extends State<SettingScreen> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -37,9 +36,6 @@ class SettingScreenState extends State<SettingScreen>
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
-          SizedBox(
-            height: MediaQuery.of(context).padding.top,
-          ),
           BaseHeaderScreen(
             hideProfile: true,
             title: "Setting",
@@ -61,18 +57,14 @@ class SettingScreenState extends State<SettingScreen>
                       width: 60,
                       height: 60,
                       child: CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/userImage.png'),
+                        backgroundImage: AssetImage('assets/images/userImage.png'),
                       ),
                     ),
                     title: Text(
                       'Hello !',
-                      style: ptSubtitle(context)
-                          .copyWith(color: ptPrimaryColor(context)),
+                      style: ptSubtitle(context).copyWith(color: ptPrimaryColor(context)),
                     ),
-                    subtitle: Text('Đâu Phải Phát',
-                        style: ptTitle(context)
-                            .copyWith(color: ptPrimaryColor(context))),
+                    subtitle: Text('Đâu Phải Phát', style: ptTitle(context).copyWith(color: ptPrimaryColor(context))),
                     trailing: Container(
                       width: 32,
                       height: 32,
@@ -100,14 +92,12 @@ class SettingScreenState extends State<SettingScreen>
                             width: deviceWidth(context) / 4,
                             height: deviceWidth(context) / 4,
                             child: Material(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
+                              borderRadius: BorderRadius.all(Radius.circular(8)),
                               elevation: 8,
                               shadowColor: Colors.black26,
                               color: Colors.red,
                               child: Padding(
-                                padding:
-                                    EdgeInsets.all(deviceWidth(context) / 16),
+                                padding: EdgeInsets.all(deviceWidth(context) / 16),
                                 child: Image.asset(
                                   'assets/icons/Turn_off.png',
                                   color: Colors.white,
@@ -119,8 +109,7 @@ class SettingScreenState extends State<SettingScreen>
                             padding: EdgeInsets.only(top: 8.0),
                             child: Text(
                               "Off Energy",
-                              style: ptBody1(context)
-                                  .copyWith(color: ptPrimaryColor(context)),
+                              style: ptBody1(context).copyWith(color: ptPrimaryColor(context)),
                               textAlign: TextAlign.center,
                             ),
                           )
@@ -132,14 +121,12 @@ class SettingScreenState extends State<SettingScreen>
                             width: deviceWidth(context) / 4,
                             height: deviceWidth(context) / 4,
                             child: Material(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
+                              borderRadius: BorderRadius.all(Radius.circular(8)),
                               elevation: 8,
                               shadowColor: Colors.black26,
                               color: Colors.white,
                               child: Padding(
-                                padding:
-                                    EdgeInsets.all(deviceWidth(context) / 16),
+                                padding: EdgeInsets.all(deviceWidth(context) / 16),
                                 child: Image.asset(
                                   'assets/icons/O_khoa.png',
                                   color: HexColor(appBorderColor),
@@ -151,8 +138,7 @@ class SettingScreenState extends State<SettingScreen>
                             padding: EdgeInsets.only(top: 8.0),
                             child: Text(
                               "Left Home",
-                              style: ptBody1(context)
-                                  .copyWith(color: ptPrimaryColor(context)),
+                              style: ptBody1(context).copyWith(color: ptPrimaryColor(context)),
                               textAlign: TextAlign.center,
                             ),
                           )
@@ -164,14 +150,12 @@ class SettingScreenState extends State<SettingScreen>
                             width: deviceWidth(context) / 4,
                             height: deviceWidth(context) / 4,
                             child: Material(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
+                              borderRadius: BorderRadius.all(Radius.circular(8)),
                               elevation: 8,
                               shadowColor: Colors.black26,
                               color: Colors.white,
                               child: Padding(
-                                padding:
-                                    EdgeInsets.all(deviceWidth(context) / 16),
+                                padding: EdgeInsets.all(deviceWidth(context) / 16),
                                 child: Image.asset(
                                   'assets/icons/Chia_khoa.png',
                                   color: HexColor(appBorderColor),
@@ -183,8 +167,7 @@ class SettingScreenState extends State<SettingScreen>
                             padding: EdgeInsets.only(top: 8.0),
                             child: Text(
                               "Came Home",
-                              style: ptBody1(context)
-                                  .copyWith(color: ptPrimaryColor(context)),
+                              style: ptBody1(context).copyWith(color: ptPrimaryColor(context)),
                               textAlign: TextAlign.center,
                             ),
                           )
@@ -202,9 +185,7 @@ class SettingScreenState extends State<SettingScreen>
                   ListTile(
                     leading: Text(
                       "My Center",
-                      style: ptTitle(context).copyWith(
-                          color: ptPrimaryColor(context),
-                          fontWeight: FontWeight.w600),
+                      style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
                     ),
                   ),
                   Container(
@@ -215,9 +196,7 @@ class SettingScreenState extends State<SettingScreen>
                   ListTile(
                     leading: Text(
                       "Messages",
-                      style: ptTitle(context).copyWith(
-                          color: ptPrimaryColor(context),
-                          fontWeight: FontWeight.w600),
+                      style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
                     ),
                     title: Container(
                       width: 30,
@@ -228,8 +207,7 @@ class SettingScreenState extends State<SettingScreen>
                           backgroundColor: Colors.red,
                           child: Text(
                             "3",
-                            style: ptCaption(context)
-                                .copyWith(color: Colors.white),
+                            style: ptCaption(context).copyWith(color: Colors.white),
                           ),
                         ),
                       ),
@@ -243,9 +221,7 @@ class SettingScreenState extends State<SettingScreen>
                   ListTile(
                     leading: Text(
                       "About",
-                      style: ptTitle(context).copyWith(
-                          color: ptPrimaryColor(context),
-                          fontWeight: FontWeight.w600),
+                      style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
                     ),
                   ),
                   Container(
@@ -263,9 +239,7 @@ class SettingScreenState extends State<SettingScreen>
                   ListTile(
                     leading: Text(
                       "Change Password",
-                      style: ptTitle(context).copyWith(
-                          color: ptPrimaryColor(context),
-                          fontWeight: FontWeight.w600),
+                      style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
                     ),
                   ),
                   Container(
@@ -277,9 +251,7 @@ class SettingScreenState extends State<SettingScreen>
                   ListTile(
                     leading: Text(
                       "Support",
-                      style: ptTitle(context).copyWith(
-                          color: ptPrimaryColor(context),
-                          fontWeight: FontWeight.w600),
+                      style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
                     ),
                   ),
 
@@ -290,14 +262,13 @@ class SettingScreenState extends State<SettingScreen>
                     height: 10,
                   ),
                   ListTile(
-                    leading: InkWell(
-                      onTap: handleLogout,
-                      child: Text(
+                      leading: InkWell(
+                    onTap: handleLogout,
+                    child: Text(
                       "Sign Out",
-                      style: ptTitle(context).copyWith(
-                          color: Colors.red, fontWeight: FontWeight.w600),
-                    ), )
-                  ),
+                      style: ptTitle(context).copyWith(color: Colors.red, fontWeight: FontWeight.w600),
+                    ),
+                  )),
                 ],
               ),
             ),

@@ -1,4 +1,6 @@
 import 'package:daikin/constants/constants.dart';
+import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/ui/setting/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +15,12 @@ class BaseHeaderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 4),
+      padding: EdgeInsets.only(
+          top: isBack ? MediaQuery.of(context).padding.top : MediaQuery.of(context).padding.top + 8,
+          left: 16,
+          right: 16,
+          bottom: 4),
+      height: isBack ? 72 : null,
       child: Row(
         children: <Widget>[
           isBack
@@ -60,14 +67,19 @@ class BaseHeaderScreen extends StatelessWidget {
                 ),
           isBack || hideProfile
               ? Icon(
-                  Icons.notifications,
-                  color: Colors.transparent,
+                  Icons.add_circle,
+                  color: ptPrimaryColor(context),
                   size: 25.0,
                 )
-              : Container(
-                  width: 50,
-                  height: 50,
-                  child: CircleAvatar(backgroundImage: AssetImage('assets/images/userImage.png')))
+              : GestureDetector(
+                  onTap: () {
+                    Routing().navigate2(context, ProfileScreen());
+                  },
+                  child: Container(
+                      width: 50,
+                      height: 50,
+                      child: CircleAvatar(backgroundImage: AssetImage('assets/images/userImage.png'))),
+                )
         ],
       ),
     );
