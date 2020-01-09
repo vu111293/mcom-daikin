@@ -23,5 +23,5 @@ void main() {
     runApp(MyApp(
       appConf: AppConfig(appName: 'Stag - Daikin SmartHome', appType: AppType.STAGING),
     ));
-  }, onError: Crashlytics.instance.recordError);
+  });
 }

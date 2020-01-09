@@ -1,14 +1,16 @@
 import 'dart:async';
 
+import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/ui/pages/login/confirm_number_phone_screen.dart';
+import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/utils/phone_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
-// import 'package:daikin/helper/phone_auth_helper.dart';
 import 'package:daikin/models/user.dart';
 import 'package:daikin/ui/customs/base_screen.dart';
 import 'package:daikin/ui/customs/dialog.dart';
@@ -39,41 +41,47 @@ class LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-//  _registerFbAuthResult() {
-//    _phoneAuthStream?.cancel();
-//    _phoneAuthStream = PhoneAuthHelper().authStream.listen((result) async {
-//      print(result.status);
-//      print(result.msg);
-//      if (_isLoading) {
-//        Navigator.pop(context);
-//        _isLoading = false;
-//      }
-//      if (result.status == AuthStatus.CodeSent) {
-//        _phoneAuthStream?.cancel();
-//        Routing().navigate2(context, ConfirmNumberPhoneScreen(phone: phoneController.text)).then((v) {
-//          _registerFbAuthResult();
-//        });
-//      } else if (result.status == AuthStatus.Verified) {
-//        String uid = result.user.uid;
-//        String token = (await result.user.getIdToken()).token;
-//        print('FB|$uid|$token');
-//        LUser user = await UserService().login('FB|$uid|$token');
-//        _appBloc.getAuthBloc().updateUserAction(user);
-//        _phoneAuthStream?.cancel();
+  _registerFbAuthResult() {
+    _phoneAuthStream?.cancel();
+    _phoneAuthStream = PhoneAuthUtils().authStream.listen((result) async {
+      print(result.status);
+      print(result.msg);
+      if (_isLoading) {
+        Navigator.pop(context);
+        _isLoading = false;
+      }
+      if (result.status == AuthStatus.CodeSent) {
+        _phoneAuthStream?.cancel();
+        Routing()
+            .navigate2(
+                context, ConfirmNumberPhoneScreen(phone: phoneController.text))
+            .then((v) {
+          _registerFbAuthResult();
+        });
+      } else if (result.status == AuthStatus.Verified) {
+        String uid = result.user.uid;
+        String token = (await result.user.getIdToken()).token;
+        print('FB|$uid|$token');
+        LUser user = await UserService().login('FB|$uid|$token');
+        _appBloc.authBloc.updateUserAction(user);
+        _phoneAuthStream?.cancel();
 
-//        if (user.isClientFilledInfo) {
-//          Routing().popToRoot(context);
-//          Routing().navigate2(context, HomeScreen(), replace: true);
-//        } else {
-//          Routing().navigate2(context, UpdateInfoLoginScreen(), replace: true);
-//        }
-//      } else if (result.status == AuthStatus.Timeout) {
-// //        showAlertDialog(context, 'Lỗi khi kết nối với máy chủ. Vui lòng thử lại');
-//      } else {
-//        showAlertDialog(context, 'Lỗi khi đăng nhập. Vui lòng thử lại');
-//      }
-//    });
-//  }
+        Routing().popToRoot(context);
+        Routing().navigate2(context, MainScreen(), replace: true);
+        //  if (user.isClientFilledInfo) {
+        //    Routing().popToRoot(context);
+        //    Routing().navigate2(context, HomeScreen(), replace: true);
+        //  } else {
+        //    Routing().navigate2(context, UpdateInfoLoginScreen(), replace: true);
+        //  }
+      } else if (result.status == AuthStatus.Timeout) {
+        showAlertDialog(
+            context, 'Lỗi khi kết nối với máy chủ. Vui lòng thử lại');
+      } else {
+        showAlertDialog(context, 'Lỗi khi đăng nhập. Vui lòng thử lại');
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -110,10 +118,13 @@ class LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text('Đăng nhập'.toUpperCase(), style: ptDisplay1(context).copyWith(color: HexColor(appText))),
+                    Text('Đăng nhập'.toUpperCase(),
+                        style: ptDisplay1(context)
+                            .copyWith(color: HexColor(appText))),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: ScaleUtil.getInstance().setHeight(8), bottom: ScaleUtil.getInstance().setHeight(20)),
+                          top: ScaleUtil.getInstance().setHeight(8),
+                          bottom: ScaleUtil.getInstance().setHeight(20)),
                       child: Text(
                         'Tận hưởng cuộc sống thoải mái vượt trội và đem lại cảm giác mát lạnh sảng khoái tối ưu.',
                         style: ptSubtitle(context),
@@ -121,8 +132,10 @@ class LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: ScaleUtil.getInstance().setWidth(30)),
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      margin: EdgeInsets.symmetric(
+                          horizontal: ScaleUtil.getInstance().setWidth(30)),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: TextField(
                         controller: phoneController,
                         maxLines: 1,
@@ -132,7 +145,8 @@ class LoginScreenState extends State<LoginScreen> {
                         decoration: InputDecoration(
                           labelText: 'Số điện thoại',
                           hintText: 'Số điện thoại đăng nhập',
-                          labelStyle: ptTitle(context).copyWith(color: ptPrimaryColor(context)),
+                          labelStyle: ptTitle(context)
+                              .copyWith(color: ptPrimaryColor(context)),
                         ),
                         onSubmitted: (String value) {
                           if (this.phone.length > 8) {
@@ -159,7 +173,8 @@ class LoginScreenState extends State<LoginScreen> {
                       onPressed: _handlePhoneLogin,
                       shape: StadiumBorder(),
                       color: ptPrimaryColor(context),
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       child: Text(
                         "Tiếp tục".toUpperCase(),
                         style: ptTitle(context).copyWith(color: Colors.white),
@@ -176,14 +191,20 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   _handlePhoneLogin() {
-    _isLoading = true;
-    if (phoneController.text.isNotEmpty && this.phone.length > 8) {
-      showWaitingDialog(context);
-      //  PhoneAuthHelper().verifyPhoneNumber(phoneController.text);
-      Routing().navigate2(context, ConfirmNumberPhoneScreen(phone: phoneController.text));
-      // showAlertDialog(context, 'Đăng nhập thành công');
-    } else {
-      showAlertDialog(context, 'Vui lòng nhập số điện thoại chính xác');
+    try {
+      _isLoading = true;
+      if (phoneController.text.isNotEmpty && this.phone.length > 8) {
+        showWaitingDialog(context);
+        PhoneAuthUtils().verifyPhoneNumber(phoneController.text);
+        Routing().navigate2(
+            context, ConfirmNumberPhoneScreen(phone: phoneController.text));
+        // showAlertDialog(context, 'Đăng nhập thành công');
+      } else {
+        showAlertDialog(context, 'Vui lòng nhập số điện thoại chính xác');
+      }
+    } catch (err) {
+      print(err);
+      throw err;
     }
   }
 }

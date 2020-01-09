@@ -30,6 +30,13 @@
             {
               "client_id": "747360359366-19sbkkbdt6846prku7fcto1fa80e2c44.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "747360359366-94oavpff1nmpa6nvumdjnqkqov0ku6dd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mcom.daikin"
+              }
             }
           ]
         }
@@ -59,6 +66,13 @@
             {
               "client_id": "747360359366-19sbkkbdt6846prku7fcto1fa80e2c44.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "747360359366-94oavpff1nmpa6nvumdjnqkqov0ku6dd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mcom.daikin"
+              }
             }
           ]
         }
