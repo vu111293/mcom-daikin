@@ -1,13 +1,16 @@
 import 'dart:async';
 
-import 'package:daikin/models/user.dart';
+import 'package:daikin/blocs/childBlocs/home_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'bloc_provider.dart';
 import 'childBlocs/auth_bloc.dart';
 
 class ApplicationBloc implements BlocBase {
+
   AuthBloc _authBloc;
+  HomeBloc _homeBloc;
+
   int countChangedMonney = 1;
 
   Observable<Exception> setupExceptionStream;
@@ -20,6 +23,7 @@ class ApplicationBloc implements BlocBase {
   Function(String) get setDeviceIdAction => _deviceIdSubject.sink.add;
 
   AuthBloc get authBloc => _authBloc;
+  HomeBloc get homeBloc => _homeBloc;
 
   @override
   void dispose() {
@@ -27,12 +31,15 @@ class ApplicationBloc implements BlocBase {
   }
 
   ApplicationBloc() {
-    _authBloc = new AuthBloc();
+    _authBloc = AuthBloc();
+    _homeBloc = HomeBloc();
   }
 
   String get deviceId => _deviceIdSubject.stream.value;
 
   loadBaseData() {
+    _homeBloc.fetchHomeData();
+
     // Simulator
     Future.delayed(Duration(seconds: 3), () {
       addSetupStateAction('done');
