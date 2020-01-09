@@ -6,6 +6,7 @@ import 'package:daikin/ui/pages/home/rooms_list_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
+import 'package:daikin/ui/pages/home/devices_list_view.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen>
                     moveTo();
                   },
                 ),
-                DeviceListView(
+                DevicesListView(
                   callBack: () {
                     moveTo();
                   },

@@ -10,6 +10,8 @@ import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'device_detail/device_detail_screen.dart';
+
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -26,9 +28,13 @@ class MainScreen extends StatelessWidget {
                 DashBoardScreen(),
                 HomeScreen(),
                 Container(
-                  color: Colors.lightGreen,
+                  color: Colors.red,
                 ),
                 SettingScreen(),
+                // DeviceDetailScreen(),
+                // Container(
+                //   color: Colors.red,
+                // ),
               ],
             ),
           ),
