@@ -41,7 +41,7 @@ class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateM
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 8),
-      child: StreamBuilder<Room>(stream: _appBloc.homeBloc.roomDataStream,
+      child: StreamBuilder<List<Room>>(stream: _appBloc.homeBloc.roomDataStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return SizedBox();
