@@ -1,3 +1,4 @@
+import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
@@ -45,7 +46,6 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
           Column(
             children: <Widget>[
               Container(
-                height: 250.0,
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
@@ -56,39 +56,34 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 20.0),
-                      child: Stack(fit: StackFit.loose, children: <Widget>[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                                width: 140.0,
-                                height: 140.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: ExactAssetImage('assets/images/userImage.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                          ],
-                        ),
-                        Padding(
-                            padding: EdgeInsets.only(top: 90.0, right: 100.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                CircleAvatar(
-                                  backgroundColor: Colors.red,
-                                  radius: 25.0,
-                                  child: Icon(
-                                    Icons.camera_alt,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              ],
-                            )),
-                      ]),
+                      child: Container(
+                        height: 150,
+                        child: Stack(fit: StackFit.loose, children: <Widget>[
+                          Container(
+                              width: 140.0,
+                              height: 140.0,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: ExactAssetImage('assets/images/userImage.png'),
+                                  fit: BoxFit.cover,
+                                ),
+                              )),
+                          Positioned(
+                            top: 90,
+                            right: 0,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: 23.0,
+                              child: Icon(
+                                Icons.mode_edit,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                          )
+                        ]),
+                      ),
                     )
                   ],
                 ),
@@ -101,31 +96,6 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    'Parsonal Information',
-                                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  _status ? _getEditIcon() : Container(),
-                                ],
-                              )
-                            ],
-                          )),
                       Padding(
                           padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                           child: Row(
@@ -153,7 +123,7 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                                   decoration: const InputDecoration(
                                     hintText: "Enter Your Name",
                                   ),
-                                  enabled: !_status,
+                                  // enabled: !_status,
                                   autofocus: !_status,
                                 ),
                               ),
@@ -184,7 +154,7 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                               Flexible(
                                 child: TextField(
                                   decoration: const InputDecoration(hintText: "Enter Email ID"),
-                                  enabled: !_status,
+                                  // enabled: !_status,
                                 ),
                               ),
                             ],
@@ -214,60 +184,60 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                               Flexible(
                                 child: TextField(
                                   decoration: const InputDecoration(hintText: "Enter Mobile Number"),
-                                  enabled: !_status,
+                                  // enabled: !_status,
                                 ),
                               ),
                             ],
                           )),
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(
-                                    'Date',
-                                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextField(
-                                  controller: _dateController,
-                                  onTap: () {
-                                    DatePicker.showDatePicker(
-                                      context,
-                                      showTitleActions: true,
-                                      onChanged: (date) {
-                                        _dateController.text = formatDate(date, [dd, '-', mm, '-', yyyy]).toString();
-                                        print('change $date');
-                                      },
-                                      onConfirm: (date) {
-                                        _dateController.text = formatDate(date, [dd, '-', mm, '-', yyyy]).toString();
-                                        print('confirm $date');
-                                      },
-                                      currentTime: DateTime.now(),
-                                      locale: LocaleType.vi,
-                                    );
-                                  },
-                                  readOnly: true,
-                                  decoration: const InputDecoration(hintText: "Enter Mobile Number"),
-                                  enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
-                      !_status ? _getActionButtons() : Container(),
+                      // Padding(
+                      //     padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                      //     child: Row(
+                      //       mainAxisSize: MainAxisSize.max,
+                      //       children: <Widget>[
+                      //         Column(
+                      //           mainAxisAlignment: MainAxisAlignment.start,
+                      //           mainAxisSize: MainAxisSize.min,
+                      //           children: <Widget>[
+                      //             Text(
+                      //               'Date',
+                      //               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     )),
+                      // Padding(
+                      //     padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+                      //     child: Row(
+                      //       mainAxisSize: MainAxisSize.max,
+                      //       children: <Widget>[
+                      //         Flexible(
+                      //           child: TextField(
+                      //             controller: _dateController,
+                      //             onTap: () {
+                      //               DatePicker.showDatePicker(
+                      //                 context,
+                      //                 showTitleActions: true,
+                      //                 onChanged: (date) {
+                      //                   _dateController.text = formatDate(date, [dd, '-', mm, '-', yyyy]).toString();
+                      //                   print('change $date');
+                      //                 },
+                      //                 onConfirm: (date) {
+                      //                   _dateController.text = formatDate(date, [dd, '-', mm, '-', yyyy]).toString();
+                      //                   print('confirm $date');
+                      //                 },
+                      //                 currentTime: DateTime.now(),
+                      //                 locale: LocaleType.vi,
+                      //               );
+                      //             },
+                      //             readOnly: true,
+                      //             decoration: const InputDecoration(hintText: "Enter Mobile Number"),
+                      //             // enabled: !_status,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     )),
+                      Align(alignment: Alignment.center, child: _getActionButtons())
                     ],
                   ),
                 ),
@@ -291,51 +261,61 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
       padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: Container(
-                  child: RaisedButton(
-                child: widget.isLogin ? Text("Update") : Text("Save"),
-                textColor: Colors.white,
-                color: Colors.green,
-                onPressed: () {
-                  setState(() {
-                    if (widget.isLogin) {
-                      Routing().navigate2(context, MainScreen(), replace: true);
-                    }
-                    _status = true;
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  });
-                },
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-              )),
-            ),
+            child: Container(
+                child: RaisedButton(
+              child: widget.isLogin
+                  ? Text(
+                      "Update".toUpperCase(),
+                      style: ptButton(context).copyWith(color: Colors.white),
+                    )
+                  : Text(
+                      "Save".toUpperCase(),
+                      style: ptButton(context).copyWith(color: Colors.white),
+                    ),
+              textColor: Colors.white,
+              color: ptPrimaryColor(context),
+              onPressed: () {
+                setState(() {
+                  if (widget.isLogin) {
+                    Routing().navigate2(context, MainScreen(), replace: true);
+                  }
+                  _status = true;
+                  FocusScope.of(context).requestFocus(FocusNode());
+                });
+              },
+              padding: EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+            )),
             flex: 2,
           ),
-          widget.isLogin
-              ? Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: Container(
-                        child: RaisedButton(
-                      child: Text("Cancel"),
-                      textColor: Colors.white,
-                      color: Colors.red,
-                      onPressed: () {
-                        setState(() {
-                          _status = true;
-                          FocusScope.of(context).requestFocus(FocusNode());
-                        });
-                      },
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                    )),
-                  ),
-                  flex: 2,
-                )
-              : SizedBox(),
+          // widget.isLogin
+          //     ? SizedBox()
+          //     : Expanded(
+          //         child: Padding(
+          //           padding: EdgeInsets.only(left: 10.0),
+          //           child: Container(
+          //               child: RaisedButton(
+          //             child: Text(
+          //               "Cancel".toUpperCase(),
+          //               style: ptButton(context).copyWith(color: Colors.white),
+          //             ),
+          //             textColor: Colors.white,
+          //             color: Colors.red,
+          //             onPressed: () {
+          //               setState(() {
+          //                 _status = true;
+          //                 FocusScope.of(context).requestFocus(FocusNode());
+          //               });
+          //             },
+          //             padding: EdgeInsets.symmetric(vertical: 16),
+          //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+          //           )),
+          //         ),
+          //         flex: 2,
+          //       ),
         ],
       ),
     );

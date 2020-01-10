@@ -13,15 +13,13 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController =
-        TabController(length: 2, vsync: this); // initialise it here
+    _tabController = TabController(length: 2, vsync: this); // initialise it here
   }
 
   @override
@@ -30,9 +28,6 @@ class _HomeScreenState extends State<HomeScreen>
       backgroundColor: Colors.transparent,
       body: Column(
         children: <Widget>[
-          SizedBox(
-            height: MediaQuery.of(context).padding.top,
-          ),
           BaseHeaderScreen(
             title: "Nhà",
             subTitle: "Nhà của bạn bây giờ luôn được bảo đảm !",
@@ -59,13 +54,13 @@ class _HomeScreenState extends State<HomeScreen>
             child: TabBarView(
               children: <Widget>[
                 RoomsListView(
-                  callBack: () {
-                    moveTo();
+                  callBack: (title) {
+                    Routing().navigate2(context, CourseInfoDeviceScreen(title: title));
                   },
                 ),
                 DevicesListView(
                   callBack: () {
-                    moveTo();
+                    Routing().navigate2(context, CourseInfoDeviceScreen());
                   },
                 ),
               ],
@@ -73,15 +68,6 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  void moveTo() {
-    Navigator.push<dynamic>(
-      context,
-      MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => CourseInfoDeviceScreen(),
       ),
     );
   }

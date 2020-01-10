@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:daikin/ui/customs/base_screen.dart';
+import 'package:daikin/utils/hex_color.dart';
 import 'package:device_info/device_info.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/apis/core/auth_service.dart';
@@ -88,8 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
             _openLoginScreen();
           }
         } else {
-          showAlertDialog(
-              context, 'Xãy ra lỗi khi giao tiếp với server. Vui lòng thử lại');
+          showAlertDialog(context, 'Xãy ra lỗi khi giao tiếp với server. Vui lòng thử lại');
         }
       },
     );
@@ -126,35 +127,54 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     ScaleUtil.instance = ScaleUtil(width: 375, height: 667)..init(context);
-
-    return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          // Container(
-          //   decoration: BoxDecoration(
-          //     image: DecorationImage(image: AssetImage('assets/images/bg_splash.png'), fit: BoxFit.cover),
-          //   ),
-          //   child: BackdropFilter(
-          //     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-          //     child: Container(
-          //       decoration: BoxDecoration(color: ptPrimaryColor(context).withOpacity(0.1)),
-          //     ),
-          //   ),
-          // ),
-          Container(
-            width: deviceWidth(context),
-            height: deviceHeight(context),
-            color: Colors.white,
-            child: Center(
+    return BaseScreen(
+        body: SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        color: Colors.white,
+        alignment: Alignment.center,
+        height: deviceHeight(context),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Container(
+                margin: EdgeInsets.only(top: kToolbarHeight),
+                alignment: Alignment.topCenter,
+                child: Image.asset(
+                  'assets/images/app_logo2.png',
+                  fit: BoxFit.contain,
+                  width: deviceWidth(context) * 0.6,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 4,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image.asset(
-                    'assets/images/app_logo2.png',
+                    'assets/images/home.png',
                     fit: BoxFit.contain,
-                    width: deviceWidth(context) * 0.7,
+                    width: deviceWidth(context) * 0.35,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: ScaleUtil.getInstance().setHeight(16), bottom: ScaleUtil.getInstance().setHeight(8)),
+                    child: Text('Smart home', style: ptHeadline(context).copyWith(fontWeight: FontWeight.normal)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        bottom: ScaleUtil.getInstance().setHeight(16),
+                        left: ScaleUtil.getInstance().setWidth(16),
+                        right: ScaleUtil.getInstance().setWidth(16)),
+                    child: Text(
+                      'Tận hưởng cuộc sống thoải mái vượt trội và đem lại cảm giác mát lạnh sảng khoái tối ưu.',
+                      style: ptSubtitle(context),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   isConnect
                       ? Container()
@@ -166,8 +186,7 @@ class _SplashScreenState extends State<SplashScreen> {
                               if (online) {
                                 await prepareData();
                               } else {
-                                BotToast.showText(
-                                    text: 'Không có kết nối internet');
+                                BotToast.showText(text: 'Không có kết nối internet');
                               }
                             },
                             child: Text(
@@ -179,9 +198,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
             ),
-          ),
-        ],
+            Expanded(child: Container())
+          ],
+        ),
       ),
-    );
+    ));
   }
 }

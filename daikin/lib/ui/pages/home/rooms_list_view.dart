@@ -3,13 +3,14 @@ import 'dart:math';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/ui/pages/dashboard/dashboard_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
 class RoomsListView extends StatefulWidget {
   const RoomsListView({Key key, this.callBack}) : super(key: key);
 
-  final Function callBack;
+  final Function(String title) callBack;
   @override
   _RoomsListViewState createState() => _RoomsListViewState();
 }
@@ -63,7 +64,7 @@ class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateM
                     animationController.forward();
                     return CategoryView(
                       callback: () {
-                        widget.callBack();
+                        widget.callBack(Category.categoryRooms[index].title);
                       },
                       category: Category.categoryRooms[index],
                       animation: animation,
@@ -133,7 +134,7 @@ class CategoryView extends StatelessWidget {
                             width: 10,
                             height: 10,
                             decoration: BoxDecoration(
-                              color: Random().nextBool() ? Colors.redAccent : Colors.greenAccent,
+                              color: category.deviceCount % 2 == 0 ? Colors.redAccent : Colors.greenAccent,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10),
                               ),

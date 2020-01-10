@@ -31,46 +31,44 @@ class DeviceListViewState extends State<DeviceListView> with TickerProviderState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 8),
+      padding: EdgeInsets.only(top: 0),
       child: FutureBuilder<bool>(
         future: getData(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (!snapshot.hasData) {
             return SizedBox();
           } else {
-            return Container(
-              height: deviceHeight(context) * 0.7,
-              child: GridView(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                children: List<Widget>.generate(
-                  Category.categoryDevices.length,
-                  (int index) {
-                    final int count = Category.categoryDevices.length;
-                    final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animationController,
-                        curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
-                      ),
-                    );
-                    animationController.forward();
-                    return CategoryView(
-                      callback: () {
-                        widget.callBack();
-                      },
-                      category: Category.categoryDevices[index],
-                      animation: animation,
-                      animationController: animationController,
-                    );
-                  },
-                ),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  // childAspectRatio: MediaQuery.of(context).size.height / 600,
-                ),
+            return GridView(
+              shrinkWrap: true,
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              children: List<Widget>.generate(
+                Category.categoryDevices.length,
+                (int index) {
+                  final int count = Category.categoryDevices.length;
+                  final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: animationController,
+                      curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
+                    ),
+                  );
+                  animationController.forward();
+                  return CategoryView(
+                    callback: () {
+                      widget.callBack();
+                    },
+                    category: Category.categoryDevices[index],
+                    animation: animation,
+                    animationController: animationController,
+                  );
+                },
+              ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                // childAspectRatio: MediaQuery.of(context).size.height / 600,
               ),
             );
           }
