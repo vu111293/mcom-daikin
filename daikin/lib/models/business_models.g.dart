@@ -220,3 +220,17 @@ Map<String, dynamic> _$RoomDefaultSensorToJson(RoomDefaultSensor instance) =>
       'humidity': instance.humidity,
       'light': instance.light,
     };
+
+Scene _$SceneFromJson(Map<String, dynamic> json) {
+  return Scene(
+    name: json['name'] as String,
+    id: json['id'] as int,
+    type: json['type'] as String,
+  );
+}
+
+Map<String, dynamic> _$SceneToJson(Scene instance) => <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'type': instance.type,
+    };

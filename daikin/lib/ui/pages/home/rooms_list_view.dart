@@ -14,15 +14,17 @@ class RoomsListView extends StatefulWidget {
   _RoomsListViewState createState() => _RoomsListViewState();
 }
 
-class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateMixin {
-
+class _RoomsListViewState extends State<RoomsListView>
+    with TickerProviderStateMixin {
   AnimationController animationController;
   ApplicationBloc _appBloc;
 
   @override
   void initState() {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
-    animationController = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
+
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
   }
 
@@ -40,57 +42,65 @@ class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 8),
-      child: StreamBuilder<List<Room>>(stream: _appBloc.homeBloc.roomDataStream,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return SizedBox();
-        } else {
-          // Todo Please get room models from snapshot.data
+        padding: EdgeInsets.only(top: 8),
+        child: StreamBuilder<List<Room>>(
+            stream: _appBloc.homeBloc.roomDataStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return SizedBox();
+              } else {
+                // Todo Please get room models from snapshot.data
 
-          return Container(
-            height: deviceHeight(context) * 0.6,
-            child: GridView(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              children: List<Widget>.generate(
-                snapshot.data.length,
-                    (int index) {
-                  final int count = snapshot.data.length;
-                  final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-                    CurvedAnimation(
-                      parent: animationController,
-                      curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
+                return Container(
+                  height: deviceHeight(context) * 0.6,
+                  child: GridView(
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    children: List<Widget>.generate(
+                      snapshot.data.length,
+                      (int index) {
+                        final int count = snapshot.data.length;
+                        final Animation<double> animation =
+                            Tween<double>(begin: 0.0, end: 1.0).animate(
+                          CurvedAnimation(
+                            parent: animationController,
+                            curve: Interval((1 / count) * index, 1.0,
+                                curve: Curves.fastOutSlowIn),
+                          ),
+                        );
+                        animationController.forward();
+                        return CategoryView(
+                          callback: () {
+                            widget.callBack(snapshot.data[index].name);
+                          },
+                          room: snapshot.data[index],
+                          animation: animation,
+                          animationController: animationController,
+                        );
+                      },
                     ),
-                  );
-                  animationController.forward();
-                  return CategoryView(
-                    callback: () {
-                      widget.callBack(snapshot.data[index].name);
-                    },
-                    room: snapshot.data[index],
-                    animation: animation,
-                    animationController: animationController,
-                  );
-                },
-              ),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 20,
-                childAspectRatio: MediaQuery.of(context).size.height / 480,
-              ),
-            ),
-          );
-        }
-      })
-    );
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                      childAspectRatio:
+                          MediaQuery.of(context).size.height / 480,
+                    ),
+                  ),
+                );
+              }
+            }));
   }
 }
 
 class CategoryView extends StatelessWidget {
-  const CategoryView({Key key, this.room, this.animationController, this.animation, this.callback})
+  const CategoryView(
+      {Key key,
+      this.room,
+      this.animationController,
+      this.animation,
+      this.callback})
       : super(key: key);
 
   final VoidCallback callback;
@@ -106,7 +116,8 @@ class CategoryView extends StatelessWidget {
         return FadeTransition(
           opacity: animation,
           child: Transform(
-            transform: Matrix4.translationValues(0.0, 50 * (1.0 - animation.value), 0.0),
+            transform: Matrix4.translationValues(
+                0.0, 50 * (1.0 - animation.value), 0.0),
             child: Material(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               elevation: 8,
@@ -155,7 +166,8 @@ class CategoryView extends StatelessWidget {
                             Text(
                               room.name,
                               textAlign: TextAlign.left,
-                              style: ptTitle(context).copyWith(color: ptPrimaryColor(context)),
+                              style: ptTitle(context)
+                                  .copyWith(color: ptPrimaryColor(context)),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -164,7 +176,8 @@ class CategoryView extends StatelessWidget {
                               child: Text(
                                 '10 devices',
                                 textAlign: TextAlign.left,
-                                style: ptCaption(context).copyWith(color: HexColor(appColor2)),
+                                style: ptCaption(context)
+                                    .copyWith(color: HexColor(appColor2)),
                               ),
                             ),
                           ],

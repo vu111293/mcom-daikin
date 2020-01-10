@@ -20,17 +20,34 @@ class BusinessService extends BaseLoopBackApi {
   }
 
   Future<List<Room>> getRoomList() async {
-    final url = [LoopBackConfig.getPath(), LoopBackConfig.getApiVersion(), 'rooms'].join('/');
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'rooms'
+    ].join('/');
     final result = await this.request(method: 'GET', url: url);
     return (result as List).map((item) => Room.fromJson(item)).toList();
   }
 
   Future<List<Device>> getDeviceList() async {
-    final url = [LoopBackConfig.getPath(), LoopBackConfig.getApiVersion(), 'devices'].join('/');
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices'
+    ].join('/');
     final result = await this.request(method: 'GET', url: url);
     return (result as List).map((item) => Device.fromJson(item)).toList();
   }
 
+  Future<List<Scene>> getSceneList() async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'scenes'
+    ].join('/');
+    final result = await this.request(method: 'GET', url: url);
+    return (result as List).map((item) => Scene.fromJson(item)).toList();
+  }
 
 //
 //  Future<List<LTree>> getTreeList() async {

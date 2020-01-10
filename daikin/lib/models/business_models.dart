@@ -244,3 +244,20 @@ class RoomDefaultSensor {
 
   Map<String, dynamic> toJson() => _$RoomDefaultSensorToJson(this);
 }
+
+
+@JsonSerializable(nullable: false)
+class Scene {
+  final int id;
+  final String name;
+  final String type;
+
+  Scene({this.name, this.id, this.type});
+
+  factory Scene.fromJson(Map<String, dynamic> json) {
+    final item = _$SceneFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$SceneToJson(this);
+}
