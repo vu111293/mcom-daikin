@@ -214,6 +214,7 @@ class Room {
   final int defaultThermostat;
   final int sortOrder;
   final String category;
+  List<Device> devices = [];
   @JsonKey(toJson: _defSensorToJson)
   final RoomDefaultSensor defaultSensors;
 

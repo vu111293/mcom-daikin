@@ -18,9 +18,19 @@ class HomeBloc {
       _businessService.getDeviceList(),
       _businessService.getSceneList()
     ]).then((results) {
-      _roomsSubject.sink.add(results[0]);
-      _devicesSubject.sink.add(results[1]);
+      List<Room> rooms = results[0];
+      List<Device> devices = results[1];
+
+      for (var i = 0; i < rooms.length; i++) {
+        for (var j = 0; j < devices.length; j++) {
+          if (rooms[i].id == devices[j].roomID) {
+            rooms[i].devices.add(devices[j]);
+          }
+        }
+      }
       _scenesSubject.sink.add(results[2]);
+      _roomsSubject.sink.add(rooms);
+      // _devicesSubject.sink.add(results[1]);
     }).catchError((e) {
       print('Fetch home data error: $e');
     });
@@ -29,5 +39,6 @@ class HomeBloc {
   dispose() {
     _roomsSubject.close();
     _devicesSubject.close();
+    _scenesSubject.close();
   }
 }
