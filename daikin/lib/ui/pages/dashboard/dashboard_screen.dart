@@ -1,12 +1,18 @@
 import 'dart:io';
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/pages/dashboard/category_list_view.dart';
 import 'package:daikin/ui/pages/dashboard/course_info_screen.dart';
 import 'package:daikin/ui/pages/dashboard/popular_course_list_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/utils/hex_color.dart';
+import 'package:flutter/material.dart';
+import 'package:daikin/constants/constants.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
@@ -21,14 +27,18 @@ final List<String> imgList = [
   "https://r-cf.bstatic.com/images/hotel/max1024x768/157/157746542.jpg",
 ];
 
+enum CategoryType { ui, coding, basic, game, chill }
+
 class DashBoardScreen extends StatefulWidget {
   @override
   DashBoardScreenState createState() => DashBoardScreenState();
 }
 
-class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProviderStateMixin {
+class DashBoardScreenState extends State<DashBoardScreen>
+    with SingleTickerProviderStateMixin {
   int _current = 0;
   TabController _tabController;
+  ApplicationBloc _appBloc;
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
@@ -42,7 +52,9 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this); // initialise it here
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
+    _tabController =
+        TabController(length: 2, vsync: this); // initialise it here
   }
 
   @override
@@ -73,10 +85,12 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
                               margin: EdgeInsets.all(5.0),
                               decoration: BoxDecoration(
                                 color: Colors.black12,
-                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
                               ),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
                                 child: Image.network(
                                   i,
                                   fit: BoxFit.cover,
@@ -107,17 +121,20 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
                           return Container(
                             width: 16.0,
                             height: 3.0,
-                            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 2.0),
                             decoration: BoxDecoration(
                               color: _current == index
                                   ? HexColor(appColor).withOpacity(0.9)
                                   : Color.fromRGBO(0, 0, 0, 0.2),
-                              borderRadius: BorderRadius.all(Radius.circular(3)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(3)),
                             ),
                           );
                         },
                       ),
                     ),
+                    getSceneUI(),
                     getCategoryUI(),
                     getPopularCourseUI(),
                   ],
@@ -147,6 +164,125 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
     );
   }
 
+  Widget getSceneUI() {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 16,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+              child: Text('Scenes',
+                  textAlign: TextAlign.left, style: ptTitle(context)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+              child: Text('All',
+                  textAlign: TextAlign.left, style: ptSubtitle(context)),
+            ),
+          ],
+        ),
+        Container(
+          height: 72,
+          child: StreamBuilder(
+            stream: _appBloc.homeBloc.scenesDataStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return SizedBox();
+              } else {
+                return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(16),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext ctxt, int index) {
+                      return getButtonUI(snapshot.data[index], false);
+                    });
+                //           ListView(
+                //   scrollDirection: Axis.horizontal,
+                //   shrinkWrap: true,
+                //   padding: EdgeInsets.all(16),
+                //   children: <Widget>[
+
+                //     // getButtonUI(CategoryType.ui, false),
+                //     // getButtonUI(CategoryType.coding, false),
+                //     // getButtonUI(CategoryType.basic, false),
+                //     // getButtonUI(CategoryType.game, false),
+                //     // getButtonUI(CategoryType.chill, false),
+                //   ],
+                // );
+              }
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget getButtonUI(Scene scene, bool isSelected) {
+    String txt = scene.name;
+
+    return Padding(
+      padding: EdgeInsets.only(right: 10.0),
+      child: Material(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        elevation: 8,
+        shadowColor: Colors.black26,
+        color:
+            isSelected ? StyleAppTheme.nearlyBlue : StyleAppTheme.nearlyWhite,
+        child: InkWell(
+          splashColor: Colors.white24,
+          onTap: () {
+            setState(() {
+              showDialog<bool>(
+                context: context,
+                builder: (c) => AlertDialog(
+                  title: Text('Thông báo'),
+                  content: Text('Bạn có muốn bật scene này ?'),
+                  actions: [
+                    FlatButton(
+                      child: Text('Đồng ý'),
+                      onPressed: () => {},
+                    ),
+                    FlatButton(
+                      child: Text('Hủy'),
+                      onPressed: () => Navigator.pop(c, false),
+                    ),
+                  ],
+                ),
+              );
+              //categoryType = categoryTypeData;
+            });
+          },
+          child: Container(
+            height: 0,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 12, bottom: 12, left: 18, right: 18),
+              child: Center(
+                child: Text(
+                  txt,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                    letterSpacing: 0.27,
+                    color: isSelected
+                        ? StyleAppTheme.nearlyWhite
+                        : StyleAppTheme.nearlyBlue,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget getCategoryUI() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -157,11 +293,13 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('Running Devices', textAlign: TextAlign.left, style: ptTitle(context)),
+              child: Text('Running Devices',
+                  textAlign: TextAlign.left, style: ptTitle(context)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
+              child: Text('All',
+                  textAlign: TextAlign.left, style: ptSubtitle(context)),
             ),
           ],
         ),
@@ -186,11 +324,13 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('Cameras', textAlign: TextAlign.left, style: ptTitle(context)),
+                child: Text('Cameras',
+                    textAlign: TextAlign.left, style: ptTitle(context)),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
+                child: Text('All',
+                    textAlign: TextAlign.left, style: ptSubtitle(context)),
               ),
             ],
           ),
