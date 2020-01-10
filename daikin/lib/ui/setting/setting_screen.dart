@@ -64,7 +64,7 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                       'Hello !',
                       style: ptSubtitle(context).copyWith(color: ptPrimaryColor(context)),
                     ),
-                    subtitle: Text('Đâu Phải Phát', style: ptTitle(context).copyWith(color: ptPrimaryColor(context))),
+                    subtitle: Text('', style: ptTitle(context).copyWith(color: ptPrimaryColor(context))),
                     trailing: Container(
                       width: 32,
                       height: 32,

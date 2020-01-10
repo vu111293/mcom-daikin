@@ -68,7 +68,7 @@ class DashBoardScreenState extends State<DashBoardScreen>
           body: Column(
             children: <Widget>[
               BaseHeaderScreen(
-                title: "Chào Đâu Phải Phát !",
+                title: "Chào Bạn !",
                 subTitle: "Chào mừng bạn đến,",
               ),
               Container(
