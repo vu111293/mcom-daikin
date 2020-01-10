@@ -29,6 +29,7 @@ class Device {
   final int remoteGatewayId;
   final bool viewXml;
   final bool configXml;
+  @JsonKey(nullable: true)
   final List<String> interfaces;
   @JsonKey(toJson: _propertiesToJson)
   final DeviceProperty properties;
@@ -60,7 +61,7 @@ class DeviceProperty {
   final String date;
   final String dead;
   final String deviceControlType;
-  final String deviceIcon;
+  final dynamic deviceIcon;
   final String disabled;
   final String emailNotificationID;
   final String emailNotificationType;
@@ -212,7 +213,7 @@ class Room {
   final String icon;
   final int defaultThermostat;
   final int sortOrder;
-  final int category;
+  final String category;
   @JsonKey(toJson: _defSensorToJson)
   final RoomDefaultSensor defaultSensors;
 

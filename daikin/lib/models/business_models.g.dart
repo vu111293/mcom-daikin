@@ -20,7 +20,7 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
     remoteGatewayId: json['remoteGatewayId'] as int,
     viewXml: json['viewXml'] as bool,
     configXml: json['configXml'] as bool,
-    interfaces: (json['interfaces'] as List).map((e) => e as String).toList(),
+    interfaces: (json['interfaces'] as List)?.map((e) => e as String)?.toList(),
     properties:
         DeviceProperty.fromJson(json['properties'] as Map<String, dynamic>),
     actions: DeviceAction.fromJson(json['actions'] as Map<String, dynamic>),
@@ -59,7 +59,7 @@ DeviceProperty _$DevicePropertyFromJson(Map<String, dynamic> json) {
     date: json['date'] as String,
     dead: json['dead'] as String,
     deviceControlType: json['deviceControlType'] as String,
-    deviceIcon: json['deviceIcon'] as String,
+    deviceIcon: json['deviceIcon'],
     disabled: json['disabled'] as String,
     emailNotificationID: json['emailNotificationID'] as String,
     emailNotificationType: json['emailNotificationType'] as String,
@@ -191,7 +191,7 @@ Room _$RoomFromJson(Map<String, dynamic> json) {
     defaultSensors: RoomDefaultSensor.fromJson(
         json['defaultSensors'] as Map<String, dynamic>),
     sortOrder: json['sortOrder'] as int,
-    category: json['category'] as int,
+    category: json['category'] as String,
   );
 }
 

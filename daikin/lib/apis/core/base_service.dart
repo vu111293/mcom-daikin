@@ -22,7 +22,7 @@ abstract class BaseLoopBackApi {
 //        Map<String, dynamic> routeParams,
 //        LoopBackFilter filter,
     Map<String, dynamic> postBody,
-    bool isWrapBaseResponse = true,
+    bool isWrapBaseResponse = false,
     isUsingAdminToken = false,
   }) async {
 //    if (routeParams != null) {
@@ -51,6 +51,10 @@ abstract class BaseLoopBackApi {
 
     if (auth?.accessToken != null && auth?.accessToken?.isNotEmpty == true) {
       request.headers.add('x-token', auth.accessToken);
+    }
+
+    if (auth?.bearToken?.isNotEmpty == true) {
+      request.headers.add(HttpHeaders.authorizationHeader, auth.bearToken);
     }
 
 //    if (this.auth != null &&
@@ -90,8 +94,14 @@ abstract class BaseLoopBackApi {
 //    print("test thu goi api tra ve error: " + response.reasonPhrase);
 
     String raw = await response.transform(utf8.decoder).join();
-    dynamic data = json.decode(raw);
+    dynamic data = '';
+    try {
+      data = json.decode(raw);
+    } catch(e) {
+      print('Error when parse: $e');
+    }
     print('Response: $data');
+
 
     if (response.headers.contentType.toString() != ContentType.json.toString()) {
       throw new NetServiceError(

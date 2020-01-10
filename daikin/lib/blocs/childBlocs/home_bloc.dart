@@ -12,8 +12,8 @@ class HomeBloc {
   Stream get roomDataStream => _roomsSubject.stream;
   Stream get devicesDataStream => _devicesSubject.stream;
 
-  fetchHomeData() {
-    Future.wait([_businessService.getDeviceList(), _businessService.getRoomList()]).then((results) {
+  Future fetchHomeData() {
+    return Future.wait([_businessService.getRoomList(), _businessService.getDeviceList()]).then((results) {
       _roomsSubject.sink.add(results[0]);
       _devicesSubject.sink.add(results[1]);
     }).catchError((e) {

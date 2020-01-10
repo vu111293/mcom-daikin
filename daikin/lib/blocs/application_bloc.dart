@@ -37,10 +37,14 @@ class ApplicationBloc implements BlocBase {
 
   String get deviceId => _deviceIdSubject.stream.value;
 
-  loadBaseData() {
-    _homeBloc.fetchHomeData();
+  fetchUserData() {
+    _homeBloc.fetchHomeData().then((r) {
+      print('fetch user data done');
+    });
+  }
 
-    // Simulator
+  loadBaseData() {
+//    // Simulator
     Future.delayed(Duration(seconds: 3), () {
       addSetupStateAction('done');
     });
