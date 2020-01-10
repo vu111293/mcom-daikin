@@ -55,9 +55,9 @@ class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateM
               scrollDirection: Axis.vertical,
               padding: EdgeInsets.symmetric(horizontal: 16),
               children: List<Widget>.generate(
-                Category.categoryRooms.length,
+                snapshot.data.length,
                     (int index) {
-                  final int count = Category.categoryRooms.length;
+                  final int count = snapshot.data.length;
                   final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
                       parent: animationController,
@@ -67,9 +67,9 @@ class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateM
                   animationController.forward();
                   return CategoryView(
                     callback: () {
-                      widget.callBack(Category.categoryRooms[index].title);
+                      widget.callBack(snapshot.data[index].name);
                     },
-                    category: Category.categoryRooms[index],
+                    room: snapshot.data[index],
                     animation: animation,
                     animationController: animationController,
                   );
@@ -90,11 +90,11 @@ class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateM
 }
 
 class CategoryView extends StatelessWidget {
-  const CategoryView({Key key, this.category, this.animationController, this.animation, this.callback})
+  const CategoryView({Key key, this.room, this.animationController, this.animation, this.callback})
       : super(key: key);
 
   final VoidCallback callback;
-  final Category category;
+  final Room room;
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
@@ -126,7 +126,7 @@ class CategoryView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Image.asset(
-                            category.imagePath,
+                            'assets/icons/Nha_01.png',
                             width: 27,
                             height: 27,
                             fit: BoxFit.contain,
@@ -136,7 +136,7 @@ class CategoryView extends StatelessWidget {
                             width: 10,
                             height: 10,
                             decoration: BoxDecoration(
-                              color: category.deviceCount % 2 == 0 ? Colors.redAccent : Colors.greenAccent,
+                              color: Colors.greenAccent,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(10),
                               ),
@@ -153,7 +153,7 @@ class CategoryView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              category.title,
+                              room.name,
                               textAlign: TextAlign.left,
                               style: ptTitle(context).copyWith(color: ptPrimaryColor(context)),
                               maxLines: 1,
@@ -162,7 +162,7 @@ class CategoryView extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.only(top: 3),
                               child: Text(
-                                '${category.deviceCount} devices',
+                                '10 devices',
                                 textAlign: TextAlign.left,
                                 style: ptCaption(context).copyWith(color: HexColor(appColor2)),
                               ),
