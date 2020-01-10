@@ -1,6 +1,8 @@
 import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +17,11 @@ class RoomsListView extends StatefulWidget {
 class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateMixin {
 
   AnimationController animationController;
-
+  ApplicationBloc _appBloc;
 
   @override
   void initState() {
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
     animationController = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
   }
@@ -38,50 +41,50 @@ class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateM
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 8),
-      child: FutureBuilder<bool>(
-        future: getData(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if (!snapshot.hasData) {
-            return SizedBox();
-          } else {
-            return Container(
-              height: deviceHeight(context) * 0.6,
-              child: GridView(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                children: List<Widget>.generate(
-                  Category.categoryRooms.length,
-                  (int index) {
-                    final int count = Category.categoryRooms.length;
-                    final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animationController,
-                        curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
-                      ),
-                    );
-                    animationController.forward();
-                    return CategoryView(
-                      callback: () {
-                        widget.callBack(Category.categoryRooms[index].title);
-                      },
-                      category: Category.categoryRooms[index],
-                      animation: animation,
-                      animationController: animationController,
-                    );
-                  },
-                ),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: MediaQuery.of(context).size.height / 480,
-                ),
+      child: StreamBuilder<Room>(stream: _appBloc.homeBloc.roomDataStream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return SizedBox();
+        } else {
+          // Todo Please get room models from snapshot.data
+
+          return Container(
+            height: deviceHeight(context) * 0.6,
+            child: GridView(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              children: List<Widget>.generate(
+                Category.categoryRooms.length,
+                    (int index) {
+                  final int count = Category.categoryRooms.length;
+                  final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: animationController,
+                      curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
+                    ),
+                  );
+                  animationController.forward();
+                  return CategoryView(
+                    callback: () {
+                      widget.callBack(Category.categoryRooms[index].title);
+                    },
+                    category: Category.categoryRooms[index],
+                    animation: animation,
+                    animationController: animationController,
+                  );
+                },
               ),
-            );
-          }
-        },
-      ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 20,
+                childAspectRatio: MediaQuery.of(context).size.height / 480,
+              ),
+            ),
+          );
+        }
+      })
     );
   }
 }
