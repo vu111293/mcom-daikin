@@ -65,6 +65,7 @@ class PhoneAuthUtils {
 
   verifyPhoneNumber(String phone) async {
     print("verifyPhoneNumber");
+    print(phone);
     if (phone.startsWith('0')) phone = phone.substring(1);
     await _auth.verifyPhoneNumber(
         phoneNumber: '+84' + phone,
@@ -73,7 +74,9 @@ class PhoneAuthUtils {
         verificationFailed: verificationFailed,
         codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
-        forceResendingToken: 1);
+        forceResendingToken: 1).catchError((err) {
+          print(err);
+        });
   }
 
   validateCode(String code) async {

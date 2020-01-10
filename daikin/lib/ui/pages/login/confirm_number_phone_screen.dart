@@ -197,11 +197,9 @@ class ConfirmNumberPhoneScreenState extends State<ConfirmNumberPhoneScreen> {
                                     color: ptPrimaryColor(context)))
                           ])),
                         ),
-                        onTap: () {
-                          Navigator.pop(context);
-//                            _isLoading = true;
-//                            showWaitingDialog(context);
-//                            PhoneAuthHelper().verifyPhoneNumber(widget.phone);
+                        onTap: () async {
+                          await PhoneAuthUtils().verifyPhoneNumber(widget.phone);
+                          showAlertDialog(context, "Đã gửi");
                         }),
                   ],
                 ),
