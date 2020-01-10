@@ -11,11 +11,12 @@ enum AccessStatus {
 }
 
 class LoopBackAuth {
-
   String _prefix = "LoopBackAuth_";
   String _token;
-  String _bearToken = 'Basic a3l0aHVhdEBraW1zb250aWVuLmNvbTpDaG90cm9ubmllbXZ1aTE=';
+  String _bearToken =
+      'Basic a3l0aHVhdEBraW1zb250aWVuLmNvbTpDaG90cm9ubmllbXZ1aTE=';
   String _userId;
+  String _fbToken;
 
   static final LoopBackAuth _instance = new LoopBackAuth._internal();
 
@@ -29,8 +30,10 @@ class LoopBackAuth {
     try {
       String accessTokenStr = await _getPersist("accessToken");
       String userIdStr = await _getPersist("userId");
-      if (accessTokenStr == null || accessTokenStr.isEmpty
-          || userIdStr == null || userIdStr.isEmpty) {
+      if (accessTokenStr == null ||
+          accessTokenStr.isEmpty ||
+          userIdStr == null ||
+          userIdStr.isEmpty) {
         return AccessStatus.TOKEN_NULL;
       }
       _token = accessTokenStr;
@@ -57,15 +60,20 @@ class LoopBackAuth {
     save();
   }
 
+  set fbToken(String token) {
+    _fbToken = token;
+    save();
+  }
+
   String get accessToken => _token;
   String get bearToken => _bearToken;
+  String get fbToken => _fbToken;
   String get userId => _userId;
-
-
 
   // Persist
   void save() {
     _setPersist('accessToken', _token ?? '');
+    _setPersist('bearToken', _bearToken ?? '');
     _setPersist('fbToken', _bearToken ?? '');
     _setPersist('userId', _userId ?? '');
   }
@@ -74,6 +82,7 @@ class LoopBackAuth {
     _token = null;
     _bearToken = null;
     _userId = null;
+    fbToken = null;
     save();
   }
 
