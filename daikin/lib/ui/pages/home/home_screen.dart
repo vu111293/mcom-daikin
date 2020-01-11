@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ],
             ),
           ),
-          Container(
+          Expanded(child: Container(
             height: contentScreenWithTab(context) - 50,
             child: TabBarView(
               children: <Widget>[
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ],
               controller: _tabController,
             ),
-          ),
+          )),
         ],
       ),
     );
