@@ -42,7 +42,7 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
             subTitle: "Edit all your setting",
           ),
           Container(
-            height: contentScreen(context),
+            height: contentScreenWithTab(context),
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[

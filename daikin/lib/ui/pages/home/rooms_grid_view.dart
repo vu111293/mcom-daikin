@@ -6,16 +6,15 @@ import 'package:daikin/models/business_models.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
-class RoomsListView extends StatefulWidget {
-  const RoomsListView({Key key, this.callBack}) : super(key: key);
+class RoomsGridView extends StatefulWidget {
+  const RoomsGridView({Key key, this.callBack}) : super(key: key);
 
   final Function(String title) callBack;
   @override
-  _RoomsListViewState createState() => _RoomsListViewState();
+  _RoomsGridViewState createState() => _RoomsGridViewState();
 }
 
-class _RoomsListViewState extends State<RoomsListView>
-    with TickerProviderStateMixin {
+class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateMixin {
   AnimationController animationController;
   ApplicationBloc _appBloc;
 
@@ -84,8 +83,7 @@ class _RoomsListViewState extends State<RoomsListView>
                       crossAxisCount: 2,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 20,
-                      childAspectRatio:
-                          MediaQuery.of(context).size.height / 480,
+                      childAspectRatio: MediaQuery.of(context).size.height / 480,
                     ),
                   ),
                 );
