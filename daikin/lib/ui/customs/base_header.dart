@@ -9,14 +9,16 @@ class BaseHeaderScreen extends StatelessWidget {
   final String subTitle;
   final bool isBack;
   final bool hideProfile;
+  final bool isSubHeader;
 
-  BaseHeaderScreen({this.title, this.subTitle, this.isBack = false, this.hideProfile = false});
+  BaseHeaderScreen(
+      {this.title = '', this.subTitle = '', this.isBack = false, this.hideProfile = false, this.isSubHeader = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          top: isBack ? MediaQuery.of(context).padding.top : MediaQuery.of(context).padding.top + 8,
+          top: isSubHeader ? 16 : isBack ? MediaQuery.of(context).padding.top : MediaQuery.of(context).padding.top + 8,
           left: 16,
           right: 16,
           bottom: 4),
@@ -56,30 +58,39 @@ class BaseHeaderScreen extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Text(
-                        subTitle ?? "",
-                        style: ptSubtitle(context),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      Padding(
+                        padding: EdgeInsets.only(top: 4),
+                        child: Text(
+                          subTitle ?? "",
+                          style: ptSubtitle(context),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       )
                     ],
                   ),
                 ),
-          isBack || hideProfile
-              ? Icon(
-                  Icons.add_circle,
-                  color: ptPrimaryColor(context),
-                  size: 25.0,
-                )
-              : GestureDetector(
-                  onTap: () {
-                    Routing().navigate2(context, ProfileScreen());
-                  },
-                  child: Container(
-                      width: 50,
-                      height: 50,
-                      child: CircleAvatar(backgroundImage: AssetImage('assets/images/userImage.png'))),
-                )
+          hideProfile
+              ? Container()
+              : isBack
+                  ? GestureDetector(
+                      onTap: () {
+                        Routing().navigate2(context, ProfileScreen());
+                      },
+                      child: Container(
+                          width: 40,
+                          height: 40,
+                          child: CircleAvatar(backgroundImage: AssetImage('assets/images/userImage.png'))),
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        Routing().navigate2(context, ProfileScreen());
+                      },
+                      child: Container(
+                          width: 50,
+                          height: 50,
+                          child: CircleAvatar(backgroundImage: AssetImage('assets/images/userImage.png'))),
+                    )
         ],
       ),
     );

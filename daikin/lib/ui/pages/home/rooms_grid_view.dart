@@ -6,16 +6,15 @@ import 'package:daikin/models/business_models.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
-class RoomsListView extends StatefulWidget {
-  const RoomsListView({Key key, this.callBack}) : super(key: key);
+class RoomsGridView extends StatefulWidget {
+  const RoomsGridView({Key key, this.callBack}) : super(key: key);
 
   final Function(String title) callBack;
   @override
-  _RoomsListViewState createState() => _RoomsListViewState();
+  _RoomsGridViewState createState() => _RoomsGridViewState();
 }
 
-class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateMixin {
-
+class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateMixin {
   AnimationController animationController;
   ApplicationBloc _appBloc;
 
@@ -40,52 +39,52 @@ class _RoomsListViewState extends State<RoomsListView> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 8),
-      child: StreamBuilder<List<Room>>(stream: _appBloc.homeBloc.roomDataStream,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return SizedBox();
-        } else {
-          // Todo Please get room models from snapshot.data
+        padding: EdgeInsets.only(top: 8),
+        child: StreamBuilder<List<Room>>(
+            stream: _appBloc.homeBloc.roomDataStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return SizedBox();
+              } else {
+                // Todo Please get room models from snapshot.data
 
-          return Container(
-            height: deviceHeight(context) * 0.6,
-            child: GridView(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              children: List<Widget>.generate(
-                Category.categoryRooms.length,
-                    (int index) {
-                  final int count = Category.categoryRooms.length;
-                  final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-                    CurvedAnimation(
-                      parent: animationController,
-                      curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
+                return Container(
+                  height: deviceHeight(context) * 0.6,
+                  child: GridView(
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    children: List<Widget>.generate(
+                      Category.categoryRooms.length,
+                      (int index) {
+                        final int count = Category.categoryRooms.length;
+                        final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+                          CurvedAnimation(
+                            parent: animationController,
+                            curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
+                          ),
+                        );
+                        animationController.forward();
+                        return CategoryView(
+                          callback: () {
+                            widget.callBack(Category.categoryRooms[index].title);
+                          },
+                          category: Category.categoryRooms[index],
+                          animation: animation,
+                          animationController: animationController,
+                        );
+                      },
                     ),
-                  );
-                  animationController.forward();
-                  return CategoryView(
-                    callback: () {
-                      widget.callBack(Category.categoryRooms[index].title);
-                    },
-                    category: Category.categoryRooms[index],
-                    animation: animation,
-                    animationController: animationController,
-                  );
-                },
-              ),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 20,
-                childAspectRatio: MediaQuery.of(context).size.height / 480,
-              ),
-            ),
-          );
-        }
-      })
-    );
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                      childAspectRatio: MediaQuery.of(context).size.height / 480,
+                    ),
+                  ),
+                );
+              }
+            }));
   }
 }
 

@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/ui/customs/base_header.dart';
-import 'package:daikin/ui/pages/dashboard/dashboard_screen.dart';
-import 'package:daikin/ui/pages/home/device_list_view.dart';
-import 'package:daikin/ui/pages/home/rooms_list_view.dart';
+import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
+import 'package:daikin/ui/pages/home/devices_grid_view.dart';
+import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -56,8 +56,6 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
 
   @override
   Widget build(BuildContext context) {
-    final double tempHeight = MediaQuery.of(context).size.height - (MediaQuery.of(context).size.width / 1.2) + 120.0;
-
     return Container(
       color: StyleAppTheme.nearlyWhite,
       child: Scaffold(
@@ -69,141 +67,11 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                 title: widget.title.toUpperCase(),
               ),
               Container(
-                height: contentScreen(context),
+                height: contentScreenNoTab(context),
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          FadeTransition(
-                            opacity: animationController,
-                            child: Column(
-                              children: <Widget>[
-                                Image.asset(
-                                  'assets/hotel/hotel_${Random().nextInt(7)}.png',
-                                  fit: BoxFit.cover,
-                                  height: 220,
-                                  width: deviceWidth(context),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            top: 120,
-                            right: 0,
-                            left: 0,
-                            child: FadeTransition(
-                              opacity: animationController,
-                              // alignment: Alignment.center,
-                              // scale: CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn),
-                              child: Container(
-                                  width: deviceWidth(context),
-                                  height: 100,
-                                  padding: EdgeInsets.symmetric(vertical: 15),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      // colors: [Colors.red, Colors.blue],
-                                      colors: [
-                                        HexColor('#161F47').withOpacity(1),
-                                        HexColor('#161F47').withOpacity(0.8),
-                                        HexColor('#161F47').withOpacity(0)
-                                      ],
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Container(
-                                        width: deviceWidth(context) / 4,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(right: 4),
-                                              child: Image.asset(
-                                                'assets/icons/Nhiet_ke_02.png',
-                                                fit: BoxFit.cover,
-                                                height: ptBody1(context).fontSize * 1.5,
-                                                width: ptBody1(context).fontSize * 1.5,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Text('22.5 °', style: ptBody2(context).copyWith(color: Colors.white))
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        width: deviceWidth(context) / 4,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(right: 4),
-                                              child: Image.asset(
-                                                'assets/icons/Giot_nuoc_02.png',
-                                                fit: BoxFit.cover,
-                                                height: ptBody1(context).fontSize * 1.5,
-                                                width: ptBody1(context).fontSize * 1.5,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Text('52 %', style: ptBody2(context).copyWith(color: Colors.white))
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        width: deviceWidth(context) / 4,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(right: 4),
-                                              child: Image.asset(
-                                                'assets/icons/Sam_set.png',
-                                                fit: BoxFit.cover,
-                                                height: ptBody1(context).fontSize * 1.5,
-                                                width: ptBody1(context).fontSize * 1.5,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Text('${NumberFormat.compact().format(2000)} w',
-                                                style: ptBody2(context).copyWith(color: Colors.white))
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        width: deviceWidth(context) / 4,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(right: 4),
-                                              child: Image.asset(
-                                                'assets/icons/Mat_troi_02.png',
-                                                fit: BoxFit.cover,
-                                                height: ptBody1(context).fontSize * 1.5,
-                                                width: ptBody1(context).fontSize * 1.5,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Expanded(
-                                                child: Text(
-                                              '${NumberFormat.compact().format(123456789)} lm',
-                                              style: ptBody2(context).copyWith(color: Colors.white),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ))
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ),
-                          ),
-                        ],
-                      ),
+                      ImageBackdrop(animationController: animationController),
                       FadeTransition(
                         opacity: animationController,
                         child: Column(
@@ -212,33 +80,37 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                             const SizedBox(
                               height: 16,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Column(
                               children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                                  child: Text('Category', textAlign: TextAlign.left, style: ptTitle(context)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+                                      child: Text('Scenes', textAlign: TextAlign.left, style: ptTitle(context)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+                                      child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
+                                    ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                                  child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
+                                Container(
+                                  height: 72,
+                                  child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.all(16),
+                                    children: <Widget>[
+                                      getButtonUI(CategoryType.ui, categoryType == CategoryType.ui),
+                                      getButtonUI(CategoryType.coding, categoryType == CategoryType.coding),
+                                      getButtonUI(CategoryType.basic, categoryType == CategoryType.basic),
+                                      getButtonUI(CategoryType.game, categoryType == CategoryType.game),
+                                      getButtonUI(CategoryType.chill, categoryType == CategoryType.chill),
+                                    ],
+                                  ),
                                 ),
                               ],
-                            ),
-                            Container(
-                              height: 72,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                padding: EdgeInsets.all(16),
-                                children: <Widget>[
-                                  getButtonUI(CategoryType.ui, categoryType == CategoryType.ui),
-                                  getButtonUI(CategoryType.coding, categoryType == CategoryType.coding),
-                                  getButtonUI(CategoryType.basic, categoryType == CategoryType.basic),
-                                  getButtonUI(CategoryType.game, categoryType == CategoryType.game),
-                                  getButtonUI(CategoryType.chill, categoryType == CategoryType.chill),
-                                ],
-                              ),
                             ),
                             const SizedBox(
                               height: 8,
@@ -247,9 +119,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
                               child: Text('Running Devices', textAlign: TextAlign.left, style: ptTitle(context)),
                             ),
-                            DeviceListView(
-                              callBack: () {},
-                            ),
+                            DeviceGridView(),
                           ],
                         ),
                       ),
@@ -353,6 +223,150 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
           ),
         ),
       ),
+    );
+  }
+}
+
+class ImageBackdrop extends StatelessWidget {
+  const ImageBackdrop({
+    Key key,
+    @required this.animationController,
+  }) : super(key: key);
+
+  final AnimationController animationController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        FadeTransition(
+          opacity: animationController,
+          child: Column(
+            children: <Widget>[
+              Image.asset(
+                'assets/hotel/hotel_${Random().nextInt(7)}.png',
+                fit: BoxFit.cover,
+                height: 220,
+                width: deviceWidth(context),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 120,
+          right: 0,
+          left: 0,
+          child: FadeTransition(
+            opacity: animationController,
+            // alignment: Alignment.center,
+            // scale: CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn),
+            child: Container(
+                width: deviceWidth(context),
+                height: 100,
+                padding: EdgeInsets.symmetric(vertical: 15),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    // colors: [Colors.red, Colors.blue],
+                    colors: [
+                      HexColor('#161F47').withOpacity(1),
+                      HexColor('#161F47').withOpacity(0.8),
+                      HexColor('#161F47').withOpacity(0)
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      width: deviceWidth(context) / 4,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: Image.asset(
+                              'assets/icons/Nhiet_ke_02.png',
+                              fit: BoxFit.cover,
+                              height: ptBody1(context).fontSize * 1.5,
+                              width: ptBody1(context).fontSize * 1.5,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text('22.5 °', style: ptBody2(context).copyWith(color: Colors.white))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: deviceWidth(context) / 4,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: Image.asset(
+                              'assets/icons/Giot_nuoc_02.png',
+                              fit: BoxFit.cover,
+                              height: ptBody1(context).fontSize * 1.5,
+                              width: ptBody1(context).fontSize * 1.5,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text('52 %', style: ptBody2(context).copyWith(color: Colors.white))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: deviceWidth(context) / 4,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: Image.asset(
+                              'assets/icons/Sam_set.png',
+                              fit: BoxFit.cover,
+                              height: ptBody1(context).fontSize * 1.5,
+                              width: ptBody1(context).fontSize * 1.5,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text('${NumberFormat.compact().format(2000)} w',
+                              style: ptBody2(context).copyWith(color: Colors.white))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: deviceWidth(context) / 4,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: Image.asset(
+                              'assets/icons/Mat_troi_02.png',
+                              fit: BoxFit.cover,
+                              height: ptBody1(context).fontSize * 1.5,
+                              width: ptBody1(context).fontSize * 1.5,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Expanded(
+                              child: Text(
+                            '${NumberFormat.compact().format(123456789)} lm',
+                            style: ptBody2(context).copyWith(color: Colors.white),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ))
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
+          ),
+        ),
+      ],
     );
   }
 }

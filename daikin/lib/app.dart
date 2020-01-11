@@ -1,5 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/pages/splash/splash_screen.dart';
+import 'package:daikin/utils/hex_color.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -72,7 +74,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           ],
           title: widget.appConf.appName,
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            // primarySwatch: Colors.blue,
+            primaryColor: HexColor(appColor),
             textTheme: StyleAppTheme.textTheme,
             platform: TargetPlatform.iOS,
           ),

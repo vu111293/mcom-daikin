@@ -1,8 +1,7 @@
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/pages/home/course_info_device_screen.dart';
-import 'package:daikin/ui/pages/home/device_list_view.dart';
-import 'package:daikin/ui/pages/home/rooms_list_view.dart';
+import 'package:daikin/ui/pages/home/rooms_grid_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -50,10 +49,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ),
           ),
           Container(
-            height: contentScreen(context) - 50,
+            height: contentScreenWithTab(context) - 50,
             child: TabBarView(
               children: <Widget>[
-                RoomsListView(
+                RoomsGridView(
                   callBack: (title) {
                     Routing().navigate2(context, CourseInfoDeviceScreen(title: title));
                   },

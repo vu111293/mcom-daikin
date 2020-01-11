@@ -4,6 +4,7 @@ import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/pages/dashboard/dashboard_screen.dart';
+import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/home/home_screen.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/ui/setting/profile_screen.dart';
@@ -12,18 +13,14 @@ import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'device_detail/device_detail_screen.dart';
-
 class MainScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _MainScreenState();
   }
-
 }
 
 class _MainScreenState extends State<MainScreen> {
-
   ApplicationBloc _appBloc;
 
   @override
@@ -32,7 +29,6 @@ class _MainScreenState extends State<MainScreen> {
     _appBloc.fetchUserData();
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +44,8 @@ class _MainScreenState extends State<MainScreen> {
               children: [
                 DashBoardScreen(),
                 HomeScreen(),
-                Container(
-                  color: Colors.red,
-                ),
+                DeviceOnOffDetailScreen(),
                 SettingScreen(),
-                // DeviceDetailScreen(),
                 // Container(
                 //   color: Colors.red,
                 // ),

@@ -60,7 +60,7 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
                 subTitle: "Chào mừng bạn đến,",
               ),
               Container(
-                height: contentScreen(context),
+                height: contentScreenWithTab(context),
                 child: ListView(
                   children: <Widget>[
                     CarouselSlider(

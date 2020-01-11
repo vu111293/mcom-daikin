@@ -4,23 +4,25 @@ import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:flutter/material.dart';
 
 ///AppColor
-const String appColor = "#00A1E4";
+const String appColor = "#27AAE1";
 const String appColor2 = "#EE4B6E";
 const String appShadowColor = "#00000030";
-const String appBorderColor = "#CACFDD";
+const String appBorderColor = "#B7BCC7";
 const String appBorderColor2 = "#44C8F5";
 const String appText = "#1D2226";
 const String appText2 = "#8A9EAD";
 const String appText60 = "#1D222660";
 const String appWhite = "#FFFFFF";
+const String appNotWhite = "#EDF0F2";
 const String appLine = "#EBEBEB";
 
 Color ptPrimaryColor(BuildContext context) => Theme.of(context).primaryColor;
 double deviceWidth(BuildContext context) => MediaQuery.of(context).size.width;
 double scaleWidth(BuildContext context) => MediaQuery.of(context).size.width / 375;
 double deviceHeight(BuildContext context) => MediaQuery.of(context).size.height;
-double contentScreen(BuildContext context) =>
-    deviceHeight(context) - kBottomNavigationBarHeight - 60 - MediaQuery.of(context).padding.top;
+double contentScreenWithTab(BuildContext context) =>
+    deviceHeight(context) - kBottomNavigationBarHeight - 56 - MediaQuery.of(context).padding.top;
+double contentScreenNoTab(BuildContext context) => deviceHeight(context) - 56 - MediaQuery.of(context).padding.top;
 
 ///TextTheme
 TextStyle ptDisplay4(BuildContext context) => Theme.of(context).textTheme.display4;
