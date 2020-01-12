@@ -13,8 +13,7 @@ enum AccessStatus {
 class LoopBackAuth {
   String _prefix = "LoopBackAuth_";
   String _token;
-  String _bearToken =
-      'Basic a3l0aHVhdEBraW1zb250aWVuLmNvbTpDaG90cm9ubmllbXZ1aTE=';
+  String _bearToken;
   String _userId;
   String _fbToken;
 
@@ -38,7 +37,7 @@ class LoopBackAuth {
       }
       _token = accessTokenStr;
       _userId = userIdStr;
-//      _bearToken = ;
+      _bearToken = 'Basic a3l0aHVhdEBraW1zb250aWVuLmNvbTpDaG90cm9ubmllbXZ1aTE=';
     } catch (e) {
       return AccessStatus.EXCEPTION;
     }
