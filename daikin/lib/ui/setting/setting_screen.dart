@@ -41,7 +41,7 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
             title: "Setting",
             subTitle: "Edit all your setting",
           ),
-          Container(
+          Expanded(child: Container(
             height: contentScreenWithTab(context),
             child: SingleChildScrollView(
               child: Column(
@@ -263,16 +263,16 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                   ),
                   ListTile(
                       leading: InkWell(
-                    onTap: handleLogout,
-                    child: Text(
-                      "Sign Out",
-                      style: ptTitle(context).copyWith(color: Colors.red, fontWeight: FontWeight.w600),
-                    ),
-                  )),
+                        onTap: handleLogout,
+                        child: Text(
+                          "Sign Out",
+                          style: ptTitle(context).copyWith(color: Colors.red, fontWeight: FontWeight.w600),
+                        ),
+                      )),
                 ],
               ),
             ),
-          )
+          ))
         ],
       ),
     );
