@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
+import 'package:daikin/ui/pages/analytics/analytic_screen.dart';
 import 'package:daikin/ui/pages/dashboard/dashboard_screen.dart';
 import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/home/home_screen.dart';
@@ -44,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
               children: [
                 DashBoardScreen(),
                 HomeScreen(),
-                DeviceOnOffDetailScreen(),
+                AnalyticScreen(),
                 SettingScreen(),
                 // Container(
                 //   color: Colors.red,
