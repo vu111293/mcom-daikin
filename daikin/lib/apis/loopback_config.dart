@@ -1,6 +1,6 @@
 class LoopBackConfig {
-  static String _path = 'https://loctroi-hospital.mcom.app';
-  static String _version = 'api/v1';
+  static String _path = 'http://mhome-showroom.ddns.net:80';
+  static String _version = 'api';
   static String _authPrefix = '';
   static String _uploadContainer = 's3-colleagues-dev';
   static String _apiImgur = "https://api.imgur.com/3/image";

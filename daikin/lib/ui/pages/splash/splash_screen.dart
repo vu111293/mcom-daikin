@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:daikin/ui/customs/base_screen.dart';
+import 'package:daikin/utils/hex_color.dart';
+import 'package:device_info/device_info.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/app.dart';
@@ -8,8 +12,10 @@ import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/dialog.dart';
-import 'package:daikin/ui/pages/home/home_screen.dart';
+import 'package:daikin/ui/pages/login/confirm_number_phone_screen.dart';
+import 'package:daikin/ui/pages/login/login_screen.dart';
 import 'package:daikin/ui/pages/main.dart';
+import 'package:daikin/ui/pages/splash/introduction_screen.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/network_check.dart';
 import 'package:daikin/utils/scale_util.dart';
@@ -49,60 +55,65 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future prepareData() async {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
-    await _appBloc.loadBaseData();
 //    await _cacheDeviceId();
     _setupStateStream = _appBloc.setupStateEvent.listen(
       (s) async {
         if (s == 'done') {
-          Routing().navigate2(context, MainScreen());
-//          try {
-//            // make auto login or show login page
-//            AccessStatus tokenState = await LoopBackAuth().loadAccessToken();
-//            if (tokenState != AccessStatus.TOKEN_VALID) {
-//              _openLoginScreen();
-//            } else {
-////              LUser user = await UserService().getProfile(LoopBackAuth().userId);
-////              _appBloc.authBloc.updateUserAction(user);
-//
-////              Routing().navigate2(context, HomeScreen());
-//
-////              if (widget.appType == AppType.DOCTOR) {
-////                Routing().navigate2(context, AdvisoryScreen(), replace: true);
-////              } else {
-////                if (user.isClientFilledInfo) {
-////                  Routing().navigate2(context, HomeScreen());
-////                } else {
-////                  Routing().navigate2(context, UpdateInfoLoginScreen(), replace: true);
-////                }
-////              }
-//              _setupStateStream.cancel();
-//            }
-//          } catch (e) {
-//            LoopBackAuth().clear();
-//            _openLoginScreen();
-//          }
+          print("@@@@@@@@@@@@@@@@@@@@@@@");
+          // Routing().navigate2(context, IntroductionScreen());
+          // Routing().navigate2(context, MainScreen());
+          try {
+            // make auto login or show login page
+            AccessStatus tokenState = await LoopBackAuth().loadAccessToken();
+
+            print(tokenState);
+
+            if (tokenState != AccessStatus.TOKEN_VALID) {
+              _openLoginScreen();
+            } else {
+              // LUser user =
+              //     await UserService().getProfile(LoopBackAuth().userId);
+              // _appBloc.authBloc.updateUserAction(user);
+
+              Routing().navigate2(context, MainScreen());
+
+              // if (user.isClientFilledInfo) {
+              //   Routing().navigate2(context, HomeScreen());
+              // } else {
+              //   Routing()
+              //       .navigate2(context, UpdateInfoLoginScreen(), replace: true);
+              // }
+              _setupStateStream.cancel();
+            }
+          } catch (e) {
+            LoopBackAuth().clear();
+            _openLoginScreen();
+          }
         } else {
           showAlertDialog(context, 'Xãy ra lỗi khi giao tiếp với server. Vui lòng thử lại');
         }
       },
     );
+
+    _appBloc.loadBaseData();
+    _cacheDeviceId();
     return Future;
   }
 
-//  _cacheDeviceId() async {
-//    String deviceId;
-//    if (Platform.isAndroid) {
-//      AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
-//      deviceId = androidInfo.androidId;
-//    } else {
-//      IosDeviceInfo iOSInfo = await DeviceInfoPlugin().iosInfo;
-//      deviceId = iOSInfo.identifierForVendor;
-//    }
-//    _appBloc.setDeviceIdAction(deviceId);
-//  }
+  _cacheDeviceId() async {
+    String deviceId;
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+      deviceId = androidInfo.androidId;
+    } else {
+      IosDeviceInfo iOSInfo = await DeviceInfoPlugin().iosInfo;
+      deviceId = iOSInfo.identifierForVendor;
+    }
+    _appBloc.setDeviceIdAction(deviceId);
+  }
 
   _openLoginScreen() {
-//    Routing().navigate2(context, widget.appType == AppType.DOCTOR ? LoginDoctorScreen() : LoginScreen(), replace: true);
+    Routing().navigate2(context, LoginScreen(), replace: true);
   }
 
   @override
@@ -116,39 +127,60 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     ScaleUtil.instance = ScaleUtil(width: 375, height: 667)..init(context);
-
-    return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage('assets/images/bg_splash.png'), fit: BoxFit.cover),
-            ),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+    return BaseScreen(
+        body: SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        color: Colors.white,
+        alignment: Alignment.center,
+        height: deviceHeight(context),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              flex: 2,
               child: Container(
-                decoration: BoxDecoration(color: ptPrimaryColor(context).withOpacity(0.1)),
+                margin: EdgeInsets.only(top: kToolbarHeight),
+                alignment: Alignment.topCenter,
+                child: Image.asset(
+                  'assets/images/app_logo2.png',
+                  fit: BoxFit.contain,
+                  width: deviceWidth(context) * 0.6,
+                ),
               ),
             ),
-          ),
-          Center(
-            child: Container(
-              width: deviceWidth(context) * 0.8,
-              height: deviceWidth(context) * 0.8,
+            Expanded(
+              flex: 4,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Image.asset(
-                    'assets/images/logo2.png',
+                    'assets/images/home.png',
                     fit: BoxFit.contain,
-                    width: deviceWidth(context) * 0.6,
-                    height: deviceWidth(context) * 0.6,
+                    width: deviceWidth(context) * 0.35,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: ScaleUtil.getInstance().setHeight(16), bottom: ScaleUtil.getInstance().setHeight(8)),
+                    child: Text('Smart home', style: ptHeadline(context).copyWith(fontWeight: FontWeight.normal)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        bottom: ScaleUtil.getInstance().setHeight(16),
+                        left: ScaleUtil.getInstance().setWidth(16),
+                        right: ScaleUtil.getInstance().setWidth(16)),
+                    child: Text(
+                      'Tận hưởng cuộc sống thoải mái vượt trội và đem lại cảm giác mát lạnh sảng khoái tối ưu.',
+                      style: ptSubtitle(context),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   isConnect
                       ? Container()
                       : Padding(
                           padding: EdgeInsets.only(top: 8.0),
-                          child: RaisedButton(
+                          child: FlatButton(
                             onPressed: () async {
                               bool online = await _connectivity.check();
                               if (online) {
@@ -157,22 +189,19 @@ class _SplashScreenState extends State<SplashScreen> {
                                 BotToast.showText(text: 'Không có kết nối internet');
                               }
                             },
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(color: ptPrimaryColor(context), width: 4, style: BorderStyle.solid),
-                                borderRadius: BorderRadius.circular(10)),
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                             child: Text(
                               "Thử kết nối lại".toUpperCase(),
-                              style: ptBody1(context).copyWith(color: Colors.white),
+                              style: ptBody1(context).copyWith(),
                             ),
                           ),
                         )
                 ],
               ),
             ),
-          ),
-        ],
+            Expanded(child: Container())
+          ],
+        ),
       ),
-    );
+    ));
   }
 }

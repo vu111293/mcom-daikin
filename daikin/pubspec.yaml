@@ -11,7 +11,7 @@ description: mcom-daikin flutter project
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.2.2
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -24,22 +24,29 @@ dependencies:
     sdk: flutter
 
   rxdart: ^0.22.0
+  graphql: 2.1.0
+  device_info: 0.4.1+4
   json_annotation: ^3.0.1
   firebase_auth: ^0.15.3
-  firebase_messaging: ^5.1.4
+  firebase_core: ^0.4.0+8
+  firebase_crashlytics: ^0.1.2+4
   shared_preferences: ^0.5.3+4
   dio: ^2.1.16
   bot_toast: ^2.2.0
   url_launcher: ^5.4.1
   webview_flutter: ^0.3.18+1
-  firebase_crashlytics: ^0.1.2+4
   connectivity: ^0.4.6+1
   timeago: ^2.0.22
   carousel_slider: ^1.3.1
-
+  flutter_datetime_picker: ^1.3.1
+  date_format: ^1.0.8
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  pin_code_text_field: ^1.5.1
+  intl: ^0.16.0
+  flutter_gauge: ^1.0.8
+  sleek_circular_slider: ^1.0.7
 
 dev_dependencies:
   flutter_test:
@@ -72,8 +79,11 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/intro/
+    - assets/icons/
     - assets/runningDevices/
     - assets/hotel/
+    - assets/devices/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

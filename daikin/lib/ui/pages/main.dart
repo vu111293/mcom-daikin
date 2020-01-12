@@ -1,18 +1,40 @@
 import 'dart:io';
 
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
-import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/ui/pages/analytics/analytic_screen.dart';
 import 'package:daikin/ui/pages/dashboard/dashboard_screen.dart';
+import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/home/home_screen.dart';
+import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/ui/setting/profile_screen.dart';
+import 'package:daikin/ui/setting/setting_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'device_detail/device_detail_screen.dart';
+class MainScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _MainScreenState();
+  }
+}
 
-class MainScreen extends StatelessWidget {
+class _MainScreenState extends State<MainScreen> {
+  ApplicationBloc _appBloc;
+
+  @override
+  void initState() {
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
+    _appBloc.fetchUserData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Routing().setContext(context);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return WillPopScope(
       child: DefaultTabController(
         length: 4,
@@ -23,10 +45,11 @@ class MainScreen extends StatelessWidget {
               children: [
                 DashBoardScreen(),
                 HomeScreen(),
-                DeviceDetailScreen(),
-                Container(
-                  color: Colors.red,
-                ),
+                AnalyticScreen(),
+                SettingScreen(),
+                // Container(
+                //   color: Colors.red,
+                // ),
               ],
             ),
           ),

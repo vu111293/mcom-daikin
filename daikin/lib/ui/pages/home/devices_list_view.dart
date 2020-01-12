@@ -1,6 +1,8 @@
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:flutter/material.dart';
-import './../../../constants/deviceDataTest.dart';
 import './../../customs/expansion_tile.dart' as expansionTile;
 
 class DevicesListView extends StatefulWidget {
@@ -12,24 +14,53 @@ class DevicesListView extends StatefulWidget {
 }
 
 class _DevicesListState extends State<DevicesListView> {
+  ApplicationBloc _appBloc;
+
+  @override
+  void initState() {
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          return CustomDeviceList(
-            callback: widget.callBack,
-            data: DeviceDataTest.deviceDataList[index],
+    return StreamBuilder(
+      stream: _appBloc.homeBloc.roomDataStream,
+      builder: (buildContext, snapshot) {
+        if (!snapshot.hasData) {
+          return SizedBox();
+        } else
+          return Container(
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return CustomDeviceList(
+                  callback: widget.callBack,
+                  data: snapshot.data[index],
+                );
+              },
+              itemCount: snapshot.data.length,
+            ),
           );
-        },
-        itemCount: DeviceDataTest.deviceDataList.length,
-      ),
+      },
     );
+
+    // Container(
+    //   child: ListView.builder(
+    //     itemBuilder: (context, index) {
+    //       return CustomDeviceList(
+    //         callback: widget.callBack,
+    //         data: DeviceDataTest.deviceDataList[index],
+    //       );
+    //     },
+    //     itemCount: DeviceDataTest.deviceDataList.length,
+    //   ),
+    // );
   }
 }
 
 class CustomDeviceList extends StatelessWidget {
-  final DeviceDataTest data;
+  final Room data;
   final Function callback;
   const CustomDeviceList({@required this.data, @required this.callback});
   @override
@@ -37,9 +68,9 @@ class CustomDeviceList extends StatelessWidget {
     return _buildTiles(data);
   }
 
-  Widget _buildTiles(DeviceDataTest root) {
-    if (root.subDevices.isEmpty)
-      return ListTile(title: Text('Chưa có dữ liệu room device!'));
+  Widget _buildTiles(Room root) {
+    // if (root.devices.isEmpty)
+    //   return ListTile(title: Text('Chưa có dữ liệu room device!'));
     return expansionTile.ExpansionTile(
         trailing: Container(
           height: 24,
@@ -47,24 +78,24 @@ class CustomDeviceList extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: StyleAppTheme.nearlyBlue,
             child: Text(
-              '${root.subDevices.length}',
+              '${root.devices.length}',
               style: TextStyle(fontSize: 14),
             ),
           ),
         ),
-        key: PageStorageKey<DeviceDataTest>(root),
+        key: PageStorageKey<Room>(root),
         title: Text(
-          root.title,
+          root.name,
           style: TextStyle(color: StyleAppTheme.nearlyBlue),
         ),
-        children: root.subDevices
+        children: root.devices
             .map((item) => Container(
                   padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
                   child: ListTile(
                     leading: Icon(Icons.ac_unit),
                     title: Text(item.name),
                     trailing: Switch(
-                      value: item.deviceState,
+                      value: true,
                       onChanged: (val) => callback ?? {},
                       activeColor: Colors.green,
                       inactiveThumbColor: Colors.pink,

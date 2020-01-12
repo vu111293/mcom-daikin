@@ -1,5 +1,6 @@
 import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/apis/core/base_service.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:daikin/models/user.dart';
 
 import '../loopback_config.dart';
@@ -17,6 +18,37 @@ class BusinessService extends BaseLoopBackApi {
   dynamic fromJson(Map<String, Object> item) {
     return LUser.fromJson(item);
   }
+
+  Future<List<Room>> getRoomList() async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'rooms'
+    ].join('/');
+    final result = await this.request(method: 'GET', url: url);
+    return (result as List).map((item) => Room.fromJson(item)).toList();
+  }
+
+  Future<List<Device>> getDeviceList() async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices'
+    ].join('/');
+    final result = await this.request(method: 'GET', url: url);
+    return (result as List).map((item) => Device.fromJson(item)).toList();
+  }
+
+  Future<List<Scene>> getSceneList() async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'scenes'
+    ].join('/');
+    final result = await this.request(method: 'GET', url: url);
+    return (result as List).map((item) => Scene.fromJson(item)).toList();
+  }
+
 //
 //  Future<List<LTree>> getTreeList() async {
 //    final url = [LoopBackConfig.getPath(), LoopBackConfig.getApiVersion(), 'plant?limit=0'].join('/');

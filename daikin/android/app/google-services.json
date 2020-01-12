@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "747360359366-u85i021473gegl3lb06ht9kdfftbk8ct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mcom.daikin",
+            "certificate_hash": "bb2a5c2d33041ee74eeb49eabc2e16b97b572357"
+          }
+        },
+        {
+          "client_id": "747360359366-h1l9v84ru8isvhl0pn4ope481hqfungh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mcom.daikin",
+            "certificate_hash": "6e486174a1d21a1ef87902c6b7c514b1a92ef460"
+          }
+        },
+        {
+          "client_id": "747360359366-hnunj9n1gsg34j1dddhfhoeajs7jsco5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mcom.daikin",
+            "certificate_hash": "9fe13118d7ff878963c5adf2cc36db785720863b"
+          }
+        },
+        {
           "client_id": "747360359366-19sbkkbdt6846prku7fcto1fa80e2c44.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -30,6 +54,13 @@
             {
               "client_id": "747360359366-19sbkkbdt6846prku7fcto1fa80e2c44.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "747360359366-94oavpff1nmpa6nvumdjnqkqov0ku6dd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mcom.daikin"
+              }
             }
           ]
         }
@@ -44,6 +75,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "747360359366-37n8ucabt4dmr0l5ns9j9kcmfunq8pj0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mcom.daikin.production",
+            "certificate_hash": "bb2a5c2d33041ee74eeb49eabc2e16b97b572357"
+          }
+        },
+        {
+          "client_id": "747360359366-2r46mseloe15r7j8h5iogiim9u2tfhla.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mcom.daikin.production",
+            "certificate_hash": "6e486174a1d21a1ef87902c6b7c514b1a92ef460"
+          }
+        },
+        {
+          "client_id": "747360359366-s1moa38p1685dstq0hcr71kl18igkcfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mcom.daikin.production",
+            "certificate_hash": "9fe13118d7ff878963c5adf2cc36db785720863b"
+          }
+        },
+        {
           "client_id": "747360359366-19sbkkbdt6846prku7fcto1fa80e2c44.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -59,6 +114,13 @@
             {
               "client_id": "747360359366-19sbkkbdt6846prku7fcto1fa80e2c44.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "747360359366-94oavpff1nmpa6nvumdjnqkqov0ku6dd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mcom.daikin"
+              }
             }
           ]
         }
