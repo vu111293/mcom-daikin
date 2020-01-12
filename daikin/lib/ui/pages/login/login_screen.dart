@@ -37,15 +37,13 @@ class LoginScreenState extends State<LoginScreen> {
   void initState() {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
 
-    //  _registerFbAuthResult();
+      _registerFbAuthResult();
     super.initState();
   }
 
   _registerFbAuthResult() {
     _phoneAuthStream?.cancel();
     _phoneAuthStream = PhoneAuthUtils().authStream.listen((result) async {
-      print(result.status);
-      print(result.msg);
       if (_isLoading) {
         Navigator.pop(context);
         _isLoading = false;
@@ -68,15 +66,8 @@ class LoginScreenState extends State<LoginScreen> {
 
         Routing().popToRoot(context);
         Routing().navigate2(context, MainScreen(), replace: true);
-        //  if (user.isClientFilledInfo) {
-        //    Routing().popToRoot(context);
-        //    Routing().navigate2(context, HomeScreen(), replace: true);
-        //  } else {
-        //    Routing().navigate2(context, UpdateInfoLoginScreen(), replace: true);
-        //  }
       } else if (result.status == AuthStatus.Timeout) {
-        showAlertDialog(
-            context, 'Lỗi khi kết nối với máy chủ. Vui lòng thử lại');
+        showAlertDialog(context, 'Lỗi khi kết nối với máy chủ. Vui lòng thử lại');
       } else {
         showAlertDialog(context, 'Lỗi khi đăng nhập. Vui lòng thử lại');
       }
@@ -192,13 +183,10 @@ class LoginScreenState extends State<LoginScreen> {
 
   _handlePhoneLogin() {
     try {
-      _isLoading = true;
       if (phoneController.text.isNotEmpty && this.phone.length > 8) {
+        _isLoading = true;
         showWaitingDialog(context);
         PhoneAuthUtils().verifyPhoneNumber(phoneController.text);
-        Routing().navigate2(
-            context, ConfirmNumberPhoneScreen(phone: phoneController.text));
-        // showAlertDialog(context, 'Đăng nhập thành công');
       } else {
         showAlertDialog(context, 'Vui lòng nhập số điện thoại chính xác');
       }

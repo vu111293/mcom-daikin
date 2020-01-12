@@ -20,6 +20,7 @@ import 'package:daikin/ui/pages/login/update_info_login_screen.dart';
 // import 'package:daikin/ui/route/routing.dart';
 import 'package:daikin/utils/scale_util.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../main.dart';
 // import 'package:toast/toast.dart';
@@ -44,23 +45,47 @@ class ConfirmNumberPhoneScreenState extends State<ConfirmNumberPhoneScreen> {
   bool hasError = false;
   String errorMessage;
   bool _isLoading = false;
+  Timer _timer;
+  final _timeCountSubject = BehaviorSubject<int>.seeded(30);
 
   @override
   void initState() {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
     _registerFbAuthResult();
+    _startTimer();
     super.initState();
+  }
+
+  _startTimer() {
+    _disableResent();
+    _timeCountSubject.sink.add(30);
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      int count = _timeCountSubject.stream.value;
+      if (count >= 0) {
+        count -= 1;
+        _timeCountSubject.sink.add(count);
+      } else {
+        _timer.cancel();
+      }
+    });
+  }
+
+  _disableResent() {
+    if (_timer != null) {
+      _timer.cancel();
+    }
+    _timeCountSubject.sink.add(-1);
   }
 
   _registerFbAuthResult() {
     _authStream?.cancel();
     _authStream = PhoneAuthUtils().authStream.listen((result) async {
       if (_isLoading) {
+        _isLoading = false;
         Navigator.pop(context);
       }
       if (result.status == AuthStatus.CodeSent) {
-        // Toast.show(
-        //     "Mã xác thực đã được gửi đến bạn. Vui lòng kiểm tra", context);
+        _startTimer();
       } else if (result.status == AuthStatus.Verified) {
         // do login and cache token
         String uid = result.user.uid;
@@ -81,7 +106,11 @@ class ConfirmNumberPhoneScreenState extends State<ConfirmNumberPhoneScreen> {
 
   @override
   void dispose() {
+    if (_timer != null) {
+      _timer.cancel();
+    }
     _authStream.cancel();
+    _timeCountSubject.close();
     super.dispose();
   }
 
@@ -180,27 +209,46 @@ class ConfirmNumberPhoneScreenState extends State<ConfirmNumberPhoneScreen> {
                         ),
                       ),
                     ),
-                    InkWell(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              right: ScaleUtil.getInstance().setWidth(10)),
-                          alignment: Alignment.centerRight,
-                          child: RichText(
-                              text: TextSpan(children: [
-                            TextSpan(
-                                text: 'Chưa nhận được? ',
-                                style: ptSubhead(context).copyWith()),
-                            TextSpan(
-                                text: "Gửi lại",
-                                style: ptSubhead(context).copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: ptPrimaryColor(context)))
-                          ])),
-                        ),
-                        onTap: () async {
-                          await PhoneAuthUtils().verifyPhoneNumber(widget.phone);
-                          showAlertDialog(context, "Đã gửi");
-                        }),
+                    StreamBuilder<int>(
+                      stream: _timeCountSubject.stream,
+                      builder: (context, snapshot) {
+                        String seconds = '';
+                        bool enable = false;
+                        if (!snapshot.hasData) {
+
+                        } else {
+                          if (snapshot.data <= 0) {
+                            enable = true;
+                            seconds = '';
+                          } else {
+                            enable = false;
+                            seconds = '(${snapshot.data}s)';
+                          }
+                        }
+
+                        return InkWell(
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  top: ScaleUtil.getInstance().setHeight(24),
+                                  right: ScaleUtil.getInstance().setWidth(10)),
+                              alignment: Alignment.centerRight,
+                              child: RichText(
+                                  text: TextSpan(children: [
+                                    TextSpan(text: 'Chưa nhận được? ', style: ptSubhead(context).copyWith(fontSize: 18.0)),
+                                    TextSpan(
+                                        text: "Gửi lại $seconds",
+                                        style: ptSubhead(context).copyWith(
+                                            fontSize: 18.0, fontWeight: FontWeight.bold, color: enable ? ptPrimaryColor(context) : Colors.grey))
+                                  ])),
+                            ),
+                            onTap: enable ? () {
+                              _isLoading = true;
+                              _disableResent();
+                              showWaitingDialog(context);
+                              PhoneAuthUtils().verifyPhoneNumber(widget.phone);
+                            } : null);
+                      },
+                    ),
                   ],
                 ),
               ),
