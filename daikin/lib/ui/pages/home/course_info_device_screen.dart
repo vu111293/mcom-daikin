@@ -143,7 +143,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                                   textAlign: TextAlign.left,
                                   style: ptTitle(context)),
                             ),
-                            DeviceGridView(),
+                            DeviceGridView(devices: widget.room.devices,),
                           ],
                         ),
                       ),
@@ -336,7 +336,9 @@ class ImageBackdrop extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          Text(room.defaultSensors.temperature.toString() +' °C',
+                          Text(
+                              room.defaultSensors.temperature.toString() +
+                                  ' °C',
                               style: ptBody2(context)
                                   .copyWith(color: Colors.white))
                         ],
@@ -357,7 +359,7 @@ class ImageBackdrop extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          Text(room.defaultSensors.humidity.toString() +' %',
+                          Text(room.defaultSensors.humidity.toString() + ' %',
                               style: ptBody2(context)
                                   .copyWith(color: Colors.white))
                         ],
@@ -378,7 +380,8 @@ class ImageBackdrop extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          Text('${NumberFormat.compact().format(room.defaultSensors.light)} w',
+                          Text(
+                              '${NumberFormat.compact().format(room.defaultSensors.light)} w',
                               style: ptBody2(context)
                                   .copyWith(color: Colors.white))
                         ],

@@ -1,5 +1,6 @@
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/power_button.dart';
 import 'package:daikin/utils/hex_color.dart';
@@ -45,7 +46,7 @@ const rem = [
 ];
 
 class DeviceOnOffDetailScreen extends StatefulWidget {
-  Category item;
+  Device item;
   bool status;
   DeviceOnOffDetailScreen({this.item, this.status = false});
   _DeviceOnOffDetailScreenState createState() => _DeviceOnOffDetailScreenState();
@@ -63,43 +64,43 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
   @override
   void initState() {
     super.initState();
-    switch (widget.item.title) {
-      case 'Desk lamp':
-        setState(() {
-          listImage = den;
-        });
-        break;
-      // case 'Bed Lamp':
-      //   setState(() {
-      //     listImage = denTran;
-      //   });
-      //   break;
-      case 'Tưới cây':
-        setState(() {
-          listImage = tree;
-        });
-        break;
-      case 'Cửa chính':
-        setState(() {
-          listImage = cua;
-        });
-        break;
-      case 'Motion':
-        setState(() {
-          listImage = motion;
-        });
-        break;
-      case 'Siren':
-        setState(() {
-          listImage = sensor;
-        });
-        break;
-      case 'Rèm cửa':
-        setState(() {
-          listImage = rem;
-        });
-        break;
-    }
+    // switch (widget.item.title) {
+    //   case 'Desk lamp':
+    //     setState(() {
+    //       listImage = den;
+    //     });
+    //     break;
+    //   // case 'Bed Lamp':
+    //   //   setState(() {
+    //   //     listImage = denTran;
+    //   //   });
+    //   //   break;
+    //   case 'Tưới cây':
+    //     setState(() {
+    //       listImage = tree;
+    //     });
+    //     break;
+    //   case 'Cửa chính':
+    //     setState(() {
+    //       listImage = cua;
+    //     });
+    //     break;
+    //   case 'Motion':
+    //     setState(() {
+    //       listImage = motion;
+    //     });
+    //     break;
+    //   case 'Siren':
+    //     setState(() {
+    //       listImage = sensor;
+    //     });
+    //     break;
+    //   case 'Rèm cửa':
+    //     setState(() {
+    //       listImage = rem;
+    //     });
+    //     break;
+    // }
     currentStateDevice = widget.status;
     if (widget.status) {
       indexImage = 1;
@@ -117,13 +118,13 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
         children: <Widget>[
           BaseHeaderScreen(
             isBack: true,
-            title: widget.item.title.toUpperCase(),
+            title: widget.item.name.toUpperCase(),
           ),
           BaseHeaderScreen(
             hideProfile: true,
             isSubHeader: true,
-            title: widget.item.title,
-            subTitle: currentStateDevice ? "Thiết bị của bạn đang hoạt động" : widget.item.subTitle,
+            title: widget.item.name,
+            subTitle: currentStateDevice ? "Thiết bị của bạn đang hoạt động": "Thiết bị chưa hoát động" //: widget.item.subTitle,
           ),
           listImage.length > 0
               ? currentStateDevice
@@ -146,7 +147,7 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                             child: Image.asset(
                               listImage[indexImage],
                               fit: BoxFit.contain,
-                              width: widget.item.title == 'Motion'
+                              width: widget.item.name == 'Motion'
                                   ? deviceWidth(context) * 0.8
                                   : deviceWidth(context) * 0.3,
                             ),
@@ -166,7 +167,7 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                           child: Center(
                             child: Image.asset(listImage[indexImage],
                                 fit: BoxFit.contain,
-                                width: widget.item.title == 'Motion'
+                                width: widget.item.name == 'Motion'
                                     ? deviceWidth(context) * 0.8
                                     : deviceWidth(context) * 0.3,
                                 color: HexColor(appBorderColor)),
@@ -174,7 +175,7 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                         ),
                       ),
                     )
-              : widget.item.title == "Bed Lamp"
+              : widget.item.name == "Bed Lamp"
                   ? Expanded(
                       child: Container(
                         width: deviceWidth(context),
@@ -247,7 +248,7 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                       ),
                     ),
 
-          widget.item.title == 'Rèm cửa'
+          widget.item.name == 'Rèm cửa'
               ? Container(
                   margin: EdgeInsets.symmetric(horizontal: 32),
                   child: SliderTheme(

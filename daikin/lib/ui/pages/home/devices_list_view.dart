@@ -2,8 +2,10 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
+import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
+import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import './../../customs/expansion_tile.dart' as expansionTile;
 
@@ -119,8 +121,11 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
             onChanged: (val) {
               onSwitchDevice(val, device);
             },
-            activeColor: Colors.green,
-            inactiveThumbColor: Colors.pink,
+            materialTapTargetSize: MaterialTapTargetSize.padded,
+            activeColor: Colors.white,
+            activeTrackColor: HexColor(appColor),
+            inactiveThumbColor: HexColor(appBorderColor),
+            inactiveTrackColor: HexColor(appBorderColor),
           ),
         ),
       );
@@ -135,8 +140,11 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
             onChanged: (val) {
               onSwitchRGBDevice(val, device);
             },
-            activeColor: Colors.green,
-            inactiveThumbColor: Colors.pink,
+            materialTapTargetSize: MaterialTapTargetSize.padded,
+            activeColor: Colors.white,
+            activeTrackColor: HexColor(appColor),
+            inactiveThumbColor: HexColor(appBorderColor),
+            inactiveTrackColor: HexColor(appBorderColor),
           ),
         ),
       );

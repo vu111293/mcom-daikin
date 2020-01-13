@@ -1049,3 +1049,18 @@ final List<IconData> iconData = <IconData>[
   Icons.zoom_out,
   Icons.zoom_out_map
 ];
+
+const dynamic DEVICE_ICONS = {
+  'AIR_CONDITION': 'assets/icons/Tuyet.png',
+  'MOTION': 'assets/icons/Motion.png',
+  'TV': 'assets/icons/TV_02.png',
+  'FAN': 'assets/icons/Quat.png',
+  'TREE': 'assets/devices/tree_4.png',
+  'DESK_LAMP': 'assets/icons/Den_ngu.png',
+  'MAIN_DOOR': 'assets/icons/Cua.png',
+  'BED_LAMP': 'assets/icons/Den_tran.png',
+  'RGB_LAMP': 'assets/icons/RGB.png',
+  'CURTAINS': 'assets/icons/Cua_so_02.png',
+  'CAMERA': 'assets/icons/Camera.png',
+  'SIREN': 'assets/icons/Siren.png'
+};
