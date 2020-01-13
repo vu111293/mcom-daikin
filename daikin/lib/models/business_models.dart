@@ -117,7 +117,7 @@ class DeviceProperty {
   final String sunsetHour;
   final String useTemplate;
   final String itemDescription;
-  final String value;
+  String value;
   final String zwaveBuildVersion;
   final String zwaveCompany;
   final String zwaveInfo;

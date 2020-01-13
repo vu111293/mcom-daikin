@@ -139,7 +139,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                             Padding(
                               padding: const EdgeInsets.only(
                                   top: 8.0, left: 16, right: 16),
-                              child: Text('Running Devices',
+                              child: Text('Devices',
                                   textAlign: TextAlign.left,
                                   style: ptTitle(context)),
                             ),

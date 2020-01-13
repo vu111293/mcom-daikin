@@ -1,3 +1,5 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
@@ -35,8 +37,7 @@ class _DevicesListState extends State<DevicesListView> {
             child: ListView.builder(
               itemBuilder: (context, index) {
                 return CustomDeviceList(
-                  callback: widget.callBack,
-                  data: snapshot.data[index],
+                  room: snapshot.data[index],
                 );
               },
               itemCount: snapshot.data.length,
@@ -59,13 +60,28 @@ class _DevicesListState extends State<DevicesListView> {
   }
 }
 
-class CustomDeviceList extends StatelessWidget {
-  final Room data;
-  final Function callback;
-  const CustomDeviceList({@required this.data, @required this.callback});
+class CustomDeviceList extends StatefulWidget {
+  final Room room;
+  CustomDeviceList({this.room});
+
+  @override
+  _CustomDeviceListState createState() => _CustomDeviceListState();
+}
+
+class _CustomDeviceListState extends State<CustomDeviceList> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return _buildTiles(data);
+    return _buildTiles(widget.room);
   }
 
   Widget _buildTiles(Room root) {
@@ -88,20 +104,160 @@ class CustomDeviceList extends StatelessWidget {
           root.name,
           style: TextStyle(color: StyleAppTheme.nearlyBlue),
         ),
-        children: root.devices
-            .map((item) => Container(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
-                  child: ListTile(
-                    leading: Icon(Icons.ac_unit),
-                    title: Text(item.name),
-                    trailing: Switch(
-                      value: true,
-                      onChanged: (val) => callback ?? {},
-                      activeColor: Colors.green,
-                      inactiveThumbColor: Colors.pink,
-                    ),
-                  ),
-                ))
-            .toList());
+        children: root.devices.map((item) => buildDevice(item)).toList());
+  }
+
+  Widget buildDevice(Device device) {
+    if (device.type == "com.fibaro.binarySwitch") {
+      return Container(
+        padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+        child: ListTile(
+          leading: Icon(Icons.ac_unit),
+          title: Text(device.name),
+          trailing: Switch(
+            value: device.properties.value == 'true' ? true : false,
+            onChanged: (val) {
+              onSwitchDevice(val, device);
+            },
+            activeColor: Colors.green,
+            inactiveThumbColor: Colors.pink,
+          ),
+        ),
+      );
+    } else if (device.type == "com.fibaro.FGRGBW441M") {
+      return Container(
+        padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+        child: ListTile(
+          leading: Icon(Icons.ac_unit),
+          title: Text(device.name),
+          trailing: Switch(
+            value: device.properties.value == '1' ? true : false,
+            onChanged: (val) {
+              onSwitchRGBDevice(val, device);
+            },
+            activeColor: Colors.green,
+            inactiveThumbColor: Colors.pink,
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+      child: ListTile(
+        leading: Icon(Icons.ac_unit),
+        title: Text(device.name),
+        // trailing: Switch(
+        //   value: true,
+        //   onChanged: (val) {
+        //     print(val);
+        //   },
+        //   activeColor: Colors.green,
+        //   inactiveThumbColor: Colors.pink,
+        // ),
+      ),
+    );
+  }
+
+  onSwitchRGBDevice(bool val, Device device) {
+    //BotToast.showText(text: 'Đổi sang trạng thái ' + device.properties.value);
+    setState(() {
+      if (val) {
+        device.properties.value = '1';
+      } else {
+        device.properties.value = '0';
+      }
+    });
+
+    if (!val) {
+      BusinessService().turnOffDevice(device.id);
+      BotToast.showText(text: "Tắt thiết bị thành công");
+    } else {
+      BusinessService().turnOnDevice(device.id);
+      BotToast.showText(text: "Bật thiết bị thành công");
+    }
+  }
+
+  onSwitchDevice(bool val, Device device) {
+    device.properties.value = val.toString();
+    //BotToast.showText(text: 'Đổi sang trạng thái ' + device.properties.value);
+    setState(() {});
+
+    if (!val) {
+      BusinessService().turnOffDevice(device.id);
+      BotToast.showText(text: "Tắt thiết bị thành công");
+    } else {
+      BusinessService().turnOnDevice(device.id);
+      BotToast.showText(text: "Bật thiết bị thành công");
+    }
   }
 }
+
+// class CustomDeviceList extends StatelessWidget {
+//   final Room data;
+//   final Function callback;
+//   const CustomDeviceList({@required this.data, @required this.callback});
+//   @override
+//   Widget build(BuildContext context) {
+//     return _buildTiles(data);
+//   }
+
+//   Widget _buildTiles(Room root) {
+//     // if (root.devices.isEmpty)
+//     //   return ListTile(title: Text('Chưa có dữ liệu room device!'));
+//     return expansionTile.ExpansionTile(
+//         trailing: Container(
+//           height: 24,
+//           width: 24,
+//           child: CircleAvatar(
+//             backgroundColor: StyleAppTheme.nearlyBlue,
+//             child: Text(
+//               '${root.devices.length}',
+//               style: TextStyle(fontSize: 14),
+//             ),
+//           ),
+//         ),
+//         key: PageStorageKey<Room>(root),
+//         title: Text(
+//           root.name,
+//           style: TextStyle(color: StyleAppTheme.nearlyBlue),
+//         ),
+//         children: root.devices.map((item) => buildDevice(item)).toList());
+//   }
+
+//   Widget buildDevice(Device device) {
+//     if (device.type == "com.fibaro.binarySwitch") {
+//       return Container(
+//         padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+//         child: ListTile(
+//           leading: Icon(Icons.ac_unit),
+//           title: Text(device.name),
+//           trailing: Switch(
+//             value: device.properties.value == 'true' ? true: false,
+//             onChanged: (val) {
+//               device.properties.value = 'false';
+//             },
+//             activeColor: Colors.green,
+//             inactiveThumbColor: Colors.pink,
+//           ),
+//         ),
+//       );
+//     }
+
+//     return Container(
+//       padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+//       child: ListTile(
+//         leading: Icon(Icons.ac_unit),
+//         title: Text(device.name),
+//         trailing: Switch(
+//           value: true,
+//           onChanged: (val) {
+//             print(val);
+//           },
+//           activeColor: Colors.green,
+//           inactiveThumbColor: Colors.pink,
+//         ),
+//       ),
+//     );
+//   }
+// }
