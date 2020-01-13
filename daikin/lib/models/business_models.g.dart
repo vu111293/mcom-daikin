@@ -203,6 +203,8 @@ Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
       'defaultThermostat': instance.defaultThermostat,
       'sortOrder': instance.sortOrder,
       'category': instance.category,
+      'devices': instance.devices,
+      'scenes': instance.scenes,
       'defaultSensors': _defSensorToJson(instance.defaultSensors),
     };
 
@@ -226,6 +228,8 @@ Scene _$SceneFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     id: json['id'] as int,
     type: json['type'] as String,
+    roomID: json['roomID'] as int,
+    iconID: json['iconID'] as int,
   );
 }
 
@@ -233,4 +237,6 @@ Map<String, dynamic> _$SceneToJson(Scene instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'type': instance.type,
+      'roomID': instance.roomID,
+      'iconID': instance.iconID,
     };

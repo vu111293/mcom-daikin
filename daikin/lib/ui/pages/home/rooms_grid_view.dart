@@ -3,8 +3,11 @@ import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/models/business_models.dart';
+import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
+
+import 'course_info_device_screen.dart';
 
 class RoomsGridView extends StatefulWidget {
   const RoomsGridView({Key key, this.callBack}) : super(key: key);
@@ -14,7 +17,8 @@ class RoomsGridView extends StatefulWidget {
   _RoomsGridViewState createState() => _RoomsGridViewState();
 }
 
-class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateMixin {
+class _RoomsGridViewState extends State<RoomsGridView>
+    with TickerProviderStateMixin {
   AnimationController animationController;
   ApplicationBloc _appBloc;
 
@@ -83,7 +87,8 @@ class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateM
                       crossAxisCount: 2,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 20,
-                      childAspectRatio: MediaQuery.of(context).size.height / 480,
+                      childAspectRatio:
+                          MediaQuery.of(context).size.height / 480,
                     ),
                   ),
                 );
@@ -124,7 +129,8 @@ class CategoryView extends StatelessWidget {
               child: InkWell(
                 splashColor: Colors.transparent,
                 onTap: () {
-                  callback();
+                  Routing()
+                      .navigate2(context, CourseInfoDeviceScreen(room: room));
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

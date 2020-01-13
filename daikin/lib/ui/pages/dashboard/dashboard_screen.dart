@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -71,14 +72,15 @@ class DashBoardScreenState extends State<DashBoardScreen>
                 title: "Chào Bạn !",
                 subTitle: "Chào mừng bạn đến,",
               ),
-              Expanded(child: Container(
+              Expanded(
+                  child: Container(
                 height: contentScreenWithTab(context),
                 child: ListView(
                   children: <Widget>[
                     CarouselSlider(
                       items: map<Widget>(
                         imgList,
-                            (index, i) {
+                        (index, i) {
                           return Opacity(
                             opacity: _current == index ? 1 : 0.3,
                             child: Container(
@@ -86,11 +88,11 @@ class DashBoardScreenState extends State<DashBoardScreen>
                               decoration: BoxDecoration(
                                 color: Colors.black12,
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(15)),
+                                    BorderRadius.all(Radius.circular(15)),
                               ),
                               child: ClipRRect(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(15)),
+                                    BorderRadius.all(Radius.circular(15)),
                                 child: Image.network(
                                   i,
                                   fit: BoxFit.cover,
@@ -117,7 +119,7 @@ class DashBoardScreenState extends State<DashBoardScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: map<Widget>(
                         imgList,
-                            (index, url) {
+                        (index, url) {
                           return Container(
                             width: 16.0,
                             height: 3.0,
@@ -128,7 +130,7 @@ class DashBoardScreenState extends State<DashBoardScreen>
                                   ? HexColor(appColor).withOpacity(0.9)
                                   : Color.fromRGBO(0, 0, 0, 0.2),
                               borderRadius:
-                              BorderRadius.all(Radius.circular(3)),
+                                  BorderRadius.all(Radius.circular(3)),
                             ),
                           );
                         },
@@ -245,7 +247,10 @@ class DashBoardScreenState extends State<DashBoardScreen>
                   actions: [
                     FlatButton(
                       child: Text('Đồng ý'),
-                      onPressed: () => {},
+                      onPressed: () {
+                        BusinessService().callSceneAction(scene.id.toString());
+                        Navigator.pop(c, false);
+                      },
                     ),
                     FlatButton(
                       child: Text('Hủy'),

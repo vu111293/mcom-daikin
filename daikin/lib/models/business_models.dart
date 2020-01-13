@@ -39,7 +39,25 @@ class Device {
   final int modified;
   final int sortOrder;
 
-  Device({this.id, this.name, this.roomID, this.type, this.baseType, this.enabled, this.visible, this.isPlugin, this.parentId, this.remoteGatewayId, this.viewXml, this.configXml, this.interfaces, this.properties, this.actions, this.created, this.modified, this.sortOrder});
+  Device(
+      {this.id,
+      this.name,
+      this.roomID,
+      this.type,
+      this.baseType,
+      this.enabled,
+      this.visible,
+      this.isPlugin,
+      this.parentId,
+      this.remoteGatewayId,
+      this.viewXml,
+      this.configXml,
+      this.interfaces,
+      this.properties,
+      this.actions,
+      this.created,
+      this.modified,
+      this.sortOrder});
 
   factory Device.fromJson(Map<String, dynamic> json) {
     final item = _$DeviceFromJson(json);
@@ -180,7 +198,13 @@ class DeviceAction {
   final int turnOff;
   final int turnOn;
 
-  DeviceAction({this.pollingDeadDevice, this.pollingTimeSec, this.reconfigure, this.requestNodeNeighborUpdate, this.turnOff, this.turnOn});
+  DeviceAction(
+      {this.pollingDeadDevice,
+      this.pollingTimeSec,
+      this.reconfigure,
+      this.requestNodeNeighborUpdate,
+      this.turnOff,
+      this.turnOn});
 
   factory DeviceAction.fromJson(Map<String, dynamic> json) {
     final item = _$DeviceActionFromJson(json);
@@ -215,10 +239,19 @@ class Room {
   final int sortOrder;
   final String category;
   List<Device> devices = [];
+  List<Scene> scenes = [];
   @JsonKey(toJson: _defSensorToJson)
   final RoomDefaultSensor defaultSensors;
 
-  Room({this.id, this.name, this.sectionID, this.icon, this.defaultThermostat, this.defaultSensors, this.sortOrder, this.category});
+  Room(
+      {this.id,
+      this.name,
+      this.sectionID,
+      this.icon,
+      this.defaultThermostat,
+      this.defaultSensors,
+      this.sortOrder,
+      this.category});
 
   factory Room.fromJson(Map<String, dynamic> json) {
     final item = _$RoomFromJson(json);
@@ -246,14 +279,15 @@ class RoomDefaultSensor {
   Map<String, dynamic> toJson() => _$RoomDefaultSensorToJson(this);
 }
 
-
 @JsonSerializable(nullable: false)
 class Scene {
   final int id;
   final String name;
   final String type;
+  final int roomID;
+  final int iconID;
 
-  Scene({this.name, this.id, this.type});
+  Scene({this.name, this.id, this.type, this.roomID, this.iconID});
 
   factory Scene.fromJson(Map<String, dynamic> json) {
     final item = _$SceneFromJson(json);

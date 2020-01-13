@@ -12,13 +12,15 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this); // initialise it here
+    _tabController =
+        TabController(length: 2, vsync: this); // initialise it here
   }
 
   @override
@@ -48,20 +50,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ],
             ),
           ),
-          Expanded(child: Container(
+          Expanded(
+              child: Container(
             height: contentScreenWithTab(context) - 50,
             child: TabBarView(
               children: <Widget>[
-                RoomsGridView(
-                  callBack: (title) {
-                    Routing().navigate2(context, CourseInfoDeviceScreen(title: title));
-                  },
-                ),
-                DevicesListView(
-                  callBack: () {
-                    Routing().navigate2(context, CourseInfoDeviceScreen());
-                  },
-                ),
+                RoomsGridView(),
+                DevicesListView(),
               ],
               controller: _tabController,
             ),
