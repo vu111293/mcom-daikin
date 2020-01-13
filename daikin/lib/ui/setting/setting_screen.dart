@@ -108,7 +108,7 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                         Padding(
                           padding: EdgeInsets.only(top: 8.0),
                           child: Text(
-                            "Off Energy",
+                            "Tắt hết thiết bị",
                             style: ptBody1(context).copyWith(color: ptPrimaryColor(context)),
                             textAlign: TextAlign.center,
                           ),
@@ -137,7 +137,7 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                         Padding(
                           padding: EdgeInsets.only(top: 8.0),
                           child: Text(
-                            "Left Home",
+                            "Rời khỏi nhà",
                             style: ptBody1(context).copyWith(color: ptPrimaryColor(context)),
                             textAlign: TextAlign.center,
                           ),
@@ -166,7 +166,7 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                         Padding(
                           padding: EdgeInsets.only(top: 8.0),
                           child: Text(
-                            "Came Home",
+                            "Về nhà",
                             style: ptBody1(context).copyWith(color: ptPrimaryColor(context)),
                             textAlign: TextAlign.center,
                           ),
@@ -190,30 +190,9 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                     "My Center",
                     style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  color: HexColor("#fafafa"),
-                  height: 2.5,
-                ),
-                ListTile(
-                  leading: Text(
-                    "Messages",
-                    style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
-                  ),
-                  title: Container(
-                    width: 30,
-                    height: 30,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.red,
-                        child: Text(
-                          "3",
-                          style: ptCaption(context).copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                  trailing: Text(
+                    "Thiết bị trung tâm nhà",
+                    style: ptSubtitle(context).copyWith(),
                   ),
                 ),
                 Container(
@@ -221,6 +200,31 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                   color: HexColor("#fafafa"),
                   height: 2.5,
                 ),
+                // ListTile(
+                //   leading: Text(
+                //     "Messages",
+                //     style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
+                //   ),
+                //   title: Container(
+                //     width: 30,
+                //     height: 30,
+                //     child: Align(
+                //       alignment: Alignment.centerLeft,
+                //       child: CircleAvatar(
+                //         backgroundColor: Colors.red,
+                //         child: Text(
+                //           "3",
+                //           style: ptCaption(context).copyWith(color: Colors.white),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // Container(
+                //   margin: EdgeInsets.symmetric(vertical: 5),
+                //   color: HexColor("#fafafa"),
+                //   height: 2.5,
+                // ),
                 ListTile(
                   leading: Text(
                     "About",
@@ -239,17 +243,17 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                   color: HexColor("#fafafa"),
                   height: 10,
                 ),
-                ListTile(
-                  leading: Text(
-                    "Change Password",
-                    style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  color: HexColor("#fafafa"),
-                  height: 2.5,
-                ),
+                // ListTile(
+                //   leading: Text(
+                //     "Change Password",
+                //     style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
+                //   ),
+                // ),
+                // Container(
+                //   margin: EdgeInsets.symmetric(vertical: 5),
+                //   color: HexColor("#fafafa"),
+                //   height: 2.5,
+                // ),
 
                 ListTile(
                   leading: Text(
