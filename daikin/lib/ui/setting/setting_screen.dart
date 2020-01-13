@@ -3,6 +3,7 @@ import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/pages/login/login_screen.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/ui/setting/my_center_screen.dart';
 import 'package:daikin/ui/setting/profile_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,7 +42,8 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
             title: "Setting",
             subTitle: "Edit all your setting",
           ),
-          Expanded(child: Container(
+          Expanded(
+              child: Container(
             height: contentScreenWithTab(context),
             child: SingleChildScrollView(
               child: Column(
@@ -183,6 +185,9 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                     height: 10,
                   ),
                   ListTile(
+                    onTap: () {
+                      Routing().navigate2(context, MyCenterScreen());
+                    },
                     leading: Text(
                       "My Center",
                       style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
@@ -263,12 +268,12 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                   ),
                   ListTile(
                       leading: InkWell(
-                        onTap: handleLogout,
-                        child: Text(
-                          "Sign Out",
-                          style: ptTitle(context).copyWith(color: Colors.red, fontWeight: FontWeight.w600),
-                        ),
-                      )),
+                    onTap: handleLogout,
+                    child: Text(
+                      "Sign Out",
+                      style: ptTitle(context).copyWith(color: Colors.red, fontWeight: FontWeight.w600),
+                    ),
+                  )),
                 ],
               ),
             ),
