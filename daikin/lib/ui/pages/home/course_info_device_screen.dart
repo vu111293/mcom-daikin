@@ -67,15 +67,15 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
           backgroundColor: Colors.transparent,
           body: Column(
             children: <Widget>[
-              BaseHeaderScreen(
-                isBack: true,
-                title: widget.room.name.toUpperCase(),
-              ),
               Container(
                 height: contentScreenNoTab(context),
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
+                      BaseHeaderScreen(
+                        isBack: true,
+                        title: widget.room.name.toUpperCase(),
+                      ),
                       ImageBackdrop(
                         animationController: animationController,
                         room: widget.room,
@@ -143,7 +143,9 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                                   textAlign: TextAlign.left,
                                   style: ptTitle(context)),
                             ),
-                            DeviceGridView(devices: widget.room.devices,),
+                            DeviceGridView(
+                              devices: widget.room.devices,
+                            ),
                           ],
                         ),
                       ),
