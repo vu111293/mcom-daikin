@@ -34,8 +34,7 @@ class DashBoardScreen extends StatefulWidget {
   DashBoardScreenState createState() => DashBoardScreenState();
 }
 
-class DashBoardScreenState extends State<DashBoardScreen>
-    with SingleTickerProviderStateMixin {
+class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProviderStateMixin {
   int _current = 0;
   TabController _tabController;
   ApplicationBloc _appBloc;
@@ -53,8 +52,7 @@ class DashBoardScreenState extends State<DashBoardScreen>
   void initState() {
     super.initState();
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
-    _tabController =
-        TabController(length: 2, vsync: this); // initialise it here
+    _tabController = TabController(length: 2, vsync: this); // initialise it here
   }
 
   @override
@@ -71,74 +69,67 @@ class DashBoardScreenState extends State<DashBoardScreen>
                 title: "Chào Bạn !",
                 subTitle: "Chào mừng bạn đến,",
               ),
-              Expanded(child: Container(
-                height: contentScreenWithTab(context),
-                child: ListView(
-                  children: <Widget>[
-                    CarouselSlider(
-                      items: map<Widget>(
-                        imgList,
-                            (index, i) {
-                          return Opacity(
-                            opacity: _current == index ? 1 : 0.3,
-                            child: Container(
-                              margin: EdgeInsets.all(5.0),
-                              decoration: BoxDecoration(
-                                color: Colors.black12,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(15)),
-                              ),
-                              child: ClipRRect(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(15)),
-                                child: Image.network(
-                                  i,
-                                  fit: BoxFit.cover,
-                                  width: deviceWidth(context) * 0.8,
-                                  cacheHeight: 180,
-                                ),
+              Expanded(
+                  child: ListView(
+                children: <Widget>[
+                  CarouselSlider(
+                    items: map<Widget>(
+                      imgList,
+                      (index, i) {
+                        return Opacity(
+                          opacity: _current == index ? 1 : 0.3,
+                          child: Container(
+                            margin: EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              color: Colors.black12,
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              child: Image.network(
+                                i,
+                                fit: BoxFit.cover,
+                                width: deviceWidth(context) * 0.8,
+                                cacheHeight: 180,
                               ),
                             ),
-                          );
-                        },
-                      ).toList(),
-                      autoPlay: true,
-                      height: 180,
-                      enlargeCenterPage: true,
-                      // aspectRatio: 1,
-                      pauseAutoPlayOnTouch: Duration(milliseconds: 150),
-                      onPageChanged: (index) {
-                        setState(() {
-                          _current = index;
-                        });
+                          ),
+                        );
+                      },
+                    ).toList(),
+                    autoPlay: true,
+                    height: 180,
+                    enlargeCenterPage: true,
+                    // aspectRatio: 1,
+                    pauseAutoPlayOnTouch: Duration(milliseconds: 150),
+                    onPageChanged: (index) {
+                      setState(() {
+                        _current = index;
+                      });
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: map<Widget>(
+                      imgList,
+                      (index, url) {
+                        return Container(
+                          width: 16.0,
+                          height: 3.0,
+                          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                          decoration: BoxDecoration(
+                            color:
+                                _current == index ? HexColor(appColor).withOpacity(0.9) : Color.fromRGBO(0, 0, 0, 0.2),
+                            borderRadius: BorderRadius.all(Radius.circular(3)),
+                          ),
+                        );
                       },
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: map<Widget>(
-                        imgList,
-                            (index, url) {
-                          return Container(
-                            width: 16.0,
-                            height: 3.0,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 2.0),
-                            decoration: BoxDecoration(
-                              color: _current == index
-                                  ? HexColor(appColor).withOpacity(0.9)
-                                  : Color.fromRGBO(0, 0, 0, 0.2),
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(3)),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    getSceneUI(),
-                    getCategoryUI(),
-                    getPopularCourseUI(),
-                  ],
-                ),
+                  ),
+                  getSceneUI(),
+                  getCategoryUI(),
+                  getPopularCourseUI(),
+                ],
               )),
             ],
           ),
@@ -175,13 +166,11 @@ class DashBoardScreenState extends State<DashBoardScreen>
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('Scenes',
-                  textAlign: TextAlign.left, style: ptTitle(context)),
+              child: Text('Scenes', textAlign: TextAlign.left, style: ptTitle(context)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('All',
-                  textAlign: TextAlign.left, style: ptSubtitle(context)),
+              child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
             ),
           ],
         ),
@@ -231,8 +220,7 @@ class DashBoardScreenState extends State<DashBoardScreen>
         borderRadius: BorderRadius.all(Radius.circular(10)),
         elevation: 8,
         shadowColor: Colors.black26,
-        color:
-            isSelected ? StyleAppTheme.nearlyBlue : StyleAppTheme.nearlyWhite,
+        color: isSelected ? StyleAppTheme.nearlyBlue : StyleAppTheme.nearlyWhite,
         child: InkWell(
           splashColor: Colors.white24,
           onTap: () {
@@ -260,8 +248,7 @@ class DashBoardScreenState extends State<DashBoardScreen>
           child: Container(
             height: 0,
             child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 12, bottom: 12, left: 18, right: 18),
+              padding: const EdgeInsets.only(top: 12, bottom: 12, left: 18, right: 18),
               child: Center(
                 child: Text(
                   txt,
@@ -270,9 +257,7 @@ class DashBoardScreenState extends State<DashBoardScreen>
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
                     letterSpacing: 0.27,
-                    color: isSelected
-                        ? StyleAppTheme.nearlyWhite
-                        : StyleAppTheme.nearlyBlue,
+                    color: isSelected ? StyleAppTheme.nearlyWhite : StyleAppTheme.nearlyBlue,
                   ),
                 ),
               ),
@@ -293,13 +278,11 @@ class DashBoardScreenState extends State<DashBoardScreen>
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('Running Devices',
-                  textAlign: TextAlign.left, style: ptTitle(context)),
+              child: Text('Running Devices', textAlign: TextAlign.left, style: ptTitle(context)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('All',
-                  textAlign: TextAlign.left, style: ptSubtitle(context)),
+              child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
             ),
           ],
         ),
@@ -324,13 +307,11 @@ class DashBoardScreenState extends State<DashBoardScreen>
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('Cameras',
-                    textAlign: TextAlign.left, style: ptTitle(context)),
+                child: Text('Cameras', textAlign: TextAlign.left, style: ptTitle(context)),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('All',
-                    textAlign: TextAlign.left, style: ptSubtitle(context)),
+                child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
               ),
             ],
           ),

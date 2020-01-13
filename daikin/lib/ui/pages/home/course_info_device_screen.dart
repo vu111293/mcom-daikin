@@ -66,8 +66,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                 isBack: true,
                 title: widget.title.toUpperCase(),
               ),
-              Container(
-                height: contentScreenNoTab(context),
+              Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
@@ -126,7 +125,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           )),
     );
