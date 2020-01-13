@@ -233,7 +233,7 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
                   actions: [
                     FlatButton(
                       child: Text('Đồng ý'),
-                      onPressed: () => {},
+                      onPressed: () => Navigator.pop(c, false),
                     ),
                     FlatButton(
                       child: Text('Hủy'),
