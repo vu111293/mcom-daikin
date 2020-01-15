@@ -71,7 +71,7 @@ Map<String, dynamic> _propertiesToJson(DeviceProperty item) => item.toJson();
 
 Map<String, dynamic> _actionsToJson(DeviceAction item) => item.toJson();
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: true)
 class DeviceProperty {
   final String UIMessageSendTime;
   final String autoConfig;
@@ -123,6 +123,7 @@ class DeviceProperty {
   final String zwaveInfo;
   final String zwaveRegion;
   final String zwaveVersion;
+  List<DeviceRow> rows;
 
   DeviceProperty(
       {this.UIMessageSendTime,
@@ -173,7 +174,9 @@ class DeviceProperty {
       this.zwaveCompany,
       this.zwaveInfo,
       this.zwaveRegion,
-      this.zwaveVersion});
+      List<DeviceRow> rows,
+      this.zwaveVersion})
+      : rows = rows ?? <DeviceRow>[];
 
   factory DeviceProperty.fromJson(Map<String, dynamic> json) {
     final item = _$DevicePropertyFromJson(json);
@@ -238,7 +241,9 @@ class Room {
   final int defaultThermostat;
   final int sortOrder;
   final String category;
+  @JsonKey(nullable: true)
   List<Device> devices = [];
+  @JsonKey(nullable: true)
   List<Scene> scenes = [];
   @JsonKey(toJson: _defSensorToJson)
   final RoomDefaultSensor defaultSensors;
@@ -251,7 +256,11 @@ class Room {
       this.defaultThermostat,
       this.defaultSensors,
       this.sortOrder,
-      this.category});
+      List<Device> devices,
+      List<Scene> scenes,
+      this.category})
+      : devices = devices ?? <Device>[],
+        scenes = scenes ?? <Scene>[];
 
   factory Room.fromJson(Map<String, dynamic> json) {
     final item = _$RoomFromJson(json);
@@ -295,4 +304,36 @@ class Scene {
   }
 
   Map<String, dynamic> toJson() => _$SceneToJson(this);
+}
+
+@JsonSerializable(nullable: true)
+class DeviceRow {
+  final String type;
+  List<ElementDeviceRow> elements;
+
+  DeviceRow({this.type, List<ElementDeviceRow> elements})
+      : elements = elements ?? <ElementDeviceRow>[];
+
+  factory DeviceRow.fromJson(Map<String, dynamic> json) {
+    final item = _$DeviceRowFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$DeviceRowToJson(this);
+}
+
+@JsonSerializable(nullable: true)
+class ElementDeviceRow {
+  final String name;
+  final String caption;
+  final int id;
+
+  ElementDeviceRow({this.caption, this.name, this.id});
+
+  factory ElementDeviceRow.fromJson(Map<String, dynamic> json) {
+    final item = _$ElementDeviceRowFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$ElementDeviceRowToJson(this);
 }

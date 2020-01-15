@@ -48,6 +48,9 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
         onSwitchRGBDevice(value, widget.device);
       });
     }
+    else if (widget.device.type == "virtual_device"){
+      return buildVirtualDevice(widget, widget.device);
+    }
 
     return defaultBuildDevice(widget, widget.device, isSwitched, (value) {
       print("@@@@@@@@@@@@@@@@@@@@@@@");
