@@ -50,7 +50,7 @@ class BusinessService extends BaseLoopBackApi {
   }
 
   Future<void> callSceneAction(String id) async {
-     final url = [
+    final url = [
       LoopBackConfig.getPath(),
       LoopBackConfig.getApiVersion(),
       'scenes',
@@ -61,8 +61,8 @@ class BusinessService extends BaseLoopBackApi {
     return;
   }
 
-  Future <void> turnOffDevice(int id) async {
-         final url = [
+  Future<void> turnOffDevice(int id) async {
+    final url = [
       LoopBackConfig.getPath(),
       LoopBackConfig.getApiVersion(),
       'devices',
@@ -73,8 +73,8 @@ class BusinessService extends BaseLoopBackApi {
     return;
   }
 
-    Future <void> turnOnDevice(int id) async {
-         final url = [
+  Future<void> turnOnDevice(int id) async {
+    final url = [
       LoopBackConfig.getPath(),
       LoopBackConfig.getApiVersion(),
       'devices',
@@ -82,6 +82,20 @@ class BusinessService extends BaseLoopBackApi {
       'action/turnOn'
     ].join('/');
     await this.request(method: 'POST', url: url);
+    return;
+  }
+
+  Future<void> pressButton(int deviceId, int id) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      id,
+      'action/pressButton'
+    ].join('/');
+    await this.request(method: 'POST', url: url, postBody: {
+      "args": [id]
+    });
     return;
   }
 

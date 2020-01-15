@@ -102,6 +102,10 @@ DeviceProperty _$DevicePropertyFromJson(Map<String, dynamic> json) {
     zwaveCompany: json['zwaveCompany'] as String,
     zwaveInfo: json['zwaveInfo'] as String,
     zwaveRegion: json['zwaveRegion'] as String,
+    rows: (json['rows'] as List)
+        ?.map((e) =>
+            e == null ? null : DeviceRow.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     zwaveVersion: json['zwaveVersion'] as String,
   );
 }
@@ -158,6 +162,7 @@ Map<String, dynamic> _$DevicePropertyToJson(DeviceProperty instance) =>
       'zwaveInfo': instance.zwaveInfo,
       'zwaveRegion': instance.zwaveRegion,
       'zwaveVersion': instance.zwaveVersion,
+      'rows': instance.rows,
     };
 
 DeviceAction _$DeviceActionFromJson(Map<String, dynamic> json) {
@@ -239,4 +244,35 @@ Map<String, dynamic> _$SceneToJson(Scene instance) => <String, dynamic>{
       'type': instance.type,
       'roomID': instance.roomID,
       'iconID': instance.iconID,
+    };
+
+DeviceRow _$DeviceRowFromJson(Map<String, dynamic> json) {
+  return DeviceRow(
+    type: json['type'] as String,
+    elements: (json['elements'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ElementDeviceRow.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$DeviceRowToJson(DeviceRow instance) => <String, dynamic>{
+      'type': instance.type,
+      'elements': instance.elements,
+    };
+
+ElementDeviceRow _$ElementDeviceRowFromJson(Map<String, dynamic> json) {
+  return ElementDeviceRow(
+    caption: json['caption'] as String,
+    name: json['name'] as String,
+    id: json['id'] as int,
+  );
+}
+
+Map<String, dynamic> _$ElementDeviceRowToJson(ElementDeviceRow instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'caption': instance.caption,
+      'id': instance.id,
     };
