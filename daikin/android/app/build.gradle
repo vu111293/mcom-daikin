@@ -64,7 +64,7 @@ android {
             shrinkResources true
             minifyEnabled true
             signingConfig signingConfigs.release
-            applicationIdSuffix ".production"
+//            applicationIdSuffix ".production"
         }
     }
 }
