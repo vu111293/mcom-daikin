@@ -38,14 +38,14 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
                   isBack: true,
                   title: widget.device.name.toUpperCase(),
                 ),
-                BaseHeaderScreen(
-                    hideProfile: true,
-                    isSubHeader: true,
-                    title: widget.device.name,
-                    subTitle: currentStateDevice
-                        ? "Thiết bị của bạn đang hoạt động"
-                        : "Thiết bị chưa hoạt động" //: widget.item.subTitle,
-                    ),
+                // BaseHeaderScreen(
+                //     hideProfile: true,
+                //     isSubHeader: true,
+                //     title: widget.device.name,
+                //     // subTitle: currentStateDevice
+                //     //     ? "Thiết bị của bạn đang hoạt động"
+                //     //     : "Thiết bị chưa hoạt động" //: widget.item.subTitle,
+                //     ),
                 SizedBox(
                   height: 16.0,
                 ),

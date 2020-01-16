@@ -90,8 +90,24 @@ class BusinessService extends BaseLoopBackApi {
       LoopBackConfig.getPath(),
       LoopBackConfig.getApiVersion(),
       'devices',
-      id,
+      deviceId,
       'action/pressButton'
+    ].join('/');
+    await this.request(method: 'POST', url: url, postBody: {
+      "args": [id]
+    });
+    return;
+  }
+
+  Future<void> setValue(int deviceId, int id) async {
+    if (id >= 99) id = 99;
+
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      deviceId,
+      'action/setValue'
     ].join('/');
     await this.request(method: 'POST', url: url, postBody: {
       "args": [id]

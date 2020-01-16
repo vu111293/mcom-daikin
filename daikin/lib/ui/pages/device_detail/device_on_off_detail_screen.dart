@@ -48,8 +48,10 @@ const rem = [
 class DeviceOnOffDetailScreen extends StatefulWidget {
   Device item;
   bool status;
-  DeviceOnOffDetailScreen({this.item, this.status = false});
-  _DeviceOnOffDetailScreenState createState() => _DeviceOnOffDetailScreenState();
+  Function callback;
+  DeviceOnOffDetailScreen({this.item, this.status, this.callback});
+  _DeviceOnOffDetailScreenState createState() =>
+      _DeviceOnOffDetailScreenState();
 }
 
 class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
@@ -102,10 +104,8 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
     //     break;
     // }
     currentStateDevice = widget.status;
-    if (widget.status) {
-      indexImage = 1;
-      _progress = 1;
-    }
+    indexImage = 1;
+    _progress = 1;
   }
 
   @override
@@ -133,16 +133,17 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                   ? Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          if (indexImage + 1 == listImage.length) {
-                            setState(() {
-                              indexImage = 0;
-                              currentStateDevice = false;
-                            });
-                          } else {
-                            setState(() {
-                              indexImage++;
-                            });
-                          }
+                          widget.callback();
+                          // if (indexImage + 1 == listImage.length) {
+                          //   setState(() {
+                          //     indexImage = 0;
+                          //     currentStateDevice = false;
+                          //   });
+                          // } else {
+                          //   setState(() {
+                          //     indexImage++;
+                          //   });
+                          // }
                         },
                         child: Container(
                           child: Center(
@@ -160,10 +161,11 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                   : Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          setState(() {
-                            currentStateDevice = true;
-                            indexImage++;
-                          });
+                          widget.callback();
+                          // setState(() {
+                          //   currentStateDevice = true;
+                          //   indexImage++;
+                          // });
                         },
                         child: Container(
                           child: Center(
@@ -189,14 +191,18 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                               "assets/devices/sun.png",
                               fit: BoxFit.contain,
                               width: 32,
-                              color: currentStateDevice ? Colors.yellow : HexColor(appBorderColor),
+                              color: currentStateDevice
+                                  ? Colors.yellow
+                                  : HexColor(appBorderColor),
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 16.0),
                               child: Text(
                                 '${percentage.round()}% Brightness',
                                 style: ptTitle(context).copyWith(
-                                  color: currentStateDevice ? HexColor(appText) : HexColor(appBorderColor),
+                                  color: currentStateDevice
+                                      ? HexColor(appText)
+                                      : HexColor(appBorderColor),
                                 ),
                               ),
                             ),
@@ -205,12 +211,14 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                                 initial = details.globalPosition.dy;
                               },
                               onPanUpdate: (DragUpdateDetails details) {
-                                double distance = initial - details.globalPosition.dy;
+                                double distance =
+                                    initial - details.globalPosition.dy;
                                 double percentageAddition = distance / 254;
                                 // print('percentage ' +
                                 //     (percentage + percentageAddition).clamp(0.0, 100.0).round().toString());
                                 setState(() {
-                                  percentage = (percentage + percentageAddition).clamp(0.0, 100.0);
+                                  percentage = (percentage + percentageAddition)
+                                      .clamp(0.0, 100.0);
                                 });
                               },
                               onPanEnd: (DragEndDetails details) {
@@ -221,7 +229,8 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                                 width: 130,
                                 decoration: BoxDecoration(
                                   color: HexColor("#ECECEC"),
-                                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(40)),
                                 ),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -230,8 +239,11 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                                   children: <Widget>[
                                     Container(
                                       decoration: BoxDecoration(
-                                        color: currentStateDevice ? HexColor(appColor) : HexColor(appBorderColor),
-                                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                                        color: currentStateDevice
+                                            ? HexColor(appColor)
+                                            : HexColor(appBorderColor),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(40)),
                                       ),
                                       width: 130,
                                       height: (percentage / 100) * 250,
@@ -258,9 +270,13 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                       activeTrackColor: HexColor(appBorderColor),
                       inactiveTrackColor: HexColor(appBorderColor),
                       trackHeight: 20.0,
-                      thumbColor: currentStateDevice ? ptPrimaryColor(context) : HexColor(appNotWhite),
+                      thumbColor: currentStateDevice
+                          ? ptPrimaryColor(context)
+                          : HexColor(appNotWhite),
                       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 20),
-                      overlayColor: currentStateDevice ? ptPrimaryColor(context) : HexColor(appNotWhite),
+                      overlayColor: currentStateDevice
+                          ? ptPrimaryColor(context)
+                          : HexColor(appNotWhite),
                       activeTickMarkColor: Colors.transparent,
                       inactiveTickMarkColor: Colors.transparent,
                     ),
@@ -311,6 +327,8 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
               setState(() {
                 currentStateDevice = !currentStateDevice;
               });
+
+              widget.callback(currentStateDevice);
             },
           )
         ],
