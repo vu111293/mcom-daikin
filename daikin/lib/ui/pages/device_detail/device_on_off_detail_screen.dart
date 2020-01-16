@@ -121,11 +121,13 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
             title: widget.item.name.toUpperCase(),
           ),
           BaseHeaderScreen(
-            hideProfile: true,
-            isSubHeader: true,
-            title: widget.item.name,
-            subTitle: currentStateDevice ? "Thiết bị của bạn đang hoạt động": "Thiết bị chưa hoát động" //: widget.item.subTitle,
-          ),
+              hideProfile: true,
+              isSubHeader: true,
+              title: widget.item.name,
+              subTitle: currentStateDevice
+                  ? "Thiết bị của bạn đang hoạt động"
+                  : "Thiết bị chưa hoạt động" //: widget.item.subTitle,
+              ),
           listImage.length > 0
               ? currentStateDevice
                   ? Expanded(
