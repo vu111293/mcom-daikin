@@ -20,6 +20,7 @@ class HomeBloc {
     ]).then((results) {
       List<Room> rooms = results[0];
       List<Device> devices = results[1];
+      List<Scene> scenes = results[2];
 
       for (var i = 0; i < rooms.length; i++) {
         for (var j = 0; j < devices.length; j++) {
@@ -27,8 +28,14 @@ class HomeBloc {
             rooms[i].devices.add(devices[j]);
           }
         }
+
+        for (var k = 0; k < scenes.length; k++) {
+          if (rooms[i].id == scenes[k].roomID) {
+            rooms[i].scenes.add(scenes[k]);
+          }
+        }
       }
-      _scenesSubject.sink.add(results[2]);
+      _scenesSubject.sink.add(scenes);
       _roomsSubject.sink.add(rooms);
       // _devicesSubject.sink.add(results[1]);
     }).catchError((e) {

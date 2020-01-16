@@ -30,14 +30,14 @@ class LoginScreenState extends State<LoginScreen> {
   TextEditingController phoneController = TextEditingController();
   StreamSubscription _phoneAuthStream;
   bool _isLoading = false;
-
+  bool isVerified = false;
   String phone = '';
 
   @override
   void initState() {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
 
-      _registerFbAuthResult();
+    _registerFbAuthResult();
     super.initState();
   }
 
@@ -63,12 +63,15 @@ class LoginScreenState extends State<LoginScreen> {
         LUser user = await UserService().login('FB|$uid|$token');
         _appBloc.authBloc.updateUserAction(user);
         _phoneAuthStream?.cancel();
-
+        isVerified = true;
         Routing().popToRoot(context);
         Routing().navigate2(context, MainScreen(), replace: true);
-      } else if (result.status == AuthStatus.Timeout) {
-        showAlertDialog(context, 'Lỗi khi kết nối với máy chủ. Vui lòng thử lại');
-      } else {
+      } 
+      // else if (result.status == AuthStatus.Timeout && !isVerified) {
+      //   showAlertDialog(
+      //       context, 'Lỗi khi kết nối với máy chủ. Vui lòng thử lại');
+      // }
+       else {
         showAlertDialog(context, 'Lỗi khi đăng nhập. Vui lòng thử lại');
       }
     });

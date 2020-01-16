@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -233,7 +234,10 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
                   actions: [
                     FlatButton(
                       child: Text('Đồng ý'),
-                      onPressed: () => Navigator.pop(c, false),
+                      onPressed: () {
+                        BusinessService().callSceneAction(scene.id.toString());
+                        Navigator.pop(c, false);
+                      },
                     ),
                     FlatButton(
                       child: Text('Hủy'),

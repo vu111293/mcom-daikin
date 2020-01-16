@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/home/devices_grid_view.dart';
@@ -13,8 +15,9 @@ import 'package:intl/intl.dart';
 enum CategoryType { ui, coding, basic, game, chill }
 
 class CourseInfoDeviceScreen extends StatefulWidget {
+  Room room;
   String title;
-  CourseInfoDeviceScreen({this.title = ''});
+  CourseInfoDeviceScreen({this.room, this.title = ''});
   @override
   _CourseInfoDeviceScreenState createState() => _CourseInfoDeviceScreenState();
 }
@@ -70,7 +73,14 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      ImageBackdrop(animationController: animationController),
+                      BaseHeaderScreen(
+                        isBack: true,
+                        title: widget.room.name.toUpperCase(),
+                      ),
+                      ImageBackdrop(
+                        animationController: animationController,
+                        room: widget.room,
+                      ),
                       FadeTransition(
                         opacity: animationController,
                         child: Column(
@@ -88,27 +98,34 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                                       padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
                                       child: Text('Scenes', textAlign: TextAlign.left, style: ptTitle(context)),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                                      child: Text('All', textAlign: TextAlign.left, style: ptSubtitle(context)),
-                                    ),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(
+                                    //       top: 8.0, left: 16, right: 16),
+                                    //   child: Text('All',
+                                    //       textAlign: TextAlign.left,
+                                    //       style: ptSubtitle(context)),
+                                    // ),
                                   ],
                                 ),
+                                //widget.room.scenes.length > 0 ?
                                 Container(
-                                  height: 72,
-                                  child: ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    shrinkWrap: true,
-                                    padding: EdgeInsets.all(16),
-                                    children: <Widget>[
-                                      getButtonUI(CategoryType.ui, categoryType == CategoryType.ui),
-                                      getButtonUI(CategoryType.coding, categoryType == CategoryType.coding),
-                                      getButtonUI(CategoryType.basic, categoryType == CategoryType.basic),
-                                      getButtonUI(CategoryType.game, categoryType == CategoryType.game),
-                                      getButtonUI(CategoryType.chill, categoryType == CategoryType.chill),
-                                    ],
-                                  ),
-                                ),
+                                    height: 72,
+                                    child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        padding: EdgeInsets.all(16),
+                                        itemCount: widget.room.scenes.length,
+                                        itemBuilder: (BuildContext ctxt, int index) {
+                                          return getButtonUI(widget.room.scenes[index]);
+                                        })
+
+                                    // ListView(
+                                    //   scrollDirection: Axis.horizontal,
+                                    //   shrinkWrap: true,
+                                    //   padding: EdgeInsets.all(16),
+                                    //   children: <Widget>[],
+                                    // ),
+                                    ) //: SizedBox(),
                               ],
                             ),
                             const SizedBox(
@@ -116,9 +133,11 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                              child: Text('Running Devices', textAlign: TextAlign.left, style: ptTitle(context)),
+                              child: Text('Devices', textAlign: TextAlign.left, style: ptTitle(context)),
                             ),
-                            DeviceGridView(),
+                            DeviceGridView(
+                              devices: widget.room.devices,
+                            ),
                           ],
                         ),
                       ),
@@ -131,31 +150,41 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
     );
   }
 
-  Widget getButtonUI(CategoryType categoryTypeData, bool isSelected) {
-    String txt = '';
-    if (CategoryType.ui == categoryTypeData) {
-      txt = 'Play Music';
-    } else if (CategoryType.coding == categoryTypeData) {
-      txt = 'Turn Light';
-    } else if (CategoryType.basic == categoryTypeData) {
-      txt = 'Alert';
-    } else if (CategoryType.game == categoryTypeData) {
-      txt = 'Games';
-    } else if (CategoryType.chill == categoryTypeData) {
-      txt = 'Chill';
-    }
+  Widget getButtonUI(Scene scene) {
+    String txt = scene.name;
+
     return Padding(
       padding: EdgeInsets.only(right: 10.0),
       child: Material(
         borderRadius: BorderRadius.all(Radius.circular(10)),
         elevation: 8,
         shadowColor: Colors.black26,
-        color: isSelected ? StyleAppTheme.nearlyBlue : StyleAppTheme.nearlyWhite,
+        color: StyleAppTheme.nearlyWhite,
         child: InkWell(
           splashColor: Colors.white24,
           onTap: () {
             setState(() {
-              categoryType = categoryTypeData;
+              showDialog<bool>(
+                context: context,
+                builder: (c) => AlertDialog(
+                  title: Text('Thông báo'),
+                  content: Text('Bạn có muốn bật scene này ?'),
+                  actions: [
+                    FlatButton(
+                      child: Text('Đồng ý'),
+                      onPressed: () {
+                        BusinessService().callSceneAction(scene.id.toString());
+                        Navigator.pop(c, false);
+                      },
+                    ),
+                    FlatButton(
+                      child: Text('Hủy'),
+                      onPressed: () => Navigator.pop(c, false),
+                    ),
+                  ],
+                ),
+              );
+              //categoryType = categoryTypeData;
             });
           },
           child: Container(
@@ -170,7 +199,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
                     letterSpacing: 0.27,
-                    color: isSelected ? StyleAppTheme.nearlyWhite : StyleAppTheme.nearlyBlue,
+                    color: StyleAppTheme.nearlyBlue,
                   ),
                 ),
               ),
@@ -227,8 +256,11 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
 }
 
 class ImageBackdrop extends StatelessWidget {
-  const ImageBackdrop({
+  Room room;
+
+  ImageBackdrop({
     Key key,
+    this.room,
     @required this.animationController,
   }) : super(key: key);
 
@@ -279,7 +311,7 @@ class ImageBackdrop extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     Container(
-                      width: deviceWidth(context) / 4,
+                      width: deviceWidth(context) / 3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -293,12 +325,13 @@ class ImageBackdrop extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          Text('22.5 °', style: ptBody2(context).copyWith(color: Colors.white))
+                          Text(room.defaultSensors.temperature.toString() + ' °C',
+                              style: ptBody2(context).copyWith(color: Colors.white))
                         ],
                       ),
                     ),
                     Container(
-                      width: deviceWidth(context) / 4,
+                      width: deviceWidth(context) / 3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -312,12 +345,13 @@ class ImageBackdrop extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          Text('52 %', style: ptBody2(context).copyWith(color: Colors.white))
+                          Text(room.defaultSensors.humidity.toString() + ' %',
+                              style: ptBody2(context).copyWith(color: Colors.white))
                         ],
                       ),
                     ),
                     Container(
-                      width: deviceWidth(context) / 4,
+                      width: deviceWidth(context) / 3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -331,36 +365,37 @@ class ImageBackdrop extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          Text('${NumberFormat.compact().format(2000)} w',
+                          Text('${NumberFormat.compact().format(room.defaultSensors.light)} w',
                               style: ptBody2(context).copyWith(color: Colors.white))
                         ],
                       ),
                     ),
-                    Container(
-                      width: deviceWidth(context) / 4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: Image.asset(
-                              'assets/icons/Mat_troi_02.png',
-                              fit: BoxFit.cover,
-                              height: ptBody1(context).fontSize * 1.5,
-                              width: ptBody1(context).fontSize * 1.5,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Expanded(
-                              child: Text(
-                            '${NumberFormat.compact().format(123456789)} lm',
-                            style: ptBody2(context).copyWith(color: Colors.white),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ))
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   width: deviceWidth(context) / 4,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: <Widget>[
+                    //       Padding(
+                    //         padding: const EdgeInsets.only(right: 4),
+                    //         child: Image.asset(
+                    //           'assets/icons/Mat_troi_02.png',
+                    //           fit: BoxFit.cover,
+                    //           height: ptBody1(context).fontSize * 1.5,
+                    //           width: ptBody1(context).fontSize * 1.5,
+                    //           color: Colors.white,
+                    //         ),
+                    //       ),
+                    //       Expanded(
+                    //           child: Text(
+                    //         '${NumberFormat.compact().format(123456789)} lm',
+                    //         style:
+                    //             ptBody2(context).copyWith(color: Colors.white),
+                    //         maxLines: 1,
+                    //         overflow: TextOverflow.ellipsis,
+                    //       ))
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 )),
           ),

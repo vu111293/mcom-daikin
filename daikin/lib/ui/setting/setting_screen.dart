@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/base_header.dart';
@@ -8,6 +10,7 @@ import 'package:daikin/ui/setting/profile_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -269,13 +272,36 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                   height: 10,
                 ),
                 ListTile(
-                    leading: InkWell(
-                  onTap: handleLogout,
-                  child: Text(
-                    "Sign Out",
-                    style: ptTitle(context).copyWith(color: Colors.red, fontWeight: FontWeight.w600),
+                  onTap: () => showDialog<bool>(
+                    context: context,
+                    builder: (c) => AlertDialog(
+                      title: Text('Thông báo'),
+                      content: Text('Bạn có muốn đăng xuất'),
+                      actions: [
+                        FlatButton(
+                          child: Text(
+                            'Đồng ý',
+                            style: ptButton(context).copyWith(color: ptPrimaryColor(context)),
+                          ),
+                          onPressed: handleLogout,
+                        ),
+                        FlatButton(
+                          child: Text(
+                            'Hủy',
+                            style: ptButton(context).copyWith(color: ptPrimaryColor(context)),
+                          ),
+                          onPressed: () => Navigator.pop(c, false),
+                        ),
+                      ],
+                    ),
                   ),
-                )),
+                  leading: InkWell(
+                    child: Text(
+                      "Đăng xuất",
+                      style: ptTitle(context).copyWith(color: Colors.red, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
               ],
             ),
           ))

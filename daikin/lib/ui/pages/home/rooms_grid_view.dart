@@ -3,8 +3,11 @@ import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/models/business_models.dart';
+import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
+
+import 'course_info_device_screen.dart';
 
 class RoomsGridView extends StatefulWidget {
   const RoomsGridView({Key key, this.callBack}) : super(key: key);

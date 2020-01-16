@@ -163,7 +163,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   Padding(
                     padding: EdgeInsets.only(
                         top: ScaleUtil.getInstance().setHeight(16), bottom: ScaleUtil.getInstance().setHeight(8)),
-                    child: Text('Smart home', style: ptHeadline(context).copyWith(fontWeight: FontWeight.normal)),
+                    child: Text('SmartHome', style: ptHeadline(context).copyWith(fontWeight: FontWeight.normal)),
                   ),
                   Padding(
                     padding: EdgeInsets.only(

@@ -110,6 +110,8 @@ class CategoryView extends StatelessWidget {
                             BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
                         child: Image.asset(
                           category.imagePath,
+                          width: double.infinity,
+                          height: double.infinity,
                           fit: BoxFit.cover,
                           // color: Colors.blue,
                         ),
