@@ -14,9 +14,9 @@ class PowerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
+      padding: EdgeInsets.only(top: 16.0, bottom: 32.0),
       width: MediaQuery.of(context).size.width,
-      alignment: Alignment.center,
+      alignment: Alignment.topCenter,
       child: Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(

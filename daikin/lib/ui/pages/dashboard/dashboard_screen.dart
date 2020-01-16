@@ -1,9 +1,11 @@
 import 'dart:io';
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daikin/constants/constants.dart';
+import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
@@ -13,10 +15,6 @@ import 'package:daikin/ui/pages/dashboard/popular_course_list_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
-import 'package:daikin/constants/constants.dart';
-import 'package:daikin/utils/hex_color.dart';
-import 'package:flutter/material.dart';
-
 import 'package:flutter/services.dart';
 
 final List<String> imgList = [
@@ -291,9 +289,7 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
           ],
         ),
         CategoryListView(
-          callBack: () {
-            moveTo();
-          },
+          callBack: () {},
         ),
       ],
     );
@@ -320,8 +316,8 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
             ],
           ),
           PopularCourseListView(
-            callBack: () {
-              moveTo();
+            callBack: (Category item) {
+              moveTo(item);
             },
           ),
         ],
@@ -329,11 +325,11 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
     );
   }
 
-  void moveTo() {
+  void moveTo(item) {
     Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => CourseInfoScreen(),
+        builder: (BuildContext context) => CameraScreen(item: item),
       ),
     );
   }

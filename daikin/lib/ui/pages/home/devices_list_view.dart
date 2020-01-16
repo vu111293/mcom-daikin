@@ -11,8 +11,8 @@ import './../../customs/expansion_tile.dart' as expansionTile;
 
 class DevicesListView extends StatefulWidget {
   final Function callBack;
-
-  const DevicesListView({Key key, this.callBack}) : super(key: key);
+  bool disableScroll;
+  DevicesListView({Key key, this.callBack, this.disableScroll = false}) : super(key: key);
 
   _DevicesListState createState() => _DevicesListState();
 }
@@ -37,6 +37,8 @@ class _DevicesListState extends State<DevicesListView> {
         } else
           return Container(
             child: ListView.builder(
+              shrinkWrap: true,
+              physics: widget.disableScroll ? NeverScrollableScrollPhysics() : BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 return CustomDeviceList(
                   room: snapshot.data[index],
@@ -90,6 +92,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
     // if (root.devices.isEmpty)
     //   return ListTile(title: Text('Chưa có dữ liệu room device!'));
     return expansionTile.ExpansionTile(
+        hideLeading: true,
         trailing: Container(
           height: 24,
           width: 24,

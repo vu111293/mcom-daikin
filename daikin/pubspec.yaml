@@ -47,6 +47,7 @@ dependencies:
   intl: ^0.16.0
   flutter_gauge: ^1.0.8
   sleek_circular_slider: ^1.0.7
+  sliding_up_panel: ^0.3.6
 
 dev_dependencies:
   flutter_test:

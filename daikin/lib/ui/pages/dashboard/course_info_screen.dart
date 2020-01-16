@@ -1,347 +1,99 @@
 import 'dart:math';
 
-import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/constants/constants.dart';
+import 'package:daikin/constants/dataTest.dart';
+import 'package:daikin/models/business_models.dart';
+import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/customs/power_button.dart';
+import 'package:daikin/ui/pages/home/devices_list_view.dart';
+import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gauge/flutter_gauge.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class CourseInfoScreen extends StatefulWidget {
-  @override
-  _CourseInfoScreenState createState() => _CourseInfoScreenState();
+class CameraScreen extends StatefulWidget {
+  Category item;
+  bool currentStateDevice;
+  // Function callback;
+  CameraScreen({this.item, this.currentStateDevice = false});
+  CameraScreenState createState() => CameraScreenState();
 }
 
-class _CourseInfoScreenState extends State<CourseInfoScreen> with TickerProviderStateMixin {
-  final double infoHeight = 364.0;
-  AnimationController animationController;
-  Animation<double> animation;
-  double opacity1 = 0.0;
-  double opacity2 = 0.0;
-  double opacity3 = 0.0;
+class CameraScreenState extends State<CameraScreen> {
+  bool currentStateDevice;
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 1000), vsync: this);
-    animation = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: animationController, curve: Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
-    setData();
     super.initState();
-  }
-
-  Future<void> setData() async {
-    animationController.forward();
-    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
+    widget.currentStateDevice = Random().nextBool();
     setState(() {
-      opacity1 = 1.0;
-    });
-    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-    setState(() {
-      opacity2 = 1.0;
-    });
-    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-    setState(() {
-      opacity3 = 1.0;
+      currentStateDevice = widget.currentStateDevice;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final double tempHeight = MediaQuery.of(context).size.height - (MediaQuery.of(context).size.width / 1.2) + 24.0;
-    return Container(
-      color: StyleAppTheme.nearlyWhite,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(
+    return SlidingUpPanel(
+      backdropEnabled: true,
+      minHeight: 62,
+      backdropColor: HexColor('#19194C'),
+      backdropOpacity: 0.57,
+      panel: Material(
+          child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Container(
+            color: Colors.red,
+            height: 0,
+            child: Icon(
+              Icons.keyboard_arrow_up,
+              size: 30,
+              color: Colors.black87,
+            ),
+          ),
+          Expanded(
+            child: DevicesListView(
+              disableScroll: true,
+            ),
+          ),
+        ],
+      )),
+      body: Scaffold(
+        backgroundColor: Colors.white,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                AspectRatio(
-                  aspectRatio: 1.2,
-                  child: Image.asset(
-                    'assets/hotel/hotel_${Random().nextInt(7)}.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
+            BaseHeaderScreen(
+              isBack: true,
+              title: 'Camera'.toUpperCase(),
             ),
-            Positioned(
-              top: (MediaQuery.of(context).size.width / 1.2) - 24.0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: StyleAppTheme.nearlyWhite,
-                  borderRadius:
-                      const BorderRadius.only(topLeft: Radius.circular(32.0), topRight: Radius.circular(32.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: StyleAppTheme.grey.withOpacity(0.2), offset: const Offset(1.1, 1.1), blurRadius: 10.0),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: SingleChildScrollView(
-                    child: Container(
-                      constraints: BoxConstraints(
-                          minHeight: infoHeight, maxHeight: tempHeight > infoHeight ? tempHeight : infoHeight),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(top: 32.0, left: 18, right: 16),
-                            child: Text(
-                              'Web Design\nCourse',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 22,
-                                letterSpacing: 0.27,
-                                color: StyleAppTheme.darkerText,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  '\$28.99',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w200,
-                                    fontSize: 22,
-                                    letterSpacing: 0.27,
-                                    color: StyleAppTheme.nearlyBlue,
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                        '4.3',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w200,
-                                          fontSize: 22,
-                                          letterSpacing: 0.27,
-                                          color: StyleAppTheme.grey,
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.star,
-                                        color: StyleAppTheme.nearlyBlue,
-                                        size: 24,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 500),
-                            opacity: opacity1,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Row(
-                                children: <Widget>[
-                                  getTimeBoxUI('24', 'Classe'),
-                                  getTimeBoxUI('2hours', 'Time'),
-                                  getTimeBoxUI('24', 'Seat'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: AnimatedOpacity(
-                              duration: const Duration(milliseconds: 500),
-                              opacity: opacity2,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-                                child: Text(
-                                  'Lorem ipsum is simply dummy text of printing & typesetting industry, Lorem ipsum is simply dummy text of printing & typesetting industry.',
-                                  textAlign: TextAlign.justify,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w200,
-                                    fontSize: 14,
-                                    letterSpacing: 0.27,
-                                    color: StyleAppTheme.grey,
-                                  ),
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ),
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 500),
-                            opacity: opacity3,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    width: 48,
-                                    height: 48,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: StyleAppTheme.nearlyWhite,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(16.0),
-                                        ),
-                                        border: Border.all(color: StyleAppTheme.grey.withOpacity(0.2)),
-                                      ),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: StyleAppTheme.nearlyBlue,
-                                        size: 28,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 16,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      height: 48,
-                                      decoration: BoxDecoration(
-                                        color: StyleAppTheme.nearlyBlue,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(16.0),
-                                        ),
-                                        boxShadow: <BoxShadow>[
-                                          BoxShadow(
-                                              color: StyleAppTheme.nearlyBlue.withOpacity(0.5),
-                                              offset: const Offset(1.1, 1.1),
-                                              blurRadius: 10.0),
-                                        ],
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Join Course',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 18,
-                                            letterSpacing: 0.0,
-                                            color: StyleAppTheme.nearlyWhite,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).padding.bottom,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: (MediaQuery.of(context).size.width / 1.2) - 24.0 - 35,
-              right: 35,
-              child: ScaleTransition(
-                alignment: Alignment.center,
-                scale: CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn),
-                child: Card(
-                  color: StyleAppTheme.nearlyBlue,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
-                  elevation: 10.0,
+            BaseHeaderScreen(hideProfile: true, isSubHeader: true, title: 'Camera', subTitle: widget.item.title),
+            Expanded(
+              child: Center(
+                child: GestureDetector(
+                  onTap: () {},
                   child: Container(
-                    width: 60,
-                    height: 60,
-                    child: Center(
-                      child: Icon(
-                        Icons.favorite,
-                        color: StyleAppTheme.nearlyWhite,
-                        size: 30,
-                      ),
-                    ),
+                    width: 300,
+                    height: 300,
+                    color: currentStateDevice ? ptPrimaryColor(context) : HexColor(appBorderColor),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              child: SizedBox(
-                width: AppBar().preferredSize.height,
-                height: AppBar().preferredSize.height,
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(AppBar().preferredSize.height),
-                    child: Container(
-                      margin: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white30,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: StyleAppTheme.nearlyBlack,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
+
+            /// Power control button
+            Container(
+              height: 56 * 3.0 + 10,
+              child: GestureDetector(
+                child: PowerButton(currentStateDevice: currentStateDevice),
+                onTap: () {
+                  setState(() {
+                    currentStateDevice = !currentStateDevice;
+                  });
+                },
               ),
             )
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget getTimeBoxUI(String text1, String txt2) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: StyleAppTheme.nearlyWhite,
-          borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(color: StyleAppTheme.grey.withOpacity(0.2), offset: const Offset(1.1, 1.1), blurRadius: 8.0),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 12.0, bottom: 12.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                text1,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                  letterSpacing: 0.27,
-                  color: StyleAppTheme.nearlyBlue,
-                ),
-              ),
-              Text(
-                txt2,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w200,
-                  fontSize: 14,
-                  letterSpacing: 0.27,
-                  color: StyleAppTheme.grey,
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
