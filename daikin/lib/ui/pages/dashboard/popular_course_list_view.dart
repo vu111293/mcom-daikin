@@ -34,38 +34,37 @@ class _PopularCourseListViewState extends State<PopularCourseListView> with Tick
           if (!snapshot.hasData) {
             return SizedBox();
           } else {
-            return Container(
-              height: deviceHeight(context) * 0.6,
-              child: GridView(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                children: List<Widget>.generate(
-                  Category.popularCourseList.length,
-                  (int index) {
-                    final int count = Category.popularCourseList.length;
-                    final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animationController,
-                        curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
-                      ),
-                    );
-                    animationController.forward();
-                    return CategoryView(
-                      callback: () {
-                        widget.callBack();
-                      },
-                      category: Category.popularCourseList[index],
-                      animation: animation,
-                      animationController: animationController,
-                    );
-                  },
-                ),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: MediaQuery.of(context).size.height / 680,
-                ),
+            return GridView(
+              physics: NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: List<Widget>.generate(
+                Category.popularCourseList.length > 6 ? 6 : Category.popularCourseList.length,
+                (int index) {
+                  final int count = Category.popularCourseList.length > 6 ? 6 : Category.popularCourseList.length;
+                  final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: animationController,
+                      curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
+                    ),
+                  );
+                  animationController.forward();
+                  return CategoryView(
+                    callback: () {
+                      widget.callBack();
+                    },
+                    category: Category.popularCourseList[index],
+                    animation: animation,
+                    animationController: animationController,
+                  );
+                },
+              ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 20,
+                childAspectRatio: 1.1,
+                // childAspectRatio: MediaQuery.of(context).size.height / 680,
               ),
             );
           }
@@ -95,8 +94,7 @@ class CategoryView extends StatelessWidget {
             transform: Matrix4.translationValues(0.0, 50 * (1.0 - animation.value), 0.0),
             child: Container(
               decoration: BoxDecoration(
-                color: HexColor('#F8FAFB'),
-                // color: Colors.blue,
+                color: HexColor(appColor),
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
               child: InkWell(
@@ -107,21 +105,25 @@ class CategoryView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      child: Image.asset(
-                        category.imagePath,
-                        fit: BoxFit.cover,
-                        height: 115,
-                        // color: Colors.blue,
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                        child: Image.asset(
+                          category.imagePath,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                          // color: Colors.blue,
+                        ),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(10, 16, 10, 0),
+                      padding: EdgeInsets.fromLTRB(10, 16, 10, 16),
                       child: Text(
                         category.title,
                         textAlign: TextAlign.left,
-                        style: ptSubtitle(context),
+                        style: ptTitle(context).copyWith(color: Colors.white),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
