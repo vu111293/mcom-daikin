@@ -16,8 +16,7 @@ enum CategoryType { ui, coding, basic, game, chill }
 
 class CourseInfoDeviceScreen extends StatefulWidget {
   Room room;
-  String title;
-  CourseInfoDeviceScreen({this.room, this.title = ''});
+  CourseInfoDeviceScreen({this.room});
   @override
   _CourseInfoDeviceScreenState createState() => _CourseInfoDeviceScreenState();
 }
@@ -65,10 +64,6 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
           backgroundColor: Colors.transparent,
           body: Column(
             children: <Widget>[
-              BaseHeaderScreen(
-                isBack: true,
-                title: widget.title.toUpperCase(),
-              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(

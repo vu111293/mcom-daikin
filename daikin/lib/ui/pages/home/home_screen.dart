@@ -51,16 +51,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           Expanded(
               child: TabBarView(
             children: <Widget>[
-              RoomsGridView(
-                callBack: (title) {
-                  Routing().navigate2(context, CourseInfoDeviceScreen(title: title));
-                },
-              ),
-              DevicesListView(
-                callBack: () {
-                  Routing().navigate2(context, CourseInfoDeviceScreen());
-                },
-              ),
+              RoomsGridView(),
+              DevicesListView(),
             ],
             controller: _tabController,
           )),

@@ -120,7 +120,7 @@ class CategoryView extends StatelessWidget {
       child: InkWell(
         splashColor: Colors.transparent,
         onTap: () {
-          callback();
+          Routing().navigate2(context, CourseInfoDeviceScreen(room: room));
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
