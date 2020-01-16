@@ -37,6 +37,9 @@ Widget defaultBuildDevice(
                     DeviceOnOffDetailScreen(
                       item: widget.device,
                       status: isSwitched,
+                      callback: () {
+                        callback();
+                      },
                     ));
               },
               child: Padding(
@@ -149,6 +152,9 @@ Widget buildSwitchDevice(
                     DeviceOnOffDetailScreen(
                       item: widget.device,
                       status: isSwitched,
+                      callback: (value) {
+                        callback(value);
+                      },
                     ));
               },
               child: Padding(
@@ -260,6 +266,9 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback) {
                     DeviceOnOffDetailScreen(
                       item: widget.device,
                       status: isSwitched,
+                      callback: (value) {
+                        callback(value);
+                      },
                     ));
               },
               child: Padding(

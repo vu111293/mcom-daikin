@@ -42,12 +42,14 @@ abstract class BaseLoopBackApi {
       });
       uri = uri.replace(queryParameters: urlParams);
     }
-    HttpClientRequest request = await _httpClient.openUrl(method, uri).catchError((e) {
+    HttpClientRequest request =
+        await _httpClient.openUrl(method, uri).catchError((e) {
       print("request error: " + e.toString());
-      throw NetServiceError(type: ErrorType.NETWORK_ERROR, message: 'Net error');
+      throw NetServiceError(
+          type: ErrorType.NETWORK_ERROR, message: 'Net error');
     })
-      ..headers.contentType = ContentType.json
-      ..headers.chunkedTransferEncoding = false;
+          ..headers.contentType = ContentType.json
+          ..headers.chunkedTransferEncoding = false;
 
     if (auth?.accessToken != null && auth?.accessToken?.isNotEmpty == true) {
       request.headers.add('x-token', auth.accessToken);
@@ -87,23 +89,26 @@ abstract class BaseLoopBackApi {
     }
 
     HttpClientResponse response = await request.close().catchError((e) {
-      throw new NetServiceError(type: ErrorType.NETWORK_ERROR, message: 'Connection error, please try later.');
+      throw new NetServiceError(
+          type: ErrorType.NETWORK_ERROR,
+          message: 'Connection error, please try later.');
     });
 
-    print('Phat API: ${url.toString()} -> ${response.statusCode.toString()} -> ${response.reasonPhrase.toString()}');
+    print(
+        'Phat API: ${url.toString()} -> ${response.statusCode.toString()} -> ${response.reasonPhrase.toString()}');
 //    print("test thu goi api tra ve error: " + response.reasonPhrase);
 
     String raw = await response.transform(utf8.decoder).join();
     dynamic data = '';
     try {
       data = json.decode(raw);
-    } catch(e) {
+    } catch (e) {
       print('Error when parse: $e');
     }
     print('Response: $data');
 
-
-    if (response.headers.contentType.toString() != ContentType.json.toString()) {
+    if (response.headers.contentType.toString() !=
+        ContentType.json.toString()) {
       throw new NetServiceError(
           type: ErrorType.UNSUPPORT_TYPE,
           message: 'Server returned an unsupported content type: '
@@ -114,17 +119,28 @@ abstract class BaseLoopBackApi {
       return "";
     }
 
+    if (response.statusCode == HttpStatus.accepted) {
+      return data;
+    }
+
     if (response.statusCode != HttpStatus.ok) {
       switch (response.statusCode) {
         case HttpStatus.badRequest:
           throw new NetServiceError(
-              type: ErrorType.WRONG_CURRENT_PASSWORD, message: 'There is an error, please try later.');
+              type: ErrorType.WRONG_CURRENT_PASSWORD,
+              message: 'There is an error, please try later.');
         case HttpStatus.unauthorized:
-          throw new NetServiceError(type: ErrorType.AUTH_FAIL, message: 'There is an error, please try later.');
+          throw new NetServiceError(
+              type: ErrorType.AUTH_FAIL,
+              message: 'There is an error, please try later.');
         case HttpStatus.internalServerError:
-          throw new NetServiceError(type: ErrorType.SYSTEM_ERROR, message: 'There is an error, please try later.');
+          throw new NetServiceError(
+              type: ErrorType.SYSTEM_ERROR,
+              message: 'There is an error, please try later.');
         default:
-          throw new NetServiceError(type: ErrorType.SYSTEM_ERROR, message: 'There is an error, please try later.');
+          throw new NetServiceError(
+              type: ErrorType.SYSTEM_ERROR,
+              message: 'There is an error, please try later.');
       }
     }
 //    String raw = await response.transform(utf8.decoder).join();
