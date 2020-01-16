@@ -41,20 +41,70 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
   Widget buildDevices() {
     if (widget.device.type == "com.fibaro.binarySwitch") {
       return buildSwitchDevice(widget, widget.device, (value) {
-       onSwitchDevice(value, widget.device);
+        onSwitchDevice(value, widget.device);
       });
     } else if (widget.device.type == "com.fibaro.FGRGBW441M") {
       return buildRGBDevice(widget, widget.device, (value) {
         onSwitchRGBDevice(value, widget.device);
       });
-    }
-    else if (widget.device.type == "virtual_device"){
+    } else if (widget.device.type == "virtual_device") {
       return buildVirtualDevice(widget, widget.device);
+    } else if (widget.device.type == "com.fibaro.FGRM222") {
+      return defaultBuildDevice(widget, widget.device, isSwitched, (value) {
+        print("@@@@@@@@@@@@@@@@@@@@@@@");
+      });
+    } else if (widget.device.type == "com.fibaro.FGD212") {
+      return buildSwitchMultiDevice(widget, widget.device, (value) {
+        onClickMultiDevice(value, widget.device);
+      }, (value) {
+        onSwitchMultiDevice(value, widget.device);
+      });
     }
 
     return defaultBuildDevice(widget, widget.device, isSwitched, (value) {
       print("@@@@@@@@@@@@@@@@@@@@@@@");
     });
+  }
+
+  onClickMultiDevice(bool val, Device device) {
+    if (!val) {
+      setState(() {
+        device.properties.value = 0.toString();
+      });
+
+      BusinessService().turnOffDevice(device.id);
+      BotToast.showText(text: "Tắt thiết bị thành công");
+    } else {
+      setState(() {
+        device.properties.value = 99.toString();
+      });
+
+      BusinessService().turnOnDevice(device.id);
+      BotToast.showText(text: "Bật thiết bị thành công");
+    }
+  }
+
+  onSwitchMultiDevice(int val, Device device) {
+    //BotToast.showText(text: 'Đổi sang trạng thái ' + device.properties.value);
+    setState(() {
+      device.properties.value = val.toString();
+    });
+
+    if (val == 0) {
+      BusinessService().setValue(device.id, val);
+      BotToast.showText(text: "Tắt thiết bị thành công");
+    } else {
+      BusinessService().setValue(device.id, val);
+      BotToast.showText(text: "Thay đổi độ sáng thành công");
+    }
+
+    // if (!val) {
+    //   BusinessService().turnOffDevice(device.id);
+    //   BotToast.showText(text: "Tắt thiết bị thành công");
+    // } else {
+    //   BusinessService().turnOnDevice(device.id);
+    //   BotToast.showText(text: "Bật thiết bị thành công");
+    // }
   }
 
   onSwitchRGBDevice(bool val, Device device) {
