@@ -42,13 +42,13 @@ class _SwitchMultiDeviceState extends State<SwitchMultiDevice> {
               title: widget.device.name.toUpperCase(),
             ),
             BaseHeaderScreen(
-              hideProfile: true,
-              isSubHeader: true,
-              title: widget.device.name,
-              subTitle: currentStateDevice
-                  ? "Thiết bị của bạn đang hoạt động"
-                  : "Thiết bị chưa hoạt động" //: widget.item.subTitle,
-            ),
+                hideProfile: true,
+                isSubHeader: true,
+                title: widget.device.name,
+                subTitle: currentStateDevice
+                    ? "Thiết bị của bạn đang hoạt động"
+                    : "Thiết bị chưa hoạt động" //: widget.item.subTitle,
+                ),
             SizedBox(
               height: 16.0,
             ),
@@ -101,6 +101,10 @@ class _SwitchMultiDeviceState extends State<SwitchMultiDevice> {
                         if (percentage.toInt() == 0) {
                           setState(() {
                             currentStateDevice = false;
+                          });
+                        } else {
+                          setState(() {
+                            currentStateDevice = true;
                           });
                         }
                         print("END");
