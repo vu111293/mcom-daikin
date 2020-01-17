@@ -153,7 +153,7 @@ class CategoryView extends StatelessWidget {
                 child: SizedBox(),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(5, 15, 5, 10),
+                padding: EdgeInsets.fromLTRB(5, 15, 5, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
