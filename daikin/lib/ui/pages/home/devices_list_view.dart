@@ -92,7 +92,6 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
     // if (root.devices.isEmpty)
     //   return ListTile(title: Text('Chưa có dữ liệu room device!'));
     return expansionTile.ExpansionTile(
-        hideLeading: true,
         trailing: Container(
           height: 24,
           width: 24,

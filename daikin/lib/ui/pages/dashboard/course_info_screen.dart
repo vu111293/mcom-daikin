@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
+import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/customs/expansion_tile.dart' as expansionTile;
 import 'package:daikin/ui/customs/power_button.dart';
 import 'package:daikin/ui/pages/home/devices_list_view.dart';
 import 'package:daikin/utils/hex_color.dart';
@@ -32,6 +34,7 @@ class CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool status = true;
     return SlidingUpPanel(
       backdropEnabled: true,
       minHeight: 62,
@@ -42,8 +45,8 @@ class CameraScreenState extends State<CameraScreen> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Container(
-            color: Colors.red,
-            height: 0,
+            width: deviceWidth(context),
+            height: 20,
             child: Icon(
               Icons.keyboard_arrow_up,
               size: 30,
@@ -51,8 +54,51 @@ class CameraScreenState extends State<CameraScreen> {
             ),
           ),
           Expanded(
-            child: DevicesListView(
-              disableScroll: true,
+            child: SingleChildScrollView(
+              child: expansionTile.ExpansionTile(
+                hideLeading: true,
+                backgroundColor: Colors.white,
+                // initiallyExpanded: true,
+                trailing: Container(
+                  height: 24,
+                  width: 24,
+                  child: CircleAvatar(
+                    backgroundColor: StyleAppTheme.nearlyBlue,
+                    child: Text(
+                      '${Category.categoryDevices.length}',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ),
+                title: Text(
+                  widget.item.title,
+                  style: TextStyle(color: StyleAppTheme.nearlyBlue),
+                ),
+                children: Category.categoryDevices
+                    .map(
+                      (item) => ListTile(
+                        leading: Image.asset(
+                          item.imagePath,
+                          width: 24,
+                          height: 24,
+                          fit: BoxFit.contain,
+                          color: ptPrimaryColor(context),
+                        ),
+                        title: Text(item.title),
+                        trailing: Switch(
+                          value: status,
+                          onChanged: (val) {
+                            status = !status;
+                          },
+                          activeColor: Colors.white,
+                          activeTrackColor: HexColor(appColor),
+                          inactiveThumbColor: HexColor(appBorderColor),
+                          inactiveTrackColor: HexColor(appBorderColor),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
           ),
         ],
