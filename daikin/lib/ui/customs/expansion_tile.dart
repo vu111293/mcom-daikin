@@ -148,10 +148,12 @@ class _ExpansionTileState extends State<ExpansionTile> with SingleTickerProvider
     return Container(
       decoration: BoxDecoration(
         color: _backgroundColor.value ?? Colors.transparent,
-        border: Border(
-          top: BorderSide(color: borderSideColor),
-          bottom: BorderSide(color: borderSideColor),
-        ),
+        border: widget.hideLeading
+            ? Border()
+            : Border(
+                top: BorderSide(color: borderSideColor),
+                bottom: BorderSide(color: borderSideColor),
+              ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
