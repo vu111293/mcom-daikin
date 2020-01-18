@@ -10,7 +10,7 @@ import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/pages/dashboard/category_list_view.dart';
-import 'package:daikin/ui/pages/dashboard/course_info_screen.dart';
+import 'package:daikin/ui/pages/dashboard/camera_screen.dart';
 import 'package:daikin/ui/pages/dashboard/popular_course_list_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
