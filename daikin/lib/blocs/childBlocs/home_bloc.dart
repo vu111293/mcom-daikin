@@ -22,6 +22,8 @@ class HomeBloc {
       List<Device> devices = results[1];
       List<Scene> scenes = results[2];
 
+      devices = devices.where((v) => v.visible).toList();
+      
       for (var i = 0; i < rooms.length; i++) {
         for (var j = 0; j < devices.length; j++) {
           if (rooms[i].id == devices[j].roomID) {

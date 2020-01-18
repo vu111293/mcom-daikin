@@ -100,7 +100,7 @@ class BusinessService extends BaseLoopBackApi {
   }
 
   Future<void> setValue(int deviceId, int id) async {
-    if (id >= 99) id = 99;
+    if (id > 99) id = 99;
 
     final url = [
       LoopBackConfig.getPath(),

@@ -50,7 +50,7 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
     } else if (widget.device.type == "virtual_device") {
       return buildVirtualDevice(widget, widget.device);
     } else if (widget.device.type == "com.fibaro.FGRM222") {
-      return defaultBuildDevice(widget, widget.device, isSwitched, (value) {
+      return buildBlindsDevice(widget, widget.device, isSwitched, (value) {
         print("@@@@@@@@@@@@@@@@@@@@@@@");
       });
     } else if (widget.device.type == "com.fibaro.FGD212") {
