@@ -45,6 +45,10 @@ dependencies:
   cupertino_icons: ^0.1.2
   pin_code_text_field: ^1.5.1
   intl: ^0.16.0
+  flutter_inappwebview:
+    git:
+      url: git://github.com/pichillilorenzo/flutter_inappwebview.git
+      ref: develop
 
 dev_dependencies:
   flutter_test:
