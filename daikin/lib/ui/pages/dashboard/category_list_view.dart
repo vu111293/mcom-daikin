@@ -1,6 +1,8 @@
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/ui/pages/dashboard/rgb_screen.dart';
+import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
@@ -55,6 +57,9 @@ class _CategoryListViewState extends State<CategoryListView> with TickerProvider
                     animation: animation,
                     animationController: animationController,
                     callback: () {
+                      if (index == 0) {
+                        Routing().navigate2(context, RgbScreen());
+                      }
                       widget.callBack();
                     },
                   );
