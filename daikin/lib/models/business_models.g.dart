@@ -196,6 +196,14 @@ Room _$RoomFromJson(Map<String, dynamic> json) {
     defaultSensors: RoomDefaultSensor.fromJson(
         json['defaultSensors'] as Map<String, dynamic>),
     sortOrder: json['sortOrder'] as int,
+    devices: (json['devices'] as List)
+        ?.map((e) =>
+            e == null ? null : Device.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    scenes: (json['scenes'] as List)
+        ?.map(
+            (e) => e == null ? null : Scene.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     category: json['category'] as String,
   );
 }

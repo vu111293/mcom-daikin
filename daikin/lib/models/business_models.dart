@@ -32,7 +32,7 @@ class Device {
   @JsonKey(nullable: true)
   final List<String> interfaces;
   @JsonKey(toJson: _propertiesToJson)
-  final DeviceProperty properties;
+  DeviceProperty properties;
   @JsonKey(toJson: _actionsToJson)
   final DeviceAction actions;
   final int created;
