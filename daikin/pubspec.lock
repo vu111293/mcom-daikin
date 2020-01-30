@@ -307,6 +307,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.8"
+  flutter_inappwebview:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: develop
+      resolved-ref: "7d9f9f56a43927cd0538baab02cef5a5ecab9463"
+      url: "git://github.com/pichillilorenzo/flutter_inappwebview.git"
+    source: git
+    version: "3.0.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:

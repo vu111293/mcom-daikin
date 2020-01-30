@@ -2,7 +2,7 @@ import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
-import 'package:daikin/ui/customs/power_button.dart';
+import 'package:daikin/ui/customs/action_button.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gauge/flutter_gauge.dart';
@@ -322,7 +322,7 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
 
           /// Power control button
           GestureDetector(
-            child: PowerButton(currentStateDevice: currentStateDevice),
+            child: ActionButton(currentStateDevice: currentStateDevice),
             onTap: () {
               setState(() {
                 currentStateDevice = !currentStateDevice;

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/RoundSliderTrackShape.dart';
 import 'package:daikin/ui/customs/base_header.dart';
-import 'package:daikin/ui/customs/power_button.dart';
+import 'package:daikin/ui/customs/action_button.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gauge/flutter_gauge.dart';
@@ -305,7 +305,7 @@ class RgbScreenState extends State<RgbScreen> {
                   Container(
                     padding: EdgeInsets.only(top: 8),
                     child: GestureDetector(
-                      child: PowerButton(currentStateDevice: currentStateDevice),
+                      child: ActionButton(currentStateDevice: currentStateDevice),
                       onTap: () {
                         setState(() {
                           currentStateDevice = !currentStateDevice;

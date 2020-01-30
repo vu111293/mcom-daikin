@@ -49,6 +49,10 @@ dependencies:
   sleek_circular_slider: ^1.0.7
   sliding_up_panel: ^0.3.6
   cached_network_image: ^2.0.0
+  flutter_inappwebview:
+    git:
+      url: git://github.com/pichillilorenzo/flutter_inappwebview.git
+      ref: develop
 
 dev_dependencies:
   flutter_test:

@@ -215,12 +215,14 @@ class DeviceProperty {
 
   String get getCameraUrl {
     String http = httpsEnabled == 'true' ? 'https' : 'http';
-    return Uri.encodeFull('$http://$username:$password@$ip/$mjpgPath');
+    String path = mjpgPath.isNotEmpty && mjpgPath.startsWith('/') ? mjpgPath.substring(1) : mjpgPath;
+    return Uri.encodeFull('$http://$username:$password@$ip/$path');
   }
 
   String get getCameraThumbPreview {
     String http = httpsEnabled == 'true' ? 'https' : 'http';
-    return Uri.encodeFull('$http://$username:$password@$ip/$jpgPath');
+    String path = jpgPath.isNotEmpty && jpgPath.startsWith('/') ? jpgPath.substring(1) : jpgPath;
+    return Uri.encodeFull('$http://$username:$password@$ip/$path');
   }
 
 }

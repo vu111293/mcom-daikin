@@ -87,7 +87,6 @@ class CameraItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('me');
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
@@ -113,6 +112,12 @@ class CameraItemView extends StatelessWidget {
                             BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
                         child: CachedNetworkImage(
                           imageUrl: device.properties.getCameraThumbPreview,
+                          errorWidget: (context, url, err) {
+                            return Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.all(12.0),
+                              child: Image.asset('assets/icons/ic_camera.png', color: Colors.black54, fit: BoxFit.cover),);
+                          },
                           width: double.infinity,
                           height: double.infinity,
                           fit: BoxFit.cover,
