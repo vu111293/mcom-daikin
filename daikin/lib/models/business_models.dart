@@ -15,6 +15,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'business_models.g.dart';
 
+enum DeviceType {
+  CAMERA_IP, UNKNOWN
+}
+
 @JsonSerializable(nullable: false)
 class Device {
   final int id;
@@ -65,6 +69,16 @@ class Device {
   }
 
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
+
+
+  DeviceType get getDeviceType {
+    if (type == 'com.fibaro.ipCamera' && baseType == 'com.fibaro.camera') {
+      return DeviceType.CAMERA_IP;
+    }
+
+    return DeviceType.UNKNOWN;
+  }
+
 }
 
 Map<String, dynamic> _propertiesToJson(DeviceProperty item) => item.toJson();
@@ -125,6 +139,13 @@ class DeviceProperty {
   final String zwaveVersion;
   List<DeviceRow> rows;
 
+  final String httpsEnabled;
+  final String ip;
+  final String jpgPath;
+  final String mjpgPath;
+  final String username;
+  final String password;
+
   DeviceProperty(
       {this.UIMessageSendTime,
       this.autoConfig,
@@ -175,7 +196,13 @@ class DeviceProperty {
       this.zwaveInfo,
       this.zwaveRegion,
       List<DeviceRow> rows,
-      this.zwaveVersion})
+      this.zwaveVersion,
+      this.httpsEnabled,
+      this.ip,
+      this.jpgPath,
+      this.mjpgPath,
+      this.username,
+      this.password})
       : rows = rows ?? <DeviceRow>[];
 
   factory DeviceProperty.fromJson(Map<String, dynamic> json) {
@@ -184,6 +211,18 @@ class DeviceProperty {
   }
 
   Map<String, dynamic> toJson() => _$DevicePropertyToJson(this);
+
+
+  String get getCameraUrl {
+    String http = httpsEnabled == 'true' ? 'https' : 'http';
+    return Uri.encodeFull('$http://$username:$password@$ip/$mjpgPath');
+  }
+
+  String get getCameraThumbPreview {
+    String http = httpsEnabled == 'true' ? 'https' : 'http';
+    return Uri.encodeFull('$http://$username:$password@$ip/$jpgPath');
+  }
+
 }
 
 //"pollingDeadDevice":1,

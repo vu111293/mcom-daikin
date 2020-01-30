@@ -1,46 +1,47 @@
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-class PopularCourseListView extends StatefulWidget {
-  const PopularCourseListView({Key key, this.callBack}) : super(key: key);
+class CameraListView extends StatefulWidget {
+  const CameraListView({Key key, this.callBack}) : super(key: key);
 
   final Function callBack;
   @override
-  _PopularCourseListViewState createState() => _PopularCourseListViewState();
+  _CameraListViewState createState() => _CameraListViewState();
 }
 
-class _PopularCourseListViewState extends State<PopularCourseListView> with TickerProviderStateMixin {
+class _CameraListViewState extends State<CameraListView> with TickerProviderStateMixin {
+  ApplicationBloc _appBloc;
   AnimationController animationController;
   @override
   void initState() {
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
     animationController = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
-  }
-
-  Future<bool> getData() async {
-    await Future<dynamic>.delayed(const Duration(milliseconds: 200));
-    return true;
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 8),
-      child: FutureBuilder<bool>(
-        future: getData(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+      child: StreamBuilder<List<Device>>(
+        stream: _appBloc.homeBloc.cameraDevicesStream,
+        builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return SizedBox();
           } else {
+            int index = 0;
             return GridView(
               physics: NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              children: List<Widget>.generate(
-                Category.popularCourseList.length > 6 ? 6 : Category.popularCourseList.length,
-                (int index) {
+              children: snapshot.data.map((item)
+                {
                   final int count = Category.popularCourseList.length > 6 ? 6 : Category.popularCourseList.length;
                   final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
@@ -48,17 +49,18 @@ class _PopularCourseListViewState extends State<PopularCourseListView> with Tick
                       curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
                     ),
                   );
+                  index++;
                   animationController.forward();
-                  return CategoryView(
+                  return CameraItemView(
                     callback: () {
-                      widget.callBack(Category.popularCourseList[index]);
+                      widget.callBack(item);
                     },
-                    category: Category.popularCourseList[index],
+                    device: item,
                     animation: animation,
                     animationController: animationController,
                   );
                 },
-              ),
+              ).toList(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: 20,
@@ -74,17 +76,18 @@ class _PopularCourseListViewState extends State<PopularCourseListView> with Tick
   }
 }
 
-class CategoryView extends StatelessWidget {
-  const CategoryView({Key key, this.category, this.animationController, this.animation, this.callback})
+class CameraItemView extends StatelessWidget {
+  const CameraItemView({Key key, this.device, this.animationController, this.animation, this.callback})
       : super(key: key);
 
   final VoidCallback callback;
-  final Category category;
+  final Device device;
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
   @override
   Widget build(BuildContext context) {
+    print('me');
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
@@ -108,19 +111,27 @@ class CategoryView extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius:
                             BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                        child: Image.asset(
-                          category.imagePath,
+                        child: CachedNetworkImage(
+                          imageUrl: device.properties.getCameraThumbPreview,
                           width: double.infinity,
                           height: double.infinity,
                           fit: BoxFit.cover,
-                          // color: Colors.blue,
-                        ),
+                        )
+
+//                        Image.network(
+//                          'https://s.ftcdn.net/v2013/pics/all/curated/RKyaEDwp8J7JKeZWQPuOVWvkUjGQfpCx_cover_580.jpg',
+////                          device.properties.getCameraThumbPreview,
+//                          width: double.infinity,
+//                          height: double.infinity,
+//                          fit: BoxFit.cover,
+//                          // color: Colors.blue,
+//                        ),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(10, 16, 10, 16),
                       child: Text(
-                        category.title,
+                        device.name,
                         textAlign: TextAlign.left,
                         style: ptTitle(context).copyWith(color: Colors.white),
                         maxLines: 1,

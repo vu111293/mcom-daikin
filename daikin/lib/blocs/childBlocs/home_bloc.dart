@@ -7,10 +7,12 @@ class HomeBloc {
   final _roomsSubject = BehaviorSubject<List<Room>>();
   final _devicesSubject = BehaviorSubject<List<Device>>();
   final _scenesSubject = BehaviorSubject<List<Scene>>();
+  final _cameraDevicesSubject = BehaviorSubject<List<Device>>();
 
   Stream get roomDataStream => _roomsSubject.stream;
   Stream get devicesDataStream => _devicesSubject.stream;
   Stream get scenesDataStream => _scenesSubject.stream;
+  Stream get cameraDevicesStream => _cameraDevicesSubject;
 
   Future fetchHomeData() {
     return Future.wait([
@@ -39,6 +41,12 @@ class HomeBloc {
       }
       _scenesSubject.sink.add(scenes);
       _roomsSubject.sink.add(rooms);
+
+      // Parse camera devices
+      List<Device> cameraDevices = devices.where((item) => item.getDeviceType == DeviceType.CAMERA_IP).toList();
+      _cameraDevicesSubject.sink.add(cameraDevices);
+
+
       // _devicesSubject.sink.add(results[1]);
     }).catchError((e) {
       print('Fetch home data error: $e');
@@ -49,5 +57,6 @@ class HomeBloc {
     _roomsSubject.close();
     _devicesSubject.close();
     _scenesSubject.close();
+    _cameraDevicesSubject.close();
   }
 }

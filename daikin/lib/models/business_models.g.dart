@@ -107,6 +107,12 @@ DeviceProperty _$DevicePropertyFromJson(Map<String, dynamic> json) {
             e == null ? null : DeviceRow.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     zwaveVersion: json['zwaveVersion'] as String,
+    httpsEnabled: json['httpsEnabled'] as String,
+    ip: json['ip'] as String,
+    jpgPath: json['jpgPath'] as String,
+    mjpgPath: json['mjpgPath'] as String,
+    username: json['username'] as String,
+    password: json['password'] as String,
   );
 }
 
@@ -163,6 +169,12 @@ Map<String, dynamic> _$DevicePropertyToJson(DeviceProperty instance) =>
       'zwaveRegion': instance.zwaveRegion,
       'zwaveVersion': instance.zwaveVersion,
       'rows': instance.rows,
+      'httpsEnabled': instance.httpsEnabled,
+      'ip': instance.ip,
+      'jpgPath': instance.jpgPath,
+      'mjpgPath': instance.mjpgPath,
+      'username': instance.username,
+      'password': instance.password,
     };
 
 DeviceAction _$DeviceActionFromJson(Map<String, dynamic> json) {

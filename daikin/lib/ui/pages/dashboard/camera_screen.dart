@@ -7,14 +7,12 @@ import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/expansion_tile.dart' as expansionTile;
 import 'package:daikin/ui/customs/power_button.dart';
-import 'package:daikin/ui/pages/home/devices_list_view.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gauge/flutter_gauge.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CameraScreen extends StatefulWidget {
-  Category item;
+  Device item;
   bool currentStateDevice;
   // Function callback;
   CameraScreen({this.item, this.currentStateDevice = false});
@@ -71,7 +69,7 @@ class CameraScreenState extends State<CameraScreen> {
                   ),
                 ),
                 title: Text(
-                  widget.item.title,
+                  widget.item.name,
                   style: TextStyle(color: StyleAppTheme.nearlyBlue),
                 ),
                 children: Category.categoryDevices
@@ -113,7 +111,7 @@ class CameraScreenState extends State<CameraScreen> {
               isBack: true,
               title: 'Camera'.toUpperCase(),
             ),
-            BaseHeaderScreen(hideProfile: true, isSubHeader: true, title: 'Camera', subTitle: widget.item.title),
+            BaseHeaderScreen(hideProfile: true, isSubHeader: true, title: 'Camera', subTitle: widget.item.name),
             Expanded(
               child: Center(
                 child: GestureDetector(

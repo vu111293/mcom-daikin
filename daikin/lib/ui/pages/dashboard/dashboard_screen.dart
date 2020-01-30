@@ -11,7 +11,7 @@ import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/pages/dashboard/category_list_view.dart';
 import 'package:daikin/ui/pages/dashboard/camera_screen.dart';
-import 'package:daikin/ui/pages/dashboard/popular_course_list_view.dart';
+import 'package:daikin/ui/pages/dashboard/camera_list_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +33,8 @@ class DashBoardScreen extends StatefulWidget {
   DashBoardScreenState createState() => DashBoardScreenState();
 }
 
-class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProviderStateMixin {
+class DashBoardScreenState extends State<DashBoardScreen> {
   int _current = 0;
-  TabController _tabController;
   ApplicationBloc _appBloc;
 
   List<T> map<T>(List list, Function handler) {
@@ -51,7 +50,6 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
   void initState() {
     super.initState();
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
-    _tabController = TabController(length: 2, vsync: this); // initialise it here
   }
 
   @override
@@ -70,13 +68,15 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
               ),
               Expanded(
                   child: ListView(
+                    padding: EdgeInsets.only(bottom: 24.0),
                 children: <Widget>[
                   CarouselSlider(
                     items: map<Widget>(
                       imgList,
                       (index, i) {
                         return Opacity(
-                          opacity: _current == index ? 1 : 0.3,
+//                          opacity: _current == index ? 1 : 0.3,
+                          opacity: 1.0,
                           child: Container(
                             margin: EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
@@ -102,9 +102,9 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
                     // aspectRatio: 1,
                     pauseAutoPlayOnTouch: Duration(milliseconds: 150),
                     onPageChanged: (index) {
-                      setState(() {
-                        _current = index;
-                      });
+//                      setState(() {
+//                        _current = index;
+//                      });
                     },
                   ),
                   Row(
@@ -315,8 +315,8 @@ class DashBoardScreenState extends State<DashBoardScreen> with SingleTickerProvi
               ),
             ],
           ),
-          PopularCourseListView(
-            callBack: (Category item) {
+          CameraListView(
+            callBack: (Device item) {
               moveTo(item);
             },
           ),
