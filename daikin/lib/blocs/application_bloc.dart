@@ -28,6 +28,7 @@ class ApplicationBloc implements BlocBase {
   @override
   void dispose() {
     _setupStateSubject.close();
+    _deviceIdSubject.close();
   }
 
   ApplicationBloc() {

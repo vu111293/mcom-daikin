@@ -113,6 +113,8 @@ DeviceProperty _$DevicePropertyFromJson(Map<String, dynamic> json) {
     mjpgPath: json['mjpgPath'] as String,
     username: json['username'] as String,
     password: json['password'] as String,
+    isLight: json['isLight'] as String,
+    lastColorSet: json['lastColorSet'] as String,
   );
 }
 
@@ -175,6 +177,8 @@ Map<String, dynamic> _$DevicePropertyToJson(DeviceProperty instance) =>
       'mjpgPath': instance.mjpgPath,
       'username': instance.username,
       'password': instance.password,
+      'isLight': instance.isLight,
+      'lastColorSet': instance.lastColorSet,
     };
 
 DeviceAction _$DeviceActionFromJson(Map<String, dynamic> json) {

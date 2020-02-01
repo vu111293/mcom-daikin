@@ -1,4 +1,5 @@
 import 'package:daikin/models/business_models.dart';
+import 'package:daikin/ui/pages/dashboard/rgb_screen.dart';
 import 'package:daikin/ui/pages/device_detail/blinds_device_screen.dart';
 import 'package:daikin/ui/pages/device_detail/switch_multi_device.dart';
 import 'package:daikin/ui/pages/device_detail/virtual_device_screen.dart';
@@ -327,13 +328,15 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback) {
               onTap: () {
                 Routing().navigate2(
                     context,
-                    DeviceOnOffDetailScreen(
-                      item: widget.device,
-                      status: isSwitched,
-                      callback: (value) {
-                        callback(value);
-                      },
-                    ));
+                    RgbScreen(device: widget.device)
+//                    DeviceOnOffDetailScreen(
+//                      item: widget.device,
+//                      status: isSwitched,
+//                      callback: (value) {
+//                        callback(value);
+//                      },
+//                    )
+                );
               },
               child: Padding(
                 padding: EdgeInsets.all(10.0),

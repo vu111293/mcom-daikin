@@ -145,6 +145,10 @@ class DeviceProperty {
   final String mjpgPath;
   final String username;
   final String password;
+//  "isLight": "true",
+//  "lastColorSet": "100,255,50,255",
+  final String isLight;
+  final String lastColorSet;
 
   DeviceProperty(
       {this.UIMessageSendTime,
@@ -202,7 +206,9 @@ class DeviceProperty {
       this.jpgPath,
       this.mjpgPath,
       this.username,
-      this.password})
+      this.password,
+      this.isLight,
+      this.lastColorSet})
       : rows = rows ?? <DeviceRow>[];
 
   factory DeviceProperty.fromJson(Map<String, dynamic> json) {
@@ -213,6 +219,8 @@ class DeviceProperty {
   Map<String, dynamic> toJson() => _$DevicePropertyToJson(this);
 
 
+
+  // For Camera properties
   String get getCameraUrl {
     String http = httpsEnabled == 'true' ? 'https' : 'http';
     String path = mjpgPath.isNotEmpty && mjpgPath.startsWith('/') ? mjpgPath.substring(1) : mjpgPath;
@@ -224,6 +232,25 @@ class DeviceProperty {
     String path = jpgPath.isNotEmpty && jpgPath.startsWith('/') ? jpgPath.substring(1) : jpgPath;
     return Uri.encodeFull('$http://$username:$password@$ip/$path');
   }
+
+  // For RGB light
+
+  bool get isLightDevice => isLight == 'true';
+
+  int _getColorAtIndex(int id) {
+    List<String> p = lastColorSet.split(',');
+    if (p.length > id) {
+      return int.parse(p[id]);
+    }
+    return 0;
+  }
+  int get getRed => _getColorAtIndex(0);
+  int get getGreen => _getColorAtIndex(1);
+  int get getBlue => _getColorAtIndex(2);
+  int get getBrightness => _getColorAtIndex(3);
+
+  bool get isLightOn => value == '1';
+
 
 }
 

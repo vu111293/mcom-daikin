@@ -85,6 +85,23 @@ class BusinessService extends BaseLoopBackApi {
     return;
   }
 
+  Future setRGBColor(int id, int r, int g, int b, int a) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'callAction'
+    ].join('/');
+    await this.request(method: 'GET', url: url, urlParams: {
+      'name': 'setColor',
+      'deviceID': id.toString(),
+      'arg1': r.toString(),
+      'arg2': g.toString(),
+      'arg3': b.toString(),
+      'arg4': a.toString()
+    });
+    return Future;
+  }
+
   Future<void> pressButton(int deviceId, int id) async {
     final url = [
       LoopBackConfig.getPath(),

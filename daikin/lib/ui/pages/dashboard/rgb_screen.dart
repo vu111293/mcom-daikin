@@ -1,29 +1,78 @@
+import 'dart:async';
 import 'dart:math';
 
+import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/constants/constants.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/RoundSliderTrackShape.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/action_button.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gauge/flutter_gauge.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class RgbScreen extends StatefulWidget {
+  final Device device;
+
+  RgbScreen({this.device});
+
   RgbScreenState createState() => RgbScreenState();
 }
 
 class RgbScreenState extends State<RgbScreen> {
-  bool currentStateDevice = true;
+  bool isOn = true;
   int valueLight = 65;
-  double _progress_red = 230;
-  double _progress_green = 150;
-  double _progress_blue = 100;
+//  double _progress_red = 230;
+//  double _progress_green = 150;
+//  double _progress_blue = 100;
+
+  final _redColorSubject = BehaviorSubject.seeded(0);
+  final _greenColorSubject = BehaviorSubject.seeded(0);
+  final _blueColorSubject = BehaviorSubject.seeded(0);
+
+  int get _latestRed => _redColorSubject.stream.value;
+  int get _latestGreen => _redColorSubject.stream.value;
+  int get _latestBlue => _redColorSubject.stream.value;
+  StreamSubscription _rgbChangedSub;
+
+  Stream<List<int>> get combineRGBChangedEvent => Observable.combineLatest3(
+      _redColorSubject.debounceTime(Duration(milliseconds: 500)),
+      _greenColorSubject.debounceTime(Duration(milliseconds: 500)),
+      _blueColorSubject.debounceTime(Duration(milliseconds: 500)),
+      (r, g, b) {
+        return [r, g, b];
+      });
 
   @override
   void initState() {
     super.initState();
-    currentStateDevice = Random().nextBool();
+
+
+
+    DeviceProperty properties = widget.device.properties;
+    _redColorSubject.sink.add(properties.getRed);
+    _greenColorSubject.sink.add(properties.getGreen);
+    _blueColorSubject.sink.add(properties.getBlue);
+    isOn = properties.isLightOn;
+
+    _rgbChangedSub = combineRGBChangedEvent.listen((v) {
+      if (v.length == 3) {
+        // call setcolor api
+        BusinessService().setRGBColor(widget.device.id, v[0], v[1], v[2], 255);
+      }
+    });
+
+  }
+
+  @override
+  void dispose() {
+    _redColorSubject.close();
+    _greenColorSubject.close();
+    _blueColorSubject.close();
+    _rgbChangedSub.cancel();
+    super.dispose();
   }
 
   @override
@@ -43,11 +92,7 @@ class RgbScreenState extends State<RgbScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  BaseHeaderScreen(
-                      hideProfile: true,
-                      isSubHeader: true,
-                      title: 'Đèn RGB đổi màu',
-                      subTitle: 'Màu của icon đèn là màu dẵ pha của 3 nút chỉnh RGB'),
+                  BaseHeaderScreen(hideProfile: true, isSubHeader: true, title: 'Đèn RGB đổi màu', subTitle: 'Màu của icon đèn là màu dẵ pha của 3 nút chỉnh RGB'),
                   Padding(
                     padding: EdgeInsets.only(top: 28.0),
                     child: Stack(
@@ -66,84 +111,88 @@ class RgbScreenState extends State<RgbScreen> {
                             // index: (valueLight / 2).toDouble(),
                             start: 0,
                             end: 50,
-                            activeColor: currentStateDevice ? HexColor('#ff9b31') : HexColor(appBorderColor),
-                            inactiveColor: currentStateDevice ? HexColor('#E2E5ED') : HexColor(appBorderColor),
+                            activeColor: isOn ? HexColor('#ff9b31') : HexColor(appBorderColor),
+                            inactiveColor: isOn ? HexColor('#E2E5ED') : HexColor(appBorderColor),
                             secondsMarker: SecondsMarker.secondsAndMinute,
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            top: deviceWidth(context) * 0.1 + 16,
-                          ),
-                          alignment: Alignment.center,
-                          child: SleekCircularSlider(
-                            innerWidget: (double value) {
-                              return Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'assets/devices/rgb.png',
-                                      width: deviceWidth(context) * 0.25,
-                                      fit: BoxFit.contain,
-                                      color: Color.fromRGBO(
-                                        _progress_red.toInt(),
-                                        _progress_green.toInt(),
-                                        _progress_blue.toInt(),
-                                        (valueLight / 100) < 0.05 ? 0.05 : valueLight / 100,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        top: deviceWidth(context) * 0.125,
-                                      ),
-                                      child: Text(currentStateDevice ? 'Độ sáng $valueLight%' : 'Đèn tắt',
-                                          style: ptTitle(context)),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            onChangeStart: (double value) {
-                              setState(() {
-                                valueLight = value.toInt();
-                              });
-                            },
-                            onChangeEnd: (double value) {
-                              setState(() {
-                                valueLight = value.toInt();
-                              });
-                            },
-                            appearance: CircularSliderAppearance(
-                              customWidths: CustomSliderWidths(
-                                  progressBarWidth: 15, shadowWidth: 15, trackWidth: 15, handlerSize: 12),
-                              size: deviceWidth(context) * 0.6,
-                              customColors: CustomSliderColors(
-                                progressBarColors: [
-                                  Color.fromRGBO(
-                                    _progress_red.toInt(),
-                                    _progress_green.toInt(),
-                                    _progress_blue.toInt(),
-                                    1,
-                                  ),
-                                  Color.fromRGBO(
-                                    _progress_red.toInt(),
-                                    _progress_green.toInt(),
-                                    _progress_blue.toInt(),
-                                    0,
-                                  )
-                                ],
-                                progressBarColor: Colors.red,
-                                shadowColor: Colors.red,
-                                trackColor: HexColor('#E2E5ED'),
-                                dotColor: Colors.grey,
+                        StreamBuilder<List<int>>(
+                          stream: combineRGBChangedEvent,
+                          builder: (context, snapshot) {
+                            List<int> rgb = snapshot.hasData ? snapshot.data : [0,0,0];
+                            return Container(
+                              margin: EdgeInsets.only(
+                                top: deviceWidth(context) * 0.1 + 16,
                               ),
-                            ),
-                            min: 0,
-                            max: 100,
-                            initialValue: valueLight.toDouble(),
-                          ),
+                              alignment: Alignment.center,
+                              child: SleekCircularSlider(
+                                innerWidget: (double value) {
+                                  return Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'assets/devices/rgb.png',
+                                          width: deviceWidth(context) * 0.25,
+                                          fit: BoxFit.contain,
+                                          color: Color.fromRGBO(
+                                            rgb[0],
+                                            rgb[1],
+                                            rgb[2],
+                                            (valueLight / 100) < 0.05 ? 0.05 : valueLight / 100,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            top: deviceWidth(context) * 0.125,
+                                          ),
+                                          child: Text(isOn ? 'Độ sáng $valueLight%' : 'Đèn tắt', style: ptTitle(context)),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                onChangeStart: (double value) {
+                                  setState(() {
+                                    valueLight = value.toInt();
+                                  });
+                                },
+                                onChangeEnd: (double value) {
+                                  setState(() {
+                                    valueLight = value.toInt();
+                                  });
+                                },
+                                appearance: CircularSliderAppearance(
+                                  customWidths: CustomSliderWidths(progressBarWidth: 15, shadowWidth: 15, trackWidth: 15, handlerSize: 12),
+                                  size: deviceWidth(context) * 0.6,
+                                  customColors: CustomSliderColors(
+                                    progressBarColors: [
+                                      Color.fromRGBO(
+                                        rgb[0],
+                                        rgb[1],
+                                        rgb[2],
+                                        1,
+                                      ),
+                                      Color.fromRGBO(
+                                        rgb[0],
+                                        rgb[1],
+                                        rgb[2],
+                                        0,
+                                      )
+                                    ],
+                                    progressBarColor: Colors.red,
+                                    shadowColor: Colors.red,
+                                    trackColor: HexColor('#E2E5ED'),
+                                    dotColor: Colors.grey,
+                                  ),
+                                ),
+                                min: 0,
+                                max: 100,
+                                initialValue: valueLight.toDouble(),
+                              ),
+                            );
+                          },
                         ),
                         Container(
                           margin: EdgeInsets.only(
@@ -160,26 +209,28 @@ class RgbScreenState extends State<RgbScreen> {
                                     inactiveTrackColor: HexColor(appNotWhite),
                                     trackHeight: 10.0,
                                     trackShape: RoundSliderTrackShape(radius: 10),
-                                    thumbShape:
-                                        RoundSliderThumbShape(enabledThumbRadius: 10.0, disabledThumbRadius: 10.0),
-                                    overlayShape:
-                                        RoundSliderThumbShape(enabledThumbRadius: 15.0, disabledThumbRadius: 15.0),
+                                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.0, disabledThumbRadius: 10.0),
+                                    overlayShape: RoundSliderThumbShape(enabledThumbRadius: 15.0, disabledThumbRadius: 15.0),
                                     thumbColor: Colors.red,
                                     overlayColor: Colors.red,
                                     valueIndicatorColor: Colors.red,
                                     activeTickMarkColor: Colors.transparent,
                                     inactiveTickMarkColor: Colors.transparent,
                                   ),
-                                  child: Slider(
-                                    min: 0,
-                                    max: 255,
-                                    divisions: 255,
-                                    label: _progress_red.toInt().toString(),
-                                    value: _progress_red,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _progress_red = value;
-                                      });
+                                  child: StreamBuilder(
+                                    stream: _redColorSubject.stream,
+                                    builder: (context, snapshot) {
+                                      int v = snapshot.hasData ? snapshot.data : 0;
+                                      return Slider(
+                                        min: 0,
+                                        max: 255,
+                                        divisions: 255,
+                                        label: '$v',
+                                        value: v * 1.0,
+                                        onChanged: (value) {
+                                          _redColorSubject.sink.add(value.toInt());
+                                        },
+                                      );
                                     },
                                   ),
                                 ),
@@ -192,26 +243,28 @@ class RgbScreenState extends State<RgbScreen> {
                                     inactiveTrackColor: HexColor(appNotWhite),
                                     trackHeight: 10.0,
                                     trackShape: RoundSliderTrackShape(radius: 10),
-                                    thumbShape:
-                                        RoundSliderThumbShape(enabledThumbRadius: 10.0, disabledThumbRadius: 10.0),
-                                    overlayShape:
-                                        RoundSliderThumbShape(enabledThumbRadius: 15.0, disabledThumbRadius: 15.0),
+                                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.0, disabledThumbRadius: 10.0),
+                                    overlayShape: RoundSliderThumbShape(enabledThumbRadius: 15.0, disabledThumbRadius: 15.0),
                                     thumbColor: Colors.green,
                                     overlayColor: Colors.green,
                                     valueIndicatorColor: Colors.green,
                                     activeTickMarkColor: Colors.transparent,
                                     inactiveTickMarkColor: Colors.transparent,
                                   ),
-                                  child: Slider(
-                                    min: 0,
-                                    max: 255,
-                                    divisions: 255,
-                                    label: _progress_green.toInt().toString(),
-                                    value: _progress_green,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _progress_green = value;
-                                      });
+                                  child: StreamBuilder(
+                                    stream: _greenColorSubject.stream,
+                                    builder: (context, snapshot) {
+                                      int v = snapshot.hasData ? snapshot.data : 0;
+                                      return Slider(
+                                        min: 0,
+                                        max: 255,
+                                        divisions: 255,
+                                        label: '$v',
+                                        value: v * 1.0,
+                                        onChanged: (value) {
+                                          _greenColorSubject.sink.add(value.toInt());
+                                        },
+                                      );
                                     },
                                   ),
                                 ),
@@ -224,26 +277,28 @@ class RgbScreenState extends State<RgbScreen> {
                                     inactiveTrackColor: HexColor(appNotWhite),
                                     trackHeight: 10.0,
                                     trackShape: RoundSliderTrackShape(radius: 10),
-                                    thumbShape:
-                                        RoundSliderThumbShape(enabledThumbRadius: 10.0, disabledThumbRadius: 10.0),
-                                    overlayShape:
-                                        RoundSliderThumbShape(enabledThumbRadius: 15.0, disabledThumbRadius: 15.0),
+                                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.0, disabledThumbRadius: 10.0),
+                                    overlayShape: RoundSliderThumbShape(enabledThumbRadius: 15.0, disabledThumbRadius: 15.0),
                                     thumbColor: Colors.blue,
                                     overlayColor: Colors.blue,
                                     valueIndicatorColor: Colors.blue,
                                     activeTickMarkColor: Colors.transparent,
                                     inactiveTickMarkColor: Colors.transparent,
                                   ),
-                                  child: Slider(
-                                    min: 0,
-                                    max: 255,
-                                    divisions: 255,
-                                    label: _progress_blue.toInt().toString(),
-                                    value: _progress_blue,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _progress_blue = value;
-                                      });
+                                  child: StreamBuilder(
+                                    stream: _blueColorSubject.stream,
+                                    builder: (context, snapshot) {
+                                      int v = snapshot.hasData ? snapshot.data : 0;
+                                      return Slider(
+                                        min: 0,
+                                        max: 255,
+                                        divisions: 255,
+                                        label: '$v',
+                                        value: v * 1.0,
+                                        onChanged: (value) {
+                                          _blueColorSubject.sink.add(value.toInt());
+                                        },
+                                      );
                                     },
                                   ),
                                 ),
@@ -305,12 +360,8 @@ class RgbScreenState extends State<RgbScreen> {
                   Container(
                     padding: EdgeInsets.only(top: 8),
                     child: GestureDetector(
-                      child: ActionButton(currentStateDevice: currentStateDevice),
-                      onTap: () {
-                        setState(() {
-                          currentStateDevice = !currentStateDevice;
-                        });
-                      },
+                      child: ActionButton(currentStateDevice: isOn),
+                      onTap: _turnDevice
                     ),
                   )
                 ],
@@ -320,5 +371,17 @@ class RgbScreenState extends State<RgbScreen> {
         ],
       ),
     );
+  }
+
+  Future _turnDevice() async {
+    if (isOn) {
+      await BusinessService().turnOffDevice(widget.device.id);
+    } else {
+      await BusinessService().turnOnDevice(widget.device.id);
+    }
+    setState(() {
+      isOn = !isOn;
+    });
+    return Future;
   }
 }
