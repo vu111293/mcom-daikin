@@ -27,6 +27,7 @@ class CameraIpViewState extends State<CameraIpView> {
 
   @override
   void initState() {
+    print('URL ${widget.url}');
     if (widget.height > 0) {
       dynamicHeight = widget.height;
     }
@@ -76,20 +77,23 @@ class CameraIpViewState extends State<CameraIpView> {
 
   void _customizeWebviewLayout() {
     Future.delayed(Duration(milliseconds: 500), () async {
-      await webView.evaluateJavascript(
-          source: "javascript:(function() {"
-              "document.getElementsByTagName(\"img\")[0].width = \"${widget.width}\";"
-              "document.getElementsByTagName(\"img\")[0].align = \"middle\";"
-              "document.getElementsByTagName(\"img\")[0].style=\"-webkit-user-select: none;margin: 0,0,0,0;\";"
-              "document.querySelector('meta[name=viewport]').setAttribute('content', 'width=device-width, initial-scale=1.0, user-scalable=no');"
-              "})()");
+      if (widget.url.contains('Streaming')) {
+        await webView.evaluateJavascript(
+            source: "javascript:(function() {"
+                "document.getElementsByTagName(\"img\")[0].width = \"${widget.width}\";"
+                "document.getElementsByTagName(\"img\")[0].align = \"middle\";"
+                "document.getElementsByTagName(\"img\")[0].style=\"-webkit-user-select: none;margin: 0,0,0,0;\";"
+                "document.querySelector('meta[name=viewport]').setAttribute('content', 'width=device-width, initial-scale=1.0, user-scalable=no');"
+                "})()");
+      }
 
       dynamic ret = await webView.evaluateJavascript(source: "document.getElementsByTagName(\"img\")[0].height;");
-      if (ret != null && ret > 200) {
+      if (ret != null && (ret is double || ret is int) && ret > 200) {
+        if (ret > 350) ret = 350;
         _camTryNumber = 0;
         if (mounted) {
           setState(() {
-            dynamicHeight = (ret as int) * 1.0;
+            dynamicHeight = ret is double ? ret : (ret as int) * 1.0;
           });
         }
 
