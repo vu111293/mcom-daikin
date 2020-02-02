@@ -39,6 +39,12 @@ class HomeBloc {
           }
         }
       }
+
+      // sort device in rooms
+      rooms.forEach((r) {
+        r.devices.sort((a,b) => b.sortOrder - a.sortOrder);
+      });
+
       _scenesSubject.sink.add(scenes);
       _roomsSubject.sink.add(rooms);
 
@@ -51,6 +57,20 @@ class HomeBloc {
     }).catchError((e) {
       print('Fetch home data error: $e');
     });
+  }
+
+  updateDevice(Device d) {
+   List<Room> currentRooms = _roomsSubject.stream.value;
+   Room room = currentRooms.firstWhere((r) => r.id == d.roomID, orElse: () => null);
+   if (room != null) {
+     Device device = room.devices.firstWhere((item) => item.id == d.id, orElse: () => null);
+     if (device != null) {
+       room.devices.remove(device);
+       room.devices.add(d);
+       room.devices.sort((a,b) => b.sortOrder - a.sortOrder);
+     }
+   }
+   _roomsSubject.sink.add(currentRooms);
   }
 
   dispose() {

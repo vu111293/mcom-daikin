@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -77,7 +79,7 @@ class CameraIpViewState extends State<CameraIpView> {
 
   void _customizeWebviewLayout() {
     Future.delayed(Duration(milliseconds: 500), () async {
-      if (widget.url.contains('Streaming')) {
+      if (widget.url.contains('Streaming') || Platform.isAndroid) {
         await webView.evaluateJavascript(
             source: "javascript:(function() {"
                 "document.getElementsByTagName(\"img\")[0].width = \"${widget.width}\";"

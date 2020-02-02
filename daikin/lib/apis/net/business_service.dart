@@ -49,6 +49,17 @@ class BusinessService extends BaseLoopBackApi {
     return (result as List).map((item) => Scene.fromJson(item)).toList();
   }
 
+  Future<Device> getDeviceDetail(int id) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      id
+    ].join('/');
+    final result = await this.request(method: 'GET', url: url);
+    return Device.fromJson(result);
+  }
+
   Future<void> callSceneAction(String id) async {
     final url = [
       LoopBackConfig.getPath(),

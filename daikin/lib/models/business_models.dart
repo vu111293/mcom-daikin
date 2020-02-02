@@ -249,7 +249,7 @@ class DeviceProperty {
   int get getBlue => _getColorAtIndex(2);
   int get getBrightness => _getColorAtIndex(3);
 
-  bool get isLightOn => value == '1';
+  bool get isLightOn => value != '0';
 
 
 }

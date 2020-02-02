@@ -305,8 +305,8 @@ Widget buildSwitchDevice(DeviceViewItem widget, Device device, Function callback
   );
 }
 
-Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback) {
-  bool isSwitched = device.properties.value == '1' ? true : false;
+Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback, Function backFromDetailPage) {
+  bool isSwitched = device.properties.value != '0' ? true : false;
 
   return AnimatedBuilder(
     animation: widget.animationController,
@@ -336,7 +336,9 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback) {
 //                        callback(value);
 //                      },
 //                    )
-                );
+                ).then((d) {
+                  backFromDetailPage();
+                });
               },
               child: Padding(
                 padding: EdgeInsets.all(10.0),

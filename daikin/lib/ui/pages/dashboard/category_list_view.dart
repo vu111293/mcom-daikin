@@ -58,7 +58,9 @@ class _CategoryListViewState extends State<CategoryListView> with TickerProvider
                     animationController: animationController,
                     callback: () {
                       if (index == 0) {
-                        Routing().navigate2(context, RgbScreen());
+                        Routing().navigate2(context, RgbScreen()).then((d) {
+
+                        });
                       }
                       widget.callBack();
                     },

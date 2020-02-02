@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/apis/net/business_service.dart';
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/models/business_models.dart';
@@ -25,12 +27,16 @@ class DeviceViewItem extends StatefulWidget {
 }
 
 class _DeviceViewItemState extends State<DeviceViewItem> {
+
   bool isSwitched = false;
+  ApplicationBloc _appBloc;
+  Device _localDevice;
+
   @override
   void initState() {
+    _localDevice = widget.device;
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
     super.initState();
-
-    //widget.category.status;
   }
 
   @override
@@ -39,30 +45,41 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
   }
 
   Widget buildDevices() {
-    if (widget.device.type == "com.fibaro.binarySwitch") {
-      return buildSwitchDevice(widget, widget.device, (value) {
-        onSwitchDevice(value, widget.device);
+    if (_localDevice.type == "com.fibaro.binarySwitch") {
+      return buildSwitchDevice(widget, _localDevice, (value) {
+        onSwitchDevice(value, _localDevice);
       });
-    } else if (widget.device.type == "com.fibaro.FGRGBW441M") {
-      return buildRGBDevice(widget, widget.device, (value) {
-        onSwitchRGBDevice(value, widget.device);
+    } else if (_localDevice.type == "com.fibaro.FGRGBW441M") {
+      return buildRGBDevice(widget, _localDevice, (value) {
+        onSwitchRGBDevice(value, _localDevice);
+      }, () {
+        _refreshDeviceInfo(_localDevice);
       });
-    } else if (widget.device.type == "virtual_device") {
-      return buildVirtualDevice(widget, widget.device);
-    } else if (widget.device.type == "com.fibaro.FGRM222") {
-      return buildBlindsDevice(widget, widget.device, isSwitched, (value) {
+    } else if (_localDevice.type == "virtual_device") {
+      return buildVirtualDevice(widget, _localDevice);
+    } else if (_localDevice.type == "com.fibaro.FGRM222") {
+      return buildBlindsDevice(widget, _localDevice, isSwitched, (value) {
         print("@@@@@@@@@@@@@@@@@@@@@@@");
       });
-    } else if (widget.device.type == "com.fibaro.FGD212") {
-      return buildSwitchMultiDevice(widget, widget.device, (value) {
-        onClickMultiDevice(value, widget.device);
+    } else if (_localDevice.type == "com.fibaro.FGD212") {
+      return buildSwitchMultiDevice(widget, _localDevice, (value) {
+        onClickMultiDevice(value, _localDevice);
       }, (value) {
-        onSwitchMultiDevice(value, widget.device);
+        onSwitchMultiDevice(value, _localDevice);
       });
     }
 
-    return defaultBuildDevice(widget, widget.device, isSwitched, (value) {
+    return defaultBuildDevice(widget, _localDevice, isSwitched, (value) {
       print("@@@@@@@@@@@@@@@@@@@@@@@");
+    });
+  }
+
+
+  void _refreshDeviceInfo(Device d) async {
+    Device device = await BusinessService().getDeviceDetail(d.id);
+    _appBloc.homeBloc.updateDevice(device);
+    setState(() {
+      _localDevice = device;
     });
   }
 

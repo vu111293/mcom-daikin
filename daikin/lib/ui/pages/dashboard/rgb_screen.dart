@@ -22,6 +22,8 @@ class RgbScreen extends StatefulWidget {
 }
 
 class RgbScreenState extends State<RgbScreen> {
+
+  Device localDevice;
   bool isOn = true;
   int valueLight = 65;
 //  double _progress_red = 230;
@@ -32,9 +34,9 @@ class RgbScreenState extends State<RgbScreen> {
   final _greenColorSubject = BehaviorSubject.seeded(0);
   final _blueColorSubject = BehaviorSubject.seeded(0);
 
-  int get _latestRed => _redColorSubject.stream.value;
-  int get _latestGreen => _redColorSubject.stream.value;
-  int get _latestBlue => _redColorSubject.stream.value;
+//  int get _latestRed => _redColorSubject.stream.value;
+//  int get _latestGreen => _redColorSubject.stream.value;
+//  int get _latestBlue => _redColorSubject.stream.value;
   StreamSubscription _rgbChangedSub;
 
   Stream<List<int>> get combineRGBChangedEvent => Observable.combineLatest3(
@@ -48,23 +50,10 @@ class RgbScreenState extends State<RgbScreen> {
   @override
   void initState() {
     super.initState();
-
-
-
-    DeviceProperty properties = widget.device.properties;
-    _redColorSubject.sink.add(properties.getRed);
-    _greenColorSubject.sink.add(properties.getGreen);
-    _blueColorSubject.sink.add(properties.getBlue);
-    isOn = properties.isLightOn;
-
-    _rgbChangedSub = combineRGBChangedEvent.listen((v) {
-      if (v.length == 3) {
-        // call setcolor api
-        BusinessService().setRGBColor(widget.device.id, v[0], v[1], v[2], 255);
-      }
-    });
-
+    _fetchDeviceDetail();
   }
+
+
 
   @override
   void dispose() {
@@ -373,11 +362,38 @@ class RgbScreenState extends State<RgbScreen> {
     );
   }
 
+  void _fetchDeviceDetail() async {
+    localDevice = await BusinessService().getDeviceDetail(widget.device.id);
+
+    DeviceProperty properties = localDevice.properties;
+    _redColorSubject.sink.add(properties.getRed);
+    _greenColorSubject.sink.add(properties.getGreen);
+    _blueColorSubject.sink.add(properties.getBlue);
+    setState(() {
+      isOn = properties.isLightOn;
+    });
+
+    _rgbChangedSub = combineRGBChangedEvent.listen((v) {
+      if (v.length == 3) {
+        // call setcolor api
+        if (isOn) {
+          BusinessService().setRGBColor(localDevice.id, v[0], v[1], v[2], 255);
+        }
+      }
+    });
+  }
+
   Future _turnDevice() async {
     if (isOn) {
       await BusinessService().turnOffDevice(widget.device.id);
     } else {
       await BusinessService().turnOnDevice(widget.device.id);
+      BusinessService().setRGBColor(
+          localDevice.id,
+          _redColorSubject.stream.value,
+          _greenColorSubject.stream.value,
+          _blueColorSubject.stream.value,
+          255);
     }
     setState(() {
       isOn = !isOn;
