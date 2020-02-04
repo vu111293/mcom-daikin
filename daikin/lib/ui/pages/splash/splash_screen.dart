@@ -113,7 +113,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _openLoginScreen() {
-    Routing().navigate2(context, LoginScreen(), replace: true);
+    Routing().navigate2(context, IntroductionScreen());
+    // Routing().navigate2(context, LoginScreen(), replace: true);
   }
 
   @override
