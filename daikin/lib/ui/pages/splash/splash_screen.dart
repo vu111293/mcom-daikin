@@ -59,7 +59,6 @@ class _SplashScreenState extends State<SplashScreen> {
     _setupStateStream = _appBloc.setupStateEvent.listen(
       (s) async {
         if (s == 'done') {
-          print("@@@@@@@@@@@@@@@@@@@@@@@");
           // Routing().navigate2(context, IntroductionScreen());
           // Routing().navigate2(context, MainScreen());
           try {

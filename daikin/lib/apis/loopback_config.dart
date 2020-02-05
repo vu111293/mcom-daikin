@@ -1,5 +1,6 @@
+import 'package:daikin/apis/core/auth_service.dart';
+
 class LoopBackConfig {
-  static String _path = 'http://mhome-showroom.ddns.net:80';
   static String _version = 'api';
   static String _authPrefix = '';
   static String _uploadContainer = 's3-colleagues-dev';
@@ -22,12 +23,12 @@ class LoopBackConfig {
     return LoopBackConfig._version;
   }
 
-  static void setBaseURL([String url = '/']) {
-    LoopBackConfig._path = url;
-  }
+  // static void setBaseURL([String url = '/']) {
+  //   LoopBackConfig._path = url;
+  // }
 
   static String getPath() {
-    return LoopBackConfig._path;
+    return LoopBackAuth().host;
   }
 
   static void setAuthPrefix([String authPrefix = '']) {

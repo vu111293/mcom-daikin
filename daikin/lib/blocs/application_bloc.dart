@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daikin/blocs/childBlocs/center_bloc.dart';
 import 'package:daikin/blocs/childBlocs/home_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -7,9 +8,9 @@ import 'bloc_provider.dart';
 import 'childBlocs/auth_bloc.dart';
 
 class ApplicationBloc implements BlocBase {
-
   AuthBloc _authBloc;
   HomeBloc _homeBloc;
+  CenterBloc _centerBloc;
 
   int countChangedMonney = 1;
 
@@ -24,19 +25,27 @@ class ApplicationBloc implements BlocBase {
 
   AuthBloc get authBloc => _authBloc;
   HomeBloc get homeBloc => _homeBloc;
+  CenterBloc get centerBloc => _centerBloc;
 
   @override
   void dispose() {
     _setupStateSubject.close();
     _deviceIdSubject.close();
+
   }
 
   ApplicationBloc() {
     _authBloc = AuthBloc();
     _homeBloc = HomeBloc();
+    _centerBloc = CenterBloc();
   }
 
   String get deviceId => _deviceIdSubject.stream.value;
+
+  setCurrentCenter(dynamic data) async {
+    await _centerBloc.setCurrentCenter(data);
+    this.fetchUserData();
+  }
 
   fetchUserData() {
     _homeBloc.fetchHomeData().then((r) {
