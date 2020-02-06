@@ -22,7 +22,6 @@ class RgbScreen extends StatefulWidget {
 }
 
 class RgbScreenState extends State<RgbScreen> {
-
   Device localDevice;
   bool isOn = true;
   int valueLight = 65;
@@ -40,10 +39,10 @@ class RgbScreenState extends State<RgbScreen> {
   StreamSubscription _rgbChangedSub;
 
   Stream<List<int>> get combineRGBChangedEvent => Observable.combineLatest3(
-      _redColorSubject.debounceTime(Duration(milliseconds: 500)),
-      _greenColorSubject.debounceTime(Duration(milliseconds: 500)),
-      _blueColorSubject.debounceTime(Duration(milliseconds: 500)),
-      (r, g, b) {
+          _redColorSubject.debounceTime(Duration(milliseconds: 500)),
+          _greenColorSubject.debounceTime(Duration(milliseconds: 500)),
+          _blueColorSubject.debounceTime(Duration(milliseconds: 500)),
+          (r, g, b) {
         return [r, g, b];
       });
 
@@ -52,8 +51,6 @@ class RgbScreenState extends State<RgbScreen> {
     super.initState();
     _fetchDeviceDetail();
   }
-
-
 
   @override
   void dispose() {
@@ -66,7 +63,7 @@ class RgbScreenState extends State<RgbScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('object $valueLight');
+    // print('object $valueLight');
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -81,7 +78,12 @@ class RgbScreenState extends State<RgbScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  BaseHeaderScreen(hideProfile: true, isSubHeader: true, title: 'Đèn RGB đổi màu', subTitle: 'Màu của icon đèn là màu dẵ pha của 3 nút chỉnh RGB'),
+                  BaseHeaderScreen(
+                      hideProfile: true,
+                      isSubHeader: true,
+                      title: 'Đèn RGB đổi màu',
+                      subTitle:
+                          'Màu của đèn là màu đã pha của 3 nút chỉnh RGB'),
                   Padding(
                     padding: EdgeInsets.only(top: 28.0),
                     child: Stack(
@@ -100,15 +102,20 @@ class RgbScreenState extends State<RgbScreen> {
                             // index: (valueLight / 2).toDouble(),
                             start: 0,
                             end: 50,
-                            activeColor: isOn ? HexColor('#ff9b31') : HexColor(appBorderColor),
-                            inactiveColor: isOn ? HexColor('#E2E5ED') : HexColor(appBorderColor),
+                            activeColor: isOn
+                                ? HexColor('#ff9b31')
+                                : HexColor(appBorderColor),
+                            inactiveColor: isOn
+                                ? HexColor('#E2E5ED')
+                                : HexColor(appBorderColor),
                             secondsMarker: SecondsMarker.secondsAndMinute,
                           ),
                         ),
                         StreamBuilder<List<int>>(
                           stream: combineRGBChangedEvent,
                           builder: (context, snapshot) {
-                            List<int> rgb = snapshot.hasData ? snapshot.data : [0,0,0];
+                            List<int> rgb =
+                                snapshot.hasData ? snapshot.data : [0, 0, 0];
                             return Container(
                               margin: EdgeInsets.only(
                                 top: deviceWidth(context) * 0.1 + 16,
@@ -129,14 +136,20 @@ class RgbScreenState extends State<RgbScreen> {
                                             rgb[0],
                                             rgb[1],
                                             rgb[2],
-                                            (valueLight / 100) < 0.05 ? 0.05 : valueLight / 100,
+                                            (valueLight / 100) < 0.05
+                                                ? 0.05
+                                                : valueLight / 100,
                                           ),
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(
                                             top: deviceWidth(context) * 0.125,
                                           ),
-                                          child: Text(isOn ? 'Độ sáng $valueLight%' : 'Đèn tắt', style: ptTitle(context)),
+                                          child: Text(
+                                              isOn
+                                                  ? 'Độ sáng $valueLight%'
+                                                  : 'Đèn tắt',
+                                              style: ptTitle(context)),
                                         ),
                                       ],
                                     ),
@@ -153,7 +166,11 @@ class RgbScreenState extends State<RgbScreen> {
                                   });
                                 },
                                 appearance: CircularSliderAppearance(
-                                  customWidths: CustomSliderWidths(progressBarWidth: 15, shadowWidth: 15, trackWidth: 15, handlerSize: 12),
+                                  customWidths: CustomSliderWidths(
+                                      progressBarWidth: 15,
+                                      shadowWidth: 15,
+                                      trackWidth: 15,
+                                      handlerSize: 12),
                                   size: deviceWidth(context) * 0.6,
                                   customColors: CustomSliderColors(
                                     progressBarColors: [
@@ -197,9 +214,14 @@ class RgbScreenState extends State<RgbScreen> {
                                     activeTrackColor: Colors.red,
                                     inactiveTrackColor: HexColor(appNotWhite),
                                     trackHeight: 10.0,
-                                    trackShape: RoundSliderTrackShape(radius: 10),
-                                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.0, disabledThumbRadius: 10.0),
-                                    overlayShape: RoundSliderThumbShape(enabledThumbRadius: 15.0, disabledThumbRadius: 15.0),
+                                    trackShape:
+                                        RoundSliderTrackShape(radius: 10),
+                                    thumbShape: RoundSliderThumbShape(
+                                        enabledThumbRadius: 10.0,
+                                        disabledThumbRadius: 10.0),
+                                    overlayShape: RoundSliderThumbShape(
+                                        enabledThumbRadius: 15.0,
+                                        disabledThumbRadius: 15.0),
                                     thumbColor: Colors.red,
                                     overlayColor: Colors.red,
                                     valueIndicatorColor: Colors.red,
@@ -209,7 +231,8 @@ class RgbScreenState extends State<RgbScreen> {
                                   child: StreamBuilder(
                                     stream: _redColorSubject.stream,
                                     builder: (context, snapshot) {
-                                      int v = snapshot.hasData ? snapshot.data : 0;
+                                      int v =
+                                          snapshot.hasData ? snapshot.data : 0;
                                       return Slider(
                                         min: 0,
                                         max: 255,
@@ -217,7 +240,8 @@ class RgbScreenState extends State<RgbScreen> {
                                         label: '$v',
                                         value: v * 1.0,
                                         onChanged: (value) {
-                                          _redColorSubject.sink.add(value.toInt());
+                                          _redColorSubject.sink
+                                              .add(value.toInt());
                                         },
                                       );
                                     },
@@ -231,9 +255,14 @@ class RgbScreenState extends State<RgbScreen> {
                                     activeTrackColor: Colors.green,
                                     inactiveTrackColor: HexColor(appNotWhite),
                                     trackHeight: 10.0,
-                                    trackShape: RoundSliderTrackShape(radius: 10),
-                                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.0, disabledThumbRadius: 10.0),
-                                    overlayShape: RoundSliderThumbShape(enabledThumbRadius: 15.0, disabledThumbRadius: 15.0),
+                                    trackShape:
+                                        RoundSliderTrackShape(radius: 10),
+                                    thumbShape: RoundSliderThumbShape(
+                                        enabledThumbRadius: 10.0,
+                                        disabledThumbRadius: 10.0),
+                                    overlayShape: RoundSliderThumbShape(
+                                        enabledThumbRadius: 15.0,
+                                        disabledThumbRadius: 15.0),
                                     thumbColor: Colors.green,
                                     overlayColor: Colors.green,
                                     valueIndicatorColor: Colors.green,
@@ -243,7 +272,8 @@ class RgbScreenState extends State<RgbScreen> {
                                   child: StreamBuilder(
                                     stream: _greenColorSubject.stream,
                                     builder: (context, snapshot) {
-                                      int v = snapshot.hasData ? snapshot.data : 0;
+                                      int v =
+                                          snapshot.hasData ? snapshot.data : 0;
                                       return Slider(
                                         min: 0,
                                         max: 255,
@@ -251,7 +281,8 @@ class RgbScreenState extends State<RgbScreen> {
                                         label: '$v',
                                         value: v * 1.0,
                                         onChanged: (value) {
-                                          _greenColorSubject.sink.add(value.toInt());
+                                          _greenColorSubject.sink
+                                              .add(value.toInt());
                                         },
                                       );
                                     },
@@ -265,9 +296,14 @@ class RgbScreenState extends State<RgbScreen> {
                                     activeTrackColor: Colors.blue,
                                     inactiveTrackColor: HexColor(appNotWhite),
                                     trackHeight: 10.0,
-                                    trackShape: RoundSliderTrackShape(radius: 10),
-                                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10.0, disabledThumbRadius: 10.0),
-                                    overlayShape: RoundSliderThumbShape(enabledThumbRadius: 15.0, disabledThumbRadius: 15.0),
+                                    trackShape:
+                                        RoundSliderTrackShape(radius: 10),
+                                    thumbShape: RoundSliderThumbShape(
+                                        enabledThumbRadius: 10.0,
+                                        disabledThumbRadius: 10.0),
+                                    overlayShape: RoundSliderThumbShape(
+                                        enabledThumbRadius: 15.0,
+                                        disabledThumbRadius: 15.0),
                                     thumbColor: Colors.blue,
                                     overlayColor: Colors.blue,
                                     valueIndicatorColor: Colors.blue,
@@ -277,7 +313,8 @@ class RgbScreenState extends State<RgbScreen> {
                                   child: StreamBuilder(
                                     stream: _blueColorSubject.stream,
                                     builder: (context, snapshot) {
-                                      int v = snapshot.hasData ? snapshot.data : 0;
+                                      int v =
+                                          snapshot.hasData ? snapshot.data : 0;
                                       return Slider(
                                         min: 0,
                                         max: 255,
@@ -285,7 +322,8 @@ class RgbScreenState extends State<RgbScreen> {
                                         label: '$v',
                                         value: v * 1.0,
                                         onChanged: (value) {
-                                          _blueColorSubject.sink.add(value.toInt());
+                                          _blueColorSubject.sink
+                                              .add(value.toInt());
                                         },
                                       );
                                     },
@@ -349,9 +387,8 @@ class RgbScreenState extends State<RgbScreen> {
                   Container(
                     padding: EdgeInsets.only(top: 8),
                     child: GestureDetector(
-                      child: ActionButton(currentStateDevice: isOn),
-                      onTap: _turnDevice
-                    ),
+                        child: ActionButton(currentStateDevice: isOn),
+                        onTap: _turnDevice),
                   )
                 ],
               ),
