@@ -21,7 +21,8 @@ class CourseInfoDeviceScreen extends StatefulWidget {
   _CourseInfoDeviceScreenState createState() => _CourseInfoDeviceScreenState();
 }
 
-class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with TickerProviderStateMixin {
+class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
+    with TickerProviderStateMixin {
   final double infoHeight = 400.0;
   AnimationController animationController;
   Animation<double> animation;
@@ -33,9 +34,11 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
 
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 1000), vsync: this);
-    animation = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: animationController, curve: Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this);
+    animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController,
+        curve: Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
     setData();
     super.initState();
   }
@@ -81,58 +84,81 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Column(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                                      child: Text('Scenes', textAlign: TextAlign.left, style: ptTitle(context)),
-                                    ),
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(
-                                    //       top: 8.0, left: 16, right: 16),
-                                    //   child: Text('All',
-                                    //       textAlign: TextAlign.left,
-                                    //       style: ptSubtitle(context)),
-                                    // ),
-                                  ],
-                                ),
-                                //widget.room.scenes.length > 0 ?
-                                Container(
-                                    height: 72,
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        padding: EdgeInsets.all(16),
-                                        itemCount: widget.room.scenes.length,
-                                        itemBuilder: (BuildContext ctxt, int index) {
-                                          return getButtonUI(widget.room.scenes[index]);
-                                        })
+                            widget.room.scenes.length > 0
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 16.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0,
+                                                  left: 16,
+                                                  right: 16),
+                                              child: Text('Scenes',
+                                                  textAlign: TextAlign.left,
+                                                  style: ptTitle(context)),
+                                            ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.only(
+                                            //       top: 8.0, left: 16, right: 16),
+                                            //   child: Text('All',
+                                            //       textAlign: TextAlign.left,
+                                            //       style: ptSubtitle(context)),
+                                            // ),
+                                          ],
+                                        ),
+                                        //widget.room.scenes.length > 0 ?
+                                        Container(
+                                            height: 72,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                shrinkWrap: true,
+                                                padding: EdgeInsets.all(16),
+                                                itemCount:
+                                                    widget.room.scenes.length,
+                                                itemBuilder: (BuildContext ctxt,
+                                                    int index) {
+                                                  return getButtonUI(widget
+                                                      .room.scenes[index]);
+                                                })
 
-                                    // ListView(
-                                    //   scrollDirection: Axis.horizontal,
-                                    //   shrinkWrap: true,
-                                    //   padding: EdgeInsets.all(16),
-                                    //   children: <Widget>[],
-                                    // ),
-                                    ) //: SizedBox(),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                              child: Text('Devices', textAlign: TextAlign.left, style: ptTitle(context)),
-                            ),
-                            DeviceGridView(
-                              devices: widget.room.devices,
-                            ),
+                                            // ListView(
+                                            //   scrollDirection: Axis.horizontal,
+                                            //   shrinkWrap: true,
+                                            //   padding: EdgeInsets.all(16),
+                                            //   children: <Widget>[],
+                                            // ),
+                                            ) //: SizedBox(),
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
+                            widget.room.devices.length > 0
+                                ? Padding(
+                                    padding: EdgeInsets.only(top: 8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8.0, left: 16, right: 16),
+                                          child: Text('Devices',
+                                              textAlign: TextAlign.left,
+                                              style: ptTitle(context)),
+                                        ),
+                                        DeviceGridView(
+                                          devices: widget.room.devices,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
                           ],
                         ),
                       ),
@@ -185,7 +211,8 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
           child: Container(
             height: 0,
             child: Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 12, left: 18, right: 18),
+              padding: const EdgeInsets.only(
+                  top: 12, bottom: 12, left: 18, right: 18),
               child: Center(
                 child: Text(
                   txt,
@@ -213,11 +240,15 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
           color: StyleAppTheme.nearlyWhite,
           borderRadius: const BorderRadius.all(Radius.circular(16.0)),
           boxShadow: <BoxShadow>[
-            BoxShadow(color: StyleAppTheme.grey.withOpacity(0.2), offset: const Offset(1.1, 1.1), blurRadius: 8.0),
+            BoxShadow(
+                color: StyleAppTheme.grey.withOpacity(0.2),
+                offset: const Offset(1.1, 1.1),
+                blurRadius: 8.0),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 12.0, bottom: 12.0),
+          padding: const EdgeInsets.only(
+              left: 18.0, right: 18.0, top: 12.0, bottom: 12.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -320,8 +351,11 @@ class ImageBackdrop extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          Text(room.defaultSensors.temperature.toString() + ' °C',
-                              style: ptBody2(context).copyWith(color: Colors.white))
+                          Text(
+                              room.defaultSensors.temperature.toString() +
+                                  ' °C',
+                              style: ptBody2(context)
+                                  .copyWith(color: Colors.white))
                         ],
                       ),
                     ),
@@ -341,7 +375,8 @@ class ImageBackdrop extends StatelessWidget {
                             ),
                           ),
                           Text(room.defaultSensors.humidity.toString() + ' %',
-                              style: ptBody2(context).copyWith(color: Colors.white))
+                              style: ptBody2(context)
+                                  .copyWith(color: Colors.white))
                         ],
                       ),
                     ),
@@ -360,8 +395,10 @@ class ImageBackdrop extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          Text('${NumberFormat.compact().format(room.defaultSensors.light)} w',
-                              style: ptBody2(context).copyWith(color: Colors.white))
+                          Text(
+                              '${NumberFormat.compact().format(room.defaultSensors.light)} w',
+                              style: ptBody2(context)
+                                  .copyWith(color: Colors.white))
                         ],
                       ),
                     ),
