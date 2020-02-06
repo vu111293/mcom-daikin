@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyCenterScreen extends StatefulWidget {
   bool isUpdate;
@@ -506,8 +508,12 @@ class MyCenterScreenState extends State<MyCenterScreen>
                   textColor: Colors.white,
                   color: Colors.redAccent,
                   onPressed: () {
-                    _appBloc.centerBloc.removeCenter(data["id"]);
-                    Navigator.pop(context);
+                    showConfirmDialog(context, "Bạn có muốn xóa thiết bị này ?",
+                        confirmTap: () {
+                      _appBloc.centerBloc.removeCenter(data["id"]);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    });
                     // FocusScope.of(context).requestFocus(FocusNode());
                     // setState(() {
                     //   _status = true;
@@ -559,6 +565,11 @@ class MyCenterScreenState extends State<MyCenterScreen>
                   onPressed: () {
                     _appBloc.setCurrentCenter(data);
                     Navigator.pop(context);
+                    showAlertDialog(context,
+                        "Kích hoạt thiết bị thành công! Hệ thống sẽ tắt ứng dụng. Vui lòng mở lại ứng dụng",
+                        confirmTap: () {
+                      SystemNavigator.pop();
+                    });
                   },
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
