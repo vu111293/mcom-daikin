@@ -401,32 +401,32 @@ class MyCenterScreenState extends State<MyCenterScreen>
                       shrinkWrap: true,
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: Container(
-                            width: 40, // can be whatever value you want
-                            alignment: Alignment.center,
-                            child: Image.asset(
-                              "assets/devices/sun.png",
-                              width: 20,
-                              height: 20,
-                              color: HexColor(appColor),
-                            ),
-                          ),
-                          title: Text(
-                            snapshot.data[index]["name"],
-                            style: ptSubtitle(context),
-                          ),
-                          subtitle: Text(
-                            'IP: ' + snapshot.data[index]["ip"],
-                            style: ptCaption(context),
-                          ),
-                          trailing: GestureDetector(
-                              onTap: () {
-                                _settingModalBottomSheetEdit(
-                                    context, snapshot.data[index]);
-                              },
-                              child: Icon(Icons.edit)),
-                        );
+                        return GestureDetector(
+                            onTap: () {
+                              _settingModalBottomSheetEdit(
+                                  context, snapshot.data[index]);
+                            },
+                            child: ListTile(
+                              leading: Container(
+                                width: 40, // can be whatever value you want
+                                alignment: Alignment.center,
+                                child: Image.asset(
+                                  "assets/devices/sun.png",
+                                  width: 20,
+                                  height: 20,
+                                  color: HexColor(appColor),
+                                ),
+                              ),
+                              title: Text(
+                                snapshot.data[index]["name"],
+                                style: ptSubtitle(context),
+                              ),
+                              subtitle: Text(
+                                'IP: ' + snapshot.data[index]["ip"],
+                                style: ptCaption(context),
+                              ),
+                              trailing: Icon(Icons.edit),
+                            ));
                       },
                     );
                 },
