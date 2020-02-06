@@ -14,6 +14,8 @@ class HomeBloc {
   Stream get scenesDataStream => _scenesSubject.stream;
   Stream get cameraDevicesStream => _cameraDevicesSubject;
 
+  Function(List<Scene>) get scenesAction => _scenesSubject.sink.add;
+
   Future fetchHomeData() {
     return Future.wait([
       _businessService.getRoomList(),
@@ -25,7 +27,7 @@ class HomeBloc {
       List<Scene> scenes = results[2];
 
       devices = devices.where((v) => v.visible).toList();
-      
+
       for (var i = 0; i < rooms.length; i++) {
         for (var j = 0; j < devices.length; j++) {
           if (rooms[i].id == devices[j].roomID) {
@@ -42,16 +44,19 @@ class HomeBloc {
 
       // sort device in rooms
       rooms.forEach((r) {
-        r.devices.sort((a,b) => b.sortOrder - a.sortOrder);
+        r.devices.sort((a, b) => b.sortOrder - a.sortOrder);
       });
+
+      // Parse camera devices
+      List<Device> cameraDevices = devices
+          .where((item) => item.getDeviceType == DeviceType.CAMERA_IP)
+          .toList();
+
+      print("SINK ADD");
 
       _scenesSubject.sink.add(scenes);
       _roomsSubject.sink.add(rooms);
-
-      // Parse camera devices
-      List<Device> cameraDevices = devices.where((item) => item.getDeviceType == DeviceType.CAMERA_IP).toList();
       _cameraDevicesSubject.sink.add(cameraDevices);
-
 
       // _devicesSubject.sink.add(results[1]);
     }).catchError((e) {
@@ -60,17 +65,19 @@ class HomeBloc {
   }
 
   updateDevice(Device d) {
-   List<Room> currentRooms = _roomsSubject.stream.value;
-   Room room = currentRooms.firstWhere((r) => r.id == d.roomID, orElse: () => null);
-   if (room != null) {
-     Device device = room.devices.firstWhere((item) => item.id == d.id, orElse: () => null);
-     if (device != null) {
-       room.devices.remove(device);
-       room.devices.add(d);
-       room.devices.sort((a,b) => b.sortOrder - a.sortOrder);
-     }
-   }
-   _roomsSubject.sink.add(currentRooms);
+    List<Room> currentRooms = _roomsSubject.stream.value;
+    Room room =
+        currentRooms.firstWhere((r) => r.id == d.roomID, orElse: () => null);
+    if (room != null) {
+      Device device = room.devices
+          .firstWhere((item) => item.id == d.id, orElse: () => null);
+      if (device != null) {
+        room.devices.remove(device);
+        room.devices.add(d);
+        room.devices.sort((a, b) => b.sortOrder - a.sortOrder);
+      }
+    }
+    _roomsSubject.sink.add(currentRooms);
   }
 
   dispose() {

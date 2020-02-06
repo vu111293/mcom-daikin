@@ -184,6 +184,8 @@ class DashBoardScreenState extends State<DashBoardScreen> {
           child: StreamBuilder(
             stream: _appBloc.homeBloc.scenesDataStream,
             builder: (context, snapshot) {
+              print("@@@@@@@@@@@@@@@@@@@@@@@2");
+              
               if (!snapshot.hasData) {
                 return SizedBox();
               } else {

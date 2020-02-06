@@ -100,7 +100,7 @@ class BusinessService extends BaseLoopBackApi {
     final url = [
       LoopBackConfig.getPath(),
       LoopBackConfig.getApiVersion(),
-      'callAction'
+      'callAction'  
     ].join('/');
     await this.request(method: 'GET', url: url, urlParams: {
       'name': 'setColor',

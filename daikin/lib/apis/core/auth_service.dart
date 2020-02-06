@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +17,7 @@ class LoopBackAuth {
   String _bearToken;
   String _userId;
   String _fbToken;
+  String _host = '';
 
   static final LoopBackAuth _instance = new LoopBackAuth._internal();
 
@@ -29,6 +31,7 @@ class LoopBackAuth {
     try {
       String accessTokenStr = await _getPersist("accessToken");
       String userIdStr = await _getPersist("userId");
+      dynamic currentCenter = await getCurrentCenter();
       if (accessTokenStr == null ||
           accessTokenStr.isEmpty ||
           userIdStr == null ||
@@ -37,7 +40,18 @@ class LoopBackAuth {
       }
       _token = accessTokenStr;
       _userId = userIdStr;
-      _bearToken = 'Basic a3l0aHVhdEBraW1zb250aWVuLmNvbTpDaG90cm9ubmllbXZ1aTE=';
+
+      print("@@@@@@@@@@@@@@@@@@@@");
+      print(jsonEncode(currentCenter));
+      if (currentCenter == null) {
+        _bearToken = "";
+        _host = "https://daikin.mcom.app";
+      } else {
+        _bearToken = this.generateBasicToken(
+            currentCenter["username"], currentCenter["password"]);
+        _host = currentCenter["ip"];
+      }
+      // _host = "http://mhome-showroom.ddns.net:80";
     } catch (e) {
       return AccessStatus.EXCEPTION;
     }
@@ -64,10 +78,16 @@ class LoopBackAuth {
     save();
   }
 
+  set host(String host) {
+    _host = host;
+    save();
+  }
+
   String get accessToken => _token;
   String get bearToken => _bearToken;
   String get fbToken => _fbToken;
   String get userId => _userId;
+  String get host => _host;
 
   // Persist
   void save() {
@@ -75,6 +95,7 @@ class LoopBackAuth {
     _setPersist('bearToken', _bearToken ?? '');
     _setPersist('fbToken', _bearToken ?? '');
     _setPersist('userId', _userId ?? '');
+    _setPersist('host', _host ?? '');
   }
 
   void clear() {
@@ -82,6 +103,7 @@ class LoopBackAuth {
     _bearToken = null;
     _userId = null;
     fbToken = null;
+    _host = null;
     save();
   }
 
@@ -107,5 +129,63 @@ class LoopBackAuth {
     } else {
       throw new Error();
     }
+  }
+
+  Future<List<dynamic>> getCenter(String key) async {
+    var result = await this._getPersist(key);
+    if (result == null) {
+      result = [
+        {
+          "id": "1",
+          "name": "Demo",
+          "ip": "https://daikin.mcom.app",
+          "username": "username",
+          "password": "password"
+        }
+      ];
+
+      this.setCenter("center", jsonEncode(result));
+      this.setCurrentCenter(result[0]);
+      return result;
+    } else
+      return jsonDecode(await this._getPersist(key));
+  }
+
+  void setCenter(String key, String value) {
+    return this._setPersist(key, value);
+  }
+
+  void setCurrentCenter(dynamic value) {
+    this._setPersist("current_center", jsonEncode(value));
+    _bearToken = generateBasicToken(value["username"], value["password"]);
+    _host = value["ip"];
+    save();
+  }
+
+  String generateBasicToken(String username, String password) {
+    String credentials = username + ":" + password;
+    Codec<String, String> stringToBase64 = utf8.fuse(base64);
+    String encoded = stringToBase64.encode(credentials);
+
+    print(encoded);
+    return "Basic " + encoded;
+  }
+
+  dynamic getCurrentCenter() async {
+    var result = await this._getPersist("current_center");
+    if (result == null) {
+      result = {
+        "id": "1",
+        "name": "Demo",
+        "ip": "https://daikin.mcom.app",
+        "username": "username",
+        "password": "password"
+      };
+
+      this.setCenter("center", jsonEncode([result]));
+      this.setCurrentCenter(result);
+      return result;
+    } else
+      return jsonDecode(result);
   }
 }
