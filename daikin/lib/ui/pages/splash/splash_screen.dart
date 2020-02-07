@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:daikin/apis/net/user_service.dart';
+import 'package:daikin/models/user.dart';
 import 'package:daikin/ui/customs/base_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:device_info/device_info.dart';
@@ -64,15 +66,16 @@ class _SplashScreenState extends State<SplashScreen> {
           try {
             // make auto login or show login page
             AccessStatus tokenState = await LoopBackAuth().loadAccessToken();
-
             print(tokenState);
 
             if (tokenState != AccessStatus.TOKEN_VALID) {
               _openLoginScreen();
             } else {
-              // LUser user =
-              //     await UserService().getProfile(LoopBackAuth().userId);
-              // _appBloc.authBloc.updateUserAction(user);
+              LUser user = await UserService().me();
+              print("User");
+              print(user.toString());
+              
+              _appBloc.authBloc.updateUserAction(user);
 
               Routing().navigate2(context, MainScreen());
 
@@ -85,11 +88,13 @@ class _SplashScreenState extends State<SplashScreen> {
               _setupStateStream.cancel();
             }
           } catch (e) {
+            print(e);
             LoopBackAuth().clear();
             _openLoginScreen();
           }
         } else {
-          showAlertDialog(context, 'Xãy ra lỗi khi giao tiếp với server. Vui lòng thử lại');
+          showAlertDialog(
+              context, 'Xãy ra lỗi khi giao tiếp với server. Vui lòng thử lại');
         }
       },
     );
@@ -162,8 +167,11 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                        top: ScaleUtil.getInstance().setHeight(16), bottom: ScaleUtil.getInstance().setHeight(8)),
-                    child: Text('SmartHome', style: ptHeadline(context).copyWith(fontWeight: FontWeight.normal)),
+                        top: ScaleUtil.getInstance().setHeight(16),
+                        bottom: ScaleUtil.getInstance().setHeight(8)),
+                    child: Text('SmartHome',
+                        style: ptHeadline(context)
+                            .copyWith(fontWeight: FontWeight.normal)),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
@@ -186,7 +194,8 @@ class _SplashScreenState extends State<SplashScreen> {
                               if (online) {
                                 await prepareData();
                               } else {
-                                BotToast.showText(text: 'Không có kết nối internet');
+                                BotToast.showText(
+                                    text: 'Không có kết nối internet');
                               }
                             },
                             child: Text(

@@ -1,3 +1,5 @@
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/ui/setting/profile_screen.dart';
@@ -10,15 +12,26 @@ class BaseHeaderScreen extends StatelessWidget {
   final bool isBack;
   final bool hideProfile;
   final bool isSubHeader;
+  ApplicationBloc _appBloc;
 
   BaseHeaderScreen(
-      {this.title = '', this.subTitle = '', this.isBack = false, this.hideProfile = false, this.isSubHeader = false});
+      {this.title = '',
+      this.subTitle = '',
+      this.isBack = false,
+      this.hideProfile = false,
+      this.isSubHeader = false}) {}
 
   @override
   Widget build(BuildContext context) {
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
+
     return Container(
       padding: EdgeInsets.only(
-          top: isSubHeader ? 16 : isBack ? MediaQuery.of(context).padding.top : MediaQuery.of(context).padding.top + 8,
+          top: isSubHeader
+              ? 16
+              : isBack
+                  ? MediaQuery.of(context).padding.top
+                  : MediaQuery.of(context).padding.top + 8,
           left: 16,
           right: 16,
           bottom: 4),
@@ -42,7 +55,8 @@ class BaseHeaderScreen extends StatelessWidget {
                   child: Center(
                   child: Text(
                     title ?? "",
-                    style: ptTitle(context).copyWith(color: ptPrimaryColor(context)),
+                    style: ptTitle(context)
+                        .copyWith(color: ptPrimaryColor(context)),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -80,7 +94,13 @@ class BaseHeaderScreen extends StatelessWidget {
                       child: Container(
                           width: 40,
                           height: 40,
-                          child: CircleAvatar(backgroundImage: AssetImage('assets/images/userImage.png'))),
+                          child: CircleAvatar(
+                              backgroundImage:
+                                  _appBloc.authBloc.currentUser.avatar != null
+                                      ? NetworkImage(
+                                          _appBloc.authBloc.currentUser.avatar)
+                                      : AssetImage(
+                                          'assets/images/userImage2.png'))),
                     )
                   : GestureDetector(
                       onTap: () {
@@ -89,7 +109,13 @@ class BaseHeaderScreen extends StatelessWidget {
                       child: Container(
                           width: 50,
                           height: 50,
-                          child: CircleAvatar(backgroundImage: AssetImage('assets/images/userImage.png'))),
+                          child: CircleAvatar(
+                              backgroundImage:
+                                  _appBloc.authBloc.currentUser.avatar != null
+                                      ? NetworkImage(
+                                          _appBloc.authBloc.currentUser.avatar)
+                                      : AssetImage(
+                                          'assets/images/userImage2.png'))),
                     )
         ],
       ),

@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:daikin/apis/core/auth_service.dart';
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
+import 'package:daikin/models/user.dart';
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/customs/image_picker.dart';
 import 'package:daikin/ui/pages/login/login_screen.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/ui/setting/my_center_screen.dart';
@@ -11,15 +15,20 @@ import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
   SettingScreenState createState() => SettingScreenState();
 }
 
-class SettingScreenState extends State<SettingScreen> with SingleTickerProviderStateMixin {
+class SettingScreenState extends State<SettingScreen>
+    with SingleTickerProviderStateMixin {
+  ApplicationBloc _appBloc;
+
   @override
   void initState() {
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
     super.initState();
   }
 
@@ -57,17 +66,28 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                     Routing().navigate2(context, ProfileScreen());
                   },
                   leading: Container(
-                    width: 60,
-                    height: 60,
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/userImage.png'),
-                    ),
+                    width: 55.0,
+                    height: 55.0,
+                    child:
+                     ImagePickerWidget(
+                        context: context,
+                        isEdit: false,
+                        circle: true,
+                        resourceUrl: _appBloc.authBloc.currentUser.avatar,
+                        onFileChanged: (fileUri, fileType) {
+                          setState(() {
+                          });
+                        },
+                      ),
                   ),
                   title: Text(
-                    'Hello !',
-                    style: ptSubtitle(context).copyWith(color: ptPrimaryColor(context)),
+                    _appBloc.authBloc.getUser.fullName,
+                    style: ptSubtitle(context)
+                        .copyWith(color: ptPrimaryColor(context)),
                   ),
-                  subtitle: Text('', style: ptTitle(context).copyWith(color: ptPrimaryColor(context))),
+                  subtitle: Text('',
+                      style: ptTitle(context)
+                          .copyWith(color: ptPrimaryColor(context))),
                   trailing: Container(
                     width: 32,
                     height: 32,
@@ -84,7 +104,7 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -100,7 +120,8 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                             shadowColor: Colors.black26,
                             color: Colors.red,
                             child: Padding(
-                              padding: EdgeInsets.all(deviceWidth(context) / 16),
+                              padding:
+                                  EdgeInsets.all(deviceWidth(context) / 16),
                               child: Image.asset(
                                 'assets/icons/Turn_off.png',
                                 color: Colors.white,
@@ -112,7 +133,8 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                           padding: EdgeInsets.only(top: 8.0),
                           child: Text(
                             "Tắt hết thiết bị",
-                            style: ptBody1(context).copyWith(color: ptPrimaryColor(context)),
+                            style: ptBody1(context)
+                                .copyWith(color: ptPrimaryColor(context)),
                             textAlign: TextAlign.center,
                           ),
                         )
@@ -129,7 +151,8 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                             shadowColor: Colors.black26,
                             color: Colors.white,
                             child: Padding(
-                              padding: EdgeInsets.all(deviceWidth(context) / 16),
+                              padding:
+                                  EdgeInsets.all(deviceWidth(context) / 16),
                               child: Image.asset(
                                 'assets/icons/O_khoa.png',
                                 color: HexColor(appBorderColor),
@@ -141,7 +164,8 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                           padding: EdgeInsets.only(top: 8.0),
                           child: Text(
                             "Rời khỏi nhà",
-                            style: ptBody1(context).copyWith(color: ptPrimaryColor(context)),
+                            style: ptBody1(context)
+                                .copyWith(color: ptPrimaryColor(context)),
                             textAlign: TextAlign.center,
                           ),
                         )
@@ -158,7 +182,8 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                             shadowColor: Colors.black26,
                             color: Colors.white,
                             child: Padding(
-                              padding: EdgeInsets.all(deviceWidth(context) / 16),
+                              padding:
+                                  EdgeInsets.all(deviceWidth(context) / 16),
                               child: Image.asset(
                                 'assets/icons/Chia_khoa.png',
                                 color: HexColor(appBorderColor),
@@ -170,7 +195,8 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                           padding: EdgeInsets.only(top: 8.0),
                           child: Text(
                             "Về nhà",
-                            style: ptBody1(context).copyWith(color: ptPrimaryColor(context)),
+                            style: ptBody1(context)
+                                .copyWith(color: ptPrimaryColor(context)),
                             textAlign: TextAlign.center,
                           ),
                         )
@@ -191,10 +217,12 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                   },
                   leading: Text(
                     "My Center",
-                    style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
+                    style: ptTitle(context).copyWith(
+                        color: ptPrimaryColor(context),
+                        fontWeight: FontWeight.w600),
                   ),
                   trailing: Text(
-                    "Thiết bị trung tâm nhà",
+                    "",
                     style: ptSubtitle(context).copyWith(),
                   ),
                 ),
@@ -231,7 +259,9 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                 ListTile(
                   leading: Text(
                     "About",
-                    style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
+                    style: ptTitle(context).copyWith(
+                        color: ptPrimaryColor(context),
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
                 Container(
@@ -261,7 +291,9 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                 ListTile(
                   leading: Text(
                     "Support",
-                    style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
+                    style: ptTitle(context).copyWith(
+                        color: ptPrimaryColor(context),
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
 
@@ -281,14 +313,16 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                         FlatButton(
                           child: Text(
                             'Đồng ý',
-                            style: ptButton(context).copyWith(color: ptPrimaryColor(context)),
+                            style: ptButton(context)
+                                .copyWith(color: ptPrimaryColor(context)),
                           ),
                           onPressed: handleLogout,
                         ),
                         FlatButton(
                           child: Text(
                             'Hủy',
-                            style: ptButton(context).copyWith(color: ptPrimaryColor(context)),
+                            style: ptButton(context)
+                                .copyWith(color: ptPrimaryColor(context)),
                           ),
                           onPressed: () => Navigator.pop(c, false),
                         ),
@@ -298,7 +332,8 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                   leading: InkWell(
                     child: Text(
                       "Đăng xuất",
-                      style: ptTitle(context).copyWith(color: Colors.red, fontWeight: FontWeight.w600),
+                      style: ptTitle(context).copyWith(
+                          color: Colors.red, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),

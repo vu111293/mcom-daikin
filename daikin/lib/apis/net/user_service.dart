@@ -27,34 +27,41 @@ class UserService extends BaseLoopBackApi {
   }
 
   Future<LUser> login(String fbToken) async {
-    // final url = [LoopBackConfig.getPath(), LoopBackConfig.getApiVersion(), getModelPath(), 'login'].join('/');
-    // final result = await this.request(method: 'POST', url: url, postBody: {'token': fbToken});
-
-// this.auth.accessToken = ""
-    
-    // // cache token
-    // String token = result['token'];
-    // // LoopBackAuth().setAccessToken(token);
-    // // LoopBackAuth().setFbToken(fbToken);
-    // print('Access token: $token');
-
-    // return LUser.fromJson(result['user']);
     final result = await graphqlAPI.login(fbToken);
     String token = (result.data as dynamic)['login']['token'];
     print('Access token: $token');
 
     this.auth.fbToken = fbToken;
     this.auth.accessToken = token;
-    this.auth.bearToken = 'Basic a3l0aHVhdEBraW1zb250aWVuLmNvbTpDaG90cm9ubmllbXZ1aTE=';
+    this.auth.bearToken =
+        'Basic a3l0aHVhdEBraW1zb250aWVuLmNvbTpDaG90cm9ubmllbXZ1aTE=';
 
     var user = LUser.fromJson((result.data as dynamic)['login']['user']);
     this.auth.userId = user.id;
 
     return user;
-  
   }
 
+  Future<LUser> me() async {
+    print('Call API me');
+    print(LoopBackAuth().accessToken);
+    final result = await graphqlAPI.me();
+    print(jsonEncode((result.data as dynamic)['me']));
+    var user = LUser.fromJson((result.data as dynamic)['me']);
+    return user;
+  }
 
+  Future<LUser> updateUser(
+      String _id, String fullName, String email, String avatar) async {
+    try {
+      final result = await graphqlAPI.updateUser(_id, fullName, email, avatar);
+      var user = LUser.fromJson((result.data as dynamic)['updateUser']);
+      return user;
+    } catch (err) {
+      print(err);
+      throw err;
+    }
+  }
 
   Future<List<UserModel>> getListUser() async {
     final url = [

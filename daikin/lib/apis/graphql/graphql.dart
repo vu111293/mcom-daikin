@@ -35,6 +35,34 @@ class GraphqlAPI {
 
     return await client.mutate(_options);
   }
+
+  Future<QueryResult> me() async {
+    final WatchQueryOptions _options = WatchQueryOptions(
+      document: queries.me,
+      variables: <String, dynamic>{},
+      // pollInterval: 4,
+      // fetchResults: true,
+    );
+
+    return await client.query(_options);
+  }
+
+  Future<QueryResult> updateUser(
+      String _id, String fullName, String email, String avatar) async {
+    var document = mutations.updateUser;
+
+    final MutationOptions _options = MutationOptions(
+      document: document,
+      variables: <String, dynamic>{
+        "id": _id,
+        "fullName": fullName,
+        "email": email,
+        "avatar": avatar
+      },
+    );
+
+    return await client.mutate(_options);
+  }
 }
 
 final graphqlAPI = new GraphqlAPI(client: GraphqlConfig.client());

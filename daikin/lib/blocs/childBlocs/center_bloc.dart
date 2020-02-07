@@ -9,12 +9,16 @@ import 'package:rxdart/subjects.dart';
 class CenterBloc {
   LoopBackAuth _loopBackAuth;
   BehaviorSubject<List<dynamic>> _centerSubject = new BehaviorSubject();
+  BehaviorSubject<dynamic> currentCenterSubject = new BehaviorSubject();
+
   Stream get centerDataStream => _centerSubject.stream;
   HomeBloc _homeBloc;
   CenterBloc() {
     _loopBackAuth = LoopBackAuth();
     _homeBloc = HomeBloc();
   }
+
+  dynamic currentCenter;
 
   setCenter(dynamic data) async {
     List<dynamic> result = await _loopBackAuth.getCenter("center");
