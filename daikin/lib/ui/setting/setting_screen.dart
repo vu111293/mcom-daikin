@@ -223,7 +223,7 @@ class SettingScreenState extends State<SettingScreen>
                         fontWeight: FontWeight.w600),
                   ),
                   trailing: Text(
-                    "",
+                    _appBloc.centerBloc.currentCenter["name"] ?? "",
                     style: ptSubtitle(context).copyWith(),
                   ),
                 ),
