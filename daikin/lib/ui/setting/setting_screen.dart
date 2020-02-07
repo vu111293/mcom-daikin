@@ -73,6 +73,7 @@ class SettingScreenState extends State<SettingScreen>
                         context: context,
                         isEdit: false,
                         circle: true,
+                        size: 55.0,
                         resourceUrl: _appBloc.authBloc.currentUser.avatar,
                         onFileChanged: (fileUri, fileType) {
                           setState(() {

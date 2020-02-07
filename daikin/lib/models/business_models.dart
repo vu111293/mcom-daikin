@@ -15,9 +15,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'business_models.g.dart';
 
-enum DeviceType {
-  CAMERA_IP, UNKNOWN
-}
+enum DeviceType { CAMERA_IP, UNKNOWN }
 
 @JsonSerializable(nullable: false)
 class Device {
@@ -42,6 +40,8 @@ class Device {
   final int created;
   final int modified;
   final int sortOrder;
+  @JsonKey(nullable: true, defaultValue: [], ignore: true)
+  List<Device> devices;
 
   Device(
       {this.id,
@@ -70,7 +70,6 @@ class Device {
 
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
 
-
   DeviceType get getDeviceType {
     if (type == 'com.fibaro.ipCamera' && baseType == 'com.fibaro.camera') {
       return DeviceType.CAMERA_IP;
@@ -78,7 +77,6 @@ class Device {
 
     return DeviceType.UNKNOWN;
   }
-
 }
 
 Map<String, dynamic> _propertiesToJson(DeviceProperty item) => item.toJson();
@@ -218,18 +216,20 @@ class DeviceProperty {
 
   Map<String, dynamic> toJson() => _$DevicePropertyToJson(this);
 
-
-
   // For Camera properties
   String get getCameraUrl {
     String http = httpsEnabled == 'true' ? 'https' : 'http';
-    String path = mjpgPath.isNotEmpty && mjpgPath.startsWith('/') ? mjpgPath.substring(1) : mjpgPath;
+    String path = mjpgPath.isNotEmpty && mjpgPath.startsWith('/')
+        ? mjpgPath.substring(1)
+        : mjpgPath;
     return Uri.encodeFull('$http://$username:$password@$ip/$path');
   }
 
   String get getCameraThumbPreview {
     String http = httpsEnabled == 'true' ? 'https' : 'http';
-    String path = jpgPath.isNotEmpty && jpgPath.startsWith('/') ? jpgPath.substring(1) : jpgPath;
+    String path = jpgPath.isNotEmpty && jpgPath.startsWith('/')
+        ? jpgPath.substring(1)
+        : jpgPath;
     return Uri.encodeFull('$http://$username:$password@$ip/$path');
   }
 
@@ -244,14 +244,13 @@ class DeviceProperty {
     }
     return 0;
   }
+
   int get getRed => _getColorAtIndex(0);
   int get getGreen => _getColorAtIndex(1);
   int get getBlue => _getColorAtIndex(2);
   int get getBrightness => _getColorAtIndex(3);
 
   bool get isLightOn => value != '0';
-
-
 }
 
 //"pollingDeadDevice":1,

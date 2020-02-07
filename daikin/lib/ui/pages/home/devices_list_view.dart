@@ -243,6 +243,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
       BotToast.showText(text: "Bật thiết bị thành công");
     }
   }
+
 }
 
 // class CustomDeviceList extends StatelessWidget {
