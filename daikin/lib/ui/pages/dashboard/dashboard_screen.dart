@@ -12,6 +12,8 @@ import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/pages/dashboard/category_list_view.dart';
 import 'package:daikin/ui/pages/dashboard/camera_screen.dart';
 import 'package:daikin/ui/pages/dashboard/camera_list_view.dart';
+import 'package:daikin/ui/pages/home/home_screen.dart';
+import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,8 @@ final List<String> imgList = [
 enum CategoryType { ui, coding, basic, game, chill }
 
 class DashBoardScreen extends StatefulWidget {
+  final TabController tabController;
+  DashBoardScreen({this.tabController});
   @override
   DashBoardScreenState createState() => DashBoardScreenState();
 }
@@ -160,6 +164,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
 
   Widget getSceneUI() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(
           height: 16,
@@ -172,11 +177,11 @@ class DashBoardScreenState extends State<DashBoardScreen> {
               child: Text('Scenes',
                   textAlign: TextAlign.left, style: ptTitle(context)),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('All',
-                  textAlign: TextAlign.left, style: ptSubtitle(context)),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+            //   child: Text('All',
+            //       textAlign: TextAlign.left, style: ptSubtitle(context)),
+            // ),
           ],
         ),
         Container(
@@ -185,7 +190,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
             stream: _appBloc.homeBloc.scenesDataStream,
             builder: (context, snapshot) {
               print("@@@@@@@@@@@@@@@@@@@@@@@2");
-              
+
               if (!snapshot.hasData) {
                 return SizedBox();
               } else {
@@ -295,10 +300,15 @@ class DashBoardScreenState extends State<DashBoardScreen> {
               child: Text('Running Devices',
                   textAlign: TextAlign.left, style: ptTitle(context)),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('All',
-                  textAlign: TextAlign.left, style: ptSubtitle(context)),
+            GestureDetector(
+              onTap: () {
+                widget.tabController.animateTo(1);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+                child: Text('All',
+                    textAlign: TextAlign.left, style: ptSubtitle(context)),
+              ),
             ),
           ],
         ),
@@ -320,15 +330,15 @@ class DashBoardScreenState extends State<DashBoardScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+                padding: const EdgeInsets.only(top: 8.0, left: 0, right: 16),
                 child: Text('Cameras',
                     textAlign: TextAlign.left, style: ptTitle(context)),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('All',
-                    textAlign: TextAlign.left, style: ptSubtitle(context)),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+              //   child: Text('All',
+              //       textAlign: TextAlign.left, style: ptSubtitle(context)),
+              // ),
             ],
           ),
           CameraListView(

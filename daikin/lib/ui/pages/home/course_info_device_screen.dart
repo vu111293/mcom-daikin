@@ -88,6 +88,8 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                                 ? Padding(
                                     padding: EdgeInsets.only(top: 16.0),
                                     child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Row(
                                           mainAxisAlignment:
