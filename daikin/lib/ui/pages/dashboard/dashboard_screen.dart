@@ -18,6 +18,7 @@ import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rxdart/rxdart.dart';
 
 final List<String> imgList = [
   "https://tmshotel.vn/uploads/images/5_1.jpg",
@@ -38,15 +39,16 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class DashBoardScreenState extends State<DashBoardScreen> {
-  int _current = 0;
+
+  final _carouselIndexBehavior = BehaviorSubject.seeded(0);
   ApplicationBloc _appBloc;
+
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
     for (var i = 0; i < list.length; i++) {
       result.add(handler(i, list[i]));
     }
-
     return result;
   }
 
@@ -54,6 +56,12 @@ class DashBoardScreenState extends State<DashBoardScreen> {
   void initState() {
     super.initState();
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    _carouselIndexBehavior.close();
+    super.dispose();
   }
 
   @override
@@ -108,30 +116,34 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                     // aspectRatio: 1,
                     pauseAutoPlayOnTouch: Duration(milliseconds: 150),
                     onPageChanged: (index) {
-                      setState(() {
-                        _current = index;
-                      });
+                      _carouselIndexBehavior.sink.add(index);
                     },
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: map<Widget>(
-                      imgList,
-                      (index, url) {
-                        return Container(
-                          width: 16.0,
-                          height: 3.0,
-                          margin: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 2.0),
-                          decoration: BoxDecoration(
-                            color: _current == index
-                                ? HexColor(appColor).withOpacity(0.9)
-                                : Color.fromRGBO(0, 0, 0, 0.2),
-                            borderRadius: BorderRadius.all(Radius.circular(3)),
-                          ),
-                        );
-                      },
-                    ),
+                  StreamBuilder<int>(
+                    stream: _carouselIndexBehavior.stream,
+                    builder: (context, snapshot) {
+                      int currentIndex = snapshot.hasData ? snapshot.data : 0;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: map<Widget>(
+                          imgList,
+                              (index, url) {
+                            return Container(
+                              width: 16.0,
+                              height: 3.0,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 2.0),
+                              decoration: BoxDecoration(
+                                color: currentIndex == index
+                                    ? HexColor(appColor).withOpacity(0.9)
+                                    : Color.fromRGBO(0, 0, 0, 0.2),
+                                borderRadius: BorderRadius.all(Radius.circular(3)),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                   getSceneUI(),
                   getCategoryUI(),
