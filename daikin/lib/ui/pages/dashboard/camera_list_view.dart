@@ -111,7 +111,7 @@ class CameraItemView extends StatelessWidget {
                         borderRadius:
                             BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
                         child: CachedNetworkImage(
-                          imageUrl: device.properties.getCameraThumbPreview,
+                          imageUrl: device.properties.getCameraThumbPreview  + '&t=${DateTime.now().millisecondsSinceEpoch}',
                           errorWidget: (context, url, err) {
                             return Container(
                               alignment: Alignment.center,
