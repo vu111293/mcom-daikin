@@ -23,8 +23,8 @@ class AuthBloc {
     currentUser = null;
     _authSubject.sink.add(currentUser);
     _authSubject.listen((user) {
-      print("Listen User");
-      print(user.fullName);
+//      print("Listen User");
+//      print(user.fullName);
       currentUser = user;
     });
   }

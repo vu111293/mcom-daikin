@@ -222,9 +222,15 @@ class SettingScreenState extends State<SettingScreen>
                         color: ptPrimaryColor(context),
                         fontWeight: FontWeight.w600),
                   ),
-                  trailing: Text(
-                    _appBloc.centerBloc.currentCenter["name"] ?? "",
-                    style: ptSubtitle(context).copyWith(),
+                  trailing: StreamBuilder(
+                    stream: _appBloc.centerBloc.currentCenterChangeEvent,
+                    builder: (context, snapshot) {
+                      String centerName = snapshot.hasData ? snapshot.data : '';
+                      return Text(
+                        centerName,
+                        style: ptSubtitle(context).copyWith(),
+                      );
+                    },
                   ),
                 ),
                 Container(

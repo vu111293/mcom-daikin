@@ -230,7 +230,7 @@ class DeviceProperty {
     String path = jpgPath.isNotEmpty && jpgPath.startsWith('/')
         ? jpgPath.substring(1)
         : jpgPath;
-    return Uri.encodeFull('$http://$username:$password@$ip/$path');
+    return Uri.encodeFull('$http://${Uri.encodeComponent(username)}:${Uri.encodeComponent(password)}@$ip/$path');
   }
 
   // For RGB light

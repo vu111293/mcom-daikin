@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
             // make auto login or show login page
             AccessStatus tokenState = await LoopBackAuth().loadAccessToken();
             dynamic center = await LoopBackAuth().getCurrentCenter();
-            _appBloc.centerBloc.currentCenter = center;
+            _appBloc.centerBloc.setCurrentCenter(center);
             print(tokenState);
 
             if (tokenState != AccessStatus.TOKEN_VALID) {

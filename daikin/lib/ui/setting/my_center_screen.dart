@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/dialog.dart';
@@ -10,17 +11,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class MyCenterScreen extends StatefulWidget {
-  bool isUpdate;
+  final bool isUpdate;
   MyCenterScreen({Key key, this.isUpdate = false}) : super(key: key);
   @override
   MyCenterScreenState createState() => MyCenterScreenState();
 }
 
-class MyCenterScreenState extends State<MyCenterScreen>
-    with SingleTickerProviderStateMixin {
-  bool _status = false;
+const _DEBUG_MYCENTER = false;
+class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProviderStateMixin {
+
+  ApplicationBloc _appBloc;
   final FocusNode myFocusNode = FocusNode();
-  ApplicationBloc _appBloc = ApplicationBloc();
   final _nameController = TextEditingController();
   final _ipController = TextEditingController();
   final _usernameController = TextEditingController();
@@ -35,10 +36,8 @@ class MyCenterScreenState extends State<MyCenterScreen>
 
   @override
   void initState() {
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
     _appBloc.centerBloc.getCenter();
-    setState(() {
-      _status = widget.isUpdate;
-    });
     super.initState();
   }
 
@@ -92,7 +91,7 @@ class MyCenterScreenState extends State<MyCenterScreen>
                           color: HexColor(appColor),
                         ),
                       ),
-                      titleField(
+                      TitleField(
                         title: 'Tên thiết bị',
                       ),
                       Padding(
@@ -112,7 +111,7 @@ class MyCenterScreenState extends State<MyCenterScreen>
                               ),
                             ],
                           )),
-                      titleField(
+                      TitleField(
                         title: 'IP',
                       ),
                       Padding(
@@ -132,7 +131,7 @@ class MyCenterScreenState extends State<MyCenterScreen>
                               ),
                             ],
                           )),
-                      titleField(
+                      TitleField(
                         title: 'Tài khoản',
                       ),
                       Padding(
@@ -152,7 +151,7 @@ class MyCenterScreenState extends State<MyCenterScreen>
                               ),
                             ],
                           )),
-                      titleField(
+                      TitleField(
                         title: 'Mật khẩu',
                       ),
                       Padding(
@@ -243,7 +242,7 @@ class MyCenterScreenState extends State<MyCenterScreen>
                           color: HexColor(appColor),
                         ),
                       ),
-                      titleField(
+                      TitleField(
                         title: 'Tên thiết bị',
                       ),
                       Padding(
@@ -265,7 +264,7 @@ class MyCenterScreenState extends State<MyCenterScreen>
                               ),
                             ],
                           )),
-                      titleField(
+                      TitleField(
                         title: 'IP',
                       ),
                       Padding(
@@ -280,7 +279,7 @@ class MyCenterScreenState extends State<MyCenterScreen>
                               ),
                             ],
                           )),
-                      titleField(
+                      TitleField(
                         title: 'Tài khoản',
                       ),
                       Padding(
@@ -295,7 +294,7 @@ class MyCenterScreenState extends State<MyCenterScreen>
                               ),
                             ],
                           )),
-                      titleField(
+                      TitleField(
                         title: 'Mật khẩu',
                       ),
                       Padding(
@@ -466,6 +465,14 @@ class MyCenterScreenState extends State<MyCenterScreen>
                   textColor: Colors.white,
                   color: ptPrimaryColor(context),
                   onPressed: () {
+                    if (_DEBUG_MYCENTER) {
+                      name = 'DEBUG CENTER';
+                      ip = 'http://mhome-showroom.ddns.net';
+                      username = 'kythuat@kimsontien.com';
+                      password = 'Chotronniemvui1';
+                    }
+
+
                     _appBloc.centerBloc.setCenter({
                       "name": name,
                       "ip": ip,
@@ -566,9 +573,10 @@ class MyCenterScreenState extends State<MyCenterScreen>
                     _appBloc.setCurrentCenter(data);
                     Navigator.pop(context);
                     showAlertDialog(context,
-                        "Kích hoạt thiết bị thành công! Hệ thống sẽ tắt ứng dụng. Vui lòng mở lại ứng dụng",
+                        "Kích hoạt thiết bị thành công!",
                         confirmTap: () {
-                      SystemNavigator.pop();
+                          Navigator.pop(context);
+//                      SystemNavigator.pop();
                     });
                   },
                   padding: EdgeInsets.symmetric(vertical: 16),
@@ -583,9 +591,9 @@ class MyCenterScreenState extends State<MyCenterScreen>
   }
 }
 
-class titleField extends StatelessWidget {
+class TitleField extends StatelessWidget {
   String title;
-  titleField({
+  TitleField({
     Key key,
     this.title = '',
   }) : super(key: key);
