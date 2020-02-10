@@ -54,6 +54,12 @@ class HomeBloc {
 
       print("SINK ADD");
 
+      cameraDevices = cameraDevices.map((c) {
+        c.devices = devices.where((item) => item.roomID == c.roomID).toList();
+
+        return c;
+      }).toList();
+
       _scenesSubject.sink.add(scenes);
       _roomsSubject.sink.add(rooms);
       _cameraDevicesSubject.sink.add(cameraDevices);

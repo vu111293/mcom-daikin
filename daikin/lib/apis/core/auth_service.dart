@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:daikin/blocs/childBlocs/center_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum AccessStatus {
@@ -20,7 +21,6 @@ class LoopBackAuth {
   String _host = '';
 
   static final LoopBackAuth _instance = new LoopBackAuth._internal();
-
   factory LoopBackAuth() {
     return _instance;
   }
@@ -41,7 +41,7 @@ class LoopBackAuth {
       _token = accessTokenStr;
       _userId = userIdStr;
 
-      print("@@@@@@@@@@@@@@@@@@@@");
+      print("Current Center");
       print(jsonEncode(currentCenter));
       if (currentCenter == null) {
         _bearToken = "";
@@ -172,7 +172,7 @@ class LoopBackAuth {
   }
 
   dynamic getCurrentCenter() async {
-    var result = await this._getPersist("current_center");
+    dynamic result = await this._getPersist("current_center");
     if (result == null) {
       result = {
         "id": "1",
@@ -185,7 +185,9 @@ class LoopBackAuth {
       this.setCenter("center", jsonEncode([result]));
       this.setCurrentCenter(result);
       return result;
-    } else
-      return jsonDecode(result);
+    } else {
+      var dat = jsonDecode(result);
+      return dat;
+    }
   }
 }
