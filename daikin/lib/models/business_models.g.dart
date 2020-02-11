@@ -21,7 +21,7 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
     viewXml: json['viewXml'] as bool,
     configXml: json['configXml'] as bool,
     interfaces: (json['interfaces'] as List)?.map((e) => e as String)?.toList(),
-    properties:
+      properties:
         DeviceProperty.fromJson(json['properties'] as Map<String, dynamic>),
     actions: DeviceAction.fromJson(json['actions'] as Map<String, dynamic>),
     created: json['created'] as int,

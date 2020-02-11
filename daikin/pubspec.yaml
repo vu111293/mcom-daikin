@@ -57,6 +57,7 @@ dependencies:
       url: git://github.com/pichillilorenzo/flutter_inappwebview.git
       ref: develop
   keyboard_avoider: ^0.1.2
+  flutter_html: ^0.11.1
 
 dev_dependencies:
   flutter_test:
