@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
@@ -9,6 +10,7 @@ import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class MyCenterScreen extends StatefulWidget {
   final bool isUpdate;
@@ -18,14 +20,16 @@ class MyCenterScreen extends StatefulWidget {
 }
 
 const _DEBUG_MYCENTER = false;
-class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProviderStateMixin {
 
+class MyCenterScreenState extends State<MyCenterScreen>
+    with SingleTickerProviderStateMixin {
   ApplicationBloc _appBloc;
   final FocusNode myFocusNode = FocusNode();
   final _nameController = TextEditingController();
   final _ipController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   String date;
 
@@ -49,139 +53,143 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                 topLeft: Radius.circular(16), topRight: Radius.circular(16))),
         isScrollControlled: true,
         builder: (BuildContext bc) {
-          return SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: Wrap(
-                children: <Widget>[
-                  Column(
+          return KeyboardAvoider(
+            autoScroll: false,
+            child: Wrap(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 1, color: HexColor(appBorderColor))),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: HexColor(appBorderColor))),
+                      Text(
+                        'Thiết bị',
+                        style: ptTitle(context),
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Icon(
+                          Icons.close,
+                          color: HexColor(appBorderColor),
                         ),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Thiết bị',
-                              style: ptTitle(context),
-                            ),
-                            GestureDetector(
-                              onTap: () => Navigator.of(context).pop(),
-                              child: Icon(
-                                Icons.close,
-                                color: HexColor(appBorderColor),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 25),
-                        child: Image.asset(
-                          "assets/devices/sun.png",
-                          fit: BoxFit.contain,
-                          width: 45,
-                          color: HexColor(appColor),
-                        ),
-                      ),
-                      TitleField(
-                        title: 'Tên thiết bị',
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextField(
-                                  onChanged: (text) {
-                                    setState(() {
-                                      name = text;
-                                    });
-                                  },
-                                  // enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
-                      TitleField(
-                        title: 'IP',
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextField(
-                                  onChanged: (text) {
-                                    setState(() {
-                                      ip = text;
-                                    });
-                                  },
-                                  // enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
-                      TitleField(
-                        title: 'Tài khoản',
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextField(
-                                  onChanged: (text) {
-                                    setState(() {
-                                      username = text;
-                                    });
-                                  },
-                                  // enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
-                      TitleField(
-                        title: 'Mật khẩu',
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextField(
-                                  obscureText: true,
-                                  onChanged: (text) {
-                                    setState(() {
-                                      password = text;
-                                    });
-                                  },
-                                  // enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
-                      Align(
-                          alignment: Alignment.center,
-                          child: _getActionButtons()),
-                      SizedBox(
-                        height: 20,
                       )
                     ],
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  height: deviceHeight(context) * 0.75 +
+                      MediaQuery.of(context).viewInsets.bottom,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 25),
+                          child: Image.asset(
+                            "assets/devices/sun.png",
+                            fit: BoxFit.contain,
+                            width: 45,
+                            color: HexColor(appColor),
+                          ),
+                        ),
+                        TitleField(
+                          title: 'Tên thiết bị',
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Flexible(
+                                  child: TextField(
+                                    onChanged: (text) {
+                                      setState(() {
+                                        name = text;
+                                      });
+                                    },
+                                    // enabled: !_status,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        TitleField(
+                          title: 'IP',
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Flexible(
+                                  child: TextField(
+                                    onChanged: (text) {
+                                      setState(() {
+                                        ip = text;
+                                      });
+                                    },
+                                    // enabled: !_status,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        TitleField(
+                          title: 'Tài khoản',
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Flexible(
+                                  child: TextField(
+                                    onChanged: (text) {
+                                      setState(() {
+                                        username = text;
+                                      });
+                                    },
+                                    // enabled: !_status,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        TitleField(
+                          title: 'Mật khẩu',
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Flexible(
+                                  child: TextField(
+                                    obscureText: true,
+                                    onChanged: (text) {
+                                      setState(() {
+                                        password = text;
+                                      });
+                                    },
+                                    // enabled: !_status,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        Align(
+                            alignment: Alignment.center,
+                            child: _getActionButtons()),
+                        Container(
+                          height: max(
+                              300, MediaQuery.of(context).viewInsets.bottom),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         });
@@ -200,126 +208,147 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                 topLeft: Radius.circular(16), topRight: Radius.circular(16))),
         isScrollControlled: true,
         builder: (BuildContext bc) {
-          return SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: Wrap(
-                children: <Widget>[
-                  Column(
+          return KeyboardAvoider(
+            autoScroll: false,
+            child: Wrap(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 1, color: HexColor(appBorderColor))),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: HexColor(appBorderColor))),
+                      Text(
+                        'Thiết bị',
+                        style: ptTitle(context),
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Icon(
+                          Icons.close,
+                          color: HexColor(appBorderColor),
                         ),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Thiết bị',
-                              style: ptTitle(context),
-                            ),
-                            GestureDetector(
-                              onTap: () => Navigator.of(context).pop(),
-                              child: Icon(
-                                Icons.close,
-                                color: HexColor(appBorderColor),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 25),
-                        child: Image.asset(
-                          "assets/devices/sun.png",
-                          fit: BoxFit.contain,
-                          width: 45,
-                          color: HexColor(appColor),
-                        ),
-                      ),
-                      TitleField(
-                        title: 'Tên thiết bị',
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextFormField(
-                                  controller: _nameController,
-                                  // onChanged: (text) {
-                                  //   setState(() {
-                                  //     _formEdit.name = text;
-                                  //     name = text;
-                                  //   });
-                                  // },
-                                  // enabled: !_status,
-                                ),
-                              ),
-                            ],
-                          )),
-                      TitleField(
-                        title: 'IP',
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextFormField(
-                                  controller: _ipController,
-                                ),
-                              ),
-                            ],
-                          )),
-                      TitleField(
-                        title: 'Tài khoản',
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextFormField(
-                                  controller: _usernameController,
-                                ),
-                              ),
-                            ],
-                          )),
-                      TitleField(
-                        title: 'Mật khẩu',
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Flexible(
-                                child: TextFormField(
-                                  obscureText: true,
-                                  controller: _passwordController,
-                                ),
-                              ),
-                            ],
-                          )),
-                      Align(
-                          alignment: Alignment.center,
-                          child: _getActionButtonEdit(data)),
-                      SizedBox(
-                        height: 20,
                       )
                     ],
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  height: deviceHeight(context) * 0.75 +
+                      MediaQuery.of(context).viewInsets.bottom,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 25),
+                          child: Image.asset(
+                            "assets/devices/sun.png",
+                            fit: BoxFit.contain,
+                            width: 45,
+                            color: HexColor(appColor),
+                          ),
+                        ),
+                        TitleField(
+                          title: 'Tên thiết bị',
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Flexible(
+                                  child: TextFormField(
+                                    controller: _nameController,
+                                    // onChanged: (text) {
+                                    //   setState(() {
+                                    //     _formEdit.name = text;
+                                    //     name = text;
+                                    //   });
+                                    // },
+                                    // enabled: !_status,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        TitleField(
+                          title: 'IP',
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Flexible(
+                                  child: TextFormField(
+                                    controller: _ipController,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        TitleField(
+                          title: 'Tài khoản',
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Flexible(
+                                  child: TextFormField(
+                                    controller: _usernameController,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        TitleField(
+                          title: 'Mật khẩu',
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Flexible(
+                                  child: TextFormField(
+                                    obscureText: true,
+                                    controller: _passwordController,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        Align(
+                            alignment: Alignment.center,
+                            child: _getActionButtonEdit(data)),
+                        Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Flexible(
+                                  child: TextFormField(
+                                    enabled: false,
+                                    obscureText: true,
+                                    controller: _passwordController,
+                                    readOnly: true,
+                                    style: TextStyle(
+                                        backgroundColor: Colors.transparent,
+                                        color: Colors.transparent),
+                                    cursorColor: Colors.transparent,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
           );
         });
@@ -472,7 +501,6 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                       password = 'Chotronniemvui1';
                     }
 
-
                     _appBloc.centerBloc.setCenter({
                       "name": name,
                       "ip": ip,
@@ -572,10 +600,9 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                   onPressed: () {
                     _appBloc.setCurrentCenter(data);
                     Navigator.pop(context);
-                    showAlertDialog(context,
-                        "Kích hoạt thiết bị thành công!",
+                    showAlertDialog(context, "Kích hoạt thiết bị thành công!",
                         confirmTap: () {
-                          Navigator.pop(context);
+                      Navigator.pop(context);
 //                      SystemNavigator.pop();
                     });
                   },
