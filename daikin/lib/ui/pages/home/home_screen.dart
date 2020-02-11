@@ -43,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               indicatorWeight: 3,
               labelColor: HexColor(appColor),
               tabs: [
-                Tab(text: "Rooms"),
-                Tab(text: "Devices"),
+                Tab(text: "Danh sách phòng"),
+                Tab(text: "Danh sách thiết bị"),
               ],
             ),
           ),

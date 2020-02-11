@@ -51,8 +51,7 @@ class SettingScreenState extends State<SettingScreen>
         children: <Widget>[
           BaseHeaderScreen(
             hideProfile: true,
-            title: "Setting",
-            subTitle: "Edit all your setting",
+            title: "Cài đặt",
           ),
           Expanded(
               child: SingleChildScrollView(
@@ -217,7 +216,7 @@ class SettingScreenState extends State<SettingScreen>
                     Routing().navigate2(context, MyCenterScreen());
                   },
                   leading: Text(
-                    "My Center",
+                    "Thiết bị trung tâm",
                     style: ptTitle(context).copyWith(
                         color: ptPrimaryColor(context),
                         fontWeight: FontWeight.w600),
@@ -265,7 +264,7 @@ class SettingScreenState extends State<SettingScreen>
                 // ),
                 ListTile(
                   leading: Text(
-                    "About",
+                    "Giới thiệu",
                     style: ptTitle(context).copyWith(
                         color: ptPrimaryColor(context),
                         fontWeight: FontWeight.w600),
@@ -297,7 +296,7 @@ class SettingScreenState extends State<SettingScreen>
 
                 ListTile(
                   leading: Text(
-                    "Support",
+                    "Hỗ trợ",
                     style: ptTitle(context).copyWith(
                         color: ptPrimaryColor(context),
                         fontWeight: FontWeight.w600),
