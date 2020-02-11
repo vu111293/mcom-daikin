@@ -76,7 +76,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
             children: <Widget>[
               BaseHeaderScreen(
                 title: "Chào Bạn !",
-                subTitle: "Chào mừng bạn đến,",
+//                subTitle: "Chào mừng bạn đến,",
               ),
               Expanded(
                   child: ListView(
@@ -186,7 +186,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('Scenes',
+              child: Text('Danh sách kịch bản',
                   textAlign: TextAlign.left, style: ptTitle(context)),
             ),
             // Padding(
@@ -307,7 +307,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('Running Devices',
+              child: Text('Các thiết bị đang hoạt động',
                   textAlign: TextAlign.left, style: ptTitle(context)),
             ),
             GestureDetector(
@@ -316,7 +316,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
               },
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('All',
+                child: Text('Xem tất cả',
                     textAlign: TextAlign.left, style: ptSubtitle(context)),
               ),
             ),
@@ -341,7 +341,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 0, right: 16),
-                child: Text('Cameras',
+                child: Text('Danh sách Camera',
                     textAlign: TextAlign.left, style: ptTitle(context)),
               ),
               // Padding(

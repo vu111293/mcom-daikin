@@ -100,7 +100,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                                                   top: 8.0,
                                                   left: 16,
                                                   right: 16),
-                                              child: Text('Scenes',
+                                              child: Text('Danh sách kịch bản',
                                                   textAlign: TextAlign.left,
                                                   style: ptTitle(context)),
                                             ),
@@ -150,7 +150,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               top: 8.0, left: 16, right: 16),
-                                          child: Text('Devices',
+                                          child: Text('Danh sách thiết bị',
                                               textAlign: TextAlign.left,
                                               style: ptTitle(context)),
                                         ),

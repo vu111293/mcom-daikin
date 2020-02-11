@@ -69,8 +69,8 @@ class ProfileScreenState extends State<ProfileScreen>
                   children: <Widget>[
                     BaseHeaderScreen(
                       title: widget.isLogin
-                          ? "Update Profile".toUpperCase()
-                          : "Profile".toUpperCase(),
+                          ? "Cập nhật thông tin".toUpperCase()
+                          : "Thông tin tài khoản".toUpperCase(),
                       isBack: widget.isLogin ? false : true,
                       hideProfile: true,
                     ),
@@ -120,7 +120,7 @@ class ProfileScreenState extends State<ProfileScreen>
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Text(
-                                    'Fullname',
+                                    'Họ và tên',
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold),
@@ -318,7 +318,7 @@ class ProfileScreenState extends State<ProfileScreen>
                       style: ptButton(context).copyWith(color: Colors.white),
                     )
                   : Text(
-                      "Save".toUpperCase(),
+                      "Cập nhật".toUpperCase(),
                       style: ptButton(context).copyWith(color: Colors.white),
                     ),
               textColor: Colors.white,

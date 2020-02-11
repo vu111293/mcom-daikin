@@ -51,8 +51,7 @@ class SettingScreenState extends State<SettingScreen>
         children: <Widget>[
           BaseHeaderScreen(
             hideProfile: true,
-            title: "Setting",
-            subTitle: "Edit all your setting",
+            title: "Cài đặt",
           ),
           Expanded(
               child: SingleChildScrollView(
@@ -104,107 +103,107 @@ class SettingScreenState extends State<SettingScreen>
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          width: deviceWidth(context) / 4,
-                          height: deviceWidth(context) / 4,
-                          child: Material(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            elevation: 8,
-                            shadowColor: Colors.black26,
-                            color: Colors.red,
-                            child: Padding(
-                              padding:
-                                  EdgeInsets.all(deviceWidth(context) / 16),
-                              child: Image.asset(
-                                'assets/icons/Turn_off.png',
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            "Tắt hết thiết bị",
-                            style: ptBody1(context)
-                                .copyWith(color: ptPrimaryColor(context)),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          width: deviceWidth(context) / 4,
-                          height: deviceWidth(context) / 4,
-                          child: Material(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            elevation: 8,
-                            shadowColor: Colors.black26,
-                            color: Colors.white,
-                            child: Padding(
-                              padding:
-                                  EdgeInsets.all(deviceWidth(context) / 16),
-                              child: Image.asset(
-                                'assets/icons/O_khoa.png',
-                                color: HexColor(appBorderColor),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            "Rời khỏi nhà",
-                            style: ptBody1(context)
-                                .copyWith(color: ptPrimaryColor(context)),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          width: deviceWidth(context) / 4,
-                          height: deviceWidth(context) / 4,
-                          child: Material(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            elevation: 8,
-                            shadowColor: Colors.black26,
-                            color: Colors.white,
-                            child: Padding(
-                              padding:
-                                  EdgeInsets.all(deviceWidth(context) / 16),
-                              child: Image.asset(
-                                'assets/icons/Chia_khoa.png',
-                                color: HexColor(appBorderColor),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            "Về nhà",
-                            style: ptBody1(context)
-                                .copyWith(color: ptPrimaryColor(context)),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+//                SizedBox(
+//                  height: 20,
+//                ),
+//                Row(
+//                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                  children: <Widget>[
+//                    Column(
+//                      children: <Widget>[
+//                        Container(
+//                          width: deviceWidth(context) / 4,
+//                          height: deviceWidth(context) / 4,
+//                          child: Material(
+//                            borderRadius: BorderRadius.all(Radius.circular(8)),
+//                            elevation: 8,
+//                            shadowColor: Colors.black26,
+//                            color: Colors.red,
+//                            child: Padding(
+//                              padding:
+//                                  EdgeInsets.all(deviceWidth(context) / 16),
+//                              child: Image.asset(
+//                                'assets/icons/Turn_off.png',
+//                                color: Colors.white,
+//                              ),
+//                            ),
+//                          ),
+//                        ),
+//                        Padding(
+//                          padding: EdgeInsets.only(top: 8.0),
+//                          child: Text(
+//                            "Tắt hết thiết bị",
+//                            style: ptBody1(context)
+//                                .copyWith(color: ptPrimaryColor(context)),
+//                            textAlign: TextAlign.center,
+//                          ),
+//                        )
+//                      ],
+//                    ),
+//                    Column(
+//                      children: <Widget>[
+//                        Container(
+//                          width: deviceWidth(context) / 4,
+//                          height: deviceWidth(context) / 4,
+//                          child: Material(
+//                            borderRadius: BorderRadius.all(Radius.circular(8)),
+//                            elevation: 8,
+//                            shadowColor: Colors.black26,
+//                            color: Colors.white,
+//                            child: Padding(
+//                              padding:
+//                                  EdgeInsets.all(deviceWidth(context) / 16),
+//                              child: Image.asset(
+//                                'assets/icons/O_khoa.png',
+//                                color: HexColor(appBorderColor),
+//                              ),
+//                            ),
+//                          ),
+//                        ),
+//                        Padding(
+//                          padding: EdgeInsets.only(top: 8.0),
+//                          child: Text(
+//                            "Rời khỏi nhà",
+//                            style: ptBody1(context)
+//                                .copyWith(color: ptPrimaryColor(context)),
+//                            textAlign: TextAlign.center,
+//                          ),
+//                        )
+//                      ],
+//                    ),
+//                    Column(
+//                      children: <Widget>[
+//                        Container(
+//                          width: deviceWidth(context) / 4,
+//                          height: deviceWidth(context) / 4,
+//                          child: Material(
+//                            borderRadius: BorderRadius.all(Radius.circular(8)),
+//                            elevation: 8,
+//                            shadowColor: Colors.black26,
+//                            color: Colors.white,
+//                            child: Padding(
+//                              padding:
+//                                  EdgeInsets.all(deviceWidth(context) / 16),
+//                              child: Image.asset(
+//                                'assets/icons/Chia_khoa.png',
+//                                color: HexColor(appBorderColor),
+//                              ),
+//                            ),
+//                          ),
+//                        ),
+//                        Padding(
+//                          padding: EdgeInsets.only(top: 8.0),
+//                          child: Text(
+//                            "Về nhà",
+//                            style: ptBody1(context)
+//                                .copyWith(color: ptPrimaryColor(context)),
+//                            textAlign: TextAlign.center,
+//                          ),
+//                        )
+//                      ],
+//                    ),
+//                  ],
+//                ),
 
                 ///
                 Container(
@@ -217,7 +216,7 @@ class SettingScreenState extends State<SettingScreen>
                     Routing().navigate2(context, MyCenterScreen());
                   },
                   leading: Text(
-                    "My Center",
+                    "Thiết bị trung tâm",
                     style: ptTitle(context).copyWith(
                         color: ptPrimaryColor(context),
                         fontWeight: FontWeight.w600),
@@ -265,7 +264,7 @@ class SettingScreenState extends State<SettingScreen>
                 // ),
                 ListTile(
                   leading: Text(
-                    "About",
+                    "Giới thiệu",
                     style: ptTitle(context).copyWith(
                         color: ptPrimaryColor(context),
                         fontWeight: FontWeight.w600),
@@ -297,7 +296,7 @@ class SettingScreenState extends State<SettingScreen>
 
                 ListTile(
                   leading: Text(
-                    "Support",
+                    "Hỗ trợ",
                     style: ptTitle(context).copyWith(
                         color: ptPrimaryColor(context),
                         fontWeight: FontWeight.w600),
