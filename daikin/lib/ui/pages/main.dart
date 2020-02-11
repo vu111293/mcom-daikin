@@ -26,7 +26,7 @@ class _MainScreenState extends State<MainScreen>
   ApplicationBloc _appBloc;
   TabController _tabController;
 
-  int tabLength = 4;
+  int tabLength = 3;
   @override
   void initState() {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
@@ -50,7 +50,6 @@ class _MainScreenState extends State<MainScreen>
               children: [
                 DashBoardScreen(tabController: _tabController),
                 HomeScreen(),
-                AnalyticScreen(),
                 SettingScreen(),
                 // Container(
                 //   color: Colors.red,
@@ -66,9 +65,6 @@ class _MainScreenState extends State<MainScreen>
               ),
               Tab(
                 icon: Icon(Icons.home),
-              ),
-              Tab(
-                icon: Icon(Icons.format_align_right),
               ),
               Tab(
                 icon: Icon(Icons.settings),
