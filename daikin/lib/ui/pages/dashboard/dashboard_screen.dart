@@ -311,16 +311,16 @@ class DashBoardScreenState extends State<DashBoardScreen> {
               child: Text('Các thiết bị đang hoạt động',
                   textAlign: TextAlign.left, style: ptTitle(context)),
             ),
-            GestureDetector(
-              onTap: () {
-                widget.tabController.animateTo(1);
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('Xem tất cả',
-                    textAlign: TextAlign.left, style: ptSubtitle(context)),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     widget.tabController.animateTo(1);
+            //   },
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+            //     child: Text('Xem tất cả',
+            //         textAlign: TextAlign.left, style: ptSubtitle(context)),
+            //   ),
+            // ),
           ],
         ),
         ActiveDeviceListView(

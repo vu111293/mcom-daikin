@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/apis/net/business_service.dart';
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
@@ -26,10 +28,13 @@ class CameraScreen extends StatefulWidget {
 class CameraScreenState extends State<CameraScreen> {
   bool currentStateDevice;
   final _cameraKey = new GlobalKey<CameraIpViewState>();
+  ApplicationBloc _appBloc;
 
   @override
   void initState() {
     super.initState();
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
+
     widget.currentStateDevice = Random().nextBool();
     setState(() {
       currentStateDevice = widget.currentStateDevice;
@@ -206,6 +211,7 @@ class CameraScreenState extends State<CameraScreen> {
       BusinessService().turnOnDevice(device.id);
       BotToast.showText(text: "Bật thiết bị thành công");
     }
+    _appBloc.homeBloc.updateActiveDevice();
   }
 
   onSwitchDevice(bool val, Device device) {
@@ -220,6 +226,7 @@ class CameraScreenState extends State<CameraScreen> {
       BusinessService().turnOnDevice(device.id);
       BotToast.showText(text: "Bật thiết bị thành công");
     }
+    _appBloc.homeBloc.updateActiveDevice();
   }
 
   onMultiSwitchDevice(bool val, Device device) {
@@ -238,5 +245,6 @@ class CameraScreenState extends State<CameraScreen> {
       BusinessService().turnOnDevice(device.id);
       BotToast.showText(text: "Bật thiết bị thành công");
     }
+    _appBloc.homeBloc.updateActiveDevice();
   }
 }

@@ -103,6 +103,7 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
       BusinessService().turnOnDevice(device.id);
       BotToast.showText(text: "Bật thiết bị thành công");
     }
+    _appBloc.homeBloc.updateActiveDevice();
   }
 
   onSwitchMultiDevice(int val, Device device) {
@@ -145,6 +146,7 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
       BusinessService().turnOnDevice(device.id);
       BotToast.showText(text: "Bật thiết bị thành công");
     }
+    _appBloc.homeBloc.updateActiveDevice();
   }
 
   onSwitchDevice(bool val, Device device) {
@@ -159,5 +161,6 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
       BusinessService().turnOnDevice(device.id);
       BotToast.showText(text: "Bật thiết bị thành công");
     }
+    _appBloc.homeBloc.updateActiveDevice();
   }
 }

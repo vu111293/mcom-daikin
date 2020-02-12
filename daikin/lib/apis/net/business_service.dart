@@ -1,14 +1,16 @@
 import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/apis/core/base_service.dart';
+import 'package:daikin/blocs/childBlocs/home_bloc.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/models/user.dart';
 
 import '../loopback_config.dart';
 
 class BusinessService extends BaseLoopBackApi {
-  final LoopBackAuth auth;
-
-  BusinessService() : auth = new LoopBackAuth();
+  LoopBackAuth auth;
+  BusinessService() {
+    auth = new LoopBackAuth();
+  }
   @override
   String getModelPath() {
     return "_";
@@ -100,7 +102,7 @@ class BusinessService extends BaseLoopBackApi {
     final url = [
       LoopBackConfig.getPath(),
       LoopBackConfig.getApiVersion(),
-      'callAction'  
+      'callAction'
     ].join('/');
     await this.request(method: 'GET', url: url, urlParams: {
       'name': 'setColor',

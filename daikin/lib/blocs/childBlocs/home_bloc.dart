@@ -78,6 +78,13 @@ class HomeBloc {
     });
   }
 
+  updateActiveDevice() {
+    List<Device> devices = _devicesSubject.stream.value;
+    List<Device> activeDevice =
+        devices.where((v) => v.properties.value == 'true').toList();
+    _activeDeviceSubject.sink.add(activeDevice);
+  }
+
   updateDevice(Device d) {
     List<Room> currentRooms = _roomsSubject.stream.value;
     Room room =

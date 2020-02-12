@@ -435,6 +435,7 @@ class RgbScreenState extends State<RgbScreen> {
     setState(() {
       isOn = !isOn;
     });
+    // _appBloc.homeBloc.updateActiveDevice();
     return Future;
   }
 }

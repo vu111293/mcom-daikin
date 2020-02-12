@@ -76,8 +76,12 @@ class CustomDeviceList extends StatefulWidget {
 }
 
 class _CustomDeviceListState extends State<CustomDeviceList> {
+  ApplicationBloc _appBloc;
+
   @override
   void initState() {
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
+
     super.initState();
   }
 
@@ -209,6 +213,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
       BusinessService().turnOnDevice(device.id);
       BotToast.showText(text: "Bật thiết bị thành công");
     }
+    _appBloc.homeBloc.updateActiveDevice();
   }
 
   onSwitchDevice(bool val, Device device) {
@@ -223,13 +228,13 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
       BusinessService().turnOnDevice(device.id);
       BotToast.showText(text: "Bật thiết bị thành công");
     }
+    _appBloc.homeBloc.updateActiveDevice();
   }
 
   onMultiSwitchDevice(bool val, Device device) {
-    if (val){
+    if (val) {
       device.properties.value = 99.toString();
-    }
-    else {
+    } else {
       device.properties.value = 0.toString();
     }
     //BotToast.showText(text: 'Đổi sang trạng thái ' + device.properties.value);
@@ -242,8 +247,8 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
       BusinessService().turnOnDevice(device.id);
       BotToast.showText(text: "Bật thiết bị thành công");
     }
+    _appBloc.homeBloc.updateActiveDevice();
   }
-
 }
 
 // class CustomDeviceList extends StatelessWidget {
