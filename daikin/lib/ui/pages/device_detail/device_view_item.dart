@@ -45,10 +45,12 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
   }
 
   Widget buildDevices() {
+    // Đen BTH
     if (_localDevice.type == "com.fibaro.binarySwitch") {
       return buildSwitchDevice(widget, _localDevice, (value) {
         onSwitchDevice(value, _localDevice);
       });
+      // Den Led RGB
     } else if (_localDevice.type == "com.fibaro.FGRGBW441M") {
       return buildRGBDevice(widget, _localDevice, (value) {
         onSwitchRGBDevice(value, _localDevice);
@@ -57,10 +59,12 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
       });
     } else if (_localDevice.type == "virtual_device") {
       return buildVirtualDevice(widget, _localDevice);
+      // Rem cua
     } else if (_localDevice.type == "com.fibaro.FGRM222") {
       return buildBlindsDevice(widget, _localDevice, isSwitched, (value) {
         print("@@@@@@@@@@@@@@@@@@@@@@@");
       });
+      // Den Chum
     } else if (_localDevice.type == "com.fibaro.FGD212") {
       return buildSwitchMultiDevice(widget, _localDevice, (value) {
         onClickMultiDevice(value, _localDevice);

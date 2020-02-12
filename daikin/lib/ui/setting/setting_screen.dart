@@ -11,11 +11,14 @@ import 'package:daikin/ui/pages/login/login_screen.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/ui/setting/my_center_screen.dart';
 import 'package:daikin/ui/setting/profile_screen.dart';
+import 'package:daikin/ui/setting/support_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+import 'about_screen.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -67,18 +70,16 @@ class SettingScreenState extends State<SettingScreen>
                   leading: Container(
                     width: 55.0,
                     height: 55.0,
-                    child:
-                     ImagePickerWidget(
-                        context: context,
-                        isEdit: false,
-                        circle: true,
-                        size: 55.0,
-                        resourceUrl: _appBloc.authBloc.currentUser.avatar,
-                        onFileChanged: (fileUri, fileType) {
-                          setState(() {
-                          });
-                        },
-                      ),
+                    child: ImagePickerWidget(
+                      context: context,
+                      isEdit: false,
+                      circle: true,
+                      size: 55.0,
+                      resourceUrl: _appBloc.authBloc.currentUser.avatar,
+                      onFileChanged: (fileUri, fileType) {
+                        setState(() {});
+                      },
+                    ),
                   ),
                   title: Text(
                     _appBloc.authBloc.getUser.fullName,
@@ -263,6 +264,9 @@ class SettingScreenState extends State<SettingScreen>
                 //   height: 2.5,
                 // ),
                 ListTile(
+                  onTap: (){
+                    Routing().navigate2(context, AboutScreen());
+                  },
                   leading: Text(
                     "Giới thiệu",
                     style: ptTitle(context).copyWith(
@@ -295,6 +299,9 @@ class SettingScreenState extends State<SettingScreen>
                 // ),
 
                 ListTile(
+                  onTap: () {
+                    Routing().navigate2(context, SupportScreen());
+                  },
                   leading: Text(
                     "Hỗ trợ",
                     style: ptTitle(context).copyWith(

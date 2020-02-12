@@ -9,6 +9,7 @@ import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/pages/dashboard/active_device_view.dart';
 import 'package:daikin/ui/pages/dashboard/category_list_view.dart';
 import 'package:daikin/ui/pages/dashboard/camera_screen.dart';
 import 'package:daikin/ui/pages/dashboard/camera_list_view.dart';
@@ -322,7 +323,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
             ),
           ],
         ),
-        CategoryListView(
+        ActiveDeviceListView(
           callBack: () {},
         ),
       ],

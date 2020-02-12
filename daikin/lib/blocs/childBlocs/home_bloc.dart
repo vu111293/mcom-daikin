@@ -8,10 +8,16 @@ class HomeBloc {
   final _devicesSubject = BehaviorSubject<List<Device>>();
   final _scenesSubject = BehaviorSubject<List<Scene>>();
   final _cameraDevicesSubject = BehaviorSubject<List<Device>>();
+  final _activeDeviceSubject = BehaviorSubject<List<Device>>();
 
   Stream get roomDataStream => _roomsSubject.stream;
+
   Stream get devicesDataStream => _devicesSubject.stream;
+
   Stream get scenesDataStream => _scenesSubject.stream;
+
+  Stream get activeDeviceStream => _activeDeviceSubject.stream;
+
   Stream get cameraDevicesStream => _cameraDevicesSubject;
 
   Function(List<Scene>) get scenesAction => _scenesSubject.sink.add;
@@ -27,7 +33,8 @@ class HomeBloc {
       List<Scene> scenes = results[2];
 
       devices = devices.where((v) => v.visible).toList();
-
+      List<Device> activeDevice =
+          devices.where((v) => v.properties.value == 'true').toList();
       for (var i = 0; i < rooms.length; i++) {
         for (var j = 0; j < devices.length; j++) {
           if (rooms[i].id == devices[j].roomID) {
@@ -63,7 +70,8 @@ class HomeBloc {
       _scenesSubject.sink.add(scenes);
       _roomsSubject.sink.add(rooms);
       _cameraDevicesSubject.sink.add(cameraDevices);
-
+      _activeDeviceSubject.sink.add(activeDevice);
+      _devicesSubject.sink.add(devices);
       // _devicesSubject.sink.add(results[1]);
     }).catchError((e) {
       print('Fetch home data error: $e');

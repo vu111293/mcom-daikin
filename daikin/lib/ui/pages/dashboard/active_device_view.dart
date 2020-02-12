@@ -3,20 +3,22 @@ import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/pages/dashboard/rgb_screen.dart';
+import 'package:daikin/ui/pages/device_detail/device_view_item.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
-class CategoryListView extends StatefulWidget {
-  const CategoryListView({Key key, this.callBack}) : super(key: key);
+class ActiveDeviceListView extends StatefulWidget {
+  const ActiveDeviceListView({Key key, this.callBack}) : super(key: key);
 
   final Function callBack;
   @override
-  _CategoryListViewState createState() => _CategoryListViewState();
+  _ActiveDeviceListViewState createState() => _ActiveDeviceListViewState();
 }
 
-class _CategoryListViewState extends State<CategoryListView> with TickerProviderStateMixin {
+class _ActiveDeviceListViewState extends State<ActiveDeviceListView> with TickerProviderStateMixin {
   AnimationController animationController;
   ApplicationBloc _appBloc;
   @override
@@ -45,35 +47,34 @@ class _CategoryListViewState extends State<CategoryListView> with TickerProvider
               return const SizedBox();
             } else {
               return StreamBuilder(
-                stream: _appBloc.homeBloc.devicesDataStream,
+                stream: _appBloc.homeBloc.activeDeviceStream,
                 builder: (context,snapshot){
-                  return ListView.builder(
-                    padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
-                    itemCount: snapshot.data.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, int index) {
-                      int length=snapshot.data.length;
-                      final int count = length > 10 ? 10 : length;
-                      final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                          parent: animationController,
-                          curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
-                      animationController.forward();
+                  if(!snapshot.hasData){
+                    return Container();
+                  }else{
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
+                      itemCount: snapshot.data.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (BuildContext context, int index) {
+                        int length=snapshot.data.length;
+                        final int count = length > 10 ? 10 : length;
+                        final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                            parent: animationController,
+                            curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
+                        animationController.forward();
 
-                      return CategoryView(
-                        category: snapshot.data[index],
-                        animation: animation,
-                        animationController: animationController,
-                        callback: () {
-                          if (index == 0) {
-                            Routing().navigate2(context, RgbScreen()).then((d) {
+                        return DeviceView(
+                          device: snapshot.data[index],
+                          animation: animation,
+                          animationController: animationController,
+                          callback: (){
 
-                            });
-                          }
-                          widget.callBack();
-                        },
-                      );
-                    },
-                  );
+                          },
+                        );
+                      },
+                    );
+                  }
                 },
               );
             }
@@ -84,12 +85,12 @@ class _CategoryListViewState extends State<CategoryListView> with TickerProvider
   }
 }
 
-class CategoryView extends StatelessWidget {
-  const CategoryView({Key key, this.category, this.animationController, this.animation, this.callback})
+class DeviceView extends StatelessWidget {
+  const DeviceView({Key key, this.device, this.animationController, this.animation, this.callback})
       : super(key: key);
 
   final VoidCallback callback;
-  final Category category;
+  final Device device;
   final AnimationController animationController;
   final Animation<dynamic> animation;
 
@@ -136,7 +137,7 @@ class CategoryView extends StatelessWidget {
                                           Padding(
                                             padding: const EdgeInsets.only(top: 16),
                                             child: Text(
-                                              category.title,
+                                              device.name,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -149,40 +150,6 @@ class CategoryView extends StatelessWidget {
                                           const Expanded(
                                             child: SizedBox(),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 16, bottom: 8),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              children: <Widget>[
-                                                Text(
-                                                  '${category.deviceCount} devices',
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w200,
-                                                    fontSize: 12,
-                                                    letterSpacing: 0.27,
-                                                    color: StyleAppTheme.grey,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  '${category.temperature.toStringAsFixed(1)}°C',
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w200,
-                                                    fontSize: 18,
-                                                    letterSpacing: 0.27,
-                                                    color: StyleAppTheme.grey,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(bottom: 16, right: 16),
-                                              child: LinearProgressIndicator(
-                                                value: 0.3,
-                                              )),
                                         ],
                                       ),
                                     ),
@@ -208,7 +175,7 @@ class CategoryView extends StatelessWidget {
                               child: AspectRatio(
                                   aspectRatio: 0.9,
                                   child: Image.asset(
-                                    category.imagePath,
+                                    'assets/devices/rgb.png',
                                   )),
                             ),
                           )),
@@ -222,4 +189,6 @@ class CategoryView extends StatelessWidget {
       },
     );
   }
+
+
 }
