@@ -264,7 +264,7 @@ class SettingScreenState extends State<SettingScreen>
                 //   height: 2.5,
                 // ),
                 ListTile(
-                  onTap: (){
+                  onTap: () {
                     Routing().navigate2(context, AboutScreen());
                   },
                   leading: Text(
@@ -281,11 +281,11 @@ class SettingScreenState extends State<SettingScreen>
                 ),
 
                 ///
-                Container(
-                  margin: EdgeInsets.only(top: 16, bottom: 10),
-                  color: HexColor("#fafafa"),
-                  height: 10,
-                ),
+                // Container(
+                //   margin: EdgeInsets.only(top: 16, bottom: 10),
+                //   color: HexColor("#fafafa"),
+                //   height: 10,
+                // ),
                 // ListTile(
                 //   leading: Text(
                 //     "Change Password",
@@ -310,12 +310,18 @@ class SettingScreenState extends State<SettingScreen>
                   ),
                 ),
 
-                ///
                 Container(
-                  margin: EdgeInsets.only(top: 16, bottom: 10),
+                  margin: EdgeInsets.symmetric(vertical: 5),
                   color: HexColor("#fafafa"),
-                  height: 10,
+                  height: 2.5,
                 ),
+
+                ///
+                // Container(
+                //   margin: EdgeInsets.only(top: 16, bottom: 10),
+                //   color: HexColor("#fafafa"),
+                //   height: 10,
+                // ),
                 ListTile(
                   onTap: () => showDialog<bool>(
                     context: context,
