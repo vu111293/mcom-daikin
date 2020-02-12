@@ -257,9 +257,14 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                       ),
                     )
                   : Expanded(
-                      child: Center(
-                        child: Text('Image not found'),
-                      ),
+                      child: Container(
+                          child: Center(
+                            child: Image.asset("assets/icons/switch_device.png",
+                                fit: BoxFit.contain,
+                                width: deviceWidth(context) * 0.8,
+                                color: HexColor(currentStateDevice ? appColor: appBorderColor)),
+                          ),
+                        )
                     ),
 
           widget.item.name == 'Rèm cửa'
