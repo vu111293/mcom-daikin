@@ -1,6 +1,10 @@
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/ui/pages/dashboard/rgb_screen.dart';
+import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
@@ -12,14 +16,13 @@ class CategoryListView extends StatefulWidget {
   _CategoryListViewState createState() => _CategoryListViewState();
 }
 
-class _CategoryListViewState extends State<CategoryListView>
-    with TickerProviderStateMixin {
+class _CategoryListViewState extends State<CategoryListView> with TickerProviderStateMixin {
   AnimationController animationController;
-
+  ApplicationBloc _appBloc;
   @override
   void initState() {
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this);
+    _appBloc=BlocProvider.of<ApplicationBloc>(context);
+    animationController = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
   }
 
@@ -41,29 +44,34 @@ class _CategoryListViewState extends State<CategoryListView>
             if (!snapshot.hasData) {
               return const SizedBox();
             } else {
-              return ListView.builder(
-                padding: const EdgeInsets.only(
-                    top: 0, bottom: 0, right: 16, left: 16),
-                itemCount: Category.categoryList.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                  final int count = Category.categoryList.length > 10
-                      ? 10
-                      : Category.categoryList.length;
-                  final Animation<double> animation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                          CurvedAnimation(
-                              parent: animationController,
-                              curve: Interval((1 / count) * index, 1.0,
-                                  curve: Curves.fastOutSlowIn)));
-                  animationController.forward();
+              return StreamBuilder(
+                stream: _appBloc.homeBloc.devicesDataStream,
+                builder: (context,snapshot){
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
+                    itemCount: snapshot.data.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                      int length=snapshot.data.length;
+                      final int count = length > 10 ? 10 : length;
+                      final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                          parent: animationController,
+                          curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
+                      animationController.forward();
 
-                  return CategoryView(
-                    category: Category.categoryList[index],
-                    animation: animation,
-                    animationController: animationController,
-                    callback: () {
-                      widget.callBack();
+                      return CategoryView(
+                        category: snapshot.data[index],
+                        animation: animation,
+                        animationController: animationController,
+                        callback: () {
+                          if (index == 0) {
+                            Routing().navigate2(context, RgbScreen()).then((d) {
+
+                            });
+                          }
+                          widget.callBack();
+                        },
+                      );
                     },
                   );
                 },
@@ -77,12 +85,7 @@ class _CategoryListViewState extends State<CategoryListView>
 }
 
 class CategoryView extends StatelessWidget {
-  const CategoryView(
-      {Key key,
-      this.category,
-      this.animationController,
-      this.animation,
-      this.callback})
+  const CategoryView({Key key, this.category, this.animationController, this.animation, this.callback})
       : super(key: key);
 
   final VoidCallback callback;
@@ -98,8 +101,7 @@ class CategoryView extends StatelessWidget {
         return FadeTransition(
           opacity: animation,
           child: Transform(
-            transform: Matrix4.translationValues(
-                100 * (1.0 - animation.value), 0.0, 0.0),
+            transform: Matrix4.translationValues(100 * (1.0 - animation.value), 0.0, 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
@@ -119,8 +121,7 @@ class CategoryView extends StatelessWidget {
                             child: Container(
                               decoration: BoxDecoration(
                                 color: HexColor('#F8FAFB'),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(16.0)),
+                                borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                               ),
                               child: Row(
                                 children: <Widget>[
@@ -130,12 +131,10 @@ class CategoryView extends StatelessWidget {
                                   Expanded(
                                     child: Container(
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 16),
+                                            padding: const EdgeInsets.only(top: 16),
                                             child: Text(
                                               category.title,
                                               textAlign: TextAlign.left,
@@ -151,14 +150,10 @@ class CategoryView extends StatelessWidget {
                                             child: SizedBox(),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 16, bottom: 8),
+                                            padding: const EdgeInsets.only(right: 16, bottom: 8),
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
                                                   '${category.deviceCount} devices',
@@ -184,8 +179,7 @@ class CategoryView extends StatelessWidget {
                                             ),
                                           ),
                                           Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16, right: 16),
+                                              padding: const EdgeInsets.only(bottom: 16, right: 16),
                                               child: LinearProgressIndicator(
                                                 value: 0.3,
                                               )),
@@ -202,18 +196,15 @@ class CategoryView extends StatelessWidget {
                     ),
                     Container(
                       child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 24, bottom: 24, left: 16),
+                          padding: const EdgeInsets.only(top: 24, bottom: 24, left: 16),
                           child: Container(
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(16.0)),
+                              borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                             ),
                             child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(16.0)),
+                              borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                               child: AspectRatio(
                                   aspectRatio: 0.9,
                                   child: Image.asset(

@@ -1,22 +1,25 @@
 import 'dart:io';
+
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:daikin/constants/constants.dart';
+import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/pages/dashboard/active_device_view.dart';
 import 'package:daikin/ui/pages/dashboard/category_list_view.dart';
-import 'package:daikin/ui/pages/dashboard/course_info_screen.dart';
-import 'package:daikin/ui/pages/dashboard/popular_course_list_view.dart';
+import 'package:daikin/ui/pages/dashboard/camera_screen.dart';
+import 'package:daikin/ui/pages/dashboard/camera_list_view.dart';
+import 'package:daikin/ui/pages/home/home_screen.dart';
+import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
-import 'package:daikin/constants/constants.dart';
-import 'package:daikin/utils/hex_color.dart';
-import 'package:flutter/material.dart';
-
 import 'package:flutter/services.dart';
+import 'package:rxdart/rxdart.dart';
 
 final List<String> imgList = [
   "https://tmshotel.vn/uploads/images/5_1.jpg",
@@ -30,22 +33,23 @@ final List<String> imgList = [
 enum CategoryType { ui, coding, basic, game, chill }
 
 class DashBoardScreen extends StatefulWidget {
+  final TabController tabController;
+  DashBoardScreen({this.tabController});
   @override
   DashBoardScreenState createState() => DashBoardScreenState();
 }
 
-class DashBoardScreenState extends State<DashBoardScreen>
-    with SingleTickerProviderStateMixin {
-  int _current = 0;
-  TabController _tabController;
+class DashBoardScreenState extends State<DashBoardScreen> {
+
+  final _carouselIndexBehavior = BehaviorSubject.seeded(0);
   ApplicationBloc _appBloc;
+
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
     for (var i = 0; i < list.length; i++) {
       result.add(handler(i, list[i]));
     }
-
     return result;
   }
 
@@ -53,8 +57,12 @@ class DashBoardScreenState extends State<DashBoardScreen>
   void initState() {
     super.initState();
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
-    _tabController =
-        TabController(length: 2, vsync: this); // initialise it here
+  }
+
+  @override
+  void dispose() {
+    _carouselIndexBehavior.close();
+    super.dispose();
   }
 
   @override
@@ -69,76 +77,79 @@ class DashBoardScreenState extends State<DashBoardScreen>
             children: <Widget>[
               BaseHeaderScreen(
                 title: "Chào Bạn !",
-                subTitle: "Chào mừng bạn đến,",
+//                subTitle: "Chào mừng bạn đến,",
               ),
-              Expanded(child: Container(
-                height: contentScreenWithTab(context),
-                child: ListView(
-                  children: <Widget>[
-                    CarouselSlider(
-                      items: map<Widget>(
-                        imgList,
-                            (index, i) {
-                          return Opacity(
-                            opacity: _current == index ? 1 : 0.3,
-                            child: Container(
-                              margin: EdgeInsets.all(5.0),
-                              decoration: BoxDecoration(
-                                color: Colors.black12,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(15)),
-                              ),
-                              child: ClipRRect(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(15)),
-                                child: Image.network(
-                                  i,
-                                  fit: BoxFit.cover,
-                                  width: deviceWidth(context) * 0.8,
-                                  cacheHeight: 180,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ).toList(),
-                      autoPlay: true,
-                      height: 180,
-                      enlargeCenterPage: true,
-                      // aspectRatio: 1,
-                      pauseAutoPlayOnTouch: Duration(milliseconds: 150),
-                      onPageChanged: (index) {
-                        setState(() {
-                          _current = index;
-                        });
-                      },
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: map<Widget>(
-                        imgList,
-                            (index, url) {
-                          return Container(
-                            width: 16.0,
-                            height: 3.0,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 2.0),
+              Expanded(
+                  child: ListView(
+                padding: EdgeInsets.only(bottom: 24.0),
+                children: <Widget>[
+                  CarouselSlider(
+                    items: map<Widget>(
+                      imgList,
+                      (index, i) {
+                        return Opacity(
+//                          opacity: _current == index ? 1 : 0.3,
+                          opacity: 1.0,
+                          child: Container(
+                            margin: EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
-                              color: _current == index
-                                  ? HexColor(appColor).withOpacity(0.9)
-                                  : Color.fromRGBO(0, 0, 0, 0.2),
+                              color: Colors.black12,
                               borderRadius:
-                              BorderRadius.all(Radius.circular(3)),
+                                  BorderRadius.all(Radius.circular(15)),
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                    getSceneUI(),
-                    getCategoryUI(),
-                    getPopularCourseUI(),
-                  ],
-                ),
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                              child: Image.network(
+                                i,
+                                fit: BoxFit.cover,
+                                width: deviceWidth(context) * 0.8,
+                                cacheHeight: 180,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ).toList(),
+                    autoPlay: true,
+                    height: 180,
+                    enlargeCenterPage: true,
+                    // aspectRatio: 1,
+                    pauseAutoPlayOnTouch: Duration(milliseconds: 150),
+                    onPageChanged: (index) {
+                      _carouselIndexBehavior.sink.add(index);
+                    },
+                  ),
+                  StreamBuilder<int>(
+                    stream: _carouselIndexBehavior.stream,
+                    builder: (context, snapshot) {
+                      int currentIndex = snapshot.hasData ? snapshot.data : 0;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: map<Widget>(
+                          imgList,
+                              (index, url) {
+                            return Container(
+                              width: 16.0,
+                              height: 3.0,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 2.0),
+                              decoration: BoxDecoration(
+                                color: currentIndex == index
+                                    ? HexColor(appColor).withOpacity(0.9)
+                                    : Color.fromRGBO(0, 0, 0, 0.2),
+                                borderRadius: BorderRadius.all(Radius.circular(3)),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  getSceneUI(),
+                  getCategoryUI(),
+                  getPopularCourseUI(),
+                ],
               )),
             ],
           ),
@@ -166,6 +177,7 @@ class DashBoardScreenState extends State<DashBoardScreen>
 
   Widget getSceneUI() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(
           height: 16,
@@ -175,14 +187,14 @@ class DashBoardScreenState extends State<DashBoardScreen>
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('Scenes',
+              child: Text('Danh sách kịch bản',
                   textAlign: TextAlign.left, style: ptTitle(context)),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('All',
-                  textAlign: TextAlign.left, style: ptSubtitle(context)),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+            //   child: Text('All',
+            //       textAlign: TextAlign.left, style: ptSubtitle(context)),
+            // ),
           ],
         ),
         Container(
@@ -245,7 +257,10 @@ class DashBoardScreenState extends State<DashBoardScreen>
                   actions: [
                     FlatButton(
                       child: Text('Đồng ý'),
-                      onPressed: () => {},
+                      onPressed: () {
+                        BusinessService().callSceneAction(scene.id.toString());
+                        Navigator.pop(c, false);
+                      },
                     ),
                     FlatButton(
                       child: Text('Hủy'),
@@ -293,20 +308,23 @@ class DashBoardScreenState extends State<DashBoardScreen>
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('Running Devices',
+              child: Text('Các thiết bị đang hoạt động',
                   textAlign: TextAlign.left, style: ptTitle(context)),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              child: Text('All',
-                  textAlign: TextAlign.left, style: ptSubtitle(context)),
+            GestureDetector(
+              onTap: () {
+                widget.tabController.animateTo(1);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+                child: Text('Xem tất cả',
+                    textAlign: TextAlign.left, style: ptSubtitle(context)),
+              ),
             ),
           ],
         ),
-        CategoryListView(
-          callBack: () {
-            moveTo();
-          },
+        ActiveDeviceListView(
+          callBack: () {},
         ),
       ],
     );
@@ -323,20 +341,20 @@ class DashBoardScreenState extends State<DashBoardScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('Cameras',
+                padding: const EdgeInsets.only(top: 8.0, left: 0, right: 16),
+                child: Text('Danh sách Camera',
                     textAlign: TextAlign.left, style: ptTitle(context)),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-                child: Text('All',
-                    textAlign: TextAlign.left, style: ptSubtitle(context)),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+              //   child: Text('All',
+              //       textAlign: TextAlign.left, style: ptSubtitle(context)),
+              // ),
             ],
           ),
-          PopularCourseListView(
-            callBack: () {
-              moveTo();
+          CameraListView(
+            callBack: (Device item) {
+              moveTo(item);
             },
           ),
         ],
@@ -344,11 +362,11 @@ class DashBoardScreenState extends State<DashBoardScreen>
     );
   }
 
-  void moveTo() {
+  void moveTo(item) {
     Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => CourseInfoScreen(),
+        builder: (BuildContext context) => CameraScreen(item: item),
       ),
     );
   }

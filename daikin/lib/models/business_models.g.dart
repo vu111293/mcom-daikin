@@ -21,7 +21,7 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
     viewXml: json['viewXml'] as bool,
     configXml: json['configXml'] as bool,
     interfaces: (json['interfaces'] as List)?.map((e) => e as String)?.toList(),
-    properties:
+      properties:
         DeviceProperty.fromJson(json['properties'] as Map<String, dynamic>),
     actions: DeviceAction.fromJson(json['actions'] as Map<String, dynamic>),
     created: json['created'] as int,
@@ -102,7 +102,19 @@ DeviceProperty _$DevicePropertyFromJson(Map<String, dynamic> json) {
     zwaveCompany: json['zwaveCompany'] as String,
     zwaveInfo: json['zwaveInfo'] as String,
     zwaveRegion: json['zwaveRegion'] as String,
+    rows: (json['rows'] as List)
+        ?.map((e) =>
+            e == null ? null : DeviceRow.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     zwaveVersion: json['zwaveVersion'] as String,
+    httpsEnabled: json['httpsEnabled'] as String,
+    ip: json['ip'] as String,
+    jpgPath: json['jpgPath'] as String,
+    mjpgPath: json['mjpgPath'] as String,
+    username: json['username'] as String,
+    password: json['password'] as String,
+    isLight: json['isLight'] as String,
+    lastColorSet: json['lastColorSet'] as String,
   );
 }
 
@@ -158,6 +170,15 @@ Map<String, dynamic> _$DevicePropertyToJson(DeviceProperty instance) =>
       'zwaveInfo': instance.zwaveInfo,
       'zwaveRegion': instance.zwaveRegion,
       'zwaveVersion': instance.zwaveVersion,
+      'rows': instance.rows,
+      'httpsEnabled': instance.httpsEnabled,
+      'ip': instance.ip,
+      'jpgPath': instance.jpgPath,
+      'mjpgPath': instance.mjpgPath,
+      'username': instance.username,
+      'password': instance.password,
+      'isLight': instance.isLight,
+      'lastColorSet': instance.lastColorSet,
     };
 
 DeviceAction _$DeviceActionFromJson(Map<String, dynamic> json) {
@@ -191,6 +212,14 @@ Room _$RoomFromJson(Map<String, dynamic> json) {
     defaultSensors: RoomDefaultSensor.fromJson(
         json['defaultSensors'] as Map<String, dynamic>),
     sortOrder: json['sortOrder'] as int,
+    devices: (json['devices'] as List)
+        ?.map((e) =>
+            e == null ? null : Device.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    scenes: (json['scenes'] as List)
+        ?.map(
+            (e) => e == null ? null : Scene.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     category: json['category'] as String,
   );
 }
@@ -203,6 +232,8 @@ Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
       'defaultThermostat': instance.defaultThermostat,
       'sortOrder': instance.sortOrder,
       'category': instance.category,
+      'devices': instance.devices,
+      'scenes': instance.scenes,
       'defaultSensors': _defSensorToJson(instance.defaultSensors),
     };
 
@@ -226,6 +257,8 @@ Scene _$SceneFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     id: json['id'] as int,
     type: json['type'] as String,
+    roomID: json['roomID'] as int,
+    iconID: json['iconID'] as int,
   );
 }
 
@@ -233,4 +266,37 @@ Map<String, dynamic> _$SceneToJson(Scene instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'type': instance.type,
+      'roomID': instance.roomID,
+      'iconID': instance.iconID,
+    };
+
+DeviceRow _$DeviceRowFromJson(Map<String, dynamic> json) {
+  return DeviceRow(
+    type: json['type'] as String,
+    elements: (json['elements'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ElementDeviceRow.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$DeviceRowToJson(DeviceRow instance) => <String, dynamic>{
+      'type': instance.type,
+      'elements': instance.elements,
+    };
+
+ElementDeviceRow _$ElementDeviceRowFromJson(Map<String, dynamic> json) {
+  return ElementDeviceRow(
+    caption: json['caption'] as String,
+    name: json['name'] as String,
+    id: json['id'] as int,
+  );
+}
+
+Map<String, dynamic> _$ElementDeviceRowToJson(ElementDeviceRow instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'caption': instance.caption,
+      'id': instance.id,
     };

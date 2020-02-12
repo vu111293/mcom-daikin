@@ -58,7 +58,7 @@ Future<bool> showAlertDialog(BuildContext context, String errorMessage,
       });
 }
 
-void showConfirmDialog(BuildContext context, String errorMessage, {TapConfirm confirmTap}) {
+void showConfirmDialog(BuildContext context, String errorMessage, {TapConfirm confirmTap, Function callback}) {
   showDialog(
       context: context,
       barrierDismissible: false,

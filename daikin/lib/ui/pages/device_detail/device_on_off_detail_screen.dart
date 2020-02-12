@@ -1,7 +1,8 @@
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
-import 'package:daikin/ui/customs/power_button.dart';
+import 'package:daikin/ui/customs/action_button.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gauge/flutter_gauge.dart';
@@ -45,10 +46,12 @@ const rem = [
 ];
 
 class DeviceOnOffDetailScreen extends StatefulWidget {
-  Category item;
+  Device item;
   bool status;
-  DeviceOnOffDetailScreen({this.item, this.status = false});
-  _DeviceOnOffDetailScreenState createState() => _DeviceOnOffDetailScreenState();
+  Function callback;
+  DeviceOnOffDetailScreen({this.item, this.status, this.callback});
+  _DeviceOnOffDetailScreenState createState() =>
+      _DeviceOnOffDetailScreenState();
 }
 
 class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
@@ -63,48 +66,46 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
   @override
   void initState() {
     super.initState();
-    switch (widget.item.title) {
-      case 'Desk lamp':
-        setState(() {
-          listImage = den;
-        });
-        break;
-      // case 'Bed Lamp':
-      //   setState(() {
-      //     listImage = denTran;
-      //   });
-      //   break;
-      case 'Tưới cây':
-        setState(() {
-          listImage = tree;
-        });
-        break;
-      case 'Cửa chính':
-        setState(() {
-          listImage = cua;
-        });
-        break;
-      case 'Motion':
-        setState(() {
-          listImage = motion;
-        });
-        break;
-      case 'Siren':
-        setState(() {
-          listImage = sensor;
-        });
-        break;
-      case 'Rèm cửa':
-        setState(() {
-          listImage = rem;
-        });
-        break;
-    }
+    // switch (widget.item.title) {
+    //   case 'Desk lamp':
+    //     setState(() {
+    //       listImage = den;
+    //     });
+    //     break;
+    //   // case 'Bed Lamp':
+    //   //   setState(() {
+    //   //     listImage = denTran;
+    //   //   });
+    //   //   break;
+    //   case 'Tưới cây':
+    //     setState(() {
+    //       listImage = tree;
+    //     });
+    //     break;
+    //   case 'Cửa chính':
+    //     setState(() {
+    //       listImage = cua;
+    //     });
+    //     break;
+    //   case 'Motion':
+    //     setState(() {
+    //       listImage = motion;
+    //     });
+    //     break;
+    //   case 'Siren':
+    //     setState(() {
+    //       listImage = sensor;
+    //     });
+    //     break;
+    //   case 'Rèm cửa':
+    //     setState(() {
+    //       listImage = rem;
+    //     });
+    //     break;
+    // }
     currentStateDevice = widget.status;
-    if (widget.status) {
-      indexImage = 1;
-      _progress = 1;
-    }
+    indexImage = 1;
+    _progress = 1;
   }
 
   @override
@@ -117,36 +118,39 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
         children: <Widget>[
           BaseHeaderScreen(
             isBack: true,
-            title: widget.item.title.toUpperCase(),
+            title: widget.item.name.toUpperCase(),
           ),
           BaseHeaderScreen(
-            hideProfile: true,
-            isSubHeader: true,
-            title: widget.item.title,
-            subTitle: currentStateDevice ? "Thiết bị của bạn đang hoạt động" : widget.item.subTitle,
-          ),
+              hideProfile: true,
+              isSubHeader: true,
+              title: widget.item.name,
+              subTitle: currentStateDevice
+                  ? "Thiết bị của bạn đang hoạt động"
+                  : "Thiết bị chưa hoạt động" //: widget.item.subTitle,
+              ),
           listImage.length > 0
               ? currentStateDevice
                   ? Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          if (indexImage + 1 == listImage.length) {
-                            setState(() {
-                              indexImage = 0;
-                              currentStateDevice = false;
-                            });
-                          } else {
-                            setState(() {
-                              indexImage++;
-                            });
-                          }
+                          widget.callback();
+                          // if (indexImage + 1 == listImage.length) {
+                          //   setState(() {
+                          //     indexImage = 0;
+                          //     currentStateDevice = false;
+                          //   });
+                          // } else {
+                          //   setState(() {
+                          //     indexImage++;
+                          //   });
+                          // }
                         },
                         child: Container(
                           child: Center(
                             child: Image.asset(
                               listImage[indexImage],
                               fit: BoxFit.contain,
-                              width: widget.item.title == 'Motion'
+                              width: widget.item.name == 'Motion'
                                   ? deviceWidth(context) * 0.8
                                   : deviceWidth(context) * 0.3,
                             ),
@@ -157,16 +161,17 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                   : Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          setState(() {
-                            currentStateDevice = true;
-                            indexImage++;
-                          });
+                          widget.callback();
+                          // setState(() {
+                          //   currentStateDevice = true;
+                          //   indexImage++;
+                          // });
                         },
                         child: Container(
                           child: Center(
                             child: Image.asset(listImage[indexImage],
                                 fit: BoxFit.contain,
-                                width: widget.item.title == 'Motion'
+                                width: widget.item.name == 'Motion'
                                     ? deviceWidth(context) * 0.8
                                     : deviceWidth(context) * 0.3,
                                 color: HexColor(appBorderColor)),
@@ -174,7 +179,7 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                         ),
                       ),
                     )
-              : widget.item.title == "Bed Lamp"
+              : widget.item.name == "Bed Lamp"
                   ? Expanded(
                       child: Container(
                         width: deviceWidth(context),
@@ -186,14 +191,18 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                               "assets/devices/sun.png",
                               fit: BoxFit.contain,
                               width: 32,
-                              color: currentStateDevice ? Colors.yellow : HexColor(appBorderColor),
+                              color: currentStateDevice
+                                  ? Colors.yellow
+                                  : HexColor(appBorderColor),
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 16.0),
                               child: Text(
                                 '${percentage.round()}% Brightness',
                                 style: ptTitle(context).copyWith(
-                                  color: currentStateDevice ? HexColor(appText) : HexColor(appBorderColor),
+                                  color: currentStateDevice
+                                      ? HexColor(appText)
+                                      : HexColor(appBorderColor),
                                 ),
                               ),
                             ),
@@ -202,12 +211,14 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                                 initial = details.globalPosition.dy;
                               },
                               onPanUpdate: (DragUpdateDetails details) {
-                                double distance = initial - details.globalPosition.dy;
+                                double distance =
+                                    initial - details.globalPosition.dy;
                                 double percentageAddition = distance / 254;
                                 // print('percentage ' +
                                 //     (percentage + percentageAddition).clamp(0.0, 100.0).round().toString());
                                 setState(() {
-                                  percentage = (percentage + percentageAddition).clamp(0.0, 100.0);
+                                  percentage = (percentage + percentageAddition)
+                                      .clamp(0.0, 100.0);
                                 });
                               },
                               onPanEnd: (DragEndDetails details) {
@@ -218,7 +229,8 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                                 width: 130,
                                 decoration: BoxDecoration(
                                   color: HexColor("#ECECEC"),
-                                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(40)),
                                 ),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -227,8 +239,11 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                                   children: <Widget>[
                                     Container(
                                       decoration: BoxDecoration(
-                                        color: currentStateDevice ? HexColor(appColor) : HexColor(appBorderColor),
-                                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                                        color: currentStateDevice
+                                            ? HexColor(appColor)
+                                            : HexColor(appBorderColor),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(40)),
                                       ),
                                       width: 130,
                                       height: (percentage / 100) * 250,
@@ -247,7 +262,7 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                       ),
                     ),
 
-          widget.item.title == 'Rèm cửa'
+          widget.item.name == 'Rèm cửa'
               ? Container(
                   margin: EdgeInsets.symmetric(horizontal: 32),
                   child: SliderTheme(
@@ -255,9 +270,13 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
                       activeTrackColor: HexColor(appBorderColor),
                       inactiveTrackColor: HexColor(appBorderColor),
                       trackHeight: 20.0,
-                      thumbColor: currentStateDevice ? ptPrimaryColor(context) : HexColor(appNotWhite),
+                      thumbColor: currentStateDevice
+                          ? ptPrimaryColor(context)
+                          : HexColor(appNotWhite),
                       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 20),
-                      overlayColor: currentStateDevice ? ptPrimaryColor(context) : HexColor(appNotWhite),
+                      overlayColor: currentStateDevice
+                          ? ptPrimaryColor(context)
+                          : HexColor(appNotWhite),
                       activeTickMarkColor: Colors.transparent,
                       inactiveTickMarkColor: Colors.transparent,
                     ),
@@ -303,11 +322,13 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
 
           /// Power control button
           GestureDetector(
-            child: PowerButton(currentStateDevice: currentStateDevice),
+            child: ActionButton(currentStateDevice: currentStateDevice),
             onTap: () {
               setState(() {
                 currentStateDevice = !currentStateDevice;
               });
+
+              widget.callback(currentStateDevice);
             },
           )
         ],

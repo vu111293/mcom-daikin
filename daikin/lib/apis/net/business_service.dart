@@ -49,6 +49,100 @@ class BusinessService extends BaseLoopBackApi {
     return (result as List).map((item) => Scene.fromJson(item)).toList();
   }
 
+  Future<Device> getDeviceDetail(int id) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      id
+    ].join('/');
+    final result = await this.request(method: 'GET', url: url);
+    return Device.fromJson(result);
+  }
+
+  Future<void> callSceneAction(String id) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'scenes',
+      id,
+      'action/start'
+    ].join('/');
+    await this.request(method: 'POST', url: url);
+    return;
+  }
+
+  Future<void> turnOffDevice(int id) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      id,
+      'action/turnOff'
+    ].join('/');
+    await this.request(method: 'POST', url: url);
+    return;
+  }
+
+  Future<void> turnOnDevice(int id) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      id,
+      'action/turnOn'
+    ].join('/');
+    await this.request(method: 'POST', url: url);
+    return;
+  }
+
+  Future setRGBColor(int id, int r, int g, int b, int a) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'callAction'  
+    ].join('/');
+    await this.request(method: 'GET', url: url, urlParams: {
+      'name': 'setColor',
+      'deviceID': id.toString(),
+      'arg1': r.toString(),
+      'arg2': g.toString(),
+      'arg3': b.toString(),
+      'arg4': a.toString()
+    });
+    return Future;
+  }
+
+  Future<void> pressButton(int deviceId, int id) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      deviceId,
+      'action/pressButton'
+    ].join('/');
+    await this.request(method: 'POST', url: url, postBody: {
+      "args": [id]
+    });
+    return;
+  }
+
+  Future<void> setValue(int deviceId, int id) async {
+    if (id > 99) id = 99;
+
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      deviceId,
+      'action/setValue'
+    ].join('/');
+    await this.request(method: 'POST', url: url, postBody: {
+      "args": [id]
+    });
+    return;
+  }
+
 //
 //  Future<List<LTree>> getTreeList() async {
 //    final url = [LoopBackConfig.getPath(), LoopBackConfig.getApiVersion(), 'plant?limit=0'].join('/');

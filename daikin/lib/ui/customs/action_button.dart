@@ -6,17 +6,18 @@ import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PowerButton extends StatelessWidget {
+class ActionButton extends StatelessWidget {
   bool currentStateDevice;
+  IconData icon;
 
-  PowerButton({this.currentStateDevice = false});
+  ActionButton({this.currentStateDevice = false, this.icon = Icons.power_settings_new});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
+      padding: EdgeInsets.only(top: 16.0, bottom: 32.0),
       width: MediaQuery.of(context).size.width,
-      alignment: Alignment.center,
+      alignment: Alignment.topCenter,
       child: Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -24,7 +25,7 @@ class PowerButton extends StatelessWidget {
           color: currentStateDevice ? ptPrimaryColor(context) : HexColor(appBorderColor),
         ),
         child: Icon(
-          Icons.power_settings_new,
+          icon,
           color: currentStateDevice ? HexColor(appWhite) : HexColor(appNotWhite),
           size: 40,
         ),

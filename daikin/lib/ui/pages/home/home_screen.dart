@@ -43,28 +43,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               indicatorWeight: 3,
               labelColor: HexColor(appColor),
               tabs: [
-                Tab(text: "Rooms"),
-                Tab(text: "Devices"),
+                Tab(text: "Danh sách phòng"),
+                Tab(text: "Danh sách thiết bị"),
               ],
             ),
           ),
-          Expanded(child: Container(
-            height: contentScreenWithTab(context) - 50,
-            child: TabBarView(
-              children: <Widget>[
-                RoomsGridView(
-                  callBack: (title) {
-                    Routing().navigate2(context, CourseInfoDeviceScreen(title: title));
-                  },
-                ),
-                DevicesListView(
-                  callBack: () {
-                    Routing().navigate2(context, CourseInfoDeviceScreen());
-                  },
-                ),
-              ],
-              controller: _tabController,
-            ),
+          Expanded(
+              child: TabBarView(
+            children: <Widget>[
+              RoomsGridView(),
+              DevicesListView(),
+            ],
+            controller: _tabController,
           )),
         ],
       ),

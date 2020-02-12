@@ -3,8 +3,11 @@ import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/models/business_models.dart';
+import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
+
+import 'course_info_device_screen.dart';
 
 class RoomsGridView extends StatefulWidget {
   const RoomsGridView({Key key, this.callBack}) : super(key: key);
@@ -15,21 +18,20 @@ class RoomsGridView extends StatefulWidget {
 }
 
 class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateMixin {
-  AnimationController animationController;
+  // AnimationController animationController;
   ApplicationBloc _appBloc;
 
   @override
   void initState() {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
 
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this);
+    // animationController = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
   }
 
   @override
   void dispose() {
-    animationController.dispose();
+    // animationController.dispose();
     super.dispose();
   }
 
@@ -59,23 +61,21 @@ class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateM
                     children: List<Widget>.generate(
                       snapshot.data.length,
                       (int index) {
-                        final int count = snapshot.data.length;
-                        final Animation<double> animation =
-                            Tween<double>(begin: 0.0, end: 1.0).animate(
-                          CurvedAnimation(
-                            parent: animationController,
-                            curve: Interval((1 / count) * index, 1.0,
-                                curve: Curves.fastOutSlowIn),
-                          ),
-                        );
-                        animationController.forward();
+                        // final int count = snapshot.data.length;
+                        // final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+                        //   CurvedAnimation(
+                        //     parent: animationController,
+                        //     curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn),
+                        //   ),
+                        // );
+                        // animationController.forward();
                         return CategoryView(
                           callback: () {
                             widget.callBack(snapshot.data[index].name);
                           },
                           room: snapshot.data[index],
-                          animation: animation,
-                          animationController: animationController,
+                          // animation: animation,
+                          // animationController: animationController,
                         );
                       },
                     ),
@@ -93,102 +93,96 @@ class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateM
 }
 
 class CategoryView extends StatelessWidget {
-  const CategoryView(
-      {Key key,
-      this.room,
-      this.animationController,
-      this.animation,
-      this.callback})
-      : super(key: key);
+  const CategoryView({Key key, this.room, this.callback}) : super(key: key);
+  // const CategoryView({Key key, this.room, this.animationController, this.animation, this.callback}) : super(key: key);
 
   final VoidCallback callback;
   final Room room;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
+  // final AnimationController animationController;
+  // final Animation<dynamic> animation;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
-        return FadeTransition(
-          opacity: animation,
-          child: Transform(
-            transform: Matrix4.translationValues(
-                0.0, 50 * (1.0 - animation.value), 0.0),
-            child: Material(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              elevation: 8,
-              shadowColor: Colors.black26,
-              color: Colors.white,
-              child: InkWell(
-                splashColor: Colors.transparent,
-                onTap: () {
-                  callback();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/icons/Nha_01.png',
-                            width: 27,
-                            height: 27,
-                            fit: BoxFit.contain,
-                            color: ptPrimaryColor(context),
-                          ),
-                          Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: Colors.greenAccent,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: SizedBox(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(5, 15, 5, 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              room.name,
-                              textAlign: TextAlign.left,
-                              style: ptTitle(context)
-                                  .copyWith(color: ptPrimaryColor(context)),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 3),
-                              child: Text(
-                                room.devices.length.toString() + ' devices',
-                                textAlign: TextAlign.left,
-                                style: ptCaption(context)
-                                    .copyWith(color: HexColor(appColor2)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+    return
+        // AnimatedBuilder(
+        //   animation: animationController,
+        //   builder: (BuildContext context, Widget child) {
+        //     return FadeTransition(
+        //       opacity: animation,
+        //       child: Transform(
+        //         transform: Matrix4.translationValues(0.0, 50 * (1.0 - animation.value), 0.0),
+        //         child:
+        Material(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      elevation: 8,
+      shadowColor: Colors.black26,
+      color: Colors.white,
+      child: InkWell(
+        splashColor: Colors.transparent,
+        onTap: () {
+          Routing().navigate2(context, CourseInfoDeviceScreen(room: room));
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Image.asset(
+                    'assets/icons/Nha_01.png',
+                    width: 27,
+                    height: 27,
+                    fit: BoxFit.contain,
+                    color: ptPrimaryColor(context),
                   ),
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: SizedBox(),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(5, 15, 5, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      room.name,
+                      textAlign: TextAlign.left,
+                      style: ptTitle(context).copyWith(color: ptPrimaryColor(context)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 3),
+                      child: Text(
+                        room.devices.length.toString() + ' devices',
+                        textAlign: TextAlign.left,
+                        style: ptCaption(context).copyWith(color: HexColor(appColor2)),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }

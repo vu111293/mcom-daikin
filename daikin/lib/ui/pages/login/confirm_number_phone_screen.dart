@@ -93,6 +93,7 @@ class ConfirmNumberPhoneScreenState extends State<ConfirmNumberPhoneScreen> {
         print('FB|$uid|$token');
         LUser user = await UserService().login('FB|$uid|$token');
         _appBloc.authBloc.updateUserAction(user);
+        _appBloc.authBloc.currentUser = user;
         _authStream?.cancel();
         Routing().popToRoot(context);
         Routing().navigate2(context, MainScreen());

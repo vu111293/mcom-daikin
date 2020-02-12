@@ -1,4 +1,51 @@
+import 'dart:async';
+
+import 'package:daikin/apis/core/auth_service.dart';
 import 'package:graphql/client.dart';
+import 'package:graphql/internal.dart';
+import 'package:flutter/material.dart';
+
+import 'dart:async';
+
+import 'package:graphql/src/link/link.dart';
+import 'package:graphql/src/link/operation.dart';
+import 'package:graphql/src/link/fetch_result.dart';
+
+typedef GetToken = FutureOr<String> Function();
+
+class AuthLink extends Link {
+  AuthLink({
+    this.getToken,
+  }) : super(
+          request: (Operation operation, [NextLink forward]) {
+            StreamController<FetchResult> controller;
+
+            Future<void> onListen() async {
+              try {
+                final String token = await getToken();
+                print("AUTHLINK");
+                print(token);
+                
+                operation.setContext(<String, Map<String, String>>{
+                  'headers': <String, String>{'x-token': token}
+                });
+              } catch (error) {
+                controller.addError(error);
+              }
+
+              await controller.addStream(forward(operation));
+              await controller.close();
+            }
+
+            controller = StreamController<FetchResult>(onListen: onListen);
+
+            return controller.stream;
+          },
+        );
+
+  GetToken getToken;
+}
+
 
 class GraphqlConfig {
   static String _path = 'https://daikin.mcom.app/graphql';
@@ -9,7 +56,7 @@ class GraphqlConfig {
     );
 
     final AuthLink _authLink = AuthLink(
-      getToken: () => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXlsb2FkIjp7InVzZXJJZCI6IjVlMTU1OGYwNWY3NzMwMDAxODM0NzAwNSIsInBob25lIjoiKzg0Mzc4NzYwODYwIn0sImV4cCI6IjIwMjAtMDEtMDlUMDQ6MzU6MjkuNTk3WiJ9.8gYlAC7eynV531Zzwya3qtFVuI-tEuUU0W1AepYSEFE',
+      getToken: () => LoopBackAuth().accessToken
     );
 
     final Link _link = _authLink.concat(_httpLink);

@@ -1,11 +1,19 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:daikin/apis/net/user_service.dart';
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/customs/image_picker.dart';
 import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/utils/upload_image.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   bool isLogin;
@@ -14,16 +22,26 @@ class ProfileScreen extends StatefulWidget {
   ProfileScreenState createState() => ProfileScreenState();
 }
 
-class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
+class ProfileScreenState extends State<ProfileScreen>
+    with SingleTickerProviderStateMixin {
   bool _status = true;
   final FocusNode myFocusNode = FocusNode();
+  ApplicationBloc _appBloc;
 
-  final _dateController = TextEditingController();
+  final _fullnameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
 
   String date;
 
   @override
   void initState() {
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
+
+    _fullnameController.text = _appBloc.authBloc.currentUser.fullName;
+    _emailController.text = _appBloc.authBloc.currentUser.email;
+    _phoneController.text = _appBloc.authBloc.currentUser.phone;
+
     setState(() {
       _status = !widget.isLogin;
     });
@@ -50,7 +68,9 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                 child: Column(
                   children: <Widget>[
                     BaseHeaderScreen(
-                      title: widget.isLogin ? "Update Profile".toUpperCase() : "Profile".toUpperCase(),
+                      title: widget.isLogin
+                          ? "Cập nhật thông tin".toUpperCase()
+                          : "Thông tin tài khoản".toUpperCase(),
                       isBack: widget.isLogin ? false : true,
                       hideProfile: true,
                     ),
@@ -58,31 +78,24 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                       padding: EdgeInsets.only(top: 20.0),
                       child: Container(
                         height: 150,
-                        child: Stack(fit: StackFit.loose, children: <Widget>[
-                          Container(
-                              width: 140.0,
-                              height: 140.0,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: ExactAssetImage('assets/images/userImage.png'),
-                                  fit: BoxFit.cover,
-                                ),
-                              )),
-                          Positioned(
-                            top: 90,
-                            right: 0,
-                            child: CircleAvatar(
-                              backgroundColor: Colors.red,
-                              radius: 23.0,
-                              child: Icon(
-                                Icons.mode_edit,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                            ),
-                          )
-                        ]),
+                        child: ImagePickerWidget(
+                          context: context,
+                          isEdit: true,
+                          circle: true,
+                          size: 150.0,
+                          resourceUrl: _appBloc.authBloc.currentUser.avatar,
+                          onFileChanged: (fileUri, fileType) async {
+                            var result = await UserService().updateUser(
+                                _appBloc.authBloc.currentUser.id,
+                                _fullnameController.text,
+                                _emailController.text,
+                                fileUri);
+                            _appBloc.authBloc.updateUserAction(result);
+                            setState(() {});
+                            BotToast.showText(
+                                text: "Cập nhật thông tin thành công");
+                          },
+                        ),
                       ),
                     )
                   ],
@@ -97,7 +110,8 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 25.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
@@ -106,20 +120,24 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Text(
-                                    'Name',
-                                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                    'Họ và tên',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             ],
                           )),
                       Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 2.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
                               Flexible(
                                 child: TextField(
+                                  controller: _fullnameController,
                                   decoration: const InputDecoration(
                                     hintText: "Enter Your Name",
                                   ),
@@ -130,7 +148,8 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                             ],
                           )),
                       Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 25.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
@@ -139,28 +158,34 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Text(
-                                    'Email ID',
-                                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                    'Email',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             ],
                           )),
                       Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 2.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
                               Flexible(
                                 child: TextField(
-                                  decoration: const InputDecoration(hintText: "Enter Email ID"),
+                                  controller: _emailController,
+                                  decoration: const InputDecoration(
+                                      hintText: "Enter Email"),
                                   // enabled: !_status,
                                 ),
                               ),
                             ],
                           )),
                       Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 25.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
@@ -170,20 +195,26 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                                 children: <Widget>[
                                   Text(
                                     'Mobile',
-                                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                             ],
                           )),
                       Padding(
-                          padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
+                          padding: EdgeInsets.only(
+                              left: 25.0, right: 25.0, top: 2.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
                               Flexible(
                                 child: TextField(
-                                  decoration: const InputDecoration(hintText: "Enter Mobile Number"),
+                                  controller: _phoneController,
+                                  readOnly: true,
+                                  decoration: const InputDecoration(
+                                      hintText: "Enter Mobile Number"),
                                   // enabled: !_status,
                                 ),
                               ),
@@ -237,7 +268,9 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                       //         ),
                       //       ],
                       //     )),
-                      Align(alignment: Alignment.center, child: _getActionButtons())
+                      Align(
+                          alignment: Alignment.center,
+                          child: _getActionButtons())
                     ],
                   ),
                 ),
@@ -256,6 +289,19 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
     super.dispose();
   }
 
+  void uploadImage() async {
+    UploadImage().uploadImage(context, (text) async {
+      var result = await UserService().updateUser(
+          _appBloc.authBloc.currentUser.id,
+          _fullnameController.text,
+          _emailController.text,
+          text);
+      _appBloc.authBloc.updateUserAction(result);
+      setState(() {});
+      BotToast.showText(text: "Cập nhật thông tin thành công");
+    });
+  }
+
   Widget _getActionButtons() {
     return Padding(
       padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
@@ -272,22 +318,23 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
                       style: ptButton(context).copyWith(color: Colors.white),
                     )
                   : Text(
-                      "Save".toUpperCase(),
+                      "Cập nhật".toUpperCase(),
                       style: ptButton(context).copyWith(color: Colors.white),
                     ),
               textColor: Colors.white,
               color: ptPrimaryColor(context),
-              onPressed: () {
-                setState(() {
-                  if (widget.isLogin) {
-                    Routing().navigate2(context, MainScreen(), replace: true);
-                  }
-                  _status = true;
-                  FocusScope.of(context).requestFocus(FocusNode());
-                });
+              onPressed: () async {
+                var result = await UserService().updateUser(
+                    _appBloc.authBloc.currentUser.id,
+                    _fullnameController.text,
+                    _emailController.text,
+                    _appBloc.authBloc.currentUser.avatar);
+                _appBloc.authBloc.updateUserAction(result);
+                BotToast.showText(text: "Cập nhật thông tin thành công");
               },
               padding: EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)),
             )),
             flex: 2,
           ),
@@ -319,6 +366,13 @@ class ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderS
         ],
       ),
     );
+  }
+
+  String validatePassword(String value) {
+    if (!(value.length > 5) && value.isNotEmpty) {
+      return "Password should contains more then 5 character";
+    }
+    return null;
   }
 
   Widget _getEditIcon() {

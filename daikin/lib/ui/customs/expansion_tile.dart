@@ -37,8 +37,11 @@ class ExpansionTile extends StatefulWidget {
     this.children = const <Widget>[],
     this.trailing,
     this.initiallyExpanded = false,
+    this.hideLeading = false,
   })  : assert(initiallyExpanded != null),
         super(key: key);
+
+  final bool hideLeading;
 
   /// A widget to display before the title.
   ///
@@ -80,14 +83,10 @@ class ExpansionTile extends StatefulWidget {
   _ExpansionTileState createState() => _ExpansionTileState();
 }
 
-class _ExpansionTileState extends State<ExpansionTile>
-    with SingleTickerProviderStateMixin {
-  static final Animatable<double> _easeOutTween =
-      CurveTween(curve: Curves.easeOut);
-  static final Animatable<double> _easeInTween =
-      CurveTween(curve: Curves.easeIn);
-  static final Animatable<double> _halfTween =
-      Tween<double>(begin: 0.0, end: 0.5);
+class _ExpansionTileState extends State<ExpansionTile> with SingleTickerProviderStateMixin {
+  static final Animatable<double> _easeOutTween = CurveTween(curve: Curves.easeOut);
+  static final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
+  static final Animatable<double> _halfTween = Tween<double>(begin: 0.0, end: 0.5);
 
   final ColorTween _borderColorTween = ColorTween();
   final ColorTween _headerColorTween = ColorTween();
@@ -113,11 +112,9 @@ class _ExpansionTileState extends State<ExpansionTile>
     _borderColor = _controller.drive(_borderColorTween.chain(_easeOutTween));
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
-    _backgroundColor =
-        _controller.drive(_backgroundColorTween.chain(_easeOutTween));
+    _backgroundColor = _controller.drive(_backgroundColorTween.chain(_easeOutTween));
 
-    _isExpanded =
-        PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
+    _isExpanded = PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
   }
 
@@ -142,8 +139,7 @@ class _ExpansionTileState extends State<ExpansionTile>
       }
       PageStorage.of(context)?.writeState(context, _isExpanded);
     });
-    if (widget.onExpansionChanged != null)
-      widget.onExpansionChanged(_isExpanded);
+    if (widget.onExpansionChanged != null) widget.onExpansionChanged(_isExpanded);
   }
 
   Widget _buildChildren(BuildContext context, Widget child) {
@@ -152,10 +148,12 @@ class _ExpansionTileState extends State<ExpansionTile>
     return Container(
       decoration: BoxDecoration(
         color: _backgroundColor.value ?? Colors.transparent,
-        border: Border(
-          top: BorderSide(color: borderSideColor),
-          bottom: BorderSide(color: borderSideColor),
-        ),
+        border: widget.hideLeading
+            ? Border()
+            : Border(
+                top: BorderSide(color: borderSideColor),
+                bottom: BorderSide(color: borderSideColor),
+              ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -165,12 +163,13 @@ class _ExpansionTileState extends State<ExpansionTile>
             textColor: _headerColor.value,
             child: ListTile(
               onTap: _handleTap,
-              leading: widget.leading ??
-                  RotationTransition(
-                    turns: _iconTurns,
-                    child: const Icon(Icons.expand_more,
-                        color: StyleAppTheme.nearlyBlue),
-                  ),
+              leading: widget.hideLeading
+                  ? null
+                  : widget.leading ??
+                      RotationTransition(
+                        turns: _iconTurns,
+                        child: const Icon(Icons.expand_more, color: StyleAppTheme.nearlyBlue),
+                      ),
               title: widget.title,
               subtitle: widget.subtitle,
               trailing: widget.trailing,

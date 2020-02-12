@@ -21,14 +21,18 @@ class MainScreen extends StatefulWidget {
   }
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen>
+    with SingleTickerProviderStateMixin {
   ApplicationBloc _appBloc;
+  TabController _tabController;
 
+  int tabLength = 3;
   @override
   void initState() {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
     _appBloc.fetchUserData();
     super.initState();
+    _tabController = TabController(vsync: this, length: tabLength);
   }
 
   @override
@@ -37,15 +41,15 @@ class _MainScreenState extends State<MainScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return WillPopScope(
       child: DefaultTabController(
-        length: 4,
+        length: tabLength,
         child: Scaffold(
           body: Container(
             color: Colors.white,
             child: TabBarView(
+              controller: _tabController,
               children: [
-                DashBoardScreen(),
+                DashBoardScreen(tabController: _tabController),
                 HomeScreen(),
-                AnalyticScreen(),
                 SettingScreen(),
                 // Container(
                 //   color: Colors.red,
@@ -54,15 +58,13 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
           bottomNavigationBar: TabBar(
+            controller: _tabController,
             tabs: [
               Tab(
                 icon: Icon(Icons.grid_on),
               ),
               Tab(
                 icon: Icon(Icons.home),
-              ),
-              Tab(
-                icon: Icon(Icons.format_align_right),
               ),
               Tab(
                 icon: Icon(Icons.settings),

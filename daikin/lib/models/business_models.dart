@@ -15,6 +15,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'business_models.g.dart';
 
+enum DeviceType { CAMERA_IP, UNKNOWN }
+
 @JsonSerializable(nullable: false)
 class Device {
   final int id;
@@ -32,14 +34,34 @@ class Device {
   @JsonKey(nullable: true)
   final List<String> interfaces;
   @JsonKey(toJson: _propertiesToJson)
-  final DeviceProperty properties;
+  DeviceProperty properties;
   @JsonKey(toJson: _actionsToJson)
   final DeviceAction actions;
   final int created;
   final int modified;
   final int sortOrder;
+  @JsonKey(nullable: true, defaultValue: [], ignore: true)
+  List<Device> devices;
 
-  Device({this.id, this.name, this.roomID, this.type, this.baseType, this.enabled, this.visible, this.isPlugin, this.parentId, this.remoteGatewayId, this.viewXml, this.configXml, this.interfaces, this.properties, this.actions, this.created, this.modified, this.sortOrder});
+  Device(
+      {this.id,
+      this.name,
+      this.roomID,
+      this.type,
+      this.baseType,
+      this.enabled,
+      this.visible,
+      this.isPlugin,
+      this.parentId,
+      this.remoteGatewayId,
+      this.viewXml,
+      this.configXml,
+      this.interfaces,
+      this.properties,
+      this.actions,
+      this.created,
+      this.modified,
+      this.sortOrder});
 
   factory Device.fromJson(Map<String, dynamic> json) {
     final item = _$DeviceFromJson(json);
@@ -47,13 +69,21 @@ class Device {
   }
 
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
+
+  DeviceType get getDeviceType {
+    if (type == 'com.fibaro.ipCamera' && baseType == 'com.fibaro.camera') {
+      return DeviceType.CAMERA_IP;
+    }
+
+    return DeviceType.UNKNOWN;
+  }
 }
 
 Map<String, dynamic> _propertiesToJson(DeviceProperty item) => item.toJson();
 
 Map<String, dynamic> _actionsToJson(DeviceAction item) => item.toJson();
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: true)
 class DeviceProperty {
   final String UIMessageSendTime;
   final String autoConfig;
@@ -99,12 +129,24 @@ class DeviceProperty {
   final String sunsetHour;
   final String useTemplate;
   final String itemDescription;
-  final String value;
+  String value;
   final String zwaveBuildVersion;
   final String zwaveCompany;
   final String zwaveInfo;
   final String zwaveRegion;
   final String zwaveVersion;
+  List<DeviceRow> rows;
+
+  final String httpsEnabled;
+  final String ip;
+  final String jpgPath;
+  final String mjpgPath;
+  final String username;
+  final String password;
+//  "isLight": "true",
+//  "lastColorSet": "100,255,50,255",
+  final String isLight;
+  final String lastColorSet;
 
   DeviceProperty(
       {this.UIMessageSendTime,
@@ -155,7 +197,17 @@ class DeviceProperty {
       this.zwaveCompany,
       this.zwaveInfo,
       this.zwaveRegion,
-      this.zwaveVersion});
+      List<DeviceRow> rows,
+      this.zwaveVersion,
+      this.httpsEnabled,
+      this.ip,
+      this.jpgPath,
+      this.mjpgPath,
+      this.username,
+      this.password,
+      this.isLight,
+      this.lastColorSet})
+      : rows = rows ?? <DeviceRow>[];
 
   factory DeviceProperty.fromJson(Map<String, dynamic> json) {
     final item = _$DevicePropertyFromJson(json);
@@ -163,6 +215,42 @@ class DeviceProperty {
   }
 
   Map<String, dynamic> toJson() => _$DevicePropertyToJson(this);
+
+  // For Camera properties
+  String get getCameraUrl {
+    String http = httpsEnabled == 'true' ? 'https' : 'http';
+    String path = mjpgPath.isNotEmpty && mjpgPath.startsWith('/')
+        ? mjpgPath.substring(1)
+        : mjpgPath;
+    return Uri.encodeFull('$http://$username:$password@$ip/$path');
+  }
+
+  String get getCameraThumbPreview {
+    String http = httpsEnabled == 'true' ? 'https' : 'http';
+    String path = jpgPath.isNotEmpty && jpgPath.startsWith('/')
+        ? jpgPath.substring(1)
+        : jpgPath;
+    return Uri.encodeFull('$http://${Uri.encodeComponent(username)}:${Uri.encodeComponent(password)}@$ip/$path');
+  }
+
+  // For RGB light
+
+  bool get isLightDevice => isLight == 'true';
+
+  int _getColorAtIndex(int id) {
+    List<String> p = lastColorSet.split(',');
+    if (p.length > id) {
+      return int.parse(p[id]);
+    }
+    return 0;
+  }
+
+  int get getRed => _getColorAtIndex(0);
+  int get getGreen => _getColorAtIndex(1);
+  int get getBlue => _getColorAtIndex(2);
+  int get getBrightness => _getColorAtIndex(3);
+
+  bool get isLightOn => value != '0';
 }
 
 //"pollingDeadDevice":1,
@@ -180,7 +268,13 @@ class DeviceAction {
   final int turnOff;
   final int turnOn;
 
-  DeviceAction({this.pollingDeadDevice, this.pollingTimeSec, this.reconfigure, this.requestNodeNeighborUpdate, this.turnOff, this.turnOn});
+  DeviceAction(
+      {this.pollingDeadDevice,
+      this.pollingTimeSec,
+      this.reconfigure,
+      this.requestNodeNeighborUpdate,
+      this.turnOff,
+      this.turnOn});
 
   factory DeviceAction.fromJson(Map<String, dynamic> json) {
     final item = _$DeviceActionFromJson(json);
@@ -214,11 +308,26 @@ class Room {
   final int defaultThermostat;
   final int sortOrder;
   final String category;
+  @JsonKey(nullable: true)
   List<Device> devices = [];
+  @JsonKey(nullable: true)
+  List<Scene> scenes = [];
   @JsonKey(toJson: _defSensorToJson)
   final RoomDefaultSensor defaultSensors;
 
-  Room({this.id, this.name, this.sectionID, this.icon, this.defaultThermostat, this.defaultSensors, this.sortOrder, this.category});
+  Room(
+      {this.id,
+      this.name,
+      this.sectionID,
+      this.icon,
+      this.defaultThermostat,
+      this.defaultSensors,
+      this.sortOrder,
+      List<Device> devices,
+      List<Scene> scenes,
+      this.category})
+      : devices = devices ?? <Device>[],
+        scenes = scenes ?? <Scene>[];
 
   factory Room.fromJson(Map<String, dynamic> json) {
     final item = _$RoomFromJson(json);
@@ -246,14 +355,15 @@ class RoomDefaultSensor {
   Map<String, dynamic> toJson() => _$RoomDefaultSensorToJson(this);
 }
 
-
 @JsonSerializable(nullable: false)
 class Scene {
   final int id;
   final String name;
   final String type;
+  final int roomID;
+  final int iconID;
 
-  Scene({this.name, this.id, this.type});
+  Scene({this.name, this.id, this.type, this.roomID, this.iconID});
 
   factory Scene.fromJson(Map<String, dynamic> json) {
     final item = _$SceneFromJson(json);
@@ -261,4 +371,36 @@ class Scene {
   }
 
   Map<String, dynamic> toJson() => _$SceneToJson(this);
+}
+
+@JsonSerializable(nullable: true)
+class DeviceRow {
+  final String type;
+  List<ElementDeviceRow> elements;
+
+  DeviceRow({this.type, List<ElementDeviceRow> elements})
+      : elements = elements ?? <ElementDeviceRow>[];
+
+  factory DeviceRow.fromJson(Map<String, dynamic> json) {
+    final item = _$DeviceRowFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$DeviceRowToJson(this);
+}
+
+@JsonSerializable(nullable: true)
+class ElementDeviceRow {
+  final String name;
+  final String caption;
+  final int id;
+
+  ElementDeviceRow({this.caption, this.name, this.id});
+
+  factory ElementDeviceRow.fromJson(Map<String, dynamic> json) {
+    final item = _$ElementDeviceRowFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$ElementDeviceRowToJson(this);
 }
