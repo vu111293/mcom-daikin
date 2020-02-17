@@ -46,7 +46,7 @@ class BaseHeaderScreen extends StatelessWidget {
                   child: Icon(
                     Icons.keyboard_backspace,
                     color: ptPrimaryColor(context),
-                    size: 25.0,
+                    size: 36.0,
                   ),
                 )
               : Container(),
