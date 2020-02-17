@@ -18,13 +18,15 @@ class ActiveDeviceListView extends StatefulWidget {
   _ActiveDeviceListViewState createState() => _ActiveDeviceListViewState();
 }
 
-class _ActiveDeviceListViewState extends State<ActiveDeviceListView> with TickerProviderStateMixin {
+class _ActiveDeviceListViewState extends State<ActiveDeviceListView>
+    with TickerProviderStateMixin {
   AnimationController animationController;
   ApplicationBloc _appBloc;
   @override
   void initState() {
-    _appBloc=BlocProvider.of<ApplicationBloc>(context);
-    animationController = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
   }
 
@@ -40,39 +42,45 @@ class _ActiveDeviceListViewState extends State<ActiveDeviceListView> with Ticker
       child: Container(
         height: 134,
         width: double.infinity,
-        child: FutureBuilder<bool>(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        child: StreamBuilder(
+          stream: _appBloc.homeBloc.activeDeviceStream,
+          builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return const SizedBox();
+              return Center(
+                child: Text("Không có thiết bị nào đang hoạt đông"),
+              );
             } else {
-              return StreamBuilder(
-                stream: _appBloc.homeBloc.activeDeviceStream,
-                builder: (context,snapshot){
-                  if(!snapshot.hasData){
-                    return Container();
-                  }else{
-                    return ListView.builder(
-                      padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
-                      itemCount: snapshot.data.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context, int index) {
-                        int length=snapshot.data.length;
-                        final int count = length > 10 ? 10 : length;
-                        final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-                            parent: animationController,
-                            curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
-                        animationController.forward();
+              if (snapshot.data.length == 0) {
+                return Center(
+                  child: Text("Không có thiết bị nào đang hoạt đông"),
+                );
+              }
+              return ListView.builder(
+                padding: const EdgeInsets.only(
+                    top: 0, bottom: 0, right: 16, left: 16),
+                itemCount: snapshot.data.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int index) {
+                  int length = snapshot.data.length;
+                  if (length == 0) {
+                    return Center(
+                      child: Text("Không có thiết bị nào đang hoạt đông"),
+                    );
+                  } else {
+                    final int count = length > 10 ? 10 : length;
+                    final Animation<double> animation =
+                        Tween<double>(begin: 0.0, end: 1.0).animate(
+                            CurvedAnimation(
+                                parent: animationController,
+                                curve: Interval((1 / count) * index, 1.0,
+                                    curve: Curves.fastOutSlowIn)));
+                    animationController.forward();
 
-                        return DeviceView(
-                          device: snapshot.data[index],
-                          animation: animation,
-                          animationController: animationController,
-                          callback: (){
-
-                          },
-                        );
-                      },
+                    return DeviceView(
+                      device: snapshot.data[index],
+                      animation: animation,
+                      animationController: animationController,
+                      callback: () {},
                     );
                   }
                 },
@@ -86,7 +94,12 @@ class _ActiveDeviceListViewState extends State<ActiveDeviceListView> with Ticker
 }
 
 class DeviceView extends StatelessWidget {
-  const DeviceView({Key key, this.device, this.animationController, this.animation, this.callback})
+  const DeviceView(
+      {Key key,
+      this.device,
+      this.animationController,
+      this.animation,
+      this.callback})
       : super(key: key);
 
   final VoidCallback callback;
@@ -102,7 +115,8 @@ class DeviceView extends StatelessWidget {
         return FadeTransition(
           opacity: animation,
           child: Transform(
-            transform: Matrix4.translationValues(100 * (1.0 - animation.value), 0.0, 0.0),
+            transform: Matrix4.translationValues(
+                100 * (1.0 - animation.value), 0.0, 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
@@ -122,7 +136,8 @@ class DeviceView extends StatelessWidget {
                             child: Container(
                               decoration: BoxDecoration(
                                 color: HexColor('#F8FAFB'),
-                                borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(16.0)),
                               ),
                               child: Row(
                                 children: <Widget>[
@@ -132,10 +147,12 @@ class DeviceView extends StatelessWidget {
                                   Expanded(
                                     child: Container(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Padding(
-                                            padding: const EdgeInsets.only(top: 16),
+                                            padding:
+                                                const EdgeInsets.only(top: 16),
                                             child: Text(
                                               device.name,
                                               textAlign: TextAlign.left,
@@ -163,15 +180,18 @@ class DeviceView extends StatelessWidget {
                     ),
                     Container(
                       child: Padding(
-                          padding: const EdgeInsets.only(top: 24, bottom: 24, left: 16),
+                          padding: const EdgeInsets.only(
+                              top: 24, bottom: 24, left: 16),
                           child: Container(
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(16.0)),
                             ),
                             child: ClipRRect(
-                              borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(16.0)),
                               child: AspectRatio(
                                   aspectRatio: 0.9,
                                   child: Image.asset(
@@ -189,6 +209,4 @@ class DeviceView extends StatelessWidget {
       },
     );
   }
-
-
 }
