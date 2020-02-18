@@ -13,6 +13,7 @@ import 'package:daikin/ui/pages/dashboard/active_device_view.dart';
 import 'package:daikin/ui/pages/dashboard/category_list_view.dart';
 import 'package:daikin/ui/pages/dashboard/camera_screen.dart';
 import 'package:daikin/ui/pages/dashboard/camera_list_view.dart';
+import 'package:daikin/ui/pages/home/course_info_device_screen.dart';
 import 'package:daikin/ui/pages/home/home_screen.dart';
 import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
@@ -40,10 +41,8 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class DashBoardScreenState extends State<DashBoardScreen> {
-
   final _carouselIndexBehavior = BehaviorSubject.seeded(0);
   ApplicationBloc _appBloc;
-
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
@@ -83,66 +82,108 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                   child: ListView(
                 padding: EdgeInsets.only(bottom: 24.0),
                 children: <Widget>[
-                  CarouselSlider(
-                    items: map<Widget>(
-                      imgList,
-                      (index, i) {
-                        return Opacity(
+                  StreamBuilder<List<Room>>(
+                    stream: _appBloc.homeBloc.roomDataStream,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container();
+                      }
+                      return CarouselSlider(
+                        items: map<Widget>(
+                          snapshot.data,
+                          (int index, Room i) {
+                            int indexImg = index;
+
+                            while (indexImg > imgList.length - 1) {
+                              indexImg -= imgList.length;
+                            }
+
+                            print(indexImg);
+
+                            return InkWell(
+                                onTap: () {
+                                  Routing().navigate2(
+                                      context, CourseInfoDeviceScreen(room: i));
+                                },
+                                child: Stack(
+                                  children: <Widget>[
+                                    Opacity(
 //                          opacity: _current == index ? 1 : 0.3,
-                          opacity: 1.0,
-                          child: Container(
-                            margin: EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              color: Colors.black12,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15)),
-                            ),
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15)),
-                              child: Image.network(
-                                i,
-                                fit: BoxFit.cover,
-                                width: deviceWidth(context) * 0.8,
-                                cacheHeight: 180,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ).toList(),
-                    autoPlay: true,
-                    height: 180,
-                    enlargeCenterPage: true,
-                    // aspectRatio: 1,
-                    pauseAutoPlayOnTouch: Duration(milliseconds: 150),
-                    onPageChanged: (index) {
-                      _carouselIndexBehavior.sink.add(index);
+                                      opacity: 1.0,
+                                      child: Container(
+                                        margin: EdgeInsets.all(5.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black12,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
+                                          child: Image.network(
+                                            imgList[indexImg],
+                                            fit: BoxFit.cover,
+                                            semanticLabel: "Mo asd sa dsa sa",
+                                            excludeFromSemantics: false,
+                                            width: deviceWidth(context) * 0.8,
+                                            cacheHeight: 180,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      left: 20.0,
+                                      bottom: 20.0,
+                                      child: Text(i.name, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                    ),
+                                  ],
+                                ));
+                          },
+                        ).toList(),
+                        autoPlay: true,
+                        height: 180,
+                        enlargeCenterPage: true,
+                        // aspectRatio: 1,
+                        pauseAutoPlayOnTouch: Duration(milliseconds: 150),
+                        onPageChanged: (index) {
+                          _carouselIndexBehavior.sink.add(index);
+                        },
+                      );
                     },
                   ),
                   StreamBuilder<int>(
                     stream: _carouselIndexBehavior.stream,
                     builder: (context, snapshot) {
                       int currentIndex = snapshot.hasData ? snapshot.data : 0;
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: map<Widget>(
-                          imgList,
+                      return StreamBuilder(
+                        stream: _appBloc.homeBloc.roomDataStream,
+                        builder: (context, s) {
+                          if (!s.hasData) {
+                            return Container();
+                          }
+
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: map<Widget>(
+                              s.data,
                               (index, url) {
-                            return Container(
-                              width: 16.0,
-                              height: 3.0,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 2.0),
-                              decoration: BoxDecoration(
-                                color: currentIndex == index
-                                    ? HexColor(appColor).withOpacity(0.9)
-                                    : Color.fromRGBO(0, 0, 0, 0.2),
-                                borderRadius: BorderRadius.all(Radius.circular(3)),
-                              ),
-                            );
-                          },
-                        ),
+                                return Container(
+                                  width: 16.0,
+                                  height: 3.0,
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 2.0),
+                                  decoration: BoxDecoration(
+                                    color: currentIndex == index
+                                        ? HexColor(appColor).withOpacity(0.9)
+                                        : Color.fromRGBO(0, 0, 0, 0.2),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(3)),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
                       );
                     },
                   ),

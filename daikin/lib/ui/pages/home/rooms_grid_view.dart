@@ -167,7 +167,7 @@ class CategoryView extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: 3),
                       child: Text(
-                        room.devices.length.toString() + ' devices',
+                        room.devices.length.toString() + ' thiết bị',
                         textAlign: TextAlign.left,
                         style: ptCaption(context).copyWith(color: HexColor(appColor2)),
                       ),

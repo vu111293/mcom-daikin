@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:rxdart/rxdart.dart';
@@ -83,6 +85,16 @@ class HomeBloc {
     List<Device> activeDevice =
         devices.where((v) => v.properties.value == 'true').toList();
     _activeDeviceSubject.sink.add(activeDevice);
+  }
+
+  Room randomRoom() {
+    List<Room> currentRooms = _roomsSubject.stream.value;
+    return currentRooms[randRange(0, currentRooms.length)];
+  }
+
+  int randRange(int min, int max) {
+    var random = new Random();
+    return min + random.nextInt(max - min);
   }
 
   updateDevice(Device d) {
