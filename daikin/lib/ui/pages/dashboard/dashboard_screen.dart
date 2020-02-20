@@ -75,7 +75,9 @@ class DashBoardScreenState extends State<DashBoardScreen> {
           body: Column(
             children: <Widget>[
               BaseHeaderScreen(
-                title: "Chào Bạn !",
+                title: _appBloc.authBloc.currentUser.fullName == null
+                    ? "Chào bạn !"
+                    : "Chào " + _appBloc.authBloc.currentUser.fullName,
 //                subTitle: "Chào mừng bạn đến,",
               ),
               Expanded(
@@ -133,7 +135,10 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                                     Positioned(
                                       left: 20.0,
                                       bottom: 20.0,
-                                      child: Text(i.name, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                      child: Text(i.name,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold)),
                                     ),
                                   ],
                                 ));
@@ -363,8 +368,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
             // ),
           ],
         ),
-        ActiveDeviceListView(
-        ),
+        ActiveDeviceListView(),
       ],
     );
   }
