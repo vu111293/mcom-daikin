@@ -123,7 +123,6 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                                           child: Image.network(
                                             imgList[indexImg],
                                             fit: BoxFit.cover,
-                                            semanticLabel: "Mo asd sa dsa sa",
                                             excludeFromSemantics: false,
                                             width: deviceWidth(context) * 0.8,
                                             cacheHeight: 180,
@@ -365,7 +364,6 @@ class DashBoardScreenState extends State<DashBoardScreen> {
           ],
         ),
         ActiveDeviceListView(
-          callBack: () {},
         ),
       ],
     );

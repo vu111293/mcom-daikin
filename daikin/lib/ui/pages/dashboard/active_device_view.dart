@@ -1,3 +1,5 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
@@ -78,9 +80,15 @@ class _ActiveDeviceListViewState extends State<ActiveDeviceListView>
 
                     return DeviceView(
                       device: snapshot.data[index],
-                      animation: animation,
-                      animationController: animationController,
-                      callback: () {},
+                      callback: (value) {
+                        BusinessService()
+                            .turnOffDevice(snapshot.data[index].id);
+                        BotToast.showText(text: "Tắt thiết bị thành công");
+                        snapshot.data[index].properties.value =
+                            value.toString();
+                        _appBloc.homeBloc.updateActiveDevice();
+                        setState(() {});
+                      },
                     );
                   }
                 },
@@ -94,119 +102,127 @@ class _ActiveDeviceListViewState extends State<ActiveDeviceListView>
 }
 
 class DeviceView extends StatelessWidget {
-  const DeviceView(
-      {Key key,
-      this.device,
-      this.animationController,
-      this.animation,
-      this.callback})
-      : super(key: key);
+  const DeviceView({Key key, this.device, this.callback}) : super(key: key);
 
-  final VoidCallback callback;
+  final Function callback;
   final Device device;
-  final AnimationController animationController;
-  final Animation<dynamic> animation;
+  final bool isSwitched = true;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
-        return FadeTransition(
-          opacity: animation,
-          child: Transform(
-            transform: Matrix4.translationValues(
-                100 * (1.0 - animation.value), 0.0, 0.0),
-            child: InkWell(
-              splashColor: Colors.transparent,
-              onTap: () {
-                callback();
-              },
-              child: SizedBox(
-                width: 280,
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          const SizedBox(
-                            width: 48,
-                          ),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: HexColor('#F8FAFB'),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(16.0)),
-                              ),
-                              child: Row(
-                                children: <Widget>[
-                                  const SizedBox(
-                                    width: 48 + 24.0,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 16),
-                                            child: Text(
-                                              device.name,
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                                letterSpacing: 0.27,
-                                                color: StyleAppTheme.darkerText,
-                                              ),
-                                            ),
-                                          ),
-                                          const Expanded(
-                                            child: SizedBox(),
-                                          ),
-                                        ],
-                                      ),
+    return SizedBox(
+      width: 280,
+      child: Stack(
+        children: <Widget>[
+          Container(
+            child: Row(
+              children: <Widget>[
+                const SizedBox(
+                  width: 48,
+                ),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: HexColor('#F8FAFB'),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(16.0)),
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        const SizedBox(
+                          width: 48 + 24.0,
+                        ),
+                        Expanded(
+                          child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: Text(
+                                    device.name,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      letterSpacing: 0.27,
+                                      color: StyleAppTheme.darkerText,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                                // const Expanded(
+                                //   child: SizedBox(),
+                                // ),
+                                Container(
+                                    height: 30,
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Positioned(
+                                          top: -5,
+                                          left: -10,
+                                          child: Transform.scale(
+                                            scale: 1.0,
+                                            child: Switch(
+                                              value: isSwitched,
+                                              onChanged: (value) {
+                                                callback(value);
+                                                //callback(value);
+                                                // setState(() {
+                                                //   isSwitched = value;
+                                                // });
+                                                BusinessService()
+                                                    .turnOffDevice(device.id);
+                                                BotToast.showText(
+                                                    text:
+                                                        "Tắt thiết bị thành công");
+                                              },
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize.padded,
+                                              activeColor: Colors.white,
+                                              activeTrackColor:
+                                                  HexColor(appColor),
+                                              inactiveThumbColor:
+                                                  HexColor(appBorderColor),
+                                              inactiveTrackColor:
+                                                  HexColor(appBorderColor),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                              ],
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 24, bottom: 24, left: 16),
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(16.0)),
-                            ),
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(16.0)),
-                              child: AspectRatio(
-                                  aspectRatio: 0.9,
-                                  child: Image.asset(
-                                    'assets/devices/rgb.png',
-                                  )),
-                            ),
-                          )),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                )
+              ],
             ),
           ),
-        );
-      },
+          Container(
+            child: Padding(
+                padding: const EdgeInsets.only(top: 24, bottom: 24, left: 16),
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                    child: AspectRatio(
+                        aspectRatio: 0.9,
+                        child: Image.asset(
+                          'assets/devices/rgb.png',
+                        )),
+                  ),
+                )),
+          ),
+        ],
+      ),
     );
   }
 }
