@@ -118,5 +118,6 @@ class HomeBloc {
     _devicesSubject.close();
     _scenesSubject.close();
     _cameraDevicesSubject.close();
+    _activeDeviceSubject.close();
   }
 }
