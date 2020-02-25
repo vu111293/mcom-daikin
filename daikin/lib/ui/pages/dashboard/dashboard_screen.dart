@@ -389,11 +389,6 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                 child: Text('Danh sách Camera',
                     textAlign: TextAlign.left, style: ptTitle(context)),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
-              //   child: Text('All',
-              //       textAlign: TextAlign.left, style: ptSubtitle(context)),
-              // ),
             ],
           ),
           CameraListView(

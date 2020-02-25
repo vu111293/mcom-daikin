@@ -116,7 +116,13 @@ class CameraItemView extends StatelessWidget {
                             return Container(
                               alignment: Alignment.center,
                               padding: EdgeInsets.all(12.0),
-                              child: Image.asset('assets/icons/ic_camera.png', color: Colors.black54, fit: BoxFit.cover),);
+                              child: Image.asset('assets/icons/ic_camera.png', color: Colors.black54, fit: BoxFit.cover));
+                          },
+                          placeholder: (context, url) {
+                            return CachedNetworkImage(imageUrl: device.properties.getCameraThumbPreview,
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover);
                           },
                           width: double.infinity,
                           height: double.infinity,
