@@ -5,19 +5,15 @@ import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
-import 'package:daikin/constants/dataTest.dart';
-import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
+import 'package:daikin/ui/customs/action_button.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/camera_ip_preview.dart';
-import 'package:daikin/ui/customs/expansion_tile.dart' as expansionTile;
-import 'package:daikin/ui/customs/action_button.dart';
 import 'package:daikin/ui/pages/dashboard/rgb_screen.dart';
 import 'package:daikin/ui/pages/device_detail/blinds_device_screen.dart';
 import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/device_detail/switch_multi_device.dart';
 import 'package:daikin/ui/pages/device_detail/virtual_device_screen.dart';
-import 'package:daikin/ui/pages/home/devices_list_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +45,6 @@ class CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool status = true;
     return SlidingUpPanel(
       backdropEnabled: true,
       minHeight: 80,
@@ -68,11 +63,12 @@ class CameraScreenState extends State<CameraScreen> {
               color: Colors.black54,
             ),
           ),
+          Container(child: Text(widget.item.devices.length > 0 ? 'Danh sách thiết bị trong phòng' : 'Không có thiết bị trong phòng',
+              style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 18.0))),
           Expanded(
             child: SingleChildScrollView(
                 child: Column(
-              children:
-                  widget.item.devices.map((item) => buildDevice(item)).toList(),
+              children: widget.item.devices.map((item) => buildDevice(item)).toList(),
             )),
           ),
         ],
