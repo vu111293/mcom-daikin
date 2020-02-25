@@ -160,7 +160,7 @@ class CategoryView extends StatelessWidget {
                     Text(
                       room.name,
                       textAlign: TextAlign.left,
-                      style: ptTitle(context).copyWith(color: ptPrimaryColor(context)),
+                      style: ptTitle(context).copyWith(color: HexColor(appText)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
