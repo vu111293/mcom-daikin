@@ -141,7 +141,7 @@ class CategoryView extends StatelessWidget {
                     width: 10,
                     height: 10,
                     decoration: BoxDecoration(
-                      color: Colors.greenAccent,
+                      color: Colors.white,
                       borderRadius: BorderRadius.all(
                         Radius.circular(10),
                       ),
