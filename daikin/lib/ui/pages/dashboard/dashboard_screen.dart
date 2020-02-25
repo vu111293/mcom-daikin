@@ -75,10 +75,11 @@ class DashBoardScreenState extends State<DashBoardScreen> {
           body: Column(
             children: <Widget>[
               BaseHeaderScreen(
-                title: _appBloc.authBloc.currentUser.fullName == null
-                    ? "Chào bạn !"
+                title: _appBloc.authBloc.currentUser.fullName == null ||
+                        _appBloc.authBloc.currentUser.fullName.trim() == null ||
+                        _appBloc.authBloc.currentUser.fullName.trim() == ''
+                    ? ""
                     : "Chào " + _appBloc.authBloc.currentUser.fullName,
-//                subTitle: "Chào mừng bạn đến,",
               ),
               Expanded(
                   child: ListView(
