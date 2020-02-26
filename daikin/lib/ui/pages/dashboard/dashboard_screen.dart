@@ -78,7 +78,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                 title: _appBloc.authBloc.currentUser.fullName == null ||
                         _appBloc.authBloc.currentUser.fullName.trim() == null ||
                         _appBloc.authBloc.currentUser.fullName.trim() == ''
-                    ? ""
+                    ? "Chào bạn !"
                     : "Chào " + _appBloc.authBloc.currentUser.fullName,
               ),
               Expanded(
