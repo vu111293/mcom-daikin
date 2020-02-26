@@ -26,7 +26,7 @@ Widget defaultBuildDevice(DeviceViewItem widget, Device device, bool isSwitched,
             shadowColor: Colors.black26,
             color: isSwitched ? Colors.white : HexColor("#f3f3f3"),
             shape: RoundedRectangleBorder(
-              side:isSwitched ? BorderSide(color: HexColor(appText).withOpacity(0.1), width: 1):BorderSide.none,
+              side:isSwitched ? BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1):BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: InkWell(
@@ -131,7 +131,7 @@ Widget buildBlindsDevice(
             shadowColor: Colors.black26,
             color: isSwitched ? Colors.white : HexColor("#f3f3f3"),
             shape: RoundedRectangleBorder(
-              side:isSwitched ? BorderSide(color: HexColor(appText).withOpacity(0.1), width: 1):BorderSide.none,
+              side:isSwitched ? BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1):BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: InkWell(
@@ -214,7 +214,7 @@ Widget buildSwitchDevice(DeviceViewItem widget, Device device, Function callback
             shadowColor: Colors.black26,
             color: isSwitched ? Colors.white : HexColor("#f3f3f3"),
             shape: RoundedRectangleBorder(
-              side:isSwitched ? BorderSide(color: HexColor(appText).withOpacity(0.1), width: 1):BorderSide.none,
+              side:isSwitched ? BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1):BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: InkWell(
@@ -319,7 +319,7 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback, F
             shadowColor: Colors.black26,
             color: isSwitched ? Colors.white : HexColor("#f3f3f3"),
             shape: RoundedRectangleBorder(
-              side:isSwitched ? BorderSide(color: HexColor(appText).withOpacity(0.1), width: 1):BorderSide.none,
+              side:isSwitched ? BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1):BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: InkWell(
@@ -524,7 +524,7 @@ Widget buildSwitchMultiDevice(DeviceViewItem widget, Device device,
             shadowColor: Colors.black26,
             color: isSwitched ? Colors.white : HexColor("#f3f3f3"),
             shape: RoundedRectangleBorder(
-              side:isSwitched ? BorderSide(color: HexColor(appText).withOpacity(0.1), width: 1):BorderSide.none,
+              side:isSwitched ? BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1):BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             child: InkWell(
