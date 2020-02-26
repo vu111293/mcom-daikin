@@ -64,7 +64,7 @@ class CameraScreenState extends State<CameraScreen> {
             ),
           ),
           Container(child: Text(widget.item.devices.length > 0 ? 'Danh sách thiết bị trong phòng' : 'Không có thiết bị trong phòng',
-              style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 18.0))),
+              style: TextStyle(color: Colors.black54, fontSize: 18.0))),
           Expanded(
             child: SingleChildScrollView(
                 child: Column(
