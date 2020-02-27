@@ -12,6 +12,7 @@ class BaseHeaderScreen extends StatelessWidget {
   final bool isBack;
   final bool hideProfile;
   final bool isSubHeader;
+  final Function onTitleTap;
   ApplicationBloc _appBloc;
 
   BaseHeaderScreen(
@@ -19,7 +20,8 @@ class BaseHeaderScreen extends StatelessWidget {
       this.subTitle = '',
       this.isBack = false,
       this.hideProfile = false,
-      this.isSubHeader = false}) {}
+      this.isSubHeader = false,
+      this.onTitleTap});
 
   @override
   Widget build(BuildContext context) {
@@ -50,40 +52,37 @@ class BaseHeaderScreen extends StatelessWidget {
                   ),
                 )
               : Container(),
-          isBack
-              ? Expanded(
-                  child: Center(
-                  child: Text(
-                    title ?? "",
-                    style: ptTitle(context)
-                        .copyWith(color: ptPrimaryColor(context)),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ))
-              : Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        title ?? "",
-                        style: ptHeadline(context),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 4),
-                        child: Text(
-                          subTitle ?? "",
-                          style: ptSubtitle(context),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      )
-                    ],
-                  ),
+          Expanded(child: InkWell(child: isBack
+              ? Center(
+            child: Text(
+              title ?? '',
+              style: ptTitle(context)
+                  .copyWith(color: ptPrimaryColor(context)),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          )
+              : Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                title ?? "",
+                style: ptHeadline(context),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 4),
+                child: Text(
+                  subTitle ?? "",
+                  style: ptSubtitle(context),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
+              )
+            ],
+          ), onTap: onTitleTap),),
           hideProfile
               ? Container()
               : isBack

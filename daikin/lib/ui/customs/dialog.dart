@@ -1,3 +1,5 @@
+import 'package:daikin/constants/constants.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:flutter/material.dart';
 
 enum DialogAction {
@@ -120,6 +122,177 @@ Future showAlertWithTitleDialog(BuildContext context, String title, String conte
       });
 }
 
+class ChangeRoomNameDialog extends StatelessWidget {
+
+  final TextEditingController _textFieldController = TextEditingController();
+  final String initText;
+  final Function(String) onSave;
+  final Function onCancel;
+
+  ChangeRoomNameDialog({this.initText, this.onSave, this.onCancel});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(child: Container(
+      padding: EdgeInsets.all(24.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text('Đổi tên'),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 12.0),
+            child: TextField(
+              controller: _textFieldController..text = initText ?? '',
+              decoration: InputDecoration(hintText: "Tên cho phòng"),
+            )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              FlatButton(child: Text('Lưu'), onPressed: () {
+                String r = _textFieldController.text.trim();
+                onSave(r);
+                Navigator.pop(context);
+              })
+            ])
+        ],
+      ),
+    ));
+  }
+}
+
+Future showChangeRoomNameDialog(BuildContext context, String v, {Function onCancel, Function(String) onSave}) {
+  return showDialog(
+      context: context,
+      builder: (context) => ChangeRoomNameDialog(initText: v, onSave: onSave, onCancel: onCancel));
+}
+
+
+
+class ChangeImageAssetsDialog extends StatefulWidget {
+
+  final List<ImageAsset> list;
+  final String selectedId;
+  final Function(ImageAsset) onSave;
+  final Function onCancel;
+
+  ChangeImageAssetsDialog({this.list, this.selectedId, this.onSave, this.onCancel});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ChangeImageAssetsDialogState();
+  }
+
+}
+
+class _ChangeImageAssetsDialogState extends State<ChangeImageAssetsDialog> {
+
+//  ChangeImageAssetsDialog({this.list, this.selectedId, this.onSave, this.onCancel});
+  ImageAsset _selected;
+
+  @override
+  void initState() {
+    _selected = widget.list.firstWhere((item) => item.id == widget.selectedId, orElse: ()=> null);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(child: Container(
+      padding: EdgeInsets.all(24.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text('Chọn hình ảnh'),
+          Expanded(child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 12.0),
+              child: GridView(
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                children: widget.list.map((item) {
+                  return InkWell(child: Stack(
+                    children: <Widget>[
+                      Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          child: Image.asset(item.assetPath, fit: BoxFit.cover)),
+                      Positioned(
+                          bottom: 0.0,
+                          right: 0.0,
+                          child: item.id == _selected?.id ? Icon(Icons.check_circle, color: Colors.green) : Container())
+                    ],
+                  ), onTap: () {
+                   setState(() {
+                     _selected = item;
+                   });
+                  });
+                }).toList(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  // childAspectRatio: MediaQuery.of(context).size.height / 600,
+                ),
+              )),),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                FlatButton(child: Text('HỦY BỎ'), onPressed: () {
+                  Navigator.pop(context);
+                }),
+                SizedBox(width: 12.0),
+                FlatButton(child: Text('LƯU'), onPressed: () {
+//                  String r = _textFieldController.text.trim();
+                  widget.onSave(_selected);
+                  Navigator.pop(context);
+                })
+              ])
+        ],
+      ),
+    ));
+  }
+}
+
+Future showChangeCoverDialog(BuildContext context, String selectedId, {Function onCancel, Function(ImageAsset) onSave}) {
+  return showDialog(
+      context: context,
+      builder: (context) => ChangeImageAssetsDialog(list: assetCoverList, selectedId: selectedId, onSave: onSave, onCancel: onCancel));
+}
+
+Future showChangeIconDialog(BuildContext context, String selectedId, {Function onCancel, Function(ImageAsset) onSave}) {
+  return showDialog(
+      context: context,
+      builder: (context) => ChangeImageAssetsDialog(list: assetIconList, selectedId: selectedId, onSave: onSave, onCancel: onCancel));
+}
+
+//class TextFieldAlertDialog extends StatelessWidget {
+//  TextEditingController _textFieldController = TextEditingController();
+//
+//  _displayDialog(BuildContext context) async {
+//    return showDialog(
+//        context: context,
+//        builder: (context) {
+//          return AlertDialog(
+//            title: Text('TextField in Dialog'),
+//            content: TextField(
+//              controller: _textFieldController,
+//              decoration: InputDecoration(hintText: "TextField in Dialog"),
+//            ),
+//            actions: <Widget>[
+//              new FlatButton(
+//                child: new Text('CANCEL'),
+//                onPressed: () {
+//                  Navigator.of(context).pop();
+//                },
+//              )
+//            ],
+//          );
+//        });
+//  }
+//}
+
+
 class DialogExample extends StatefulWidget {
   @override
   _DialogExampleState createState() => new _DialogExampleState();
@@ -173,3 +346,4 @@ class _DialogExampleState extends State<DialogExample> {
     );
   }
 }
+

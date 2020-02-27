@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:daikin/apis/local/room_local_service.dart';
 import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/home/devices_grid_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
@@ -15,14 +17,15 @@ import 'package:intl/intl.dart';
 enum CategoryType { ui, coding, basic, game, chill }
 
 class CourseInfoDeviceScreen extends StatefulWidget {
-  Room room;
+  final Room room;
+
   CourseInfoDeviceScreen({this.room});
+
   @override
   _CourseInfoDeviceScreenState createState() => _CourseInfoDeviceScreenState();
 }
 
-class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
-    with TickerProviderStateMixin {
+class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with TickerProviderStateMixin {
   final double infoHeight = 400.0;
   AnimationController animationController;
   Animation<double> animation;
@@ -31,11 +34,11 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
   double opacity3 = 0.0;
 
   CategoryType categoryType = CategoryType.ui;
+  RoomConfig _roomConfig;
 
   @override
   void initState() {
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this);
+    animationController = AnimationController(duration: const Duration(milliseconds: 1000), vsync: this);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
         parent: animationController,
         curve: Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
@@ -44,6 +47,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
   }
 
   Future<void> setData() async {
+    _roomConfig = RoomLocalService.instance.getConfig(widget.room.id);
     animationController.forward();
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
     setState(() {
@@ -61,6 +65,9 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
 
   @override
   Widget build(BuildContext context) {
+
+    String roomName = widget.room.getName.toUpperCase();
+
     return Container(
       color: StyleAppTheme.nearlyWhite,
       child: Scaffold(
@@ -73,11 +80,26 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                     children: <Widget>[
                       BaseHeaderScreen(
                         isBack: true,
-                        title: widget.room.name.toUpperCase(),
+                        title: roomName,
+                        onTitleTap: () {
+                          showChangeRoomNameDialog(context, roomName, onSave: (name) {
+                            _roomConfig.name = name;
+                            RoomLocalService.instance.updateRoomConfig(_roomConfig);
+                            setState(() {});
+                          });
+                        },
                       ),
                       ImageBackdrop(
                         animationController: animationController,
                         room: widget.room,
+                        config: _roomConfig,
+                        onConvertTap: () {
+                          showChangeCoverDialog(context, _roomConfig.cover, onSave: (w) {
+                            _roomConfig.cover = w.id;
+                            RoomLocalService.instance.updateRoomConfig(_roomConfig);
+                            setState(() {});
+                          });
+                        },
                       ),
                       FadeTransition(
                         opacity: animationController,
@@ -279,18 +301,32 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
       ),
     );
   }
+
+
+  Future _showConverSelectionDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return DialogExample();
+        });
+  }
 }
 
 class ImageBackdrop extends StatelessWidget {
-  Room room;
+
+  final Room room;
+  final RoomConfig config;
+  final Function onConvertTap;
+  final AnimationController animationController;
 
   ImageBackdrop({
     Key key,
     this.room,
+    this.config,
+    this.onConvertTap,
     @required this.animationController,
   }) : super(key: key);
-
-  final AnimationController animationController;
 
   @override
   Widget build(BuildContext context) {
@@ -300,12 +336,13 @@ class ImageBackdrop extends StatelessWidget {
           opacity: animationController,
           child: Column(
             children: <Widget>[
-              Image.asset(
-                'assets/hotel/hotel_${Random().nextInt(7)}.png',
+              InkWell(child: Image.asset(
+//                'assets/hotel/hotel_2.png',
+                config.getCoverPathAsset(),
                 fit: BoxFit.cover,
                 height: 220,
                 width: deviceWidth(context),
-              ),
+              ), onTap: onConvertTap),
             ],
           ),
         ),

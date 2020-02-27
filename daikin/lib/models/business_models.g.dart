@@ -21,7 +21,7 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
     viewXml: json['viewXml'] as bool,
     configXml: json['configXml'] as bool,
     interfaces: (json['interfaces'] as List)?.map((e) => e as String)?.toList(),
-      properties:
+    properties:
         DeviceProperty.fromJson(json['properties'] as Map<String, dynamic>),
     actions: DeviceAction.fromJson(json['actions'] as Map<String, dynamic>),
     created: json['created'] as int,
@@ -235,6 +235,23 @@ Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
       'devices': instance.devices,
       'scenes': instance.scenes,
       'defaultSensors': _defSensorToJson(instance.defaultSensors),
+    };
+
+RoomConfig _$RoomConfigFromJson(Map<String, dynamic> json) {
+  return RoomConfig(
+    roomId: json['roomId'] as int,
+    icon: json['icon'] as String,
+    cover: json['cover'] as String,
+    name: json['name'] as String,
+  );
+}
+
+Map<String, dynamic> _$RoomConfigToJson(RoomConfig instance) =>
+    <String, dynamic>{
+      'roomId': instance.roomId,
+      'icon': instance.icon,
+      'cover': instance.cover,
+      'name': instance.name,
     };
 
 RoomDefaultSensor _$RoomDefaultSensorFromJson(Map<String, dynamic> json) {

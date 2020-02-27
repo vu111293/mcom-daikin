@@ -121,7 +121,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
         ),
         key: PageStorageKey<Room>(root),
         title: Text(
-          root.name,
+          root.getName,
           style: TextStyle(color: StyleAppTheme.nearlyBlue),
         ),
         children: root.devices.map((item) => buildDevice(item)).toList());

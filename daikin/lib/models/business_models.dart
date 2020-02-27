@@ -11,6 +11,8 @@
 //"viewXml":false,
 //"configXml":false,
 
+import 'package:daikin/apis/local/room_local_service.dart';
+import 'package:daikin/constants/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'business_models.g.dart';
@@ -335,9 +337,47 @@ class Room {
   }
 
   Map<String, dynamic> toJson() => _$RoomToJson(this);
+
+
+  String get getName {
+    String configName = RoomLocalService.instance.getConfig(id).name;
+    return configName?.isNotEmpty == true ? configName : name;
+  }
+
+  String get getIconAssetPath {
+    return RoomLocalService.instance.getConfig(id).getIconPathAsset();
+  }
 }
 
 Map<String, dynamic> _defSensorToJson(RoomDefaultSensor item) => item.toJson();
+
+
+@JsonSerializable(nullable: false)
+class RoomConfig {
+  int roomId;
+  String icon;
+  String cover;
+  String name;
+
+  RoomConfig({this.roomId, this.icon, this.cover, this.name});
+
+  factory RoomConfig.fromJson(Map<String, dynamic> json) {
+    final item = _$RoomConfigFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$RoomConfigToJson(this);
+
+
+  String getCoverPathAsset() {
+    return assetCoverList.firstWhere((item) => item.id == cover, orElse: () => null).assetPath;
+  }
+
+  String getIconPathAsset() {
+    return assetIconList.firstWhere((item) => item.id == icon, orElse: () => null).assetPath;
+  }
+}
+
 
 @JsonSerializable(nullable: false)
 class RoomDefaultSensor {
@@ -408,4 +448,12 @@ class ElementDeviceRow {
   }
 
   Map<String, dynamic> toJson() => _$ElementDeviceRowToJson(this);
+}
+
+class ImageAsset {
+  String id;
+  String name;
+  String assetPath;
+
+  ImageAsset({this.id, this.name, this.assetPath});
 }

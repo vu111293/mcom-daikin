@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daikin/apis/local/room_local_service.dart';
 import 'package:daikin/blocs/childBlocs/center_bloc.dart';
 import 'package:daikin/blocs/childBlocs/home_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -38,6 +39,9 @@ class ApplicationBloc implements BlocBase {
     _authBloc = AuthBloc();
     _homeBloc = HomeBloc();
     _centerBloc = CenterBloc();
+
+    // Load local setting here
+    RoomLocalService.instance.loadRoomsConfig();
   }
 
   String get deviceId => _deviceIdSubject.stream.value;

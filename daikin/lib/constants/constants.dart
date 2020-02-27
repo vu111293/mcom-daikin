@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:flutter/material.dart';
 
 ///AppColor
@@ -1064,3 +1065,23 @@ const dynamic DEVICE_ICONS = {
   'CAMERA': 'assets/icons/Camera.png',
   'SIREN': 'assets/icons/Siren.png'
 };
+
+final List<ImageAsset> assetCoverList = [
+  ImageAsset(id: '00', name: 'demo', assetPath: 'assets/images/bathroomcover.jpg'),
+  ImageAsset(id: '01', name: 'demo', assetPath: 'assets/images/bedroomcover.jpg'),
+  ImageAsset(id: '02', name: 'demo', assetPath: 'assets/images/entrancecover.jpg'),
+  ImageAsset(id: '03', name: 'demo', assetPath: 'assets/images/garagecover.jpg'),
+  ImageAsset(id: '04', name: 'demo', assetPath: 'assets/images/kitchencover.jpg'),
+  ImageAsset(id: '05', name: 'demo', assetPath: 'assets/images/livingroomcover.jpg'),
+  ImageAsset(id: '06', name: 'demo', assetPath: 'assets/images/wccover.jpg'),
+];
+
+final List<ImageAsset> assetIconList = [
+  ImageAsset(id: '00', name: 'demo', assetPath: 'assets/images/bathroom.png'),
+  ImageAsset(id: '01', name: 'demo', assetPath: 'assets/images/bedroom.png'),
+  ImageAsset(id: '02', name: 'demo', assetPath: 'assets/images/entrance.png'),
+  ImageAsset(id: '03', name: 'demo', assetPath: 'assets/images/garage.png'),
+  ImageAsset(id: '04', name: 'demo', assetPath: 'assets/images/kitchen.png'),
+  ImageAsset(id: '05', name: 'demo', assetPath: 'assets/images/livingroom.png'),
+  ImageAsset(id: '06', name: 'demo', assetPath: 'assets/images/wc.png'),
+];

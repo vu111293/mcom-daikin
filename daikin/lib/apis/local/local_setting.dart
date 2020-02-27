@@ -51,6 +51,14 @@ class LocalSetting {
     locale = code;
   }
 
+  saveRoomConfig(String raw) {
+    _setPersist('room_conf', raw);
+  }
+
+  Future<dynamic> getRoomConfig() {
+    return _getPersist('room_conf');
+  }
+
   Future<String> getCurrentLocale() async {
     String locale = await _getPersist('locale');
     return locale;

@@ -1,7 +1,9 @@
+import 'package:daikin/apis/local/room_local_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/models/business_models.dart';
+import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -68,11 +70,22 @@ class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateM
                         //   ),
                         // );
                         // animationController.forward();
+
+                        Room room = snapshot.data[index];
+
                         return CategoryView(
                           callback: () {
-                            widget.callBack(snapshot.data[index].name);
+                            widget.callBack(room.getName);
                           },
-                          room: snapshot.data[index],
+                          room: room,
+                          onIconTap: () {
+                            RoomConfig conf = RoomLocalService.instance.getConfig(room.id);
+                            showChangeIconDialog(context, conf.icon, onSave: (w) {
+                              conf.icon = w.id;
+                              RoomLocalService.instance.updateRoomConfig(conf);
+                              setState(() {});
+                            });
+                          },
                           // animation: animation,
                           // animationController: animationController,
                         );
@@ -92,10 +105,13 @@ class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateM
 }
 
 class CategoryView extends StatelessWidget {
-  const CategoryView({Key key, this.room, this.callback}) : super(key: key);
+
 
   final VoidCallback callback;
   final Room room;
+  final Function onIconTap;
+
+  CategoryView({Key key, this.room, this.callback, this.onIconTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -110,30 +126,25 @@ class CategoryView extends StatelessWidget {
             Routing().navigate2(context, CourseInfoDeviceScreen(room: room));
           },
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Image.asset(
-                      'assets/icons/Nha_01.png',
-                      width: 27,
-                      height: 27,
+                    InkWell(child: Image.asset(
+                      room.getIconAssetPath,
+                      width: 50,
+                      height: 50,
                       fit: BoxFit.contain,
-                      color: ptPrimaryColor(context),
-                    ),
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                    ),
+                    ), onTap: onIconTap,),
+                    Expanded(child: Container()),
+//                    InkWell(
+//                      child: Padding(padding: EdgeInsets.all(12.0),
+//                      child: Icon(Icons.settings)),
+//                      onTap: () {
+//                      },
+//                    ),
                   ],
                 ),
                 Expanded(
@@ -145,7 +156,7 @@ class CategoryView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        room.name,
+                        room.getName,
                         textAlign: TextAlign.left,
                         style: ptTitle(context).copyWith(color: HexColor(appText)),
                         maxLines: 1,
