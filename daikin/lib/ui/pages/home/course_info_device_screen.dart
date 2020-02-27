@@ -174,8 +174,6 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
   }
 
   Widget getButtonUI(Scene scene) {
-    String txt = scene.name;
-
     return Padding(
       padding: EdgeInsets.only(right: 10.0),
       child: Material(
@@ -217,7 +215,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                   top: 12, bottom: 12, left: 18, right: 18),
               child: Center(
                 child: Text(
-                  txt,
+                  scene.getName,
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,

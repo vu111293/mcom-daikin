@@ -246,7 +246,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
         Container(
           height: 72,
           child: StreamBuilder(
-            stream: _appBloc.homeBloc.scenesDataStream,
+            stream: _appBloc.homeBloc.topSceneDataStream,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return SizedBox();
@@ -256,7 +256,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                     shrinkWrap: true,
                     padding: EdgeInsets.all(16),
                     itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext ctxt, int index) {
+                    itemBuilder: (BuildContext context, int index) {
                       return getButtonUI(snapshot.data[index], false);
                     });
                 //           ListView(
@@ -281,8 +281,6 @@ class DashBoardScreenState extends State<DashBoardScreen> {
   }
 
   Widget getButtonUI(Scene scene, bool isSelected) {
-    String txt = scene.name;
-
     return Padding(
       padding: EdgeInsets.only(right: 10.0),
       child: Material(
@@ -325,7 +323,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                   top: 12, bottom: 12, left: 18, right: 18),
               child: Center(
                 child: Text(
-                  txt,
+                  scene.getName,
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,

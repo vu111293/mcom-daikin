@@ -371,6 +371,11 @@ class Scene {
   }
 
   Map<String, dynamic> toJson() => _$SceneToJson(this);
+
+  String get getName {
+    if (name.startsWith('M_')) return name.substring(2);
+    return name;
+  }
 }
 
 @JsonSerializable(nullable: true)

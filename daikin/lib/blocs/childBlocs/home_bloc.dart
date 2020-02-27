@@ -17,6 +17,10 @@ class HomeBloc {
   Stream get devicesDataStream => _devicesSubject.stream;
 
   Stream get scenesDataStream => _scenesSubject.stream;
+  
+  Stream get topSceneDataStream => _scenesSubject.stream
+      .map((items) => items.where((item) => item.name.startsWith('M_'))
+      .toList());
 
   Stream get activeDeviceStream => _activeDeviceSubject.stream;
 
