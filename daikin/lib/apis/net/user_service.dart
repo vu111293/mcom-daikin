@@ -43,7 +43,6 @@ class UserService extends BaseLoopBackApi {
   }
 
   Future<LUser> me() async {
-    print(LoopBackAuth().accessToken);
     final result = await graphqlAPI.me();
     print(jsonEncode((result.data as dynamic)['me']));
     var user = LUser.fromJson((result.data as dynamic)['me']);

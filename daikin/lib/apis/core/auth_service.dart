@@ -47,8 +47,7 @@ class LoopBackAuth {
         _bearToken = "";
         _host = "https://daikin.mcom.app";
       } else {
-        _bearToken = this.generateBasicToken(
-            currentCenter["username"], currentCenter["password"]);
+        _bearToken = this.generateBasicToken(currentCenter["username"], currentCenter["password"]);
         _host = currentCenter["ip"];
       }
       // _host = "http://mhome-showroom.ddns.net:80";

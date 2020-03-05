@@ -76,17 +76,8 @@ class _SplashScreenState extends State<SplashScreen> {
               LUser user = await UserService().me();
               print("User");
               print(user.toString());
-              
               _appBloc.authBloc.updateUserAction(user);
-
               Routing().navigate2(context, MainScreen());
-
-              // if (user.isClientFilledInfo) {
-              //   Routing().navigate2(context, HomeScreen());
-              // } else {
-              //   Routing()
-              //       .navigate2(context, UpdateInfoLoginScreen(), replace: true);
-              // }
               _setupStateStream.cancel();
             }
           } catch (e) {
