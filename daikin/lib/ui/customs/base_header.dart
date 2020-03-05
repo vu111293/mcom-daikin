@@ -70,7 +70,7 @@ class BaseHeaderScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            title ?? "",
+                            upFirstText(title) ?? "",
                             style: ptHeadline(context),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -78,7 +78,7 @@ class BaseHeaderScreen extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.only(top: 4),
                             child: Text(
-                              subTitle ?? "",
+                              upFirstText(subTitle) ?? "",
                               style: ptSubtitle(context),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,

@@ -17,6 +17,7 @@ import 'package:daikin/ui/pages/home/course_info_device_screen.dart';
 import 'package:daikin/ui/pages/home/home_screen.dart';
 import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -323,7 +324,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                   top: 12, bottom: 12, left: 18, right: 18),
               child: Center(
                 child: Text(
-                  scene.getName,
+                  upFirstText(scene.getName),
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,

@@ -10,6 +10,7 @@ import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/home/devices_grid_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -66,7 +67,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
   @override
   Widget build(BuildContext context) {
 
-    String roomName = widget.room.getName.toUpperCase();
+    String roomName =upFirstText(widget.room.getName);
 
     return Container(
       color: StyleAppTheme.nearlyWhite,
@@ -80,7 +81,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                     children: <Widget>[
                       BaseHeaderScreen(
                         isBack: true,
-                        title: roomName,
+                        title: upFirstText(roomName),
                         onTitleTap: () {
                           showChangeRoomNameDialog(context, roomName, onSave: (name) {
                             _roomConfig.name = name;
@@ -237,7 +238,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                   top: 12, bottom: 12, left: 18, right: 18),
               child: Center(
                 child: Text(
-                  scene.getName,
+                  upFirstText(scene.getName)+"dsadasd",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
