@@ -95,7 +95,7 @@ class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateM
                       crossAxisCount: 2,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 20,
-                      childAspectRatio: MediaQuery.of(context).size.height / 480,
+                      childAspectRatio: 1.35,
                     ),
                   ),
                 );
@@ -130,28 +130,14 @@ class CategoryView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    InkWell(child: Image.asset(
+                 InkWell(child: Image.asset(
                       room.getIconAssetPath,
                       width: 50,
                       height: 50,
                       fit: BoxFit.contain,
-                    ), onTap: onIconTap,),
-                    Expanded(child: Container()),
-//                    InkWell(
-//                      child: Padding(padding: EdgeInsets.all(12.0),
-//                      child: Icon(Icons.settings)),
-//                      onTap: () {
-//                      },
-//                    ),
-                  ],
-                ),
-                Expanded(
-                  child: SizedBox(),
-                ),
+                ), onTap: onIconTap),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(5, 15, 5, 0),
+                  padding: EdgeInsets.fromLTRB(5, 10, 5, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
