@@ -3,6 +3,7 @@ import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/ui/setting/profile_screen.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,7 @@ class BaseHeaderScreen extends StatelessWidget {
                 child: isBack
                     ? Center(
                         child: Text(
-                          title ?? '',
+                          upFirstText(title) ?? '',
                           style: ptTitle(context)
                               .copyWith(color: ptPrimaryColor(context)),
                           maxLines: 1,

@@ -13,6 +13,7 @@ import 'package:daikin/ui/pages/device_detail/device_view_item.dart';
 import 'package:daikin/ui/pages/device_detail/switch_multi_device.dart';
 import 'package:daikin/ui/pages/device_detail/virtual_device_screen.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
@@ -271,7 +272,7 @@ class DeviceView extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 16),
                                     child: Text(
-                                      device.name,
+                                      upFirstText(device.name),
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,

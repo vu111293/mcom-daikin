@@ -366,7 +366,7 @@ class MyCenterScreenState extends State<MyCenterScreen>
         body: Column(
           children: <Widget>[
             BaseHeaderScreen(
-              title: "Thiết Bị trung tâm".toUpperCase(),
+              title: "Thiết bị trung tâm",
               isBack: true,
             ),
             BaseHeaderScreen(

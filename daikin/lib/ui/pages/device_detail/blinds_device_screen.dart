@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/action_button.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:flutter/material.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
@@ -44,12 +45,12 @@ class _BlindsDeviceScreenState extends State<BlindsDeviceScreen> {
           children: <Widget>[
             BaseHeaderScreen(
               isBack: true,
-              title: widget.device.name.toUpperCase(),
+              title: upFirstText(widget.device.name),
             ),
             BaseHeaderScreen(
               hideProfile: true,
               isSubHeader: true,
-              title: widget.device.name,
+              title: upFirstText(widget.device.name),
               // subTitle: currentStateDevice
               //     ? "Thiết bị của bạn đang hoạt động"
               //     : "Thiết bị chưa hoạt động" //: widget.item.subTitle,

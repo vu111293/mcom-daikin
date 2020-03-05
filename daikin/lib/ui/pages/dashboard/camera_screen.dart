@@ -15,6 +15,7 @@ import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/device_detail/switch_multi_device.dart';
 import 'package:daikin/ui/pages/device_detail/virtual_device_screen.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -229,7 +230,7 @@ class CameraScreenState extends State<CameraScreen> {
             padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
             child: ListTile(
               leading: Icon(Icons.ac_unit),
-              title: Text(device.name),
+              title: Text(upFirstText(device.name)),
               trailing: Switch(
                 value: device.properties.value == 'true' ? true : false,
                 onChanged: (val) {
@@ -252,7 +253,7 @@ class CameraScreenState extends State<CameraScreen> {
             padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
             child: ListTile(
               leading: Icon(Icons.ac_unit),
-              title: Text(device.name),
+              title: Text(upFirstText(device.name)),
               trailing: Switch(
                 value: device.properties.value == '1' ? true : false,
                 onChanged: (val) {
@@ -275,7 +276,7 @@ class CameraScreenState extends State<CameraScreen> {
             padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
             child: ListTile(
               leading: Icon(Icons.ac_unit),
-              title: Text(device.name),
+              title: Text(upFirstText(device.name)),
               trailing: Switch(
                 value: int.parse(device.properties.value) > 0 ? true : false,
                 onChanged: (val) {
@@ -298,7 +299,7 @@ class CameraScreenState extends State<CameraScreen> {
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
         child: ListTile(
-          leading: Icon(Icons.ac_unit), title: Text(device.name),
+          leading: Icon(Icons.ac_unit), title: Text(upFirstText(device.name)),
           // trailing: Switch(
           //   value: true,
           //   onChanged: (val) {

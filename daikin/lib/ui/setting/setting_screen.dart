@@ -12,6 +12,7 @@ import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/ui/setting/my_center_screen.dart';
 import 'package:daikin/ui/setting/profile_screen.dart';
 import 'package:daikin/ui/setting/support_screen.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -227,7 +228,7 @@ class SettingScreenState extends State<SettingScreen>
                     builder: (context, snapshot) {
                       String centerName = snapshot.hasData ? snapshot.data : '';
                       return Text(
-                        centerName,
+                        upFirstText(centerName),
                         style: ptSubtitle(context).copyWith(),
                       );
                     },

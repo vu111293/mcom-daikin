@@ -3,6 +3,7 @@ import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/action_button.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gauge/flutter_gauge.dart';
@@ -118,12 +119,12 @@ class _DeviceOnOffDetailScreenState extends State<DeviceOnOffDetailScreen> {
         children: <Widget>[
           BaseHeaderScreen(
             isBack: true,
-            title: widget.item.name.toUpperCase(),
+            title: upFirstText(widget.item.name),
           ),
           BaseHeaderScreen(
               hideProfile: true,
               isSubHeader: true,
-              title: widget.item.name,
+              title: upFirstText(widget.item.name),
               subTitle: currentStateDevice
                   ? "Thiết bị của bạn đang hoạt động"
                   : "Thiết bị chưa hoạt động" //: widget.item.subTitle,

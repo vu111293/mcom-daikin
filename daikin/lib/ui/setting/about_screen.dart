@@ -1,6 +1,7 @@
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:intl/intl.dart';
 
 class AboutScreen extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _AboutScreenState extends State<AboutScreen> {
           child: Column(
             children: <Widget>[
               BaseHeaderScreen(
-                title: "Giới thiệu".toUpperCase(),
+                title: toBeginningOfSentenceCase("Giới THiệu"),
                 isBack: true,
                 hideProfile: true,
               ),

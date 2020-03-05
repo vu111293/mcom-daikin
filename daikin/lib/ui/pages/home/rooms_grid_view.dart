@@ -5,6 +5,7 @@ import 'package:daikin/constants/constants.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
@@ -142,7 +143,7 @@ class CategoryView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        room.getName,
+                        upFirstText(room.getName),
                         textAlign: TextAlign.left,
                         style: ptTitle(context).copyWith(color: HexColor(appText)),
                         maxLines: 1,

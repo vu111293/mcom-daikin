@@ -5,6 +5,7 @@ import 'package:daikin/ui/pages/device_detail/switch_multi_device.dart';
 import 'package:daikin/ui/pages/device_detail/virtual_device_screen.dart';
 import 'package:daikin/ui/pages/device_detail/device_view_item.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -60,7 +61,7 @@ Widget defaultBuildDevice(DeviceViewItem widget, Device device, bool isSwitched,
                         ),
                         Text(
                           '',
-                          // '${widget.device.name}',
+                          // '${upFirstText(widget.device.name)}',
                           textAlign: TextAlign.left,
                           style: ptOverline(context)
                               .copyWith(color: isSwitched ? Colors.black87 : HexColor(appBorderColor)),
@@ -71,7 +72,7 @@ Widget defaultBuildDevice(DeviceViewItem widget, Device device, bool isSwitched,
                       child: SizedBox(),
                     ),
                     Text(
-                      '${widget.device.name}',
+                      '${upFirstText(widget.device.name)}',
                       textAlign: TextAlign.left,
                       style:
                           ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
@@ -163,7 +164,7 @@ Widget buildBlindsDevice(
                         ),
                         Text(
                           '',
-                          // '${widget.device.name}',
+                          // '${upFirstText(widget.device.name)}',
                           textAlign: TextAlign.left,
                           style: ptOverline(context).copyWith(
                               color: isSwitched
@@ -176,7 +177,7 @@ Widget buildBlindsDevice(
                       child: SizedBox(),
                     ),
                     Text(
-                      '${widget.device.name}',
+                      '${upFirstText(widget.device.name)}',
                       textAlign: TextAlign.left,
                       style: ptBody1(context).copyWith(
                           color: isSwitched
@@ -248,7 +249,7 @@ Widget buildSwitchDevice(DeviceViewItem widget, Device device, Function callback
                         ),
                         Text(
                           '',
-                          // '${widget.device.name}',
+                          // '${upFirstText(widget.device.name)}',
                           textAlign: TextAlign.left,
                           style: ptOverline(context)
                               .copyWith(color: isSwitched ? Colors.black87 : HexColor(appBorderColor)),
@@ -259,7 +260,7 @@ Widget buildSwitchDevice(DeviceViewItem widget, Device device, Function callback
                       child: SizedBox(),
                     ),
                     Text(
-                      '${widget.device.name}',
+                      '${upFirstText(widget.device.name)}',
                       textAlign: TextAlign.left,
                       style:
                           ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
@@ -357,7 +358,7 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback, F
                         ),
                         Text(
                           '',
-                          // '${widget.device.name}',
+                          // '${upFirstText(widget.device.name)}',
                           textAlign: TextAlign.left,
                           style: ptOverline(context)
                               .copyWith(color: isSwitched ? Colors.black87 : HexColor(appBorderColor)),
@@ -368,7 +369,7 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback, F
                       child: SizedBox(),
                     ),
                     Text(
-                      '${widget.device.name}',
+                      '${upFirstText(widget.device.name)}',
                       textAlign: TextAlign.left,
                       style:
                           ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
@@ -454,7 +455,7 @@ Widget buildVirtualDevice(DeviceViewItem widget, Device device) {
                         ),
                         Text(
                           '',
-                          // '${widget.device.name}',
+                          // '${upFirstText(widget.device.name)}',
                           textAlign: TextAlign.left,
                           style: ptOverline(context).copyWith(color: HexColor(appBorderColor)),
                         ),
@@ -464,7 +465,7 @@ Widget buildVirtualDevice(DeviceViewItem widget, Device device) {
                       child: SizedBox(),
                     ),
                     Text(
-                      '${widget.device.name}',
+                      '${upFirstText(widget.device.name)}',
                       textAlign: TextAlign.left,
                       style: ptBody1(context).copyWith(color: HexColor(appBorderColor)),
                       maxLines: 1,
@@ -556,7 +557,7 @@ Widget buildSwitchMultiDevice(DeviceViewItem widget, Device device,
                         ),
                         Text(
                           '',
-                          // '${widget.device.name}',
+                          // '${upFirstText(widget.device.name)}',
                           textAlign: TextAlign.left,
                           style: ptOverline(context)
                               .copyWith(color: isSwitched ? Colors.black87 : HexColor(appBorderColor)),
@@ -567,7 +568,7 @@ Widget buildSwitchMultiDevice(DeviceViewItem widget, Device device,
                       child: SizedBox(),
                     ),
                     Text(
-                      '${widget.device.name}',
+                      '${upFirstText(widget.device.name)}',
                       textAlign: TextAlign.left,
                       style:
                           ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),

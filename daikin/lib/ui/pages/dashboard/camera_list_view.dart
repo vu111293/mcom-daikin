@@ -3,6 +3,7 @@ import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/models/business_models.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -142,7 +143,7 @@ class CameraItemView extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(10, 16, 10, 16),
                       child: Text(
-                        device.name,
+                        upFirstText(device.name),
                         textAlign: TextAlign.left,
                         style: ptTitle(context).copyWith(color: Colors.white),
                         maxLines: 1,
