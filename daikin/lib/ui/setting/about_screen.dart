@@ -21,7 +21,8 @@ class _AboutScreenState extends State<AboutScreen> {
                 hideProfile: true,
               ),
               Html(
-                data:"""<div id="main_content" class="">
+                padding: EdgeInsets.all(16.0),
+                data: """<div id="main_content" class="">
 	<div class="heading">
 				<a href="">Trang chủ</a>&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>&nbsp;<a href="cong-nghe-nha-thong-minh-den-tu-daikin">CÔNG NGHỆ NHÀ THÔNG MINH ĐẾN TỪ DAIKIN </a>
 		
@@ -165,7 +166,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
 <p style="margin-left: 40px;"><span style="color: rgb(0, 153, 255);"><span style="font-size: 16px;"><span style="font-family: helvetica;">Hệ thống thông gió thu hồi nhiệt</span></span></span></p>
 
-<p style="margin-left: 40px;"><span style="font-size: 16px;"><span style="font-family: helvetica;">Hệ SUPER MULTI HW của Daikin tăng gấp đôi so với các loại điều hòa không khí thông thường hoạt động như một máy nước nóng bằng cách thu nhiệt thải ra từ dàn nóng và thu hồi nhiệt để tạo ra nước nóng với chi phí tiết kiệm gần như bằng không. Chế độ bật/tắt máy nước nóng và điều chỉnh nhiệt độ nước thông minh bằng điện thoại hỗ trợ khi bạn ở bất cứ đâu. Giúp bạn kiểm soát nhiều hơn đối với mức tiêu thụ và tiết kiệm chi phí tối ưu.</span></span><br>
+<p style="margin-left: 40px;"><span style="font-size: 16px;"><span style="font-family: helvetica;">Hệ SUPER MULTI HW của Daikin tăng gấp đôi so với các loại điều hòa không khí thông thường hoạt động như một máy nước nóng bằng cách thu nhiệt thải ra từ dàn nóng và thu h���i nhiệt để tạo ra nước nóng với chi phí tiết kiệm gần như bằng không. Chế độ bật/tắt máy nước nóng và điều chỉnh nhiệt độ nước thông minh bằng điện thoại hỗ trợ khi bạn ở bất cứ đâu. Giúp bạn kiểm soát nhiều hơn đối với mức tiêu thụ và tiết kiệm chi phí tối ưu.</span></span><br>
 &nbsp;</p>
 
 <p style="margin-left: 40px;"><span style="color: rgb(0, 153, 255);"><span style="font-size: 16px;"><span style="font-family: helvetica;">Hệ thống quản lý năng lượng (HEMS)</span></span></span></p>

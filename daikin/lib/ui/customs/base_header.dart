@@ -52,39 +52,46 @@ class BaseHeaderScreen extends StatelessWidget {
                   ),
                 )
               : Container(),
-          Expanded(child: InkWell(child: isBack
-              ? Center(
-            child: Text(
-              title ?? '',
-              style: ptTitle(context)
-                  .copyWith(color: ptPrimaryColor(context)),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          )
-              : Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                title ?? "",
-                style: ptHeadline(context),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 4),
-                child: Text(
-                  subTitle ?? "",
-                  style: ptSubtitle(context),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              )
-            ],
-          ), onTap: onTitleTap),),
+          Expanded(
+            child: InkWell(
+                child: isBack
+                    ? Center(
+                        child: Text(
+                          title ?? '',
+                          style: ptTitle(context)
+                              .copyWith(color: ptPrimaryColor(context)),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            title ?? "",
+                            style: ptHeadline(context),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 4),
+                            child: Text(
+                              subTitle ?? "",
+                              style: ptSubtitle(context),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
+                        ],
+                      ),
+                onTap: onTitleTap),
+          ),
           hideProfile
-              ? Container()
+              ? Container(
+                  width: 40,
+                  height: 40,
+                )
               : isBack
                   ? GestureDetector(
                       onTap: () {
