@@ -6,6 +6,7 @@ import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/dialog.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -446,7 +447,7 @@ class MyCenterScreenState extends State<MyCenterScreen>
                                 ),
                               ),
                               title: Text(
-                                snapshot.data[index]["name"],
+                               upFirstText(snapshot.data[index]["name"]),
                                 style: ptSubtitle(context),
                               ),
                               subtitle: Text(

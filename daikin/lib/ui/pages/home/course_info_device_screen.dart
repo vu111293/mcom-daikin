@@ -238,7 +238,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                   top: 12, bottom: 12, left: 18, right: 18),
               child: Center(
                 child: Text(
-                  upFirstText(scene.getName)+"dsadasd",
+                  upFirstText(scene.getName),
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
