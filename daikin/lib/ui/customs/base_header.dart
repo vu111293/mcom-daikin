@@ -59,8 +59,7 @@ class BaseHeaderScreen extends StatelessWidget {
                     ? Center(
                         child: Text(
                           upFirstText(title) ?? '',
-                          style: ptTitle(context)
-                              .copyWith(color: ptPrimaryColor(context)),
+                          style: ptTitle(context).copyWith(color: ptPrimaryColor(context)),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
