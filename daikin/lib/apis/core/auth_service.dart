@@ -31,15 +31,15 @@ class LoopBackAuth {
     try {
       String accessTokenStr = await _getPersist("accessToken");
       String userIdStr = await _getPersist("userId");
+      String fbToken = await _getPersist("fbToken");
       dynamic currentCenter = await getCurrentCenter();
-      if (accessTokenStr == null ||
-          accessTokenStr.isEmpty ||
-          userIdStr == null ||
-          userIdStr.isEmpty) {
+      if (accessTokenStr == null || accessTokenStr.isEmpty || userIdStr == null || userIdStr.isEmpty
+          || fbToken == null || fbToken.isEmpty) {
         return AccessStatus.TOKEN_NULL;
       }
       _token = accessTokenStr;
       _userId = userIdStr;
+      _fbToken = fbToken;
 
       print("Current Center");
       print(jsonEncode(currentCenter));
@@ -92,7 +92,7 @@ class LoopBackAuth {
   void save() {
     _setPersist('accessToken', _token ?? '');
     _setPersist('bearToken', _bearToken ?? '');
-    _setPersist('fbToken', _bearToken ?? '');
+    _setPersist('fbToken', _fbToken ?? '');
     _setPersist('userId', _userId ?? '');
     _setPersist('host', _host ?? '');
   }

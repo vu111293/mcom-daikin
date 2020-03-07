@@ -73,9 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
             if (tokenState != AccessStatus.TOKEN_VALID) {
               _openLoginScreen();
             } else {
-              LUser user = await UserService().me();
-              print("User");
-              print(user.toString());
+              LUser user = await UserService().login(LoopBackAuth().fbToken);
               _appBloc.authBloc.updateUserAction(user);
               Routing().navigate2(context, MainScreen());
               _setupStateStream.cancel();
