@@ -52,8 +52,7 @@ class DeviceGridViewState extends State<DeviceGridView>
                 widget.devices.length,
                 (int index) {
                   final int count = widget.devices.length;
-                  final Animation<double> animation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
+                  final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
                       parent: animationController,
                       curve: Interval((1 / count) * index, 1.0,

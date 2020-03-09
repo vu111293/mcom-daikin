@@ -91,6 +91,10 @@ class CameraItemView extends StatelessWidget {
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, Widget child) {
+
+        String thumbPreviewPlaceholder = device.properties.getCameraThumbPreview;
+        String thumbPreview = '$thumbPreviewPlaceholder${thumbPreviewPlaceholder.contains('?') ? '&' : '?'}t=${DateTime.now().millisecondsSinceEpoch}';
+
         return FadeTransition(
           opacity: animation,
           child: Transform(
@@ -112,7 +116,7 @@ class CameraItemView extends StatelessWidget {
                         borderRadius:
                             BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
                         child: CachedNetworkImage(
-                          imageUrl: device.properties.getCameraThumbPreview  + '&t=${DateTime.now().millisecondsSinceEpoch}',
+                          imageUrl: thumbPreview,
                           errorWidget: (context, url, err) {
                             return Container(
                               alignment: Alignment.center,
@@ -120,7 +124,7 @@ class CameraItemView extends StatelessWidget {
                               child: Image.asset('assets/icons/ic_camera.png', color: Colors.black54, fit: BoxFit.cover));
                           },
                           placeholder: (context, url) {
-                            return CachedNetworkImage(imageUrl: device.properties.getCameraThumbPreview,
+                            return CachedNetworkImage(imageUrl: thumbPreviewPlaceholder,
                                 width: double.infinity,
                                 height: double.infinity,
                                 fit: BoxFit.cover);
