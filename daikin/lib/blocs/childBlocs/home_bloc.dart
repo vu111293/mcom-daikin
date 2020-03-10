@@ -32,11 +32,21 @@ class HomeBloc {
     return Future.wait([
       _businessService.getRoomList(),
       _businessService.getDeviceList(),
-      _businessService.getSceneList()
+      _businessService.getSceneList(),
+      _businessService.getDeviceIcons()
     ]).then((results) {
       List<Room> rooms = results[0];
       List<Device> devices = results[1];
       List<Scene> scenes = results[2];
+      Map<String, List<DeviceIcon>> mIcons = results[3];
+
+      // map device icon to device
+      devices.forEach((d) {
+        String iconId = d.properties.deviceIcon?.toString();
+        DeviceIcon dIcon = (d.type == 'virtual_device' ? mIcons['virtualDevice'] : mIcons['device'])
+            .firstWhere((i) =>  i.id.toString() == iconId, orElse: ()=>null);
+        d.iconName = d.type == 'virtual_device' ? dIcon?.iconName : dIcon?.iconSetName;
+      });
 
       devices = devices.where((v) => v.visible).toList();
       List<Device> activeDevice =
@@ -64,8 +74,6 @@ class HomeBloc {
       List<Device> cameraDevices = devices
           .where((item) => item.getDeviceType == DeviceType.CAMERA_IP)
           .toList();
-
-      print("SINK ADD");
 
       cameraDevices = cameraDevices.map((c) {
         c.devices = devices.where((item) => item.roomID == c.roomID).toList();

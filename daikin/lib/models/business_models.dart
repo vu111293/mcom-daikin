@@ -19,6 +19,24 @@ part 'business_models.g.dart';
 
 enum DeviceType { CAMERA_IP, UNKNOWN }
 
+
+@JsonSerializable(nullable: false)
+class DeviceIcon {
+  int id;
+  String deviceType;
+  String iconSetName;
+  String iconName;
+
+  DeviceIcon({this.id, this.deviceType, this.iconSetName, this.iconName});
+
+  factory DeviceIcon.fromJson(Map<String, dynamic> json) {
+    final item = _$DeviceIconFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$DeviceIconToJson(this);
+}
+
 @JsonSerializable(nullable: false)
 class Device {
   final int id;
@@ -44,6 +62,9 @@ class Device {
   final int sortOrder;
   @JsonKey(nullable: true, defaultValue: [], ignore: true)
   List<Device> devices;
+
+  @JsonKey(ignore: true)
+  String iconName;
 
   Device(
       {this.id,
@@ -78,6 +99,52 @@ class Device {
     }
 
     return DeviceType.UNKNOWN;
+  }
+
+  String get getDeviceIconURL {
+    String prefix = '${iconName}100.png';
+
+    print(type);
+    switch(type) {
+      case 'virtual_device':
+
+        if (iconName == null) {
+          return 'http://mhome-showroom.ddns.net/fibaro/n_vicons/light.png';
+        }
+        return 'http://mhome-showroom.ddns.net/fibaro/n_vicons/$iconName.png';
+
+      case 'com.fibaro.binarySwitch':
+        prefix = properties.value == 'true' ? '${iconName}100.png' : '${iconName}0.png';
+        break;
+
+      case 'com.fibaro.sonosSpeaker':
+        return 'http://mhome-showroom.ddns.net/plugins/com.fibaro.sonosSpeaker/img/xhdpi/icon.png';
+
+      case 'com.fibaro.FGRGBW441M':
+        return 'http://mhome-showroom.ddns.net/fibaro/en/img/rgb/rgb_19.png';
+
+      case 'com.fibaro.FGKF601':
+        prefix = '${iconName}-locked.png';
+        break;
+
+      case 'com.fibaro.FGD212':
+        int v = (int.parse(properties.value)*1.0/10).toInt() * 10;
+        prefix = '${iconName}$v.png';
+        break;
+
+      case 'com.fibaro.FGRM222':
+        int v = (int.parse(properties.value)*1.0/10).toInt() * 10;
+        prefix = '${iconName}$v.png';
+        break;
+
+      case 'com.fibaro.temperatureSensor':
+      case 'com.fibaro.FGPB101':
+      case 'com.fibaro.lightSensor':
+        prefix = '$iconName.png';
+        break;
+    }
+
+    return 'http://mhome-showroom.ddns.net/fibaro/icons/$iconName/$prefix';
   }
 }
 
@@ -346,6 +413,10 @@ class Room {
 
   String get getIconAssetPath {
     return RoomLocalService.instance.getConfig(id).getIconPathAsset();
+  }
+
+  String get getRoomIconURL {
+    return 'http://mhome-showroom.ddns.net/fibaro/icons/rooms/$icon.png';
   }
 }
 

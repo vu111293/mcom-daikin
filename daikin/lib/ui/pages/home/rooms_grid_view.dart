@@ -80,12 +80,12 @@ class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateM
                           },
                           room: room,
                           onIconTap: () {
-                            RoomConfig conf = RoomLocalService.instance.getConfig(room.id);
-                            showChangeIconDialog(context, conf.icon, onSave: (w) {
-                              conf.icon = w.id;
-                              RoomLocalService.instance.updateRoomConfig(conf);
-                              setState(() {});
-                            });
+//                            RoomConfig conf = RoomLocalService.instance.getConfig(room.id);
+//                            showChangeIconDialog(context, conf.icon, onSave: (w) {
+//                              conf.icon = w.id;
+//                              RoomLocalService.instance.updateRoomConfig(conf);
+//                              setState(() {});
+//                            });
                           },
                           // animation: animation,
                           // animationController: animationController,
@@ -131,12 +131,12 @@ class CategoryView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                 InkWell(child: Image.asset(
-                      room.getIconAssetPath,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.contain,
-                ), onTap: onIconTap),
+                Image.network(
+                  room.getRoomIconURL,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.contain,
+                ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(5, 10, 5, 0),
                   child: Column(

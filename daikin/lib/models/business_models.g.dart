@@ -6,6 +6,23 @@ part of 'business_models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+DeviceIcon _$DeviceIconFromJson(Map<String, dynamic> json) {
+  return DeviceIcon(
+    id: json['id'] as int,
+    deviceType: json['deviceType'] as String,
+    iconSetName: json['iconSetName'] as String,
+    iconName: json['iconName'] as String,
+  );
+}
+
+Map<String, dynamic> _$DeviceIconToJson(DeviceIcon instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'deviceType': instance.deviceType,
+      'iconSetName': instance.iconSetName,
+      'iconName': instance.iconName,
+    };
+
 Device _$DeviceFromJson(Map<String, dynamic> json) {
   return Device(
     id: json['id'] as int,

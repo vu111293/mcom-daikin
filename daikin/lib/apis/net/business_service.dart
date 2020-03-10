@@ -21,6 +21,16 @@ class BusinessService extends BaseLoopBackApi {
     return LUser.fromJson(item);
   }
 
+  Future<Map<String, List<DeviceIcon>>> getDeviceIcons() async {
+    final result = await this.request(method: 'GET', url: 'http://mhome-showroom.ddns.net/api/icons');
+    List<DeviceIcon> dIcons = (result['device'] as List).map((item) => DeviceIcon.fromJson(item)).toList();
+    List<DeviceIcon> vIcons = (result['virtualDevice'] as List).map((item) => DeviceIcon.fromJson(item)).toList();
+    return {
+      'device': dIcons,
+      'virtualDevice': vIcons
+    };
+  }
+
   Future<List<Room>> getRoomList() async {
     final url = [
       LoopBackConfig.getPath(),

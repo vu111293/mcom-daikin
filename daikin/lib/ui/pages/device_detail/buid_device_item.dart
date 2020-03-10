@@ -51,13 +51,12 @@ Widget defaultBuildDevice(DeviceViewItem widget, Device device, bool isSwitched,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Image.asset(
-                          "assets/icons/Tuyet.png",
-                          //widget.category.imagePath,
-                          width: 16,
-                          height: 16,
+                        Image.network(
+                          widget.device.getDeviceIconURL,
+                          width: 45,
+                          height: 45,
                           fit: BoxFit.contain,
-                          color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
+//                          color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
                         ),
                         Text(
                           '',
@@ -152,15 +151,14 @@ Widget buildBlindsDevice(
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Image.asset(
-                          "assets/icons/Tuyet.png",
-                          //widget.category.imagePath,
-                          width: 16,
-                          height: 16,
+                        Image.network(
+                          widget.device.getDeviceIconURL,
+                          width: 45,
+                          height: 45,
                           fit: BoxFit.contain,
-                          color: isSwitched
-                              ? HexColor(appColor)
-                              : HexColor(appBorderColor),
+//                          color: isSwitched
+//                              ? HexColor(appColor)
+//                              : HexColor(appBorderColor),
                         ),
                         Text(
                           '',
@@ -239,13 +237,14 @@ Widget buildSwitchDevice(DeviceViewItem widget, Device device, Function callback
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Image.asset(
-                          "assets/icons/Tuyet.png",
+                        Image.network(
+                          widget.device.getDeviceIconURL,
+//                          "assets/icons/Tuyet.png",
                           //widget.category.imagePath,
-                          width: 16,
-                          height: 16,
+                          width: 45,
+                          height: 45,
                           fit: BoxFit.contain,
-                          color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
+//                          color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
                         ),
                         Text(
                           '',
@@ -348,13 +347,14 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback, F
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Image.asset(
-                          "assets/icons/Tuyet.png",
+                        Image.network(
+                          widget.device.getDeviceIconURL,
+//                          "assets/icons/Tuyet.png",
                           //widget.category.imagePath,
-                          width: 16,
-                          height: 16,
+                          width: 45,
+                          height: 45,
                           fit: BoxFit.contain,
-                          color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
+//                          color:  isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
                         ),
                         Text(
                           '',
@@ -445,13 +445,13 @@ Widget buildVirtualDevice(DeviceViewItem widget, Device device) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Image.asset(
-                          "assets/icons/Tuyet.png",
-                          //widget.category.imagePath,
-                          width: 16,
-                          height: 16,
+                        Image.network(
+                          widget.device.getDeviceIconURL,
+//                          "assets/icons/Tuyet.png",
+                          width: 45,
+                          height: 45,
                           fit: BoxFit.contain,
-                          color: HexColor(appBorderColor),
+//                          color: HexColor(appBorderColor),
                         ),
                         Text(
                           '',
@@ -547,13 +547,13 @@ Widget buildSwitchMultiDevice(DeviceViewItem widget, Device device,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Image.asset(
-                          "assets/icons/Tuyet.png",
-                          //widget.category.imagePath,
-                          width: 16,
-                          height: 16,
+                        Image.network(
+                          widget.device.getDeviceIconURL,
+//                          "assets/icons/Tuyet.png",
+                          width: 45,
+                          height: 45,
                           fit: BoxFit.contain,
-                          color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
+//                          color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
                         ),
                         Text(
                           '',

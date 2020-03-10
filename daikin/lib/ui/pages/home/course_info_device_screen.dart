@@ -67,7 +67,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
   @override
   Widget build(BuildContext context) {
 
-    String roomName =upFirstText(widget.room.getName);
+    String roomName = upFirstText(widget.room.getName);
 
     return Container(
       color: StyleAppTheme.nearlyWhite,
@@ -178,7 +178,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                                               style: ptTitle(context)),
                                         ),
                                         DeviceGridView(
-                                          devices: widget.room.devices,
+                                          devices: widget.room.devices.where((d) => d.getDeviceType != DeviceType.CAMERA_IP).toList(),
                                         ),
                                       ],
                                     ),
