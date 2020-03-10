@@ -178,7 +178,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                                               style: ptTitle(context)),
                                         ),
                                         DeviceGridView(
-                                          devices: widget.room.devices.where((d) => d.getDeviceType != DeviceType.CAMERA_IP).toList(),
+                                          devices: widget.room.devices,
                                         ),
                                       ],
                                     ),

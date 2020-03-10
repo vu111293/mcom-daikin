@@ -127,6 +127,10 @@ class Device {
         prefix = '${iconName}-locked.png';
         break;
 
+      case 'com.fibaro.ipCamera':
+        return 'https://thanhbinhcomputer.com.vn/wp-content/uploads/2019/07/ipc-a22ep-imou-icon.png';
+        break;
+
       case 'com.fibaro.FGD212':
         int v = (int.parse(properties.value)*1.0/10).toInt() * 10;
         prefix = '${iconName}$v.png';
