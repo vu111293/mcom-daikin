@@ -1,12 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/apis/net/business_service.dart';
-import 'package:daikin/models/business_models.dart';
-import 'package:daikin/utils/formatTextFirstUpCase.dart';
-import 'package:flutter/material.dart';
-import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
+import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
-import 'package:daikin/utils/hex_color.dart';
+import 'package:daikin/utils/formatTextFirstUpCase.dart';
+import 'package:daikin/utils/logCode.dart';
+import 'package:flutter/material.dart';
 
 class VirtualDeviceScreen extends StatefulWidget {
   Device device;
@@ -19,7 +18,6 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
   String name = "Motion";
   List<dynamic> listImage = [];
   int indexImage = 0;
-
   @override
   void initState() {
     super.initState();
@@ -27,6 +25,7 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // logCode(widget.device.properties.rows[0]);
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -64,7 +63,8 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
     for (var i = 0; i < rows.length; i++) {
       print(rows[i].type == 'label');
       if (rows[i].type == 'label') {
-        col.add(getLabelUI(rows[i].elements[0].caption));
+        col.add(getLabelUI(
+            rows[i].elements[0].caption, rows[i]?.elements[0]?.main));
       } else if (rows[i].type == 'button') {
         List<Widget> row = [];
 
@@ -93,11 +93,19 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
     );
   }
 
-  Widget getLabelUI(String name) {
+  Widget getLabelUI(String name, bool main) {
     return Container(
       padding: EdgeInsets.all(16.0),
-      child: Text(name,
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: Text(name,
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+          ),
+          Text(main ? 'Bật' : 'Tắt', style: TextStyle(fontSize: 18.0)),
+        ],
+      ),
     );
   }
 
@@ -113,13 +121,12 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
           splashColor: Colors.white24,
           onTap: () {
             BusinessService().pressButton(widget.device.id, element.id);
-            BotToast.showText(
-                text: 'Click thành công');
+            BotToast.showText(text: 'Click thành công');
           },
           child: Container(
             child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 16, bottom: 16, left: 4, right: 4),
+              padding:
+                  const EdgeInsets.only(top: 16, bottom: 16, left: 4, right: 4),
               child: Center(
                 child: Text(
                   element.caption,
