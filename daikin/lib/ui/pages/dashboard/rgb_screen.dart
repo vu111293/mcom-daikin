@@ -4,7 +4,6 @@ import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/SlidePickerColor.dart';
-import 'package:daikin/ui/customs/SliderPicker.dart';
 import 'package:daikin/ui/customs/action_button.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/utils/hex_color.dart';
@@ -212,13 +211,16 @@ class RgbScreenState extends State<RgbScreen> {
                           alignment: Alignment.center,
                           child: Column(
                             children: <Widget>[
-                              SlidePickerColor(
-                                  color: pickerColor,
-                                  onChanged: (e) {
-                                    setState(() {
-                                      pickerColor = e;
-                                    });
-                                  }),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 32),
+                                child: SlidePickerColor(
+                                    color: pickerColor,
+                                    onChanged: (e) {
+                                      setState(() {
+                                        pickerColor = e;
+                                      });
+                                    }),
+                              ),
                               // Container(
                               //   margin: EdgeInsets.symmetric(horizontal: 32),
                               //   child: SliderTheme(
