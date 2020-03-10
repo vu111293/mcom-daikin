@@ -26,7 +26,8 @@ class CourseInfoDeviceScreen extends StatefulWidget {
   _CourseInfoDeviceScreenState createState() => _CourseInfoDeviceScreenState();
 }
 
-class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with TickerProviderStateMixin {
+class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
+    with TickerProviderStateMixin {
   final double infoHeight = 400.0;
   AnimationController animationController;
   Animation<double> animation;
@@ -34,12 +35,15 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
   double opacity2 = 0.0;
   double opacity3 = 0.0;
 
+  bool isSwitched = false;
+
   CategoryType categoryType = CategoryType.ui;
   RoomConfig _roomConfig;
 
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 1000), vsync: this);
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
         parent: animationController,
         curve: Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
@@ -66,9 +70,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
 
   @override
   Widget build(BuildContext context) {
-
-    String roomName =upFirstText(widget.room.getName);
-
+    String roomName = upFirstText(widget.room.getName);
     return Container(
       color: StyleAppTheme.nearlyWhite,
       child: Scaffold(
@@ -83,9 +85,11 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                         isBack: true,
                         title: upFirstText(roomName),
                         onTitleTap: () {
-                          showChangeRoomNameDialog(context, roomName, onSave: (name) {
+                          showChangeRoomNameDialog(context, roomName,
+                              onSave: (name) {
                             _roomConfig.name = name;
-                            RoomLocalService.instance.updateRoomConfig(_roomConfig);
+                            RoomLocalService.instance
+                                .updateRoomConfig(_roomConfig);
                             setState(() {});
                           });
                         },
@@ -95,9 +99,11 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                         room: widget.room,
                         config: _roomConfig,
                         onConvertTap: () {
-                          showChangeCoverDialog(context, _roomConfig.cover, onSave: (w) {
+                          showChangeCoverDialog(context, _roomConfig.cover,
+                              onSave: (w) {
                             _roomConfig.cover = w.id;
-                            RoomLocalService.instance.updateRoomConfig(_roomConfig);
+                            RoomLocalService.instance
+                                .updateRoomConfig(_roomConfig);
                             setState(() {});
                           });
                         },
@@ -170,12 +176,44 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8.0, left: 16, right: 16),
-                                          child: Text('Danh sách thiết bị',
-                                              textAlign: TextAlign.left,
-                                              style: ptTitle(context)),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0,
+                                                  left: 16,
+                                                  right: 16),
+                                              child: Text('Danh sách thiết bị',
+                                                  textAlign: TextAlign.left,
+                                                  style: ptTitle(context)),
+                                            ),
+                                            Container(
+                                              margin: EdgeInsets.only(right: 8),
+                                              child: Transform.scale(
+                                                scale: 1.0,
+                                                child: Switch(
+                                                  value: isSwitched,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      isSwitched = value;
+                                                    });
+                                                  },
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .padded,
+                                                  activeColor: Colors.white,
+                                                  activeTrackColor:
+                                                      HexColor(appColor),
+                                                  inactiveThumbColor:
+                                                      HexColor(appBorderColor),
+                                                  inactiveTrackColor:
+                                                      HexColor(appBorderColor),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         DeviceGridView(
                                           devices: widget.room.devices,
@@ -303,7 +341,6 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
     );
   }
 
-
   Future _showConverSelectionDialog() {
     return showDialog(
         context: context,
@@ -315,7 +352,6 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen> with Ti
 }
 
 class ImageBackdrop extends StatelessWidget {
-
   final Room room;
   final RoomConfig config;
   final Function onConvertTap;
@@ -337,13 +373,15 @@ class ImageBackdrop extends StatelessWidget {
           opacity: animationController,
           child: Column(
             children: <Widget>[
-              InkWell(child: Image.asset(
+              InkWell(
+                  child: Image.asset(
 //                'assets/hotel/hotel_2.png',
-                config.getCoverPathAsset(),
-                fit: BoxFit.cover,
-                height: 220,
-                width: deviceWidth(context),
-              ), onTap: onConvertTap),
+                    config.getCoverPathAsset(),
+                    fit: BoxFit.cover,
+                    height: 220,
+                    width: deviceWidth(context),
+                  ),
+                  onTap: onConvertTap),
             ],
           ),
         ),
