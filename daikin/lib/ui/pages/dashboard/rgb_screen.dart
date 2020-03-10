@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/models/business_models.dart';
-import 'package:daikin/ui/customs/RoundSliderTrackShape.dart';
-import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/customs/SlidePickerColor.dart';
+import 'package:daikin/ui/customs/SliderPicker.dart';
 import 'package:daikin/ui/customs/action_button.dart';
+import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gauge/flutter_gauge.dart';
@@ -33,6 +33,7 @@ class RgbScreenState extends State<RgbScreen> {
   final _greenColorSubject = BehaviorSubject.seeded(0);
   final _blueColorSubject = BehaviorSubject.seeded(0);
 
+  HSVColor pickerColor = HSVColor.fromColor(Colors.red);
 //  int get _latestRed => _redColorSubject.stream.value;
 //  int get _latestGreen => _redColorSubject.stream.value;
 //  int get _latestBlue => _redColorSubject.stream.value;
@@ -174,18 +175,22 @@ class RgbScreenState extends State<RgbScreen> {
                                   size: deviceWidth(context) * 0.6,
                                   customColors: CustomSliderColors(
                                     progressBarColors: [
-                                      Color.fromRGBO(
-                                        rgb[0],
-                                        rgb[1],
-                                        rgb[2],
-                                        1,
-                                      ),
-                                      Color.fromRGBO(
-                                        rgb[0],
-                                        rgb[1],
-                                        rgb[2],
-                                        0,
-                                      )
+                                      // Color.fromRGBO(
+                                      //   rgb[0],
+                                      //   rgb[1],
+                                      //   rgb[2],
+                                      //   1,
+                                      // ),
+                                      //  Color.fromRGBO(
+                                      //   rgb[0],
+                                      //   rgb[1],
+                                      //   rgb[2],
+                                      //   0,
+                                      // )
+
+                                      ///đổi màu phía dứi chưa đổi trên đây
+                                      pickerColor.toColor(),
+                                      pickerColor.toColor().withOpacity(0),
                                     ],
                                     progressBarColor: Colors.red,
                                     shadowColor: Colors.red,
@@ -207,129 +212,136 @@ class RgbScreenState extends State<RgbScreen> {
                           alignment: Alignment.center,
                           child: Column(
                             children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 32),
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: Colors.red,
-                                    inactiveTrackColor: HexColor(appNotWhite),
-                                    trackHeight: 10.0,
-                                    trackShape:
-                                        RoundSliderTrackShape(radius: 10),
-                                    thumbShape: RoundSliderThumbShape(
-                                        enabledThumbRadius: 10.0,
-                                        disabledThumbRadius: 10.0),
-                                    overlayShape: RoundSliderThumbShape(
-                                        enabledThumbRadius: 15.0,
-                                        disabledThumbRadius: 15.0),
-                                    thumbColor: Colors.red,
-                                    overlayColor: Colors.red,
-                                    valueIndicatorColor: Colors.red,
-                                    activeTickMarkColor: Colors.transparent,
-                                    inactiveTickMarkColor: Colors.transparent,
-                                  ),
-                                  child: StreamBuilder(
-                                    stream: _redColorSubject.stream,
-                                    builder: (context, snapshot) {
-                                      int v =
-                                          snapshot.hasData ? snapshot.data : 0;
-                                      return Slider(
-                                        min: 0,
-                                        max: 255,
-                                        divisions: 255,
-                                        label: '$v',
-                                        value: v * 1.0,
-                                        onChanged: (value) {
-                                          _redColorSubject.sink
-                                              .add(value.toInt());
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 32),
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: Colors.green,
-                                    inactiveTrackColor: HexColor(appNotWhite),
-                                    trackHeight: 10.0,
-                                    trackShape:
-                                        RoundSliderTrackShape(radius: 10),
-                                    thumbShape: RoundSliderThumbShape(
-                                        enabledThumbRadius: 10.0,
-                                        disabledThumbRadius: 10.0),
-                                    overlayShape: RoundSliderThumbShape(
-                                        enabledThumbRadius: 15.0,
-                                        disabledThumbRadius: 15.0),
-                                    thumbColor: Colors.green,
-                                    overlayColor: Colors.green,
-                                    valueIndicatorColor: Colors.green,
-                                    activeTickMarkColor: Colors.transparent,
-                                    inactiveTickMarkColor: Colors.transparent,
-                                  ),
-                                  child: StreamBuilder(
-                                    stream: _greenColorSubject.stream,
-                                    builder: (context, snapshot) {
-                                      int v =
-                                          snapshot.hasData ? snapshot.data : 0;
-                                      return Slider(
-                                        min: 0,
-                                        max: 255,
-                                        divisions: 255,
-                                        label: '$v',
-                                        value: v * 1.0,
-                                        onChanged: (value) {
-                                          _greenColorSubject.sink
-                                              .add(value.toInt());
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 32),
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    activeTrackColor: Colors.blue,
-                                    inactiveTrackColor: HexColor(appNotWhite),
-                                    trackHeight: 10.0,
-                                    trackShape:
-                                        RoundSliderTrackShape(radius: 10),
-                                    thumbShape: RoundSliderThumbShape(
-                                        enabledThumbRadius: 10.0,
-                                        disabledThumbRadius: 10.0),
-                                    overlayShape: RoundSliderThumbShape(
-                                        enabledThumbRadius: 15.0,
-                                        disabledThumbRadius: 15.0),
-                                    thumbColor: Colors.blue,
-                                    overlayColor: Colors.blue,
-                                    valueIndicatorColor: Colors.blue,
-                                    activeTickMarkColor: Colors.transparent,
-                                    inactiveTickMarkColor: Colors.transparent,
-                                  ),
-                                  child: StreamBuilder(
-                                    stream: _blueColorSubject.stream,
-                                    builder: (context, snapshot) {
-                                      int v =
-                                          snapshot.hasData ? snapshot.data : 0;
-                                      return Slider(
-                                        min: 0,
-                                        max: 255,
-                                        divisions: 255,
-                                        label: '$v',
-                                        value: v * 1.0,
-                                        onChanged: (value) {
-                                          _blueColorSubject.sink
-                                              .add(value.toInt());
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
+                              SlidePickerColor(
+                                  color: pickerColor,
+                                  onChanged: (e) {
+                                    setState(() {
+                                      pickerColor = e;
+                                    });
+                                  }),
+                              // Container(
+                              //   margin: EdgeInsets.symmetric(horizontal: 32),
+                              //   child: SliderTheme(
+                              //     data: SliderTheme.of(context).copyWith(
+                              //       activeTrackColor: Colors.red,
+                              //       inactiveTrackColor: HexColor(appNotWhite),
+                              //       trackHeight: 10.0,
+                              //       trackShape:
+                              //           RoundSliderTrackShape(radius: 10),
+                              //       thumbShape: RoundSliderThumbShape(
+                              //           enabledThumbRadius: 10.0,
+                              //           disabledThumbRadius: 10.0),
+                              //       overlayShape: RoundSliderThumbShape(
+                              //           enabledThumbRadius: 15.0,
+                              //           disabledThumbRadius: 15.0),
+                              //       thumbColor: Colors.red,
+                              //       overlayColor: Colors.red,
+                              //       valueIndicatorColor: Colors.red,
+                              //       activeTickMarkColor: Colors.transparent,
+                              //       inactiveTickMarkColor: Colors.transparent,
+                              //     ),
+                              //     child: StreamBuilder(
+                              //       stream: _redColorSubject.stream,
+                              //       builder: (context, snapshot) {
+                              //         int v =
+                              //             snapshot.hasData ? snapshot.data : 0;
+                              //         return Slider(
+                              //           min: 0,
+                              //           max: 255,
+                              //           divisions: 255,
+                              //           label: '$v',
+                              //           value: v * 1.0,
+                              //           onChanged: (value) {
+                              //             _redColorSubject.sink
+                              //                 .add(value.toInt());
+                              //           },
+                              //         );
+                              //       },
+                              //     ),
+                              //   ),
+                              // ),
+                              // Container(
+                              //   margin: EdgeInsets.symmetric(horizontal: 32),
+                              //   child: SliderTheme(
+                              //     data: SliderTheme.of(context).copyWith(
+                              //       activeTrackColor: Colors.green,
+                              //       inactiveTrackColor: HexColor(appNotWhite),
+                              //       trackHeight: 10.0,
+                              //       trackShape:
+                              //           RoundSliderTrackShape(radius: 10),
+                              //       thumbShape: RoundSliderThumbShape(
+                              //           enabledThumbRadius: 10.0,
+                              //           disabledThumbRadius: 10.0),
+                              //       overlayShape: RoundSliderThumbShape(
+                              //           enabledThumbRadius: 15.0,
+                              //           disabledThumbRadius: 15.0),
+                              //       thumbColor: Colors.green,
+                              //       overlayColor: Colors.green,
+                              //       valueIndicatorColor: Colors.green,
+                              //       activeTickMarkColor: Colors.transparent,
+                              //       inactiveTickMarkColor: Colors.transparent,
+                              //     ),
+                              //     child: StreamBuilder(
+                              //       stream: _greenColorSubject.stream,
+                              //       builder: (context, snapshot) {
+                              //         int v =
+                              //             snapshot.hasData ? snapshot.data : 0;
+                              //         return Slider(
+                              //           min: 0,
+                              //           max: 255,
+                              //           divisions: 255,
+                              //           label: '$v',
+                              //           value: v * 1.0,
+                              //           onChanged: (value) {
+                              //             _greenColorSubject.sink
+                              //                 .add(value.toInt());
+                              //           },
+                              //         );
+                              //       },
+                              //     ),
+                              //   ),
+                              // ),
+                              // Container(
+                              //   margin: EdgeInsets.symmetric(horizontal: 32),
+                              //   child: SliderTheme(
+                              //     data: SliderTheme.of(context).copyWith(
+                              //       activeTrackColor: Colors.blue,
+                              //       inactiveTrackColor: HexColor(appNotWhite),
+                              //       trackHeight: 10.0,
+                              //       trackShape:
+                              //           RoundSliderTrackShape(radius: 10),
+                              //       thumbShape: RoundSliderThumbShape(
+                              //           enabledThumbRadius: 10.0,
+                              //           disabledThumbRadius: 10.0),
+                              //       overlayShape: RoundSliderThumbShape(
+                              //           enabledThumbRadius: 15.0,
+                              //           disabledThumbRadius: 15.0),
+                              //       thumbColor: Colors.blue,
+                              //       overlayColor: Colors.blue,
+                              //       valueIndicatorColor: Colors.blue,
+                              //       activeTickMarkColor: Colors.transparent,
+                              //       inactiveTickMarkColor: Colors.transparent,
+                              //     ),
+                              //     child: StreamBuilder(
+                              //       stream: _blueColorSubject.stream,
+                              //       builder: (context, snapshot) {
+                              //         int v =
+                              //             snapshot.hasData ? snapshot.data : 0;
+                              //         return Slider(
+                              //           min: 0,
+                              //           max: 255,
+                              //           divisions: 255,
+                              //           label: '$v',
+                              //           value: v * 1.0,
+                              //           onChanged: (value) {
+                              //             _blueColorSubject.sink
+                              //                 .add(value.toInt());
+                              //           },
+                              //         );
+                              //       },
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
