@@ -32,6 +32,8 @@ class CameraScreenState extends State<CameraScreen> {
   bool currentStateDevice;
   final _cameraKey = new GlobalKey<CameraIpViewState>();
   ApplicationBloc _appBloc;
+  PanelController _pc = new PanelController();
+  var isShow = false;
 
   @override
   void initState() {
@@ -47,6 +49,7 @@ class CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return SlidingUpPanel(
+      controller: _pc,
       backdropEnabled: true,
       minHeight: 80,
       backdropColor: HexColor('#19194C'),
@@ -55,21 +58,48 @@ class CameraScreenState extends State<CameraScreen> {
           child: Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Container(
-            width: deviceWidth(context),
-            height: 40,
-            child: Icon(
-              Icons.keyboard_arrow_up,
-              size: 40,
-              color: Colors.black54,
+          GestureDetector(
+            onTap: () {
+              if (isShow) {
+                setState(() {
+                  isShow = false;
+                });
+                _pc.close();
+              } else {
+                setState(() {
+                  isShow = true;
+                });
+                _pc.open();
+              }
+            },
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: deviceWidth(context),
+                  height: 40,
+                  child: Icon(
+                    isShow
+                        ? Icons.keyboard_arrow_down
+                        : Icons.keyboard_arrow_up,
+                    size: 40,
+                    color: Colors.black54,
+                  ),
+                ),
+                Container(
+                    child: Text(
+                        widget.item.devices.length > 0
+                            ? 'Danh sách thiết bị trong phòng'
+                            : 'Không có thiết bị trong phòng',
+                        style:
+                            TextStyle(color: Colors.black54, fontSize: 18.0))),
+              ],
             ),
           ),
-          Container(child: Text(widget.item.devices.length > 0 ? 'Danh sách thiết bị trong phòng' : 'Không có thiết bị trong phòng',
-              style: TextStyle(color: Colors.black54, fontSize: 18.0))),
           Expanded(
             child: SingleChildScrollView(
                 child: Column(
-              children: widget.item.devices.map((item) => buildDevice(item)).toList(),
+              children:
+                  widget.item.devices.map((item) => buildDevice(item)).toList(),
             )),
           ),
         ],
