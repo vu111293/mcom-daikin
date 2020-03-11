@@ -10,6 +10,7 @@ import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/home/devices_grid_view.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/utils/device_util.dart';
 import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ import 'package:intl/intl.dart';
 enum CategoryType { ui, coding, basic, game, chill }
 
 class CourseInfoDeviceScreen extends StatefulWidget {
-  final Room room;
+  Room room;
 
   CourseInfoDeviceScreen({this.room});
 
@@ -42,6 +43,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
 
   @override
   void initState() {
+    isSwitched = widget.room.devices.firstWhere((d) => DeviceUtil.isTurnOn(d) == false, orElse: ()=>null) == null;
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
@@ -195,7 +197,11 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                                                 scale: 1.0,
                                                 child: Switch(
                                                   value: isSwitched,
-                                                  onChanged: (value) {
+                                                  onChanged: (value) async {
+                                                    for (int i = 0; i < widget.room.devices.length; ++i) {
+                                                      Device d = widget.room.devices[i];
+                                                      await DeviceUtil.turnDevice(d, value);
+                                                    }
                                                     setState(() {
                                                       isSwitched = value;
                                                     });

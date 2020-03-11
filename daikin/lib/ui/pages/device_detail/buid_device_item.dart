@@ -78,33 +78,33 @@ Widget defaultBuildDevice(DeviceViewItem widget, Device device, bool isSwitched,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Container(
-                        height: 30,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned(
-                              top: -5,
-                              left: -10,
-                              child: Transform.scale(
-                                scale: 1.0,
-                                child: Switch(
-                                  value: isSwitched,
-                                  onChanged: (value) {
-                                    callback(value);
-                                    // setState(() {
-                                    //   isSwitched = value;
-                                    // });
-                                  },
-                                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                                  activeColor: Colors.white,
-                                  activeTrackColor: HexColor(appColor),
-                                  inactiveThumbColor: HexColor(appBorderColor),
-                                  inactiveTrackColor: HexColor(appBorderColor),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
+//                    Container(
+//                        height: 30,
+//                        child: Stack(
+//                          children: <Widget>[
+//                            Positioned(
+//                              top: -5,
+//                              left: -10,
+//                              child: Transform.scale(
+//                                scale: 1.0,
+//                                child: Switch(
+//                                  value: isSwitched,
+//                                  onChanged: (value) {
+//                                    callback(value);
+//                                    // setState(() {
+//                                    //   isSwitched = value;
+//                                    // });
+//                                  },
+//                                  materialTapTargetSize: MaterialTapTargetSize.padded,
+//                                  activeColor: Colors.white,
+//                                  activeTrackColor: HexColor(appColor),
+//                                  inactiveThumbColor: HexColor(appBorderColor),
+//                                  inactiveTrackColor: HexColor(appBorderColor),
+//                                ),
+//                              ),
+//                            ),
+//                          ],
+//                        )),
                   ],
                 ),
               ),

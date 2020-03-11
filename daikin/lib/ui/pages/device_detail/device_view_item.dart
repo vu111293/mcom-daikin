@@ -62,7 +62,6 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
       // Rem cua
     } else if (_localDevice.type == "com.fibaro.FGRM222") {
       return buildBlindsDevice(widget, _localDevice, isSwitched, (value) {
-        print("@@@@@@@@@@@@@@@@@@@@@@@");
       });
       // Den Chum
     } else if (_localDevice.type == "com.fibaro.FGD212") {
