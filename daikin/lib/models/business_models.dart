@@ -303,7 +303,8 @@ class DeviceProperty {
     String path = jpgPath.isNotEmpty && jpgPath.startsWith('/')
         ? jpgPath.substring(1)
         : jpgPath;
-    return Uri.encodeFull('$http://${Uri.encodeComponent(username)}:${Uri.encodeComponent(password)}@$ip/$path');
+    return Uri.encodeFull(
+        '$http://${Uri.encodeComponent(username)}:${Uri.encodeComponent(password)}@$ip/$path');
   }
 
   // For RGB light
@@ -409,7 +410,6 @@ class Room {
 
   Map<String, dynamic> toJson() => _$RoomToJson(this);
 
-
   String get getName {
     String configName = RoomLocalService.instance.getConfig(id).name;
     return configName?.isNotEmpty == true ? configName : name;
@@ -425,7 +425,6 @@ class Room {
 }
 
 Map<String, dynamic> _defSensorToJson(RoomDefaultSensor item) => item.toJson();
-
 
 @JsonSerializable(nullable: false)
 class RoomConfig {
@@ -443,16 +442,18 @@ class RoomConfig {
 
   Map<String, dynamic> toJson() => _$RoomConfigToJson(this);
 
-
   String getCoverPathAsset() {
-    return assetCoverList.firstWhere((item) => item.id == cover, orElse: () => null).assetPath;
+    return assetCoverList
+        .firstWhere((item) => item.id == cover, orElse: () => null)
+        .assetPath;
   }
 
   String getIconPathAsset() {
-    return assetIconList.firstWhere((item) => item.id == icon, orElse: () => null).assetPath;
+    return assetIconList
+        .firstWhere((item) => item.id == icon, orElse: () => null)
+        .assetPath;
   }
 }
-
 
 @JsonSerializable(nullable: false)
 class RoomDefaultSensor {
@@ -513,9 +514,11 @@ class DeviceRow {
 class ElementDeviceRow {
   final String name;
   final String caption;
+  final bool main;
+
   final int id;
 
-  ElementDeviceRow({this.caption, this.name, this.id});
+  ElementDeviceRow({this.caption, this.name, this.main, this.id});
 
   factory ElementDeviceRow.fromJson(Map<String, dynamic> json) {
     final item = _$ElementDeviceRowFromJson(json);

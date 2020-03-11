@@ -324,6 +324,7 @@ ElementDeviceRow _$ElementDeviceRowFromJson(Map<String, dynamic> json) {
   return ElementDeviceRow(
     caption: json['caption'] as String,
     name: json['name'] as String,
+    main: json['main'] as bool,
     id: json['id'] as int,
   );
 }
@@ -332,5 +333,6 @@ Map<String, dynamic> _$ElementDeviceRowToJson(ElementDeviceRow instance) =>
     <String, dynamic>{
       'name': instance.name,
       'caption': instance.caption,
+      'main': instance.main,
       'id': instance.id,
     };
