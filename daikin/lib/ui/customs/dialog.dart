@@ -1,5 +1,7 @@
+import 'package:daikin/apis/local/room_local_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/models/business_models.dart';
+import 'package:daikin/ui/customs/image_picker.dart';
 import 'package:flutter/material.dart';
 
 enum DialogAction {
@@ -187,11 +189,14 @@ class ChangeImageAssetsDialog extends StatefulWidget {
 class _ChangeImageAssetsDialogState extends State<ChangeImageAssetsDialog> {
 
 //  ChangeImageAssetsDialog({this.list, this.selectedId, this.onSave, this.onCancel});
+  List<ImageAsset> images;
   ImageAsset _selected;
 
   @override
   void initState() {
-    _selected = widget.list.firstWhere((item) => item.id == widget.selectedId, orElse: ()=> null);
+    images = List.from(widget.list);
+    images.insert(0, ImageAsset(id: 'ext-add-action'));
+    _selected = images.firstWhere((item) => item.id == widget.selectedId, orElse: ()=> null);
     super.initState();
   }
 
@@ -210,13 +215,39 @@ class _ChangeImageAssetsDialogState extends State<ChangeImageAssetsDialog> {
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                children: widget.list.map((item) {
+                children: images.map((item) {
+                  if (item.id == 'ext-add-action') {
+                    return Container(
+                        height: double.infinity,
+                        width: double.infinity,
+//                        child: Icon(Icons.camera_enhance, size: 35.0)
+
+                        child: ImagePickerWidget(
+                          context: context,
+                          isEdit: true,
+                          circle: true,
+                          size: 100.0,
+                          overrideBkg: false,
+//                      resourceUrl: _appBloc.authBloc.currentUser.avatar,
+                          onFileChanged: (fileUri, fileType) async {
+                            final newImage =  ImageAsset(id: 'network-${DateTime.now().millisecondsSinceEpoch}', assetPath: fileUri);
+                            RoomLocalService.instance.addCoverAsset(newImage);
+                            images.add(newImage);
+                            _selected = newImage;
+                            setState(() {});
+                          },
+                        )
+                    );
+                  }
+
                   return InkWell(child: Stack(
                     children: <Widget>[
                       Container(
                           height: double.infinity,
                           width: double.infinity,
-                          child: Image.asset(item.assetPath, fit: BoxFit.cover)),
+                          child: item.assetPath.startsWith('http')
+                              ? Image.network(item.assetPath, fit: BoxFit.cover)
+                              : Image.asset(item.assetPath, fit: BoxFit.cover)),
                       Positioned(
                           bottom: 0.0,
                           right: 0.0,
@@ -255,9 +286,11 @@ class _ChangeImageAssetsDialogState extends State<ChangeImageAssetsDialog> {
 }
 
 Future showChangeCoverDialog(BuildContext context, String selectedId, {Function onCancel, Function(ImageAsset) onSave}) {
+  List<ImageAsset> images = List.from(assetCoverList);
+  images.addAll(RoomLocalService.instance.coverAssets);
   return showDialog(
       context: context,
-      builder: (context) => ChangeImageAssetsDialog(list: assetCoverList, selectedId: selectedId, onSave: onSave, onCancel: onCancel));
+      builder: (context) => ChangeImageAssetsDialog(list: images, selectedId: selectedId, onSave: onSave, onCancel: onCancel));
 }
 
 Future showChangeIconDialog(BuildContext context, String selectedId, {Function onCancel, Function(ImageAsset) onSave}) {

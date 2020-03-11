@@ -102,7 +102,7 @@ class LoopBackAuth {
     _bearToken = null;
     _userId = null;
     fbToken = null;
-    _host = null;
+//    _host = null;
     save();
   }
 

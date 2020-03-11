@@ -41,7 +41,7 @@ class ApplicationBloc implements BlocBase {
     _centerBloc = CenterBloc();
 
     // Load local setting here
-    RoomLocalService.instance.loadRoomsConfig();
+    RoomLocalService.instance.loadConfig();
   }
 
   String get deviceId => _deviceIdSubject.stream.value;

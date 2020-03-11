@@ -21,6 +21,7 @@ class ImagePickerWidget extends StatefulWidget {
   final bool isRemove;
   final bool avatar;
   final Function onClick;
+  final bool overrideBkg;
 
   ImagePickerWidget({
     Key key,
@@ -33,9 +34,8 @@ class ImagePickerWidget extends StatefulWidget {
     this.avatar = false,
     this.onFileChanged,
     this.onClick,
-  }) : super(
-          key: key,
-        );
+    this.overrideBkg = true
+  }) : super(key: key);
   final Function(String, String) onFileChanged;
 
   @override
@@ -112,12 +112,13 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 errorWidget: (context, url, error) => Icon(Icons.error),
               )
             : image == null
-                ? Image.asset(
-                    "assets/images/userImage2.png",
-                    fit: BoxFit.cover,
-                    width: widget.size,
-                    height: widget.size,
-                  )
+                  ? Container()
+//                ? Image.asset(
+//                    "assets/images/userImage2.png",
+//                    fit: BoxFit.cover,
+//                    width: widget.size,
+//                    height: widget.size,
+//                  )
                 // Center(
                 //     child: Container(
                 //       width: widget.size / 2,
@@ -140,8 +141,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   _handleUploadImage(localImage) async {
     var image0 = image;
     showWaitingDialog(context, message: "Đang tải ảnh lên...");
-    String link =
-        await ImageService().uploadImageToImgur(localImage).then((onValue) {
+    String link = await ImageService().uploadImageToImgur(localImage).then((onValue) {
       print('dasd $onValue');
       if (widget.onFileChanged != null) {
         widget.onFileChanged(onValue, 'image');
@@ -149,17 +149,21 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
       Navigator.pop(context);
     }).catchError((onError) {
       Navigator.pop(context);
-      setState(() {
-        image = image0;
-      });
+      if (widget.overrideBkg) {
+        setState(() {
+          image = image0;
+        });
+      }
       Alert(context: context, title: "", desc: "Cập nhật ảnh thất bại").show();
     });
     print('phat update link ảnh nè: $link');
     if (localImage != null) {
       print("You selected gallery image : " + localImage.path);
-      setState(() {
-        image = localImage;
-      });
+      if (widget.overrideBkg) {
+        setState(() {
+          image = localImage;
+        });
+      }
     }
   }
 
@@ -212,12 +216,13 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     )
                   : image == null
-                      ? Image.asset(
-                          "assets/images/userImage2.png",
-                          fit: BoxFit.cover,
-                          width: widget.size,
-                          height: widget.size,
-                        )
+//                      ? Image.asset(
+//                          "assets/images/userImage2.png",
+//                          fit: BoxFit.cover,
+//                          width: widget.size,
+//                          height: widget.size,
+//                        )
+                      ? Container()
                       : Image.file(
                           image,
                           fit: BoxFit.cover,

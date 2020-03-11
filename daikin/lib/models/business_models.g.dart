@@ -336,3 +336,18 @@ Map<String, dynamic> _$ElementDeviceRowToJson(ElementDeviceRow instance) =>
       'main': instance.main,
       'id': instance.id,
     };
+
+ImageAsset _$ImageAssetFromJson(Map<String, dynamic> json) {
+  return ImageAsset(
+    id: json['id'] as String,
+    name: json['name'] as String,
+    assetPath: json['assetPath'] as String,
+  );
+}
+
+Map<String, dynamic> _$ImageAssetToJson(ImageAsset instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'assetPath': instance.assetPath,
+    };

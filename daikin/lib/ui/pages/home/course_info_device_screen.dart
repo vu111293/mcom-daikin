@@ -87,11 +87,9 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                         isBack: true,
                         title: upFirstText(roomName),
                         onTitleTap: () {
-                          showChangeRoomNameDialog(context, roomName,
-                              onSave: (name) {
+                          showChangeRoomNameDialog(context, roomName, onSave: (name) {
                             _roomConfig.name = name;
-                            RoomLocalService.instance
-                                .updateRoomConfig(_roomConfig);
+                            RoomLocalService.instance.updateRoomConfig(_roomConfig);
                             setState(() {});
                           });
                         },
@@ -104,8 +102,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                           showChangeCoverDialog(context, _roomConfig.cover,
                               onSave: (w) {
                             _roomConfig.cover = w.id;
-                            RoomLocalService.instance
-                                .updateRoomConfig(_roomConfig);
+                            RoomLocalService.instance.updateRoomConfig(_roomConfig);
                             setState(() {});
                           });
                         },
@@ -373,6 +370,7 @@ class ImageBackdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String coverPath = config.getCoverPathAsset();
     return Stack(
       children: <Widget>[
         FadeTransition(
@@ -380,13 +378,9 @@ class ImageBackdrop extends StatelessWidget {
           child: Column(
             children: <Widget>[
               InkWell(
-                  child: Image.asset(
-//                'assets/hotel/hotel_2.png',
-                    config.getCoverPathAsset(),
-                    fit: BoxFit.cover,
-                    height: 220,
-                    width: deviceWidth(context),
-                  ),
+                  child: coverPath.startsWith('http')
+                      ? Image.network(coverPath , fit: BoxFit.cover, height: 220, width: deviceWidth(context))
+                      : Image.asset(coverPath , fit: BoxFit.cover, height: 220, width: deviceWidth(context)),
                   onTap: onConvertTap),
             ],
           ),

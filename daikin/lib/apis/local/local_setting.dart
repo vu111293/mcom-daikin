@@ -59,6 +59,14 @@ class LocalSetting {
     return _getPersist('room_conf');
   }
 
+  saveCoverAssets(String raw) {
+    _setPersist('cover_assets', raw);
+  }
+
+  Future<dynamic> getCoverAssets() {
+    return _getPersist('cover_assets');
+  }
+
   Future<String> getCurrentLocale() async {
     String locale = await _getPersist('locale');
     return locale;

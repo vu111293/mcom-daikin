@@ -259,7 +259,7 @@ class CameraScreenState extends State<CameraScreen> {
           child: Container(
             padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
             child: ListTile(
-              leading: Icon(Icons.ac_unit),
+              leading: Image.network(device.getDeviceIconURL, width: 32, height: 32, fit: BoxFit.contain),
               title: Text(upFirstText(device.name)),
               trailing: Switch(
                 value: device.properties.value == 'true' ? true : false,
@@ -282,7 +282,7 @@ class CameraScreenState extends State<CameraScreen> {
           child: Container(
             padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
             child: ListTile(
-              leading: Icon(Icons.ac_unit),
+              leading: Image.network(device.getDeviceIconURL, width: 32, height: 32, fit: BoxFit.contain),
               title: Text(upFirstText(device.name)),
               trailing: Switch(
                 value: device.properties.value == '1' ? true : false,
@@ -305,7 +305,7 @@ class CameraScreenState extends State<CameraScreen> {
           child: Container(
             padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
             child: ListTile(
-              leading: Icon(Icons.ac_unit),
+              leading: Image.network(device.getDeviceIconURL, width: 32, height: 32, fit: BoxFit.contain),
               title: Text(upFirstText(device.name)),
               trailing: Switch(
                 value: int.parse(device.properties.value) > 0 ? true : false,
@@ -329,7 +329,8 @@ class CameraScreenState extends State<CameraScreen> {
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
         child: ListTile(
-          leading: Icon(Icons.ac_unit), title: Text(upFirstText(device.name)),
+          leading: Image.network(device.getDeviceIconURL, width: 32, height: 32, fit: BoxFit.contain),
+          title: Text(upFirstText(device.name)),
           // trailing: Switch(
           //   value: true,
           //   onChanged: (val) {

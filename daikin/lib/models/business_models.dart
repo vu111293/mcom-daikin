@@ -443,9 +443,12 @@ class RoomConfig {
   Map<String, dynamic> toJson() => _$RoomConfigToJson(this);
 
   String getCoverPathAsset() {
-    return assetCoverList
-        .firstWhere((item) => item.id == cover, orElse: () => null)
-        .assetPath;
+    ImageAsset image = assetCoverList.firstWhere((item) => item.id == cover, orElse: () => null);
+
+    if (image == null) {
+      image = RoomLocalService.instance.coverAssets.firstWhere((item) => item.id == cover, orElse: () => null);
+    }
+    return image?.assetPath;
   }
 
   String getIconPathAsset() {
@@ -528,10 +531,18 @@ class ElementDeviceRow {
   Map<String, dynamic> toJson() => _$ElementDeviceRowToJson(this);
 }
 
+@JsonSerializable(nullable: true)
 class ImageAsset {
   String id;
   String name;
   String assetPath;
 
   ImageAsset({this.id, this.name, this.assetPath});
+
+  factory ImageAsset.fromJson(Map<String, dynamic> json) {
+    final item = _$ImageAssetFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$ImageAssetToJson(this);
 }
