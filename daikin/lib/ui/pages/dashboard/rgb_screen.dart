@@ -114,8 +114,7 @@ class RgbScreenState extends State<RgbScreen> {
                         StreamBuilder<List<int>>(
                           stream: combineRGBChangedEvent,
                           builder: (context, snapshot) {
-                            List<int> rgb =
-                                snapshot.hasData ? snapshot.data : [0, 0, 0];
+                            List<int> rgb = snapshot.hasData ? snapshot.data : [0, 0, 0];
                             return Container(
                               margin: EdgeInsets.only(
                                 top: deviceWidth(context) * 0.1 + 16,
@@ -216,6 +215,10 @@ class RgbScreenState extends State<RgbScreen> {
                                 child: SlidePickerColor(
                                     color: pickerColor,
                                     onChanged: (e) {
+                                      Color c = e.toColor();
+                                      _redColorSubject.sink.add(c.red);
+                                      _greenColorSubject.sink.add(c.green);
+                                      _blueColorSubject.sink.add(c.blue);
                                       setState(() {
                                         pickerColor = e;
                                       });
