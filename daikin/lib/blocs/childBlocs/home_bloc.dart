@@ -40,10 +40,14 @@ class HomeBloc {
       List<Scene> scenes = results[2];
       Map<String, List<DeviceIcon>> mIcons = results[3];
 
+      devices = devices.where((item) => item.name?.startsWith('A_') == false).toList();
+      rooms = rooms.where((item) => item.name?.startsWith('A_') == false).toList();
+      scenes = scenes.where((item) => item.name?.startsWith('A_') == false).toList();
+      
       // map device icon to device
       devices.forEach((d) {
         String iconId = d.properties.deviceIcon?.toString();
-        DeviceIcon dIcon = (d.type == 'virtual_device' ? mIcons['virtualDevice'] : mIcons['device'])
+        DeviceIcon dIcon = (d.type == 'virtual_ácvice' ? mIcons['virtualDevice'] : mIcons['device'])
             .firstWhere((i) =>  i.id.toString() == iconId, orElse: ()=>null);
         d.iconName = d.type == 'virtual_device' ? dIcon?.iconName : dIcon?.iconSetName;
       });

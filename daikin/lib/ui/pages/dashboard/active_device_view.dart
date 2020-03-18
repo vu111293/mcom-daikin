@@ -302,11 +302,8 @@ class DeviceView extends StatelessWidget {
                                                   // setState(() {
                                                   //   isSwitched = value;
                                                   // });
-                                                  BusinessService()
-                                                      .turnOffDevice(device.id);
-                                                  BotToast.showText(
-                                                      text:
-                                                          "Tắt thiết bị thành công");
+                                                  BusinessService().turnOffDevice(device.id);
+                                                  BotToast.showText(text: "Tắt thiết bị thành công");
                                                 },
                                                 materialTapTargetSize:
                                                     MaterialTapTargetSize
@@ -349,9 +346,8 @@ class DeviceView extends StatelessWidget {
                           const BorderRadius.all(Radius.circular(16.0)),
                       child: AspectRatio(
                           aspectRatio: 0.9,
-                          child: Image.asset(
-                            'assets/devices/rgb.png',
-                          )),
+                          child: Image.network(device.getDeviceIconURL, fit: BoxFit.contain)
+                      ),
                     ),
                   )),
             ),
