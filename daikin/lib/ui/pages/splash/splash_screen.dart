@@ -170,7 +170,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         left: ScaleUtil.getInstance().setWidth(16),
                         right: ScaleUtil.getInstance().setWidth(16)),
                     child: Text(
-                      'Tận hưởng cuộc sống thoải mái vượt trội và đem lại cảm giác mát lạnh sảng khoái tối ưu.',
+                      'Chúng tôi không chỉ bán máy lạnh, chúng tôi bán sự thoải mái cho khách hàng',
                       style: ptSubtitle(context),
                       textAlign: TextAlign.center,
                     ),

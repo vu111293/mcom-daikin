@@ -33,15 +33,17 @@ Widget defaultBuildDevice(DeviceViewItem widget, Device device, bool isSwitched,
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                Routing().navigate2(
-                    context,
-                    DeviceOnOffDetailScreen(
-                      item: widget.device,
-                      status: isSwitched,
-                      callback: () {
-                        callback();
-                      },
-                    ));
+                if (!widget.device.properties.isSensorDevice) {
+                  Routing().navigate2(
+                      context,
+                      DeviceOnOffDetailScreen(
+                        item: widget.device,
+                        status: isSwitched,
+                        callback: () {
+                          callback();
+                        },
+                      ));
+                }
               },
               child: Padding(
                 padding: EdgeInsets.all(10.0),

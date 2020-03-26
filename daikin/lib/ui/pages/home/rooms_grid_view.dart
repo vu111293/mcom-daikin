@@ -134,7 +134,7 @@ class CategoryView extends StatelessWidget {
                 Image.network(
                   room.getRoomIconURL,
                   width: 50,
-                  height: 50,
+                  height: 42,
                   fit: BoxFit.contain,
                 ),
                 Padding(

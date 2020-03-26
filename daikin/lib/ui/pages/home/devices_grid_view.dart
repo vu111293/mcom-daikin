@@ -46,7 +46,7 @@ class DeviceGridViewState extends State<DeviceGridView>
 
             // Todo for debug only
             widget.devices.forEach((d) {
-              print('${d.name} -> ${d.type} -> ${d.properties.value}');
+              print('${d.name} -> ${d.type} -> ${d.properties.value} => ${d.properties.armed}');
             });
 
             return GridView(

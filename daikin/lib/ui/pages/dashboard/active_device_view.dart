@@ -84,10 +84,11 @@ class _ActiveDeviceListViewState extends State<ActiveDeviceListView>
                                     curve: Curves.fastOutSlowIn)));
                     animationController.forward();
 
+                    Device device = snapshot.data[index];
                     return DeviceView(
                       device: snapshot.data[index],
                       callbackParent: () {
-                        routingToDevicePage(snapshot.data[index]);
+                        routingToDevicePage(device);
                       },
                       callback: (value) {
                         BusinessService()
@@ -239,7 +240,9 @@ class DeviceView extends StatelessWidget {
     return InkWell(
       splashColor: Colors.transparent,
       onTap: () {
-        callbackParent();
+        if (!device.properties.isSensorDevice) {
+          callbackParent();
+        }
       },
       child: SizedBox(
         width: 280,
@@ -285,7 +288,7 @@ class DeviceView extends StatelessWidget {
                                   // const Expanded(
                                   //   child: SizedBox(),
                                   // ),
-                                  Container(
+                                  device.properties.isSensorDevice ? Container(height: 24.0) : Container(
                                       height: 30,
                                       child: Stack(
                                         children: <Widget>[

@@ -145,16 +145,12 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                                         Container(
                                             height: 72,
                                             child: ListView.builder(
-                                                scrollDirection:
-                                                    Axis.horizontal,
+                                                scrollDirection: Axis.horizontal,
                                                 shrinkWrap: true,
                                                 padding: EdgeInsets.all(16),
-                                                itemCount:
-                                                    widget.room.scenes.length,
-                                                itemBuilder: (BuildContext ctxt,
-                                                    int index) {
-                                                  return getButtonUI(widget
-                                                      .room.scenes[index]);
+                                                itemCount: widget.room.scenes.length,
+                                                itemBuilder: (BuildContext ctxt, int index) {
+                                                  return getButtonUI(widget.room.scenes[index]);
                                                 })
 
                                             // ListView(

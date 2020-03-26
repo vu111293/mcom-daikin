@@ -107,11 +107,20 @@ class Device {
     print(type);
     switch(type) {
       case 'virtual_device':
-
         if (iconName == null) {
           return 'http://mhome-showroom.ddns.net/fibaro/n_vicons/light.png';
         }
         return 'http://mhome-showroom.ddns.net/fibaro/n_vicons/$iconName.png';
+
+      case 'com.fibaro.FGMS001':
+      case 'com.fibaro.FGMS001v2':
+        iconName = 'motion_sensor';
+        prefix = properties.value == 'true' ? 'motion_sensor100.png' : 'motion_sensor0.png';
+        break;
+
+      case 'com.fibaro.doorSensor':
+        prefix = properties.value == 'true' ? '${iconName}100.png' : '${iconName}0.png';
+        break;
 
       case 'com.fibaro.binarySwitch':
         prefix = properties.value == 'true' ? '${iconName}100.png' : '${iconName}0.png';
@@ -146,8 +155,10 @@ class Device {
       case 'com.fibaro.lightSensor':
         prefix = '$iconName.png';
         break;
+
     }
 
+    print('http://mhome-showroom.ddns.net/fibaro/icons/$iconName/$prefix');
     return 'http://mhome-showroom.ddns.net/fibaro/icons/$iconName/$prefix';
   }
 }
