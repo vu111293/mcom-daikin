@@ -132,6 +132,7 @@ DeviceProperty _$DevicePropertyFromJson(Map<String, dynamic> json) {
     password: json['password'] as String,
     isLight: json['isLight'] as String,
     lastColorSet: json['lastColorSet'] as String,
+    armed: json['armed'] as String,
   );
 }
 
@@ -196,6 +197,7 @@ Map<String, dynamic> _$DevicePropertyToJson(DeviceProperty instance) =>
       'password': instance.password,
       'isLight': instance.isLight,
       'lastColorSet': instance.lastColorSet,
+      'armed': instance.armed,
     };
 
 DeviceAction _$DeviceActionFromJson(Map<String, dynamic> json) {
@@ -206,6 +208,7 @@ DeviceAction _$DeviceActionFromJson(Map<String, dynamic> json) {
     requestNodeNeighborUpdate: json['requestNodeNeighborUpdate'] as int,
     turnOff: json['turnOff'] as int,
     turnOn: json['turnOn'] as int,
+    setArmed: json['setArmed'] as int,
   );
 }
 
@@ -217,6 +220,7 @@ Map<String, dynamic> _$DeviceActionToJson(DeviceAction instance) =>
       'requestNodeNeighborUpdate': instance.requestNodeNeighborUpdate,
       'turnOff': instance.turnOff,
       'turnOn': instance.turnOn,
+      'setArmed': instance.setArmed,
     };
 
 Room _$RoomFromJson(Map<String, dynamic> json) {

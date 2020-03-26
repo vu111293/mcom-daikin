@@ -108,6 +108,30 @@ class BusinessService extends BaseLoopBackApi {
     return;
   }
 
+  void turnOffSensor(int id) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      id,
+      'action/setArmed'
+    ].join('/');
+    await this.request(method: 'POST', url: url);
+    return;
+  }
+
+  void turnOnSensor(int id) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      id,
+      'action/forceArm'
+    ].join('/');
+    await this.request(method: 'POST', url: url);
+    return;
+  }
+
   Future setRGBColor(int id, int r, int g, int b, int a) async {
     final url = [
       LoopBackConfig.getPath(),
@@ -154,6 +178,8 @@ class BusinessService extends BaseLoopBackApi {
     });
     return;
   }
+
+
 
 //
 //  Future<List<LTree>> getTreeList() async {

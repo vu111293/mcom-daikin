@@ -72,8 +72,13 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
       });
     }
 
+    if (_localDevice.properties.isSensorDevice) {
+      isSwitched = _localDevice.properties.getSensorEnable;
+    }
     return defaultBuildDevice(widget, _localDevice, isSwitched, (value) {
-      print("@@@@@@@@@@@@@@@@@@@@@@@");
+      if (_localDevice.properties.isSensorDevice) {
+        onSwitchSensorDevice(value, _localDevice);
+      }
     });
   }
 
@@ -159,6 +164,21 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
     } else {
       BusinessService().turnOnDevice(device.id);
       BotToast.showText(text: "Bật thiết bị thành công");
+    }
+    _appBloc.homeBloc.updateActiveDevice();
+  }
+
+  onSwitchSensorDevice(bool val, Device device) {
+    device.properties.value = val.toString();
+    //BotToast.showText(text: 'Đổi sang trạng thái ' + device.properties.value);
+    setState(() {});
+
+    if (!val) {
+      BusinessService().turnOffSensor(device.id);
+      BotToast.showText(text: "Tắt cảm biến thành công");
+    } else {
+      BusinessService().turnOnSensor(device.id);
+      BotToast.showText(text: "Bật cảm biến thành công");
     }
     _appBloc.homeBloc.updateActiveDevice();
   }

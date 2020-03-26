@@ -412,7 +412,7 @@ class ImageBackdrop extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    Container(
+                    room.defaultSensors?.temperature != null ? Container(
                       width: deviceWidth(context) / 3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -434,8 +434,8 @@ class ImageBackdrop extends StatelessWidget {
                                   .copyWith(color: Colors.white))
                         ],
                       ),
-                    ),
-                    Container(
+                    ) : Container(),
+                    room.defaultSensors?.humidity != null ? Container(
                       width: deviceWidth(context) / 3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -455,8 +455,8 @@ class ImageBackdrop extends StatelessWidget {
                                   .copyWith(color: Colors.white))
                         ],
                       ),
-                    ),
-                    Container(
+                    ) : Container(),
+                    room.defaultSensors?.light != null ? Container(
                       width: deviceWidth(context) / 3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -477,7 +477,7 @@ class ImageBackdrop extends StatelessWidget {
                                   .copyWith(color: Colors.white))
                         ],
                       ),
-                    ),
+                    ) : Container(),
                     // Container(
                     //   width: deviceWidth(context) / 4,
                     //   child: Row(

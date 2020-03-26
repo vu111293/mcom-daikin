@@ -47,10 +47,11 @@ class HomeBloc {
       // map device icon to device
       devices.forEach((d) {
         String iconId = d.properties.deviceIcon?.toString();
-        DeviceIcon dIcon = (d.type == 'virtual_ácvice' ? mIcons['virtualDevice'] : mIcons['device'])
+        DeviceIcon dIcon = (d.type == 'virtual_device' ? mIcons['virtualDevice'] : mIcons['device'])
             .firstWhere((i) =>  i.id.toString() == iconId, orElse: ()=>null);
         d.iconName = d.type == 'virtual_device' ? dIcon?.iconName : dIcon?.iconSetName;
       });
+
 
       devices = devices.where((v) => v.visible).toList();
       List<Device> activeDevice =
@@ -68,6 +69,10 @@ class HomeBloc {
           }
         }
       }
+
+      List<Device> sensorItems = devices.where((d) => d.properties.armed?.isNotEmpty == true).toList();
+      Room alarmRoom = Room(id: 0, name: 'Alarm', icon: 'alarm', category: 'alarm', devices: sensorItems);
+      rooms.add(alarmRoom);
 
       // sort device in rooms
       rooms.forEach((r) {

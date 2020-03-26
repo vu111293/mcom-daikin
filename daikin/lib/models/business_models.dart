@@ -221,6 +221,10 @@ class DeviceProperty {
   final String isLight;
   final String lastColorSet;
 
+
+  // For sensor only
+  final String armed;
+
   DeviceProperty(
       {this.UIMessageSendTime,
       this.autoConfig,
@@ -279,7 +283,8 @@ class DeviceProperty {
       this.username,
       this.password,
       this.isLight,
-      this.lastColorSet})
+      this.lastColorSet,
+      this.armed})
       : rows = rows ?? <DeviceRow>[];
 
   factory DeviceProperty.fromJson(Map<String, dynamic> json) {
@@ -288,6 +293,10 @@ class DeviceProperty {
   }
 
   Map<String, dynamic> toJson() => _$DevicePropertyToJson(this);
+
+  bool get isSensorDevice => armed?.isNotEmpty == true;
+
+  bool get getSensorEnable => armed?.isNotEmpty == true ? armed == 'true' : false;
 
   // For Camera properties
   String get getCameraUrl {
@@ -341,6 +350,7 @@ class DeviceAction {
   final int requestNodeNeighborUpdate;
   final int turnOff;
   final int turnOn;
+  final int setArmed;
 
   DeviceAction(
       {this.pollingDeadDevice,
@@ -348,7 +358,8 @@ class DeviceAction {
       this.reconfigure,
       this.requestNodeNeighborUpdate,
       this.turnOff,
-      this.turnOn});
+      this.turnOn,
+      this.setArmed});
 
   factory DeviceAction.fromJson(Map<String, dynamic> json) {
     final item = _$DeviceActionFromJson(json);
@@ -420,6 +431,7 @@ class Room {
   }
 
   String get getRoomIconURL {
+    if (category == 'alarm') return 'http://mhome-showroom.ddns.net/fibaro/icons/User1008/User1008100.png';
     return 'http://mhome-showroom.ddns.net/fibaro/icons/rooms/$icon.png';
   }
 }

@@ -43,6 +43,12 @@ class DeviceGridViewState extends State<DeviceGridView>
           if (!snapshot.hasData) {
             return SizedBox();
           } else {
+
+            // Todo for debug only
+            widget.devices.forEach((d) {
+              print('${d.name} -> ${d.type} -> ${d.properties.value}');
+            });
+
             return GridView(
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
