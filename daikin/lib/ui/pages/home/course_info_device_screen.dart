@@ -99,8 +99,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                         room: widget.room,
                         config: _roomConfig,
                         onConvertTap: () {
-                          showChangeCoverDialog(context, _roomConfig.cover,
-                              onSave: (w) {
+                          showChangeCoverDialog(context, _roomConfig.cover, onSave: (w) {
                             _roomConfig.cover = w.id;
                             RoomLocalService.instance.updateRoomConfig(_roomConfig);
                             setState(() {});
@@ -424,10 +423,8 @@ class ImageBackdrop extends StatelessWidget {
                             ),
                           ),
                           Text(
-                              room.defaultSensors.temperature.toString() +
-                                  ' °C',
-                              style: ptBody2(context)
-                                  .copyWith(color: Colors.white))
+                              room.defaultSensors.temperatureToC.toString() + ' °C',
+                              style: ptBody2(context).copyWith(color: Colors.white))
                         ],
                       ),
                     ) : Container(),

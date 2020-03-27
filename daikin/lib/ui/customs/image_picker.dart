@@ -112,22 +112,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                 errorWidget: (context, url, error) => Icon(Icons.error),
               )
             : image == null
-                  ? Container()
-//                ? Image.asset(
-//                    "assets/images/userImage2.png",
-//                    fit: BoxFit.cover,
-//                    width: widget.size,
-//                    height: widget.size,
-//                  )
-                // Center(
-                //     child: Container(
-                //       width: widget.size / 2,
-                //       height: widget.size / 2,
-                //       child: CircularProgressIndicator(
-                //           backgroundColor: ptPrimaryColor(context).withOpacity(0.1),
-                //           valueColor: AlwaysStoppedAnimation<Color>(ptPrimaryColor(context).withOpacity(0.3))),
-                //     ),
-                //   )
+                ? Container()
                 : Image.file(
                     image,
                     fit: BoxFit.cover,
@@ -216,12 +201,6 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     )
                   : image == null
-//                      ? Image.asset(
-//                          "assets/images/userImage2.png",
-//                          fit: BoxFit.cover,
-//                          width: widget.size,
-//                          height: widget.size,
-//                        )
                       ? Container()
                       : Image.file(
                           image,

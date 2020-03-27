@@ -103,10 +103,8 @@ class BaseHeaderScreen extends StatelessWidget {
                           child: CircleAvatar(
                               backgroundImage:
                                   _appBloc.authBloc.currentUser.avatar != null
-                                      ? NetworkImage(
-                                          _appBloc.authBloc.currentUser.avatar)
-                                      : AssetImage(
-                                          'assets/images/userImage2.png'))),
+                                      ? NetworkImage(_appBloc.authBloc.currentUser.avatar)
+                                      : AssetImage('assets/images/avatar_placeholder.png'))),
                     )
                   : GestureDetector(
                       onTap: () {
@@ -118,10 +116,8 @@ class BaseHeaderScreen extends StatelessWidget {
                           child: CircleAvatar(
                               backgroundImage:
                                   _appBloc.authBloc.currentUser.avatar != null
-                                      ? NetworkImage(
-                                          _appBloc.authBloc.currentUser.avatar)
-                                      : AssetImage(
-                                          'assets/images/userImage2.png'))),
+                                      ? NetworkImage(_appBloc.authBloc.currentUser.avatar)
+                                      : AssetImage('assets/images/avatar_placeholder.png'))),
                     )
         ],
       ),

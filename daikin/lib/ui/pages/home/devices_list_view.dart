@@ -14,18 +14,19 @@ import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 import './../../customs/expansion_tile.dart' as expansionTile;
 
-class DevicesListView extends StatefulWidget {
+class DeviceListView extends StatefulWidget {
   final Function callBack;
-  bool disableScroll;
-  DevicesListView({Key key, this.callBack, this.disableScroll = false})
+  final bool disableScroll;
+  DeviceListView({Key key, this.callBack, this.disableScroll = false})
       : super(key: key);
 
-  _DevicesListState createState() => _DevicesListState();
+  _DeviceListState createState() => _DeviceListState();
 }
 
-class _DevicesListState extends State<DevicesListView> {
+class _DeviceListState extends State<DeviceListView> {
   ApplicationBloc _appBloc;
 
   @override
@@ -59,18 +60,6 @@ class _DevicesListState extends State<DevicesListView> {
           );
       },
     );
-
-    // Container(
-    //   child: ListView.builder(
-    //     itemBuilder: (context, index) {
-    //       return CustomDeviceList(
-    //         callback: widget.callBack,
-    //         data: DeviceDataTest.deviceDataList[index],
-    //       );
-    //     },
-    //     itemCount: DeviceDataTest.deviceDataList.length,
-    //   ),
-    // );
   }
 }
 
@@ -113,17 +102,17 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
           height: 24,
           width: 24,
           child: CircleAvatar(
-            backgroundColor: StyleAppTheme.nearlyBlue,
+            backgroundColor: HexColor(appColor),
             child: Text(
               '${root.devices.length}',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Colors.white),
             ),
           ),
         ),
         key: PageStorageKey<Room>(root),
         title: Text(
           upFirstText(root.getName),
-          style: TextStyle(color: StyleAppTheme.nearlyBlue),
+          style: TextStyle(color: HexColor(appColor)),
         ),
         children: root.devices.map((item) => buildDevice(item)).toList());
   }

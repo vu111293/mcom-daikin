@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               indicatorColor: HexColor(appColor2),
               indicatorWeight: 3,
               labelColor: HexColor(appColor),
+              unselectedLabelColor: HexColor(appColor),
               tabs: [
                 Tab(text: "Danh sách phòng"),
                 Tab(text: "Danh sách thiết bị"),
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               child: TabBarView(
             children: <Widget>[
               RoomsGridView(),
-              DevicesListView(),
+              DeviceListView(),
             ],
             controller: _tabController,
           )),

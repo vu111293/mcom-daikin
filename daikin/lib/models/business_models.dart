@@ -495,6 +495,10 @@ class RoomDefaultSensor {
   }
 
   Map<String, dynamic> toJson() => _$RoomDefaultSensorToJson(this);
+
+
+  int get temperatureToC => ((temperature ?? 0 - 32)*5/9).toInt();
+
 }
 
 @JsonSerializable(nullable: false)
