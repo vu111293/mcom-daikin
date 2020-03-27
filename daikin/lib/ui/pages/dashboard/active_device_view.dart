@@ -213,15 +213,14 @@ class _ActiveDeviceListViewState extends State<ActiveDeviceListView>
             device: device,
           ));
     } else {
-      bool isSwitched = device.properties.value == 'true' ? true : false;
-
-      Routing().navigate2(
-          context,
-          DeviceOnOffDetailScreen(
-            item: device,
-            status: isSwitched,
-            callback: () {},
-          ));
+//      bool isSwitched = device.properties.value == 'true' ? true : false;
+//      Routing().navigate2(
+//          context,
+//          DeviceOnOffDetailScreen(
+//            item: device,
+//            status: isSwitched,
+//            callback: () {},
+//          ));
     }
   }
 }
@@ -256,10 +255,21 @@ class DeviceView extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 12.0),
                       decoration: BoxDecoration(
                         color: HexColor('#F8FAFB'),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(16.0)),
+                        borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4.0, // has the effect of softening the shadow
+                            spreadRadius: 0.5, // has the effect of extending the shadow
+                            offset: Offset(
+                              4.0, // horizontal, move right 10
+                              4.0, // vertical, move down 10
+                            ),
+                          )
+                        ],
                       ),
                       child: Row(
                         children: <Widget>[

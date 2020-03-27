@@ -23,9 +23,9 @@ Widget defaultBuildDevice(DeviceViewItem widget, Device device, bool isSwitched,
         child: Transform(
           transform: Matrix4.translationValues(0.0, 50 * (1.0 - widget.animation.value), 0.0),
           child: Material(
-            elevation: 5,
-            shadowColor: Colors.black26,
-            color: isSwitched ? Colors.white : HexColor("#f3f3f3"),
+            elevation: 12,
+            shadowColor: Colors.black54,
+            color: Colors.white,
             shape: RoundedRectangleBorder(
               side:isSwitched ? BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1):BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -33,17 +33,17 @@ Widget defaultBuildDevice(DeviceViewItem widget, Device device, bool isSwitched,
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                if (!widget.device.properties.isSensorDevice) {
-                  Routing().navigate2(
-                      context,
-                      DeviceOnOffDetailScreen(
-                        item: widget.device,
-                        status: isSwitched,
-                        callback: () {
-                          callback();
-                        },
-                      ));
-                }
+//                if (!widget.device.properties.isSensorDevice) {
+//                  Routing().navigate2(
+//                      context,
+//                      DeviceOnOffDetailScreen(
+//                        item: widget.device,
+//                        status: isSwitched,
+//                        callback: () {
+//                          callback();
+//                        },
+//                      ));
+//                }
               },
               child: Padding(
                 padding: EdgeInsets.all(10.0),
@@ -129,9 +129,9 @@ Widget buildBlindsDevice(
           transform: Matrix4.translationValues(
               0.0, 50 * (1.0 - widget.animation.value), 0.0),
           child: Material(
-            elevation: 5,
-            shadowColor: Colors.black26,
-            color: isSwitched ? Colors.white : HexColor("#f3f3f3"),
+            elevation: 12,
+            shadowColor: Colors.black54,
+            color: Colors.white,
             shape: RoundedRectangleBorder(
               side:isSwitched ? BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1):BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -211,9 +211,9 @@ Widget buildSwitchDevice(DeviceViewItem widget, Device device, Function callback
         child: Transform(
           transform: Matrix4.translationValues(0.0, 50 * (1.0 - widget.animation.value), 0.0),
           child: Material(
-            elevation: 5,
-            shadowColor: Colors.black26,
-            color: isSwitched ? Colors.white : HexColor("#f3f3f3"),
+            elevation: 12,
+            shadowColor: Colors.black54,
+            color: Colors.white,
             shape: RoundedRectangleBorder(
               side:isSwitched ? BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1):BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -317,9 +317,9 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback, F
         child: Transform(
           transform: Matrix4.translationValues(0.0, 50 * (1.0 - widget.animation.value), 0.0),
           child: Material(
-            elevation: 5,
-            shadowColor: Colors.black26,
-            color: isSwitched ? Colors.white : HexColor("#f3f3f3"),
+            elevation: 12,
+            shadowColor: Colors.black54,
+            color: Colors.white,
             shape: RoundedRectangleBorder(
               side:isSwitched ? BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1):BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -427,9 +427,9 @@ Widget buildVirtualDevice(DeviceViewItem widget, Device device) {
         child: Transform(
           transform: Matrix4.translationValues(0.0, 50 * (1.0 - widget.animation.value), 0.0),
           child: Material(
-            elevation: 5,
-            shadowColor: Colors.black26,
-            color: HexColor("#f3f3f3"),
+            elevation: 12,
+            shadowColor: Colors.black54,
+            color: Colors.white,
             shape: RoundedRectangleBorder(
               // side: BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1),
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -523,9 +523,9 @@ Widget buildSwitchMultiDevice(DeviceViewItem widget, Device device,
         child: Transform(
           transform: Matrix4.translationValues(0.0, 50 * (1.0 - widget.animation.value), 0.0),
           child: Material(
-            elevation: 5,
-            shadowColor: Colors.black26,
-            color: isSwitched ? Colors.white : HexColor("#f3f3f3"),
+            elevation: 12,
+            shadowColor: Colors.black54,
+            color: Colors.white,
             shape: RoundedRectangleBorder(
               side:isSwitched ? BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1):BorderSide.none,
               borderRadius: BorderRadius.all(Radius.circular(10)),

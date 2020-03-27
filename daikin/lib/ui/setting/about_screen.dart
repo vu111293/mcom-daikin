@@ -35,7 +35,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
 <p style="text-align: center;"><strong><span style="font-size: 18px;"><span style="font-family: helvetica;"><span style="color: rgb(0, 100, 0);">MỘT QUẢN GIA MƠ ƯỚC</span></span></span></strong></p>
 
-<p style="text-align: center;"><span style="font-size: 20px;"><span style="color: rgb(0, 153, 255);"><strong><span style="font-family: helvetica;">D'SMARTHOME&nbsp;</span></strong></span></span></p>
+<p style="text-align: center;"><span style="font-size: 20px;"><span style="color: rgb(0, 153, 255);"><strong><span style="font-family: helvetica;">DAIKIN SMART LIVING</span></strong></span></span></p>
 
 <p style="text-align: center;"><br>
 &nbsp;</p>

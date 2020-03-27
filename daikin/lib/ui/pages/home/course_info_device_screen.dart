@@ -79,21 +79,21 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
           backgroundColor: Colors.transparent,
           body: Column(
             children: <Widget>[
+              BaseHeaderScreen(
+                isBack: true,
+                title: upFirstText(roomName),
+                onTitleTap: () {
+                  showChangeRoomNameDialog(context, roomName, onSave: (name) {
+                    _roomConfig.name = name;
+                    RoomLocalService.instance.updateRoomConfig(_roomConfig);
+                    setState(() {});
+                  });
+                },
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      BaseHeaderScreen(
-                        isBack: true,
-                        title: upFirstText(roomName),
-                        onTitleTap: () {
-                          showChangeRoomNameDialog(context, roomName, onSave: (name) {
-                            _roomConfig.name = name;
-                            RoomLocalService.instance.updateRoomConfig(_roomConfig);
-                            setState(() {});
-                          });
-                        },
-                      ),
                       ImageBackdrop(
                         animationController: animationController,
                         room: widget.room,

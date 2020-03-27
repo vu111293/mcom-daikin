@@ -59,7 +59,7 @@ class _RoomsGridViewState extends State<RoomsGridView> with TickerProviderStateM
                   child: GridView(
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                     children: List<Widget>.generate(
                       snapshot.data.length,
                       (int index) {
@@ -118,8 +118,8 @@ class CategoryView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        elevation: 8,
-        shadowColor: Colors.black26,
+        elevation: 12,
+        shadowColor: Colors.black54,
         color: Colors.white,
         child: InkWell(
           splashColor: Colors.transparent,
@@ -134,32 +134,30 @@ class CategoryView extends StatelessWidget {
                 Image.network(
                   room.getRoomIconURL,
                   width: 50,
-                  height: 42,
+                  height: 40,
                   fit: BoxFit.contain,
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 10, 5, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        upFirstText(room.getName),
+                Expanded(child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      upFirstText(room.getName),
+                      textAlign: TextAlign.left,
+                      style: ptTitle(context).copyWith(color: HexColor(appText)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 3),
+                      child: Text(
+                        room.devices.length.toString() + ' thiết bị',
                         textAlign: TextAlign.left,
-                        style: ptTitle(context).copyWith(color: HexColor(appText)),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        style: ptCaption(context).copyWith(color: HexColor(appColor2)),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 3),
-                        child: Text(
-                          room.devices.length.toString() + ' thiết bị',
-                          textAlign: TextAlign.left,
-                          style: ptCaption(context).copyWith(color: HexColor(appColor2)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
+                  ],
+                )),
               ],
             ),
           ),
