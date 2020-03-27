@@ -54,8 +54,7 @@ class HomeBloc {
 
 
       devices = devices.where((v) => v.visible).toList();
-      List<Device> activeDevice =
-          devices.where((v) => v.properties.value == 'true').toList();
+      List<Device> activeDevice = devices.where((v) => v.properties.value == 'true').toList();
       for (var i = 0; i < rooms.length; i++) {
         for (var j = 0; j < devices.length; j++) {
           if (rooms[i].id == devices[j].roomID) {
@@ -76,6 +75,20 @@ class HomeBloc {
 
       // sort device in rooms
       rooms.forEach((r) {
+        // map sensor device for room
+        RoomDefaultSensor defSensors = r.defaultSensors;
+        if (defSensors != null) {
+          if (defSensors.temperature > 0) {
+            r.temperature = devices.firstWhere((d) => d.id == defSensors.temperature, orElse: ()=>null);
+          }
+          if (defSensors.humidity > 0) {
+            r.humidity = devices.firstWhere((d) => d.id == defSensors.humidity, orElse: ()=>null);
+          }
+          if (defSensors.light > 0) {
+            r.light = devices.firstWhere((d) => d.id == defSensors.light, orElse: ()=>null);
+          }
+        }
+
         r.devices.sort((a, b) => b.sortOrder - a.sortOrder);
       });
 

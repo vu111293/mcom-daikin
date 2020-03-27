@@ -407,7 +407,7 @@ class ImageBackdrop extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    room.defaultSensors?.temperature != null ? Container(
+                    room.temperature != null ? Container(
                       width: deviceWidth(context) / 3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -423,12 +423,12 @@ class ImageBackdrop extends StatelessWidget {
                             ),
                           ),
                           Text(
-                              room.defaultSensors.temperatureToC.toString() + ' °C',
+                              room.temperature.properties.value + ' °C',
                               style: ptBody2(context).copyWith(color: Colors.white))
                         ],
                       ),
                     ) : Container(),
-                    room.defaultSensors?.humidity != null ? Container(
+                    room.humidity != null ? Container(
                       width: deviceWidth(context) / 3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -443,13 +443,13 @@ class ImageBackdrop extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          Text(room.defaultSensors.humidity.toString() + ' %',
+                          Text(room.humidity.properties.value + ' %',
                               style: ptBody2(context)
                                   .copyWith(color: Colors.white))
                         ],
                       ),
                     ) : Container(),
-                    room.defaultSensors?.light != null ? Container(
+                    room.light != null ? Container(
                       width: deviceWidth(context) / 3,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -465,7 +465,7 @@ class ImageBackdrop extends StatelessWidget {
                             ),
                           ),
                           Text(
-                              '${NumberFormat.compact().format(room.defaultSensors.light)} w',
+                              '${room.light.properties.value} w',
                               style: ptBody2(context)
                                   .copyWith(color: Colors.white))
                         ],

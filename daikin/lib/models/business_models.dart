@@ -411,6 +411,13 @@ class Room {
   @JsonKey(toJson: _defSensorToJson)
   final RoomDefaultSensor defaultSensors;
 
+  @JsonKey(ignore: true)
+  Device temperature;
+  @JsonKey(ignore: true)
+  Device humidity;
+  @JsonKey(ignore: true)
+  Device light;
+
   Room(
       {this.id,
       this.name,
