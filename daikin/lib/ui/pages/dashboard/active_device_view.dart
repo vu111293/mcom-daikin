@@ -18,23 +18,20 @@ import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
 class ActiveDeviceListView extends StatefulWidget {
-  const ActiveDeviceListView({Key key, this.callBack})
-      : super(key: key);
+  const ActiveDeviceListView({Key key, this.callBack}) : super(key: key);
 
   final Function callBack;
   @override
   _ActiveDeviceListViewState createState() => _ActiveDeviceListViewState();
 }
 
-class _ActiveDeviceListViewState extends State<ActiveDeviceListView>
-    with TickerProviderStateMixin {
+class _ActiveDeviceListViewState extends State<ActiveDeviceListView> with TickerProviderStateMixin {
   AnimationController animationController;
   ApplicationBloc _appBloc;
   @override
   void initState() {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this);
+    animationController = AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
   }
 
@@ -64,8 +61,7 @@ class _ActiveDeviceListViewState extends State<ActiveDeviceListView>
                 );
               }
               return ListView.builder(
-                padding: const EdgeInsets.only(
-                    top: 0, bottom: 0, right: 16, left: 16),
+                padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
                 itemCount: snapshot.data.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
@@ -76,12 +72,7 @@ class _ActiveDeviceListViewState extends State<ActiveDeviceListView>
                     );
                   } else {
                     final int count = length > 10 ? 10 : length;
-                    final Animation<double> animation =
-                        Tween<double>(begin: 0.0, end: 1.0).animate(
-                            CurvedAnimation(
-                                parent: animationController,
-                                curve: Interval((1 / count) * index, 1.0,
-                                    curve: Curves.fastOutSlowIn)));
+                    final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: animationController, curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
                     animationController.forward();
 
                     Device device = snapshot.data[index];
@@ -91,11 +82,9 @@ class _ActiveDeviceListViewState extends State<ActiveDeviceListView>
                         routingToDevicePage(device);
                       },
                       callback: (value) {
-                        BusinessService()
-                            .turnOffDevice(snapshot.data[index].id);
+                        BusinessService().turnOffDevice(snapshot.data[index].id);
                         BotToast.showText(text: "Tắt thiết bị thành công");
-                        snapshot.data[index].properties.value =
-                            value.toString();
+                        snapshot.data[index].properties.value = value.toString();
                         _appBloc.homeBloc.updateActiveDevice();
                         setState(() {});
                       },
@@ -226,8 +215,7 @@ class _ActiveDeviceListViewState extends State<ActiveDeviceListView>
 }
 
 class DeviceView extends StatelessWidget {
-  const DeviceView({Key key, this.device, this.callback, this.callbackParent})
-      : super(key: key);
+  const DeviceView({Key key, this.device, this.callback, this.callbackParent}) : super(key: key);
 
   final Function callback;
   final Function callbackParent;
@@ -244,127 +232,103 @@ class DeviceView extends StatelessWidget {
         }
       },
       child: SizedBox(
-        width: 280,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              child: Row(
-                children: <Widget>[
-                  const SizedBox(
-                    width: 48,
-                  ),
-                  Expanded(
+        width: 240,
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+          decoration: BoxDecoration(
+            color: HexColor('#F8FAFB'),
+            borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 4.0, // has the effect of softening the shadow
+                spreadRadius: 0.5, // has the effect of extending the shadow
+                offset: Offset(
+                  4.0, // horizontal, move right 10
+                  4.0, // vertical, move down 10
+                ),
+              )
+            ],
+          ),
+          child: Row(
+            children: <Widget>[
+              Container(
+                child: Padding(
+                    padding: const EdgeInsets.only(top: 24, bottom: 24, left: 16),
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 12.0),
+                      padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: HexColor('#F8FAFB'),
+                        color: Colors.white,
                         borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 4.0, // has the effect of softening the shadow
-                            spreadRadius: 0.5, // has the effect of extending the shadow
-                            offset: Offset(
-                              4.0, // horizontal, move right 10
-                              4.0, // vertical, move down 10
-                            ),
-                          )
-                        ],
                       ),
-                      child: Row(
-                        children: <Widget>[
-                          const SizedBox(
-                            width: 48 + 24.0,
-                          ),
-                          Expanded(
-                            child: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 16),
-                                    child: Text(
-                                      upFirstText(device.name),
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                        letterSpacing: 0.27,
-                                        color: StyleAppTheme.darkerText,
-                                      ),
-                                    ),
-                                  ),
-                                  // const Expanded(
-                                  //   child: SizedBox(),
-                                  // ),
-                                  device.properties.isSensorDevice ? Container(height: 24.0) : Container(
-                                      height: 30,
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Positioned(
-                                            top: -5,
-                                            left: -10,
-                                            child: Transform.scale(
-                                              scale: 1.0,
-                                              child: Switch(
-                                                value: isSwitched,
-                                                onChanged: (value) {
-                                                  callback(value);
-                                                  //callback(value);
-                                                  // setState(() {
-                                                  //   isSwitched = value;
-                                                  // });
-                                                  BusinessService().turnOffDevice(device.id);
-                                                  BotToast.showText(text: "Tắt thiết bị thành công");
-                                                },
-                                                materialTapTargetSize:
-                                                    MaterialTapTargetSize
-                                                        .padded,
-                                                activeColor: Colors.white,
-                                                activeTrackColor:
-                                                    HexColor(appColor),
-                                                inactiveThumbColor:
-                                                    HexColor(appBorderColor),
-                                                inactiveTrackColor:
-                                                    HexColor(appBorderColor),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                        child: AspectRatio(aspectRatio: 0.9, child: Image.network(device.getDeviceIconURL, fit: BoxFit.contain)),
                       ),
-                    ),
-                  )
-                ],
+                    )),
               ),
-            ),
-            Container(
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 24, bottom: 24, left: 16),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(16.0)),
-                    ),
-                    child: ClipRRect(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(16.0)),
-                      child: AspectRatio(
-                          aspectRatio: 0.9,
-                          child: Image.network(device.getDeviceIconURL, fit: BoxFit.contain)
+
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(left: 24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Text(
+                          upFirstText(device.name),
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            letterSpacing: 0.27,
+                            color: StyleAppTheme.darkerText,
+                          ),
+                        ),
                       ),
-                    ),
-                  )),
-            ),
-          ],
+                      // const Expanded(
+                      //   child: SizedBox(),
+                      // ),
+                      device.properties.isSensorDevice
+                          ? Container(height: 24.0)
+                          : Container(
+                          height: 30,
+                          child: Stack(
+                            children: <Widget>[
+                              Positioned(
+                                top: -5,
+                                left: -10,
+                                child: Transform.scale(
+                                  scale: 1.0,
+                                  child: Switch(
+                                    value: isSwitched,
+                                    onChanged: (value) {
+                                      callback(value);
+                                      //callback(value);
+                                      // setState(() {
+                                      //   isSwitched = value;
+                                      // });
+                                      BusinessService().turnOffDevice(device.id);
+                                      BotToast.showText(text: "Tắt thiết bị thành công");
+                                    },
+                                    materialTapTargetSize: MaterialTapTargetSize.padded,
+                                    activeColor: Colors.white,
+                                    activeTrackColor: HexColor(appColor),
+                                    inactiveThumbColor: HexColor(appBorderColor),
+                                    inactiveTrackColor: HexColor(appBorderColor),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

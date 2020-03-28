@@ -51,7 +51,8 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
         onSwitchDevice(value, _localDevice);
       });
       // Den Led RGB
-    } else if (_localDevice.type == "com.fibaro.FGRGBW441M") {
+    } else
+      if (_localDevice.type == "com.fibaro.FGRGBW441M") {
       return buildRGBDevice(widget, _localDevice, (value) {
         onSwitchRGBDevice(value, _localDevice);
       }, () {

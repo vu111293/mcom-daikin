@@ -50,63 +50,29 @@ Widget defaultBuildDevice(DeviceViewItem widget, Device device, bool isSwitched,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Image.network(
-                          widget.device.getDeviceIconURL,
-                          width: 45,
-                          height: 45,
-                          fit: BoxFit.contain,
+                    Image.network(
+                      widget.device.getDeviceIconURL,
+                      width: 28,
+                      height: 28,
+                      fit: BoxFit.contain,
 //                          color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
-                        ),
-                        Text(
-                          '',
-                          // '${upFirstText(widget.device.name)}',
-                          textAlign: TextAlign.left,
-                          style: ptOverline(context)
-                              .copyWith(color: isSwitched ? Colors.black87 : HexColor(appBorderColor)),
-                        ),
-                      ],
                     ),
                     Expanded(
-                      child: SizedBox(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            '${upFirstText(widget.device.name)}',
+                            textAlign: TextAlign.left,
+                            style:
+                            ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        ],
+                      ),
                     ),
-                    Text(
-                      '${upFirstText(widget.device.name)}',
-                      textAlign: TextAlign.left,
-                      style:
-                          ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-//                    Container(
-//                        height: 30,
-//                        child: Stack(
-//                          children: <Widget>[
-//                            Positioned(
-//                              top: -5,
-//                              left: -10,
-//                              child: Transform.scale(
-//                                scale: 1.0,
-//                                child: Switch(
-//                                  value: isSwitched,
-//                                  onChanged: (value) {
-//                                    callback(value);
-//                                    // setState(() {
-//                                    //   isSwitched = value;
-//                                    // });
-//                                  },
-//                                  materialTapTargetSize: MaterialTapTargetSize.padded,
-//                                  activeColor: Colors.white,
-//                                  activeTrackColor: HexColor(appColor),
-//                                  inactiveThumbColor: HexColor(appBorderColor),
-//                                  inactiveTrackColor: HexColor(appBorderColor),
-//                                ),
-//                              ),
-//                            ),
-//                          ],
-//                        )),
                   ],
                 ),
               ),
@@ -150,45 +116,33 @@ Widget buildBlindsDevice(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Image.network(
-                          widget.device.getDeviceIconURL,
-                          width: 45,
-                          height: 45,
-                          fit: BoxFit.contain,
+                    Image.network(
+                      widget.device.getDeviceIconURL,
+                      width: 28,
+                      height: 28,
+                      fit: BoxFit.contain,
 //                          color: isSwitched
 //                              ? HexColor(appColor)
 //                              : HexColor(appBorderColor),
-                        ),
-                        Text(
-                          '',
-                          // '${upFirstText(widget.device.name)}',
-                          textAlign: TextAlign.left,
-                          style: ptOverline(context).copyWith(
-                              color: isSwitched
-                                  ? Colors.black87
-                                  : HexColor(appBorderColor)),
-                        ),
-                      ],
                     ),
                     Expanded(
-                      child: SizedBox(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            '${upFirstText(widget.device.name)}',
+                            textAlign: TextAlign.left,
+                            style: ptBody1(context).copyWith(
+                                color: isSwitched
+                                    ? HexColor(appColor)
+                                    : HexColor(appBorderColor)),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        ],
+                      ),
                     ),
-                    Text(
-                      '${upFirstText(widget.device.name)}',
-                      textAlign: TextAlign.left,
-                      style: ptBody1(context).copyWith(
-                          color: isSwitched
-                              ? HexColor(appColor)
-                              : HexColor(appBorderColor)),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Container(
-                        height: 30,
-                       ),
                   ],
                 ),
               ),
@@ -221,80 +175,68 @@ Widget buildSwitchDevice(DeviceViewItem widget, Device device, Function callback
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                Routing().navigate2(
-                    context,
-                    DeviceOnOffDetailScreen(
-                      item: widget.device,
-                      status: isSwitched,
-                      callback: (value) {
-                        callback(value);
-                      },
-                    ));
+//                Routing().navigate2(
+//                    context,
+//                    DeviceOnOffDetailScreen(
+//                      item: widget.device,
+//                      status: isSwitched,
+//                      callback: (value) {
+//                        callback(value);
+//                      },
+//                    ));
               },
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Image.network(
-                          widget.device.getDeviceIconURL,
-//                          "assets/icons/Tuyet.png",
-                          //widget.category.imagePath,
-                          width: 45,
-                          height: 45,
-                          fit: BoxFit.contain,
+                    Image.network(
+                      widget.device.getDeviceIconURL,
+                      width: 28,
+                      height: 28,
+                      fit: BoxFit.contain,
 //                          color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
-                        ),
-                        Text(
-                          '',
-                          // '${upFirstText(widget.device.name)}',
-                          textAlign: TextAlign.left,
-                          style: ptOverline(context)
-                              .copyWith(color: isSwitched ? Colors.black87 : HexColor(appBorderColor)),
-                        ),
-                      ],
                     ),
-                    Expanded(
-                      child: SizedBox(),
-                    ),
-                    Text(
-                      '${upFirstText(widget.device.name)}',
-                      textAlign: TextAlign.left,
-                      style:
-                          ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Container(
-                        height: 30,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned(
-                              top: -5,
-                              left: -10,
-                              child: Transform.scale(
-                                scale: 1.0,
-                                child: Switch(
-                                  value: isSwitched,
-                                  onChanged: (value) {
-                                    callback(value);
-                                    // setState(() {
-                                    //   isSwitched = value;
-                                    // });
-                                  },
-                                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                                  activeColor: Colors.white,
-                                  activeTrackColor: HexColor(appColor),
-                                  inactiveThumbColor: HexColor(appBorderColor),
-                                  inactiveTrackColor: HexColor(appBorderColor),
+                    Expanded(child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                      Text(
+                        '${upFirstText(widget.device.name)}',
+                        textAlign: TextAlign.left,
+                        style:
+                        ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Container(
+                          height: 30,
+                          child: Stack(
+                            children: <Widget>[
+                              Positioned(
+                                top: -5,
+                                left: -10,
+                                child: Transform.scale(
+                                  scale: 1.0,
+                                  child: Switch(
+                                    value: isSwitched,
+                                    onChanged: (value) {
+                                      callback(value);
+                                      // setState(() {
+                                      //   isSwitched = value;
+                                      // });
+                                    },
+                                    materialTapTargetSize: MaterialTapTargetSize.padded,
+                                    activeColor: Colors.white,
+                                    activeTrackColor: HexColor(appColor),
+                                    inactiveThumbColor: HexColor(appBorderColor),
+                                    inactiveTrackColor: HexColor(appBorderColor),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        )),
+                            ],
+                          ))
+                    ],),),
                   ],
                 ),
               ),
@@ -346,65 +288,56 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback, F
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Image.network(
-                          widget.device.getDeviceIconURL,
-//                          "assets/icons/Tuyet.png",
-                          //widget.category.imagePath,
-                          width: 45,
-                          height: 45,
-                          fit: BoxFit.contain,
+                    Image.network(
+                      widget.device.getDeviceIconURL,
+                      width: 28,
+                      height: 28,
+                      fit: BoxFit.contain,
 //                          color:  isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
-                        ),
-                        Text(
-                          '',
-                          // '${upFirstText(widget.device.name)}',
-                          textAlign: TextAlign.left,
-                          style: ptOverline(context)
-                              .copyWith(color: isSwitched ? Colors.black87 : HexColor(appBorderColor)),
-                        ),
-                      ],
                     ),
                     Expanded(
-                      child: SizedBox(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            '${upFirstText(widget.device.name)}',
+                            textAlign: TextAlign.left,
+                            style:
+                            ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Container(
+                              height: 30,
+                              child: Stack(
+                                children: <Widget>[
+                                  Positioned(
+                                    top: -5,
+                                    left: -10,
+                                    child: Transform.scale(
+                                      scale: 1.0,
+                                      child: Switch(
+                                        value: isSwitched,
+                                        onChanged: (value) {
+                                          callback(value);
+                                          // setState(() {
+                                          //   isSwitched = value;
+                                          // });
+                                        },
+                                        materialTapTargetSize: MaterialTapTargetSize.padded,
+                                        activeColor: Colors.white,
+                                        activeTrackColor: HexColor(appColor),
+                                        inactiveThumbColor: HexColor(appBorderColor),
+                                        inactiveTrackColor: HexColor(appBorderColor),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ))
+                        ],
+                      ),
                     ),
-                    Text(
-                      '${upFirstText(widget.device.name)}',
-                      textAlign: TextAlign.left,
-                      style:
-                          ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Container(
-                        height: 30,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned(
-                              top: -5,
-                              left: -10,
-                              child: Transform.scale(
-                                scale: 1.0,
-                                child: Switch(
-                                  value: isSwitched,
-                                  onChanged: (value) {
-                                    callback(value);
-                                    // setState(() {
-                                    //   isSwitched = value;
-                                    // });
-                                  },
-                                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                                  activeColor: Colors.white,
-                                  activeTrackColor: HexColor(appColor),
-                                  inactiveThumbColor: HexColor(appBorderColor),
-                                  inactiveTrackColor: HexColor(appBorderColor),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
                   ],
                 ),
               ),
@@ -444,62 +377,29 @@ Widget buildVirtualDevice(DeviceViewItem widget, Device device) {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Image.network(
-                          widget.device.getDeviceIconURL,
+                    Image.network(
+                      widget.device.getDeviceIconURL,
 //                          "assets/icons/Tuyet.png",
-                          width: 45,
-                          height: 45,
-                          fit: BoxFit.contain,
+                      width: 28,
+                      height: 28,
+                      fit: BoxFit.contain,
 //                          color: HexColor(appBorderColor),
-                        ),
-                        Text(
-                          '',
-                          // '${upFirstText(widget.device.name)}',
-                          textAlign: TextAlign.left,
-                          style: ptOverline(context).copyWith(color: HexColor(appBorderColor)),
-                        ),
-                      ],
                     ),
                     Expanded(
-                      child: SizedBox(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text(
+                            '${upFirstText(widget.device.name)}',
+                            textAlign: TextAlign.left,
+                            style: ptBody1(context).copyWith(color: HexColor(appBorderColor)),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      '${upFirstText(widget.device.name)}',
-                      textAlign: TextAlign.left,
-                      style: ptBody1(context).copyWith(color: HexColor(appBorderColor)),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Container(
-                        height: 30,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned(
-                              top: -5,
-                              left: -10,
-                              child: Transform.scale(scale: 1.0, child: Container()
-                                  // Switch(
-                                  //   value: isSwitched,
-                                  //   onChanged: (value) {
-                                  //     callback(value);
-                                  //     // setState(() {
-                                  //     //   isSwitched = value;
-                                  //     // });
-                                  //   },
-                                  //   materialTapTargetSize:
-                                  //       MaterialTapTargetSize.padded,
-                                  //   activeColor: Colors.white,
-                                  //   activeTrackColor: HexColor(appColor),
-                                  //   inactiveThumbColor: HexColor(appBorderColor),
-                                  //   inactiveTrackColor: HexColor(appBorderColor),
-                                  // ),
-                                  ),
-                            ),
-                          ],
-                        )),
                   ],
                 ),
               ),
@@ -546,64 +446,57 @@ Widget buildSwitchMultiDevice(DeviceViewItem widget, Device device,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Image.network(
-                          widget.device.getDeviceIconURL,
+                    Image.network(
+                      widget.device.getDeviceIconURL,
 //                          "assets/icons/Tuyet.png",
-                          width: 45,
-                          height: 45,
-                          fit: BoxFit.contain,
+                      width: 28,
+                      height: 28,
+                      fit: BoxFit.contain,
 //                          color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor),
-                        ),
-                        Text(
-                          '',
-                          // '${upFirstText(widget.device.name)}',
-                          textAlign: TextAlign.left,
-                          style: ptOverline(context)
-                              .copyWith(color: isSwitched ? Colors.black87 : HexColor(appBorderColor)),
-                        ),
-                      ],
                     ),
                     Expanded(
-                      child: SizedBox(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            '${upFirstText(widget.device.name)}',
+                            textAlign: TextAlign.left,
+                            style:
+                            ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Container(
+                              height: 30,
+                              child: Stack(
+                                children: <Widget>[
+                                  Positioned(
+                                    top: -5,
+                                    left: -10,
+                                    child: Transform.scale(
+                                      scale: 1.0,
+                                      child: Switch(
+                                        value: isSwitched,
+                                        onChanged: (value) {
+                                          callback(value);
+                                          // setState(() {
+                                          //   isSwitched = value;
+                                          // });
+                                        },
+                                        materialTapTargetSize: MaterialTapTargetSize.padded,
+                                        activeColor: Colors.white,
+                                        activeTrackColor: HexColor(appColor),
+                                        inactiveThumbColor: HexColor(appBorderColor),
+                                        inactiveTrackColor: HexColor(appBorderColor),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ))
+                        ],
+                      ),
                     ),
-                    Text(
-                      '${upFirstText(widget.device.name)}',
-                      textAlign: TextAlign.left,
-                      style:
-                          ptBody1(context).copyWith(color: isSwitched ? HexColor(appColor) : HexColor(appBorderColor)),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Container(
-                        height: 30,
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned(
-                              top: -5,
-                              left: -10,
-                              child: Transform.scale(
-                                scale: 1.0,
-                                child: Switch(
-                                  value: isSwitched,
-                                  onChanged: (value) {
-                                    callback(value);
-                                    // setState(() {
-                                    //   isSwitched = value;
-                                    // });
-                                  },
-                                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                                  activeColor: Colors.white,
-                                  activeTrackColor: HexColor(appColor),
-                                  inactiveThumbColor: HexColor(appBorderColor),
-                                  inactiveTrackColor: HexColor(appBorderColor),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
                   ],
                 ),
               ),

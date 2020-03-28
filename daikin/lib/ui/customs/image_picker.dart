@@ -156,7 +156,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Future imageSelectorCamera() async {
     Navigator.pop(context);
     var cameraFile = await ImagePicker.pickImage(
-        source: ImageSource.camera, maxWidth: 1000.0, maxHeight: 1000.0);
+        source: ImageSource.camera, maxWidth: 800.0, maxHeight: 800.0, imageQuality: 80);
     _handleUploadImage(cameraFile);
   }
 
@@ -164,7 +164,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Future imageSelectorGallery() async {
     Navigator.pop(context);
     var galleryFile = await ImagePicker.pickImage(
-        source: ImageSource.gallery, maxWidth: 1000.0, maxHeight: 1000.0);
+        source: ImageSource.gallery, maxWidth: 800.0, maxHeight: 800.0, imageQuality: 80);
     _handleUploadImage(galleryFile);
   }
 

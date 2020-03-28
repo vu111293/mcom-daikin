@@ -47,18 +47,18 @@ class _AboutScreenState extends State<AboutScreen> {
 <p style="text-align: justify;"><span style="font-family: helvetica; font-size: 16px;">DAIKIN là một trong những nhà sản xuất thiết bị điều hòa không khí lớn nhất thế giới với hơn 90 năm kinh nghiệm tại hơn 150 quốc gia. Daikin không ngừng nghiên cứu và áp dụng công nghệ tiên tiến mang lại các sản phẩm sáng tạo mang nhiều giá trị gia tăng cung cấp giải pháp cho khách hàng, hướng đến một cuộc sống thông minh hơn.</span><br>
 &nbsp;</p>
 
-<p><span style="color: rgb(0, 153, 255);"><span style="font-size: 16px;"><span style="font-family: helvetica;"><strong>Nhà thông minh (D'SmartHome) công nghệ 4.0 là?</strong></span></span></span></p>
+<p><span style="color: rgb(0, 153, 255);"><span style="font-size: 16px;"><span style="font-family: helvetica;"><strong>Nhà thông minh (Daikin Smart Living) công nghệ 4.0 là?</strong></span></span></span></p>
 
 <p><span style="font-size: 16px;"><span style="font-family: helvetica;">Sau sự ra đời của công nghệ 1.0 (phát triển của cơ khí, động cơ hơi nước), công nghệ 2.0 (sản xuất theo dây chuyền, điện), công nghệ 3.0 (phát triển của máy tính, tự động hoá) và ngày nay chúng ta hay nói nhiều đến 4.0, đó là sự phát triển của công nghệ trí tuệ nhân tạo mà nổi bật là trợ lý ảo (Siri (Apple), Google Assistant, Alexa (Amazon) hay Cortana (Microsoft).</span></span><br>
 &nbsp;</p>
 
-<p><span style="font-size: 16px;"><span style="font-family: helvetica;"><span style="color: rgb(0, 153, 255);">D’SmartHome</span>&nbsp;là giải pháp nhà thông minh với một giao diện duy nhất, hệ thống có thể được tích hợp để điều khiển và giao tiếp qua mạng tới các thiết bị gia dụng và thiết bị điện tử được kết nối ở nhà hoặc đi xa. Công nghệ D'SmartHome hứa hẹn mang đến cho bạn không gian sống thoải mái, tiện nghi và hiện đại;&nbsp;ứng dụng thông minh dành cho các dự án: khách sạn, biệt thự, căn hộ cao cấp,...</span></span></p>
+<p><span style="font-size: 16px;"><span style="font-family: helvetica;"><span style="color: rgb(0, 153, 255);">Daikin Smart Living</span>&nbsp;là giải pháp nhà thông minh với một giao diện duy nhất, hệ thống có thể được tích hợp để điều khiển và giao tiếp qua mạng tới các thiết bị gia dụng và thiết bị điện tử được kết nối ở nhà hoặc đi xa. Công nghệ Daikin Smart Living hứa hẹn mang đến cho bạn không gian sống thoải mái, tiện nghi và hiện đại;&nbsp;ứng dụng thông minh dành cho các dự án: khách sạn, biệt thự, căn hộ cao cấp,...</span></span></p>
 
 <p>&nbsp;</p>
 
 <p style="text-align:center"><img alt="CÔNG TY TNHH LÂM QUANG ĐẠI" height="610" src="https://trungtamdienlanh.vn/upload/images/Slide2.jpg" width="1063"></p>
 
-<p style="text-align: center;"><strong style="color: rgb(0, 100, 0); text-align: center;"><span style="font-family: helvetica; font-size: 16px;">D’SmartHome chú ý đến những chi tiết nhỏ nhất mang đến cho bạn sự tiện lợi,&nbsp;sự an tâm trong cuộc sống năng động của bạn</span></strong></p>
+<p style="text-align: center;"><strong style="color: rgb(0, 100, 0); text-align: center;"><span style="font-family: helvetica; font-size: 16px;">Daikin Smart Living chú ý đến những chi tiết nhỏ nhất mang đến cho bạn sự tiện lợi,&nbsp;sự an tâm trong cuộc sống năng động của bạn</span></strong></p>
 
 <p style="text-align: center;">&nbsp;</p>
 
@@ -167,7 +167,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
 <p style="margin-left: 40px;"><span style="color: rgb(0, 153, 255);"><span style="font-size: 16px;"><span style="font-family: helvetica;">Hệ thống thông gió thu hồi nhiệt</span></span></span></p>
 
-<p style="margin-left: 40px;"><span style="font-size: 16px;"><span style="font-family: helvetica;">Hệ SUPER MULTI HW của Daikin tăng gấp đôi so với các loại điều hòa không khí thông thường hoạt động như một máy nước nóng bằng cách thu nhiệt thải ra từ dàn nóng và thu h���i nhiệt để tạo ra nước nóng với chi phí tiết kiệm gần như bằng không. Chế độ bật/tắt máy nước nóng và điều chỉnh nhiệt độ nước thông minh bằng điện thoại hỗ trợ khi bạn ở bất cứ đâu. Giúp bạn kiểm soát nhiều hơn đối với mức tiêu thụ và tiết kiệm chi phí tối ưu.</span></span><br>
+<p style="margin-left: 40px;"><span style="font-size: 16px;"><span style="font-family: helvetica;">Hệ SUPER MULTI HW của Daikin tăng gấp đôi so với các loại điều hòa không khí thông thường hoạt động như một máy nước nóng bằng cách thu nhiệt thải ra từ dàn nóng và thu hồi nhiệt để tạo ra nước nóng với chi phí tiết kiệm gần như bằng không. Chế độ bật/tắt máy nước nóng và điều chỉnh nhiệt độ nước thông minh bằng điện thoại hỗ trợ khi bạn ở bất cứ đâu. Giúp bạn kiểm soát nhiều hơn đối với mức tiêu thụ và tiết kiệm chi phí tối ưu.</span></span><br>
 &nbsp;</p>
 
 <p style="margin-left: 40px;"><span style="color: rgb(0, 153, 255);"><span style="font-size: 16px;"><span style="font-family: helvetica;">Hệ thống quản lý năng lượng (HEMS)</span></span></span></p>
