@@ -2,7 +2,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/pages/splash/splash_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';

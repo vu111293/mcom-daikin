@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:daikin/apis/local/room_local_service.dart';
 import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
@@ -24,12 +26,12 @@ import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 final List<String> imgList = [
+  "https://q-ec.bstatic.com/images/hotel/max1024x768/133/133782872.jpg",
+  "https://r-cf.bstatic.com/images/hotel/max1024x768/157/157746542.jpg",
+  "https://sites.google.com/site/hyattdanangresort/_/rsrc/1538973313583/phong/three-bedroom-ocean-villa/Hyatt-Regency-Danang-Resort-and-Spa-P031-Ocean-Villa-Living-Area.adapt.16x9.1280.720.jpg", // phòng khách
   "https://tmshotel.vn/uploads/images/5_1.jpg",
   "https://nhadatmientrung24h.com/upload/1/products/l_1473106134_couplesuite.jpg",
   "https://q-ec.bstatic.com/images/hotel/max1024x768/449/44952708.jpg",
-  "https://sites.google.com/site/hyattdanangresort/_/rsrc/1538973313583/phong/three-bedroom-ocean-villa/Hyatt-Regency-Danang-Resort-and-Spa-P031-Ocean-Villa-Living-Area.adapt.16x9.1280.720.jpg",
-  "https://q-ec.bstatic.com/images/hotel/max1024x768/133/133782872.jpg",
-  "https://r-cf.bstatic.com/images/hotel/max1024x768/157/157746542.jpg",
 ];
 
 enum CategoryType { ui, coding, basic, game, chill }
@@ -93,51 +95,45 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                         return Container();
                       }
                       return CarouselSlider(
-                        items: map<Widget>(
-                          snapshot.data,
-                          (int index, Room i) {
-                            int indexImg = index;
-
-                            while (indexImg > imgList.length - 1) {
-                              indexImg -= imgList.length;
-                            }
-
-                            print(indexImg);
-
+                        items: map<Widget>(snapshot.data, (int index, Room room) {
+                            RoomConfig config = RoomLocalService.instance.getConfig(room.id);
+                            String coverPath = config.getCoverPathAsset();
                             return InkWell(
                                 onTap: () {
                                   Routing().navigate2(
-                                      context, CourseInfoDeviceScreen(room: i));
+                                      context, CourseInfoDeviceScreen(room: room));
                                 },
                                 child: Stack(
                                   children: <Widget>[
-                                    Opacity(
+                                    Positioned.fill(child: Opacity(
 //                          opacity: _current == index ? 1 : 0.3,
                                       opacity: 1.0,
                                       child: Container(
                                         margin: EdgeInsets.all(5.0),
                                         decoration: BoxDecoration(
                                           color: Colors.black12,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
+                                          borderRadius: BorderRadius.all(Radius.circular(15)),
                                         ),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
-                                          child: Image.network(
-                                            imgList[indexImg],
+                                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                                          child: coverPath.startsWith('http') ? CachedNetworkImage(
+                                            imageUrl: config.getCoverPathAsset(),
                                             fit: BoxFit.cover,
-                                            excludeFromSemantics: false,
                                             width: deviceWidth(context) * 0.8,
-                                            cacheHeight: 180,
-                                          ),
+                                            placeholder: (context, url) {
+                                              return Image.asset('assets/images/place-holder.png', fit: BoxFit.cover);
+                                            },
+                                            errorWidget: (context, url, err) {
+                                              return Image.asset('assets/images/place-holder.png', fit: BoxFit.cover);
+                                            },
+                                          ) : Image.asset(coverPath, fit: BoxFit.cover),
                                         ),
                                       ),
-                                    ),
+                                    )),
                                     Positioned(
                                       left: 20.0,
                                       bottom: 20.0,
-                                      child: Text(i.name,
+                                      child: Text(room.name,
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold)),

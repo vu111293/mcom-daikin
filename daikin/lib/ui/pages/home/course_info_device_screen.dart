@@ -428,27 +428,27 @@ class ImageBackdrop extends StatelessWidget {
                         ],
                       ),
                     ) : Container(),
-                    room.humidity != null ? Container(
-                      width: deviceWidth(context) / 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: Image.asset(
-                              'assets/icons/Giot_nuoc_02.png',
-                              fit: BoxFit.cover,
-                              height: ptBody1(context).fontSize * 1.5,
-                              width: ptBody1(context).fontSize * 1.5,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(room.humidity.properties.value + ' %',
-                              style: ptBody2(context)
-                                  .copyWith(color: Colors.white))
-                        ],
-                      ),
-                    ) : Container(),
+//                    room.humidity != null ? Container(
+//                      width: deviceWidth(context) / 3,
+//                      child: Row(
+//                        mainAxisAlignment: MainAxisAlignment.center,
+//                        children: <Widget>[
+//                          Padding(
+//                            padding: const EdgeInsets.only(right: 4),
+//                            child: Image.asset(
+//                              'assets/icons/Giot_nuoc_02.png',
+//                              fit: BoxFit.cover,
+//                              height: ptBody1(context).fontSize * 1.5,
+//                              width: ptBody1(context).fontSize * 1.5,
+//                              color: Colors.white,
+//                            ),
+//                          ),
+//                          Text(room.humidity.properties.value + ' %',
+//                              style: ptBody2(context)
+//                                  .copyWith(color: Colors.white))
+//                        ],
+//                      ),
+//                    ) : Container(),
                     room.light != null ? Container(
                       width: deviceWidth(context) / 3,
                       child: Row(
@@ -457,7 +457,7 @@ class ImageBackdrop extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 4),
                             child: Image.asset(
-                              'assets/icons/Sam_set.png',
+                              'assets/icons/Den_tran.png',
                               fit: BoxFit.cover,
                               height: ptBody1(context).fontSize * 1.5,
                               width: ptBody1(context).fontSize * 1.5,
@@ -465,7 +465,7 @@ class ImageBackdrop extends StatelessWidget {
                             ),
                           ),
                           Text(
-                              '${room.light.properties.value} w',
+                              '${room.light.properties.value} lux',
                               style: ptBody2(context)
                                   .copyWith(color: Colors.white))
                         ],
