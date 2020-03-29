@@ -210,7 +210,7 @@ packages:
       name: device_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1+4"
+    version: "0.4.2+1"
   dio:
     dependency: "direct main"
     description:
@@ -797,7 +797,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.4.1"
+    version: "5.4.2"
   url_launcher_macos:
     dependency: transitive
     description:
@@ -861,13 +861,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.5"
-  webview_flutter:
-    dependency: "direct main"
-    description:
-      name: webview_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.18+1"
   xml:
     dependency: transitive
     description:
@@ -884,4 +877,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.6.0 <3.0.0"
-  flutter: ">=1.12.13+hotfix.4 <2.0.0"
+  flutter: ">=1.12.13+hotfix.5 <2.0.0"

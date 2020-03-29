@@ -118,10 +118,8 @@ class Device {
         prefix = properties.value == 'true' ? 'motion_sensor100.png' : 'motion_sensor0.png';
         break;
 
+      case 'com.fibaro.FGSS001':
       case 'com.fibaro.doorSensor':
-        prefix = properties.value == 'true' ? '${iconName}100.png' : '${iconName}0.png';
-        break;
-
       case 'com.fibaro.binarySwitch':
         prefix = properties.value == 'true' ? '${iconName}100.png' : '${iconName}0.png';
         break;

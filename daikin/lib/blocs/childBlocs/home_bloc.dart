@@ -57,6 +57,7 @@ class HomeBloc {
       List<Device> activeDevice = devices.where((v) => v.properties.value == 'true').toList();
       for (var i = 0; i < rooms.length; i++) {
         for (var j = 0; j < devices.length; j++) {
+          if (devices[j].getDeviceType == DeviceType.CAMERA_IP) continue;
           if (rooms[i].id == devices[j].roomID) {
             rooms[i].devices.add(devices[j]);
           }

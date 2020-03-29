@@ -161,17 +161,17 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
 
   void routingToDevicePage(Device device) {
     if (device.type == "com.fibaro.binarySwitch") {
-      bool isSwitched = device.properties.value == 'true' ? true : false;
-
-      Routing().navigate2(
-          context,
-          DeviceOnOffDetailScreen(
-            item: device,
-            status: isSwitched,
-            callback: (value) {
-              onSwitchDevice(value, device);
-            },
-          ));
+//      bool isSwitched = device.properties.value == 'true' ? true : false;
+//
+//      Routing().navigate2(
+//          context,
+//          DeviceOnOffDetailScreen(
+//            item: device,
+//            status: isSwitched,
+//            callback: (value) {
+//              onSwitchDevice(value, device);
+//            },
+//          ));
     } else if (device.type == "com.fibaro.FGRGBW441M") {
       Routing().navigate2(context, RgbScreen(device: device)).then((d) {
         _refreshDeviceInfo(device);
@@ -197,15 +197,15 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
             device: device,
           ));
     } else {
-      bool isSwitched = device.properties.value == 'true' ? true : false;
-
-      Routing().navigate2(
-          context,
-          DeviceOnOffDetailScreen(
-            item: device,
-            status: isSwitched,
-            callback: () {},
-          ));
+//      bool isSwitched = device.properties.value == 'true' ? true : false;
+//
+//      Routing().navigate2(
+//          context,
+//          DeviceOnOffDetailScreen(
+//            item: device,
+//            status: isSwitched,
+//            callback: () {},
+//          ));
     }
   }
 
