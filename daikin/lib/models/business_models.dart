@@ -112,11 +112,12 @@ class Device {
         }
         return 'http://mhome-showroom.ddns.net/fibaro/n_vicons/$iconName.png';
 
-      case 'com.fibaro.FGMS001':
+//      case 'com.fibaro.FGMS001':
       case 'com.fibaro.FGMS001v2':
-        iconName = 'motion_sensor';
-        prefix = properties.value == 'true' ? 'motion_sensor100.png' : 'motion_sensor0.png';
-        break;
+//        iconName = 'motion_sensor';
+//        prefix = properties.value == 'true' ? 'motion_sensor100.png' : 'motion_sensor0.png';
+//        prefix = properties.value == 'true' ? '${iconName}100.png' : '${iconName}0.png';
+//        break;
 
       case 'com.fibaro.FGSS001':
       case 'com.fibaro.doorSensor':

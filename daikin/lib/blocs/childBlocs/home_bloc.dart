@@ -71,9 +71,9 @@ class HomeBloc {
       }
 
       // Not support alarm device in this time
-//      List<Device> sensorItems = devices.where((d) => d.properties.armed?.isNotEmpty == true).toList();
-//      Room alarmRoom = Room(id: 0, name: 'Alarm', icon: 'alarm', category: 'alarm', devices: sensorItems);
-//      rooms.add(alarmRoom);
+      List<Device> sensorItems = devices.where((d) => d.properties.armed?.isNotEmpty == true).toList();
+      Room alarmRoom = Room(id: 0, name: 'Alarm', icon: 'alarm', category: 'alarm', devices: sensorItems);
+      rooms.add(alarmRoom);
 
       // sort device in rooms
       rooms.forEach((r) {
