@@ -51,10 +51,11 @@ class ApplicationBloc implements BlocBase {
     this.fetchUserData();
   }
 
-  fetchUserData() {
-    _homeBloc.fetchHomeData().then((r) {
+  fetchUserData() async {
+    await _homeBloc.fetchHomeData().then((r) {
       print('fetch user data done');
     });
+    _homeBloc.registerTickUpdate();
   }
 
   loadBaseData() {

@@ -21,6 +21,11 @@ class BusinessService extends BaseLoopBackApi {
     return LUser.fromJson(item);
   }
 
+  Future<Map<String, dynamic>> fetchDeviceState(int tick) async {
+    final result = await this.request(method: 'GET', url: 'http://mhome-showroom.ddns.net:80/api/refreshStates?last=$tick');
+    return result;
+  }
+
   Future<Map<String, List<DeviceIcon>>> getDeviceIcons() async {
     final result = await this.request(method: 'GET', url: 'http://mhome-showroom.ddns.net/api/icons');
     List<DeviceIcon> dIcons = (result['device'] as List).map((item) => DeviceIcon.fromJson(item)).toList();

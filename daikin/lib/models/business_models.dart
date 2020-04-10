@@ -168,72 +168,72 @@ Map<String, dynamic> _actionsToJson(DeviceAction item) => item.toJson();
 
 @JsonSerializable(nullable: true)
 class DeviceProperty {
-  final String UIMessageSendTime;
-  final String autoConfig;
-  final bool configured;
-  final String date;
-  final String dead;
-  final String deviceControlType;
-  final dynamic deviceIcon;
-  final String disabled;
-  final String emailNotificationID;
-  final String emailNotificationType;
-  final String endPoint;
-  final String endPointId;
-  final String log;
-  final String logTemp;
-  final String manufacturer;
-  final String markAsDead;
-  final String model;
-  final String nodeID;
-  final String nodeId;
+  String UIMessageSendTime;
+  String autoConfig;
+  bool configured;
+  String date;
+  String dead;
+  String deviceControlType;
+  dynamic deviceIcon;
+  String disabled;
+  String emailNotificationID;
+  String emailNotificationType;
+  String endPoint;
+  String endPointId;
+  String log;
+  String logTemp;
+  String manufacturer;
+  String markAsDead;
+  String model;
+  String nodeID;
+  String nodeId;
 
-  //final String parameters;
-  final String parametersTemplate;
-  final String pollingDeadDevice;
-  final String pollingTime;
-  final String pollingTimeNext;
-  final int pollingTimeSec;
-  final String productInfo;
-  final String pushNotificationID;
-  final String pushNotificationType;
-  final String remoteGatewayId;
-  final String requestNodeNeighborStat;
-  final String requestNodeNeighborStatTimeStemp;
-  final String requestNodeNeighborState;
-  final String requestNodeNeighborStateTimeStemp;
-  final String saveLogs;
-  final String serialNumber;
-  final String showChildren;
-  final String smsNotificationID;
-  final String smsNotificationType;
-  final String status;
-  final String sunriseHour;
-  final String sunsetHour;
-  final String useTemplate;
-  final String itemDescription;
+  //String parameters;
+  String parametersTemplate;
+  String pollingDeadDevice;
+  String pollingTime;
+  String pollingTimeNext;
+  int pollingTimeSec;
+  String productInfo;
+  String pushNotificationID;
+  String pushNotificationType;
+  String remoteGatewayId;
+  String requestNodeNeighborStat;
+  String requestNodeNeighborStatTimeStemp;
+  String requestNodeNeighborState;
+  String requestNodeNeighborStateTimeStemp;
+  String saveLogs;
+  String serialNumber;
+  String showChildren;
+  String smsNotificationID;
+  String smsNotificationType;
+  String status;
+  String sunriseHour;
+  String sunsetHour;
+  String useTemplate;
+  String itemDescription;
   String value;
-  final String zwaveBuildVersion;
-  final String zwaveCompany;
-  final String zwaveInfo;
-  final String zwaveRegion;
-  final String zwaveVersion;
+  String zwaveBuildVersion;
+  String zwaveCompany;
+  String zwaveInfo;
+  String zwaveRegion;
+  String zwaveVersion;
   List<DeviceRow> rows;
 
-  final String httpsEnabled;
-  final String ip;
-  final String jpgPath;
-  final String mjpgPath;
-  final String username;
-  final String password;
+  String httpsEnabled;
+  String ip;
+  String jpgPath;
+  String mjpgPath;
+  String username;
+  String password;
 //  "isLight": "true",
 //  "lastColorSet": "100,255,50,255",
-  final String isLight;
-  final String lastColorSet;
+  String isLight;
+  String lastColorSet;
 
 
   // For sensor only
-  final String armed;
+  String armed;
 
   DeviceProperty(
       {this.UIMessageSendTime,

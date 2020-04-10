@@ -20,8 +20,7 @@ import './../../customs/expansion_tile.dart' as expansionTile;
 class DeviceListView extends StatefulWidget {
   final Function callBack;
   final bool disableScroll;
-  DeviceListView({Key key, this.callBack, this.disableScroll = false})
-      : super(key: key);
+  DeviceListView({Key key, this.callBack, this.disableScroll = false}) : super(key: key);
 
   _DeviceListState createState() => _DeviceListState();
 }
@@ -90,10 +89,20 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildTiles(widget.room);
+    return StreamBuilder<List<Device>>(
+      stream: _appBloc.homeBloc.devicesDataStream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Container();
+        List<Device> devices = widget.room.devices.map((d) {
+          return snapshot.data.firstWhere((item) => item.id == d.id, orElse: ()=>null);
+        }).toList();
+
+        return _buildTiles(widget.room.getName, devices);
+      },
+    );
   }
 
-  Widget _buildTiles(Room root) {
+  Widget _buildTiles(String roomName, List<Device> devices) {
     // if (root.devices.isEmpty)
     //   return ListTile(title: Text('Chưa có dữ liệu room device!'));
     return expansionTile.ExpansionTile(
@@ -104,17 +113,17 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
           child: CircleAvatar(
             backgroundColor: HexColor(appColor),
             child: Text(
-              '${root.devices.length}',
+              '${devices.length}',
               style: TextStyle(fontSize: 14, color: Colors.white),
             ),
           ),
         ),
-        key: PageStorageKey<Room>(root),
+//        key: PageStorageKey<Room>(root),
         title: Text(
-          upFirstText(root.getName),
+          upFirstText(roomName),
           style: TextStyle(color: HexColor(appColor)),
         ),
-        children: root.devices.map((item) => buildDevice(item)).toList());
+        children: devices.map((item) => buildDevice(item)).toList());
   }
 
   onClickMultiDevice(bool val, Device device) {

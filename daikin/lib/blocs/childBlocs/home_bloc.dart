@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:daikin/apis/net/business_service.dart';
@@ -12,7 +13,7 @@ class HomeBloc {
   final _cameraDevicesSubject = BehaviorSubject<List<Device>>();
   final _activeDeviceSubject = BehaviorSubject<List<Device>>();
 
-  Stream get roomDataStream => _roomsSubject.stream;
+  Stream<List<Room>> get roomDataStream => _roomsSubject.stream;
 
   Stream get devicesDataStream => _devicesSubject.stream;
 
@@ -27,6 +28,40 @@ class HomeBloc {
   Stream get cameraDevicesStream => _cameraDevicesSubject;
 
   Function(List<Scene>) get scenesAction => _scenesSubject.sink.add;
+
+
+
+  Timer _timerUpdate;
+  int _latestTick = 0;
+  registerTickUpdate() {
+    if (_timerUpdate != null && _timerUpdate.isActive) {
+      _timerUpdate.cancel();
+    }
+    _timerUpdate = Timer.periodic(Duration(seconds: 5), (t) async {
+      Map<String, dynamic> ret = await _businessService.fetchDeviceState(_latestTick);
+      if (ret.containsKey('last')) {
+        _latestTick = ret['last'] as int;
+      }
+      if (ret.containsKey('changes')) {
+        List<Device> deviceList = _devicesSubject.stream.value;
+        (ret['changes'] as List).forEach((item) {
+          if (item['id'] != null && item['value'] != null) {
+            int id = item['id'] as int;
+            String value = item['value'] as String;
+
+            Device d = deviceList.firstWhere((item) => item.id == id, orElse: ()=>null);
+            if (d != null) {
+              d.properties.value = value;
+            }
+          }
+        });
+        _devicesSubject.sink.add(deviceList);
+        List<Device> activeDevice = deviceList.where((v) => v.properties.value == 'true').toList();
+        _activeDeviceSubject.sink.add(activeDevice);
+      }
+    });
+  }
+
 
   Future fetchHomeData() {
     return Future.wait([

@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
@@ -17,14 +19,14 @@ class DeviceGridView extends StatefulWidget {
   DeviceGridViewState createState() => DeviceGridViewState();
 }
 
-class DeviceGridViewState extends State<DeviceGridView>
-    with TickerProviderStateMixin {
+class DeviceGridViewState extends State<DeviceGridView> with TickerProviderStateMixin {
   AnimationController animationController;
+  ApplicationBloc _appBloc;
 
   @override
   void initState() {
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 0), vsync: this);
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
+    animationController = AnimationController(duration: const Duration(milliseconds: 0), vsync: this);
     super.initState();
   }
 
@@ -37,50 +39,50 @@ class DeviceGridViewState extends State<DeviceGridView>
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 0),
-      child: FutureBuilder<bool>(
-        future: getData(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if (!snapshot.hasData) {
-            return SizedBox();
-          } else {
+      child: StreamBuilder<List<Device>>(
+        stream: _appBloc.homeBloc.devicesDataStream,
+        builder: (context, snapshot) {
 
-            // Todo for debug only
-            widget.devices.forEach((d) {
-              print('${d.name} -> ${d.type} -> ${d.properties.value} => ${d.properties.armed}');
-            });
+          if (!snapshot.hasData) return Container();
+          List<Device> devices = widget.devices.map((d) {
+            return snapshot.data.firstWhere((item) => item.id == d.id, orElse: ()=>null);
+          }).toList();
 
-            return GridView(
-              shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              children: List<Widget>.generate(
-                widget.devices.length,
-                (int index) {
-                  final int count = widget.devices.length;
-                  final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
-                    CurvedAnimation(
-                      parent: animationController,
-                      curve: Interval((1 / count) * index, 1.0,
-                          curve: Curves.fastOutSlowIn),
-                    ),
-                  );
-                  animationController.forward();
-                  return DeviceViewItem(
-                    device: widget.devices[index],
-                    animation: animation,
-                    animationController: animationController,
-                  );
-                },
-              ),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                // childAspectRatio: MediaQuery.of(context).size.height / 600,
-              ),
-            );
-          }
+          // Todo for debug only
+          devices.forEach((d) {
+            print('${d.name} (${d.id}) -> ${d.type} -> ${d.properties.value} => ${d.properties.armed}');
+          });
+          return GridView(
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            children: List<Widget>.generate(
+              devices.length,
+                  (int index) {
+                final int count = devices.length;
+                final Animation<double> animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                    parent: animationController,
+                    curve: Interval((1 / count) * index, 1.0,
+                        curve: Curves.fastOutSlowIn),
+                  ),
+                );
+                animationController.forward();
+                return DeviceViewItem(
+                  device: devices[index],
+                  animation: animation,
+                  animationController: animationController,
+                );
+              },
+            ),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              // childAspectRatio: MediaQuery.of(context).size.height / 600,
+            ),
+          );
         },
       ),
     );
