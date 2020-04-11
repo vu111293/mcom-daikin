@@ -103,7 +103,10 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
             child: Text(name,
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
           ),
-          Text(main ? 'Bật' : 'Tắt', style: TextStyle(fontSize: 18.0)),
+          Padding(
+            padding:  EdgeInsets.only(right:16.0),
+            child: Text(main ? 'Bật' : 'Tắt', style: TextStyle(fontSize: 18.0)),
+          ),
         ],
       ),
     );
