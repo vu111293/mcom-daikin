@@ -60,6 +60,8 @@ class Device {
   final int created;
   final int modified;
   final int sortOrder;
+  final String dead;
+  final String lastBreached;
   @JsonKey(nullable: true, defaultValue: [], ignore: true)
   List<Device> devices;
 
@@ -84,7 +86,10 @@ class Device {
       this.actions,
       this.created,
       this.modified,
-      this.sortOrder});
+      this.sortOrder,
+      this.dead,
+      this.lastBreached,
+      });
 
   factory Device.fromJson(Map<String, dynamic> json) {
     final item = _$DeviceFromJson(json);

@@ -20,7 +20,8 @@ import './../../customs/expansion_tile.dart' as expansionTile;
 class DeviceListView extends StatefulWidget {
   final Function callBack;
   final bool disableScroll;
-  DeviceListView({Key key, this.callBack, this.disableScroll = false}) : super(key: key);
+  DeviceListView({Key key, this.callBack, this.disableScroll = false})
+      : super(key: key);
 
   _DeviceListState createState() => _DeviceListState();
 }
@@ -94,7 +95,8 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         List<Device> devices = widget.room.devices.map((d) {
-          return snapshot.data.firstWhere((item) => item.id == d.id, orElse: ()=>null);
+          return snapshot.data
+              .firstWhere((item) => item.id == d.id, orElse: () => null);
         }).toList();
 
         return _buildTiles(widget.room.getName, devices);
@@ -235,7 +237,26 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
           child: Container(
             padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
             child: ListTile(
-              leading: Image.network(device.getDeviceIconURL, width: 32, height: 32, fit: BoxFit.contain),
+              leading: Stack(
+                children: <Widget>[
+                  Image.network(
+                    device.getDeviceIconURL,
+                    width: 32,
+                    height: 32,
+                    fit: BoxFit.contain,
+                  ),
+                  device.dead == "true"
+                      ? Icon(
+                          Icons.close,
+                          size: 32,
+                          color: Colors.black38,
+                        )
+                      : Container(
+                          width: 32,
+                          height: 32,
+                        )
+                ],
+              ),
               title: Text(upFirstText(device.name)),
               trailing: Switch(
                 value: device.properties.value == 'true' ? true : false,
@@ -258,8 +279,27 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
           child: Container(
             padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
             child: ListTile(
-              leading: Image.network(device.getDeviceIconURL, width: 32, height: 32, fit: BoxFit.contain),
-               title: Text(upFirstText(device.name)),
+              leading: Stack(
+                children: <Widget>[
+                  Image.network(
+                    device.getDeviceIconURL,
+                    width: 32,
+                    height: 32,
+                    fit: BoxFit.contain,
+                  ),
+                  device.dead == "true"
+                      ? Icon(
+                          Icons.close,
+                          size: 32,
+                          color: Colors.black38,
+                        )
+                      : Container(
+                          width: 32,
+                          height: 32,
+                        )
+                ],
+              ),
+              title: Text(upFirstText(device.name)),
               trailing: Switch(
                 value: device.properties.value == '1' ? true : false,
                 onChanged: (val) {
@@ -281,8 +321,27 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
           child: Container(
             padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
             child: ListTile(
-              leading: Image.network(device.getDeviceIconURL, width: 32, height: 32, fit: BoxFit.contain),
-               title: Text(upFirstText(device.name)),
+              leading: Stack(
+                children: <Widget>[
+                  Image.network(
+                    device.getDeviceIconURL,
+                    width: 32,
+                    height: 32,
+                    fit: BoxFit.contain,
+                  ),
+                  device.dead == "true"
+                      ? Icon(
+                          Icons.close,
+                          size: 32,
+                          color: Colors.black38,
+                        )
+                      : Container(
+                          width: 32,
+                          height: 32,
+                        )
+                ],
+              ),
+              title: Text(upFirstText(device.name)),
               trailing: Switch(
                 value: int.parse(device.properties.value) > 0 ? true : false,
                 onChanged: (val) {
@@ -305,7 +364,26 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 8, 0, 0),
         child: ListTile(
-          leading: Image.network(device.getDeviceIconURL, width: 32, height: 32, fit: BoxFit.contain),
+          leading: Stack(
+            children: <Widget>[
+              Image.network(
+                device.getDeviceIconURL,
+                width: 32,
+                height: 32,
+                fit: BoxFit.contain,
+              ),
+              device.dead == "true"
+                  ? Icon(
+                      Icons.close,
+                      size: 32,
+                      color: Colors.black38,
+                    )
+                  : Container(
+                      width: 32,
+                      height: 32,
+                    )
+            ],
+          ),
           title: Text(upFirstText(device.name)),
           // trailing: Switch(
           //   value: true,

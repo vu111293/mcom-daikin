@@ -17,7 +17,7 @@ Daikin project on the FLUTTER platform
 5. Using xcode or build and release
 
 // **\* PLEASE RUN COMMAND BELOW FOR REBUILD MODELS \*\***
-// flutter packages pub run build_runner build --delete-conflicting-outputs
+flutter packages pub run build_runner build --delete-conflicting-outputs
 
 flutter build apk --release -t lib/entries/staging.dart
 flutter build apk --release -t lib/entries/production.dart

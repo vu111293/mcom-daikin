@@ -44,6 +44,8 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
     created: json['created'] as int,
     modified: json['modified'] as int,
     sortOrder: json['sortOrder'] as int,
+    dead: json['dead'] as String,
+    lastBreached: json['lastBreached'] as String,
   );
 }
 
@@ -66,6 +68,8 @@ Map<String, dynamic> _$DeviceToJson(Device instance) => <String, dynamic>{
       'created': instance.created,
       'modified': instance.modified,
       'sortOrder': instance.sortOrder,
+      'dead': instance.dead,
+      'lastBreached': instance.lastBreached,
     };
 
 DeviceProperty _$DevicePropertyFromJson(Map<String, dynamic> json) {
