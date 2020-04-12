@@ -64,7 +64,7 @@ Widget defaultBuildDevice(
                           height: 28,
                           fit: BoxFit.contain,
                         ),
-                        widget.device.dead == "true"
+                        widget.device.properties.dead == "true"
                             ? Icon(
                                 Icons.close,
                                 size: 28,
@@ -146,7 +146,7 @@ Widget buildBlindsDevice(
                           height: 28,
                           fit: BoxFit.contain,
                         ),
-                        widget.device.dead == "true"
+                        widget.device.properties.dead == "true"
                             ? Icon(
                                 Icons.close,
                                 size: 28,
@@ -234,7 +234,7 @@ Widget buildSwitchDevice(
                           height: 28,
                           fit: BoxFit.contain,
                         ),
-                        widget.device.dead == "true"
+                        widget.device.properties.dead == "true"
                             ? Icon(
                                 Icons.close,
                                 size: 28,
@@ -330,15 +330,7 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback,
               splashColor: Colors.transparent,
               onTap: () {
                 Routing()
-                    .navigate2(context, RgbScreen(device: widget.device)
-//                    DeviceOnOffDetailScreen(
-//                      item: widget.device,
-//                      status: isSwitched,
-//                      callback: (value) {
-//                        callback(value);
-//                      },
-//                    )
-                        )
+                    .navigate2(context, RgbScreen(device: widget.device))
                     .then((d) {
                   backFromDetailPage();
                 });
@@ -356,7 +348,7 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback,
                           height: 28,
                           fit: BoxFit.contain,
                         ),
-                        widget.device.dead == "true"
+                        widget.device.properties.dead == "true"
                             ? Icon(
                                 Icons.close,
                                 size: 28,
@@ -446,8 +438,7 @@ Widget buildVirtualDevice(DeviceViewItem widget, Device device) {
             child: InkWell(
               splashColor: Colors.transparent,
               onTap: () {
-                Routing()
-                    .navigate2(context, VirtualDeviceScreen(device: device));
+                Routing().navigate2(context, VirtualDeviceScreen(device: device));
               },
               child: Padding(
                 padding: EdgeInsets.all(10.0),
@@ -462,7 +453,7 @@ Widget buildVirtualDevice(DeviceViewItem widget, Device device) {
                           height: 28,
                           fit: BoxFit.contain,
                         ),
-                        widget.device.dead == "true"
+                        widget.device.properties.dead == "true"
                             ? Icon(
                                 Icons.close,
                                 size: 28,
@@ -546,7 +537,7 @@ Widget buildSwitchMultiDevice(DeviceViewItem widget, Device device,
                           height: 28,
                           fit: BoxFit.contain,
                         ),
-                        widget.device.dead == "true"
+                        widget.device.properties.dead == "true"
                             ? Icon(
                                 Icons.close,
                                 size: 28,

@@ -96,6 +96,11 @@ abstract class BaseLoopBackApi {
 
     print(
         'Phat API: ${url.toString()} -> ${response.statusCode.toString()} -> ${response.reasonPhrase.toString()}');
+    if (postBody != null) {
+      postBody.keys.forEach((k) {
+        print('$k : ${postBody[k]}');
+      });
+    }
 //    print("test thu goi api tra ve error: " + response.reasonPhrase);
 
     String raw = await response.transform(utf8.decoder).join();

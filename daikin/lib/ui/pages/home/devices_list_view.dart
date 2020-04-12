@@ -245,7 +245,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
                     height: 32,
                     fit: BoxFit.contain,
                   ),
-                  device.dead == "true"
+                  device.properties.dead == "true"
                       ? Icon(
                           Icons.close,
                           size: 32,
@@ -287,7 +287,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
                     height: 32,
                     fit: BoxFit.contain,
                   ),
-                  device.dead == "true"
+                  device.properties.dead == "true"
                       ? Icon(
                           Icons.close,
                           size: 32,
@@ -329,7 +329,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
                     height: 32,
                     fit: BoxFit.contain,
                   ),
-                  device.dead == "true"
+                  device.properties.dead == "true"
                       ? Icon(
                           Icons.close,
                           size: 32,
@@ -372,7 +372,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
                 height: 32,
                 fit: BoxFit.contain,
               ),
-              device.dead == "true"
+              device.properties.dead == "true"
                   ? Icon(
                       Icons.close,
                       size: 32,
@@ -397,6 +397,10 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
       ),
     );
   }
+
+
+
+
 
   onSwitchRGBDevice(bool val, Device device) {
     //BotToast.showText(text: 'Đổi sang trạng thái ' + device.properties.value);

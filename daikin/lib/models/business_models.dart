@@ -60,7 +60,6 @@ class Device {
   final int created;
   final int modified;
   final int sortOrder;
-  final String dead;
   final String lastBreached;
   @JsonKey(nullable: true, defaultValue: [], ignore: true)
   List<Device> devices;
@@ -87,7 +86,6 @@ class Device {
       this.created,
       this.modified,
       this.sortOrder,
-      this.dead,
       this.lastBreached,
       });
 
@@ -177,7 +175,6 @@ class DeviceProperty {
   String autoConfig;
   bool configured;
   String date;
-  String dead;
   String deviceControlType;
   dynamic deviceIcon;
   String disabled;
@@ -231,6 +228,8 @@ class DeviceProperty {
   String mjpgPath;
   String username;
   String password;
+  String dead;
+  String deadReason;
 //  "isLight": "true",
 //  "lastColorSet": "100,255,50,255",
   String isLight;
@@ -245,7 +244,6 @@ class DeviceProperty {
       this.autoConfig,
       this.configured,
       this.date,
-      this.dead,
       this.deviceControlType,
       this.deviceIcon,
       this.disabled,
@@ -289,7 +287,7 @@ class DeviceProperty {
       this.zwaveCompany,
       this.zwaveInfo,
       this.zwaveRegion,
-      List<DeviceRow> rows,
+      this.rows,
       this.zwaveVersion,
       this.httpsEnabled,
       this.ip,
@@ -299,8 +297,9 @@ class DeviceProperty {
       this.password,
       this.isLight,
       this.lastColorSet,
-      this.armed})
-      : rows = rows ?? <DeviceRow>[];
+      this.armed,
+      this.dead,
+      this.deadReason});
 
   factory DeviceProperty.fromJson(Map<String, dynamic> json) {
     final item = _$DevicePropertyFromJson(json);

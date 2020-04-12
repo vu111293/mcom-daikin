@@ -120,9 +120,7 @@ class _BlindsDeviceScreenState extends State<BlindsDeviceScreen> {
                       }
 
                       setState(() {});
-
-                      await BusinessService()
-                          .setValue(widget.device.id, (value * 25).toInt());
+                      await BusinessService().setValue(widget.device.id, (value * 25).toInt());
                     }),
               ),
             ),

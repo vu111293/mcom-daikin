@@ -50,7 +50,7 @@ class DeviceGridViewState extends State<DeviceGridView> with TickerProviderState
 
           // Todo for debug only
           devices.forEach((d) {
-            print('${d.name} (${d.id}) -> ${d.type} -> ${d.properties.value} => ${d.properties.armed}');
+            print('${d.name} (${d.id}) -> ${d.type} -> ${d.properties.value} => ${d.properties.armed}, ${d.properties.dead}, ${d.properties.deadReason}');
           });
           return GridView(
             shrinkWrap: true,

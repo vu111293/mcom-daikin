@@ -44,7 +44,6 @@ Device _$DeviceFromJson(Map<String, dynamic> json) {
     created: json['created'] as int,
     modified: json['modified'] as int,
     sortOrder: json['sortOrder'] as int,
-    dead: json['dead'] as String,
     lastBreached: json['lastBreached'] as String,
   );
 }
@@ -68,7 +67,6 @@ Map<String, dynamic> _$DeviceToJson(Device instance) => <String, dynamic>{
       'created': instance.created,
       'modified': instance.modified,
       'sortOrder': instance.sortOrder,
-      'dead': instance.dead,
       'lastBreached': instance.lastBreached,
     };
 
@@ -78,7 +76,6 @@ DeviceProperty _$DevicePropertyFromJson(Map<String, dynamic> json) {
     autoConfig: json['autoConfig'] as String,
     configured: json['configured'] as bool,
     date: json['date'] as String,
-    dead: json['dead'] as String,
     deviceControlType: json['deviceControlType'] as String,
     deviceIcon: json['deviceIcon'],
     disabled: json['disabled'] as String,
@@ -137,6 +134,8 @@ DeviceProperty _$DevicePropertyFromJson(Map<String, dynamic> json) {
     isLight: json['isLight'] as String,
     lastColorSet: json['lastColorSet'] as String,
     armed: json['armed'] as String,
+    dead: json['dead'] as String,
+    deadReason: json['deadReason'] as String,
   );
 }
 
@@ -146,7 +145,6 @@ Map<String, dynamic> _$DevicePropertyToJson(DeviceProperty instance) =>
       'autoConfig': instance.autoConfig,
       'configured': instance.configured,
       'date': instance.date,
-      'dead': instance.dead,
       'deviceControlType': instance.deviceControlType,
       'deviceIcon': instance.deviceIcon,
       'disabled': instance.disabled,
@@ -199,6 +197,8 @@ Map<String, dynamic> _$DevicePropertyToJson(DeviceProperty instance) =>
       'mjpgPath': instance.mjpgPath,
       'username': instance.username,
       'password': instance.password,
+      'dead': instance.dead,
+      'deadReason': instance.deadReason,
       'isLight': instance.isLight,
       'lastColorSet': instance.lastColorSet,
       'armed': instance.armed,
