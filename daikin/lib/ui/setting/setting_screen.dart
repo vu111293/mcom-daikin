@@ -8,7 +8,7 @@ import 'package:daikin/models/user.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/image_picker.dart';
 import 'package:daikin/ui/pages/login/login_screen.dart';
-import 'package:daikin/ui/pages/statics/historyEvent.dart';
+import 'package:daikin/ui/pages/statics/history_event_page.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/ui/setting/my_center_screen.dart';
 import 'package:daikin/ui/setting/profile_screen.dart';
@@ -283,7 +283,7 @@ class SettingScreenState extends State<SettingScreen>
                 ),
                 ListTile(
                   onTap: () {
-                    Routing().navigate2(context, HistoryEvent());
+                    Routing().navigate2(context, HistoryEventPage());
                   },
                   leading: Text(
                     "Lịch sử sự kiện",

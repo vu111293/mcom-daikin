@@ -359,3 +359,30 @@ Map<String, dynamic> _$ImageAssetToJson(ImageAsset instance) =>
       'name': instance.name,
       'assetPath': instance.assetPath,
     };
+
+HistoryEventModel _$HistoryEventModelFromJson(Map<String, dynamic> json) {
+  return HistoryEventModel(
+    id: json['id'] as int,
+    type: json['type'] as String,
+    timestamp: json['timestamp'] as int,
+    deviceID: json['deviceID'] as int,
+    deviceType: json['deviceType'] as String,
+    propertyName: json['propertyName'] as String,
+    oldValue: (json['oldValue'] as num)?.toDouble(),
+    newValue: (json['newValue'] as num)?.toDouble(),
+    icon: json['icon'],
+  );
+}
+
+Map<String, dynamic> _$HistoryEventModelToJson(HistoryEventModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'type': instance.type,
+      'timestamp': instance.timestamp,
+      'deviceID': instance.deviceID,
+      'deviceType': instance.deviceType,
+      'propertyName': instance.propertyName,
+      'oldValue': instance.oldValue,
+      'newValue': instance.newValue,
+      'icon': instance.icon,
+    };

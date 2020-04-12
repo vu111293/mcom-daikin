@@ -21,6 +21,14 @@ class BusinessService extends BaseLoopBackApi {
     return LUser.fromJson(item);
   }
 
+  Future<List<HistoryEventModel>> fetchHistoryEventList() async {
+    final result = await this.request(method: 'GET', url: 'http://mhome-showroom.ddns.net/api/panels/event?last=100&type=id');
+    if (result is List) {
+      return result.map((item) => HistoryEventModel.fromJson(item)).toList();
+    }
+    return [];
+  }
+
   Future<Map<String, dynamic>> fetchDeviceState(int tick) async {
     final result = await this.request(method: 'GET', url: 'http://mhome-showroom.ddns.net:80/api/refreshStates?last=$tick');
     return result;

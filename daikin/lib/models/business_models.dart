@@ -583,3 +583,118 @@ class ImageAsset {
 
   Map<String, dynamic> toJson() => _$ImageAssetToJson(this);
 }
+
+
+
+//{"id":1839447,"type":"DEVICE_PROPERTY_CHANGED","timestamp":1586687379,"deviceID":182,"deviceType":"com.fibaro.lightSensor","propertyName":"value","oldValue":4.0,"newValue":3.0,"icon":null}
+@JsonSerializable(nullable: true)
+class HistoryEventModel {
+  final int id;
+  final String type;
+  final int timestamp;
+  final int deviceID;
+  final String deviceType;
+  final String propertyName;
+  final double oldValue;
+  final double newValue;
+  final dynamic icon;
+
+  const HistoryEventModel({
+    this.id,
+    this.type,
+    this.timestamp,
+    this.deviceID,
+    this.deviceType,
+    this.propertyName,
+    this.oldValue,
+    this.newValue,
+    this.icon,
+  });
+
+  factory HistoryEventModel.fromJson(Map<String, dynamic> json) {
+    final item = _$HistoryEventModelFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$HistoryEventModelToJson(this);
+}
+
+const List<HistoryEventModel> historyEventModel = [
+  HistoryEventModel(
+    id: 1839390,
+    type: "DEVICE_PROPERTY_CHANGED",
+    timestamp: 1586679191,
+    deviceID: 182,
+    deviceType: "com.fibaro.lightSensor",
+    propertyName: "value",
+    oldValue: 27.0,
+    newValue: 24.0,
+    icon: null,
+  ),
+  HistoryEventModel(
+    id: 1839390,
+    type: "DEVICE_PROPERTY_CHANGED",
+    timestamp: 1586679191,
+    deviceID: 182,
+    deviceType: "com.fibaro.lightSensor",
+    propertyName: "value",
+    oldValue: 27.0,
+    newValue: 24.0,
+    icon: null,
+  ),
+  HistoryEventModel(
+    id: 1839390,
+    type: "DEVICE_PROPERTY_CHANGED",
+    timestamp: 1586679191,
+    deviceID: 182,
+    deviceType: "com.fibaro.lightSensor",
+    propertyName: "value",
+    oldValue: 27.0,
+    newValue: 24.0,
+    icon: null,
+  ),
+  HistoryEventModel(
+    id: 1839390,
+    type: "DEVICE_PROPERTY_CHANGED",
+    timestamp: 1586679191,
+    deviceID: 182,
+    deviceType: "com.fibaro.lightSensor",
+    propertyName: "value",
+    oldValue: 27.0,
+    newValue: 24.0,
+    icon: null,
+  ),
+  HistoryEventModel(
+    id: 1839390,
+    type: "DEVICE_PROPERTY_CHANGED",
+    timestamp: 1586679191,
+    deviceID: 182,
+    deviceType: "com.fibaro.lightSensor",
+    propertyName: "value",
+    oldValue: 27.0,
+    newValue: 24.0,
+    icon: null,
+  ),
+  HistoryEventModel(
+    id: 1839390,
+    type: "DEVICE_PROPERTY_CHANGED",
+    timestamp: 1586679191,
+    deviceID: 182,
+    deviceType: "com.fibaro.lightSensor",
+    propertyName: "value",
+    oldValue: 27.0,
+    newValue: 24.0,
+    icon: null,
+  ),
+  HistoryEventModel(
+    id: 1839390,
+    type: "DEVICE_PROPERTY_CHANGED",
+    timestamp: 1586679191,
+    deviceID: 182,
+    deviceType: "com.fibaro.lightSensor",
+    propertyName: "value",
+    oldValue: 27.0,
+    newValue: 24.0,
+    icon: null,
+  ),
+];
