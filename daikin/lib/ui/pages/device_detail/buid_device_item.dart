@@ -416,78 +416,78 @@ Widget buildRGBDevice(DeviceViewItem widget, Device device, Function callback,
   );
 }
 
-Widget buildVirtualDevice(DeviceViewItem widget, Device device) {
-  // bool isSwitched = device.properties.value == 'true' ? true : false;
-
-  return AnimatedBuilder(
-    animation: widget.animationController,
-    builder: (BuildContext context, Widget child) {
-      return FadeTransition(
-        opacity: widget.animation,
-        child: Transform(
-          transform: Matrix4.translationValues(
-              0.0, 50 * (1.0 - widget.animation.value), 0.0),
-          child: Material(
-            elevation: 12,
-            shadowColor: Colors.black54,
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              // side: BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            child: InkWell(
-              splashColor: Colors.transparent,
-              onTap: () {
-                Routing().navigate2(context, VirtualDeviceScreen(device: device));
-              },
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Image.network(
-                          widget.device.getDeviceIconURL,
-                          width: 28,
-                          height: 28,
-                          fit: BoxFit.contain,
-                        ),
-                        widget.device.properties.dead == "true"
-                            ? Icon(
-                                Icons.close,
-                                size: 28,
-                                color: Colors.black38,
-                              )
-                            : Container()
-                      ],
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Text(
-                            '${upFirstText(widget.device.name)}',
-                            textAlign: TextAlign.left,
-                            style: ptBody1(context)
-                                .copyWith(color: HexColor(appBorderColor)),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
+//Widget buildVirtualDevice(DeviceViewItem widget, Device device) {
+//  // bool isSwitched = device.properties.value == 'true' ? true : false;
+//
+//  return AnimatedBuilder(
+//    animation: widget.animationController,
+//    builder: (BuildContext context, Widget child) {
+//      return FadeTransition(
+//        opacity: widget.animation,
+//        child: Transform(
+//          transform: Matrix4.translationValues(
+//              0.0, 50 * (1.0 - widget.animation.value), 0.0),
+//          child: Material(
+//            elevation: 12,
+//            shadowColor: Colors.black54,
+//            color: Colors.white,
+//            shape: RoundedRectangleBorder(
+//              // side: BorderSide(color: HexColor(appBorderColor2).withOpacity(0.1), width: 1),
+//              borderRadius: BorderRadius.all(Radius.circular(10)),
+//            ),
+//            child: InkWell(
+//              splashColor: Colors.transparent,
+//              onTap: () {
+//                Routing().navigate2(context, VirtualDeviceScreen(device: device));
+//              },
+//              child: Padding(
+//                padding: EdgeInsets.all(10.0),
+//                child: Column(
+//                  crossAxisAlignment: CrossAxisAlignment.start,
+//                  children: <Widget>[
+//                    Stack(
+//                      children: <Widget>[
+//                        Image.network(
+//                          widget.device.getDeviceIconURL,
+//                          width: 28,
+//                          height: 28,
+//                          fit: BoxFit.contain,
+//                        ),
+//                        widget.device.properties.dead == "true"
+//                            ? Icon(
+//                                Icons.close,
+//                                size: 28,
+//                                color: Colors.black38,
+//                              )
+//                            : Container()
+//                      ],
+//                    ),
+//                    Expanded(
+//                      child: Column(
+//                        crossAxisAlignment: CrossAxisAlignment.start,
+//                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                        children: <Widget>[
+//                          Text(
+//                            '${upFirstText(widget.device.name)}',
+//                            textAlign: TextAlign.left,
+//                            style: ptBody1(context)
+//                                .copyWith(color: HexColor(appBorderColor)),
+//                            maxLines: 1,
+//                            overflow: TextOverflow.ellipsis,
+//                          ),
+//                        ],
+//                      ),
+//                    ),
+//                  ],
+//                ),
+//              ),
+//            ),
+//          ),
+//        ),
+//      );
+//    },
+//  );
+//}
 
 Widget buildSwitchMultiDevice(DeviceViewItem widget, Device device,
     Function callback, Function setValue) {

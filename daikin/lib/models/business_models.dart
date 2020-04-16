@@ -17,7 +17,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'business_models.g.dart';
 
-enum DeviceType { CAMERA_IP, UNKNOWN }
+enum DeviceType { AIR_CONDITIONAL, CAMERA_IP, UNKNOWN }
 
 
 @JsonSerializable(nullable: false)
@@ -97,6 +97,10 @@ class Device {
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
 
   DeviceType get getDeviceType {
+    if (type == 'virtual_device' && name.startsWith('AC_')) {
+      return DeviceType.AIR_CONDITIONAL;
+    }
+
     if (type == 'com.fibaro.ipCamera' && baseType == 'com.fibaro.camera') {
       return DeviceType.CAMERA_IP;
     }

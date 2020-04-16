@@ -12,6 +12,7 @@ import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
+import 'air_conditioner_device.dart';
 import 'blinds_device_screen.dart';
 
 class DeviceViewItem extends StatefulWidget {
@@ -69,7 +70,11 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
           widget: widget,
           defValue: _localDevice.properties.value == 'true',
           onTap: () {
-            Routing().navigate2(context, VirtualDeviceScreen(device: _localDevice));
+            if (_localDevice.getDeviceType == DeviceType.AIR_CONDITIONAL) {
+              Routing().navigate2(context, AirConditionerDevice(device: _localDevice));
+            } else {
+              Routing().navigate2(context, VirtualDeviceScreen(device: _localDevice));
+            }
           });
       // Rem cua
     } else if (_localDevice.type == "com.fibaro.FGRM222") {

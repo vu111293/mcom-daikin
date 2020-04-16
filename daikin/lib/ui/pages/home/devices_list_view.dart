@@ -6,6 +6,7 @@ import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/pages/dashboard/rgb_screen.dart';
+import 'package:daikin/ui/pages/device_detail/air_conditioner_device.dart';
 import 'package:daikin/ui/pages/device_detail/blinds_device_screen.dart';
 import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/device_detail/switch_multi_device.dart';
@@ -200,7 +201,11 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
             },
           ));
     } else if (device.type == "virtual_device") {
-      Routing().navigate2(context, VirtualDeviceScreen(device: device));
+      if (device.getDeviceType == DeviceType.AIR_CONDITIONAL) {
+        Routing().navigate2(context, AirConditionerDevice(device: device));
+      } else {
+        Routing().navigate2(context, VirtualDeviceScreen(device: device));
+      }
     } else if (device.type == "com.fibaro.FGRM222") {
       Routing().navigate2(
           context,
