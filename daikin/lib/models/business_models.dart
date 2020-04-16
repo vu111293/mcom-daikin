@@ -105,6 +105,10 @@ class Device {
   }
 
   String get getDeviceIconURL {
+    return getDeviceIconURLByValue(properties.value);
+  }
+
+  String getDeviceIconURLByValue(String value) {
     String prefix = '${iconName}100.png';
 
     print(type);
@@ -125,7 +129,7 @@ class Device {
       case 'com.fibaro.FGSS001':
       case 'com.fibaro.doorSensor':
       case 'com.fibaro.binarySwitch':
-        prefix = properties.value == 'true' ? '${iconName}100.png' : '${iconName}0.png';
+        prefix = value == 'true' ? '${iconName}100.png' : '${iconName}0.png';
         break;
 
       case 'com.fibaro.sonosSpeaker':
@@ -143,12 +147,12 @@ class Device {
         break;
 
       case 'com.fibaro.FGD212':
-        int v = (int.parse(properties.value)*1.0/10).toInt() * 10;
+        int v = (int.parse(value)*1.0/10).toInt() * 10;
         prefix = '${iconName}$v.png';
         break;
 
       case 'com.fibaro.FGRM222':
-        int v = (int.parse(properties.value)*1.0/10).toInt() * 10;
+        int v = (int.parse(value)*1.0/10).toInt() * 10;
         prefix = '${iconName}$v.png';
         break;
 
@@ -599,7 +603,12 @@ class HistoryEventModel {
   final double newValue;
   final dynamic icon;
 
-  const HistoryEventModel({
+  @JsonKey(ignore: true)
+  Device device;
+  @JsonKey(ignore: true)
+  Room room;
+
+  HistoryEventModel({
     this.id,
     this.type,
     this.timestamp,
@@ -608,7 +617,7 @@ class HistoryEventModel {
     this.propertyName,
     this.oldValue,
     this.newValue,
-    this.icon,
+    this.icon
   });
 
   factory HistoryEventModel.fromJson(Map<String, dynamic> json) {
@@ -617,84 +626,55 @@ class HistoryEventModel {
   }
 
   Map<String, dynamic> toJson() => _$HistoryEventModelToJson(this);
-}
 
-const List<HistoryEventModel> historyEventModel = [
-  HistoryEventModel(
-    id: 1839390,
-    type: "DEVICE_PROPERTY_CHANGED",
-    timestamp: 1586679191,
-    deviceID: 182,
-    deviceType: "com.fibaro.lightSensor",
-    propertyName: "value",
-    oldValue: 27.0,
-    newValue: 24.0,
-    icon: null,
-  ),
-  HistoryEventModel(
-    id: 1839390,
-    type: "DEVICE_PROPERTY_CHANGED",
-    timestamp: 1586679191,
-    deviceID: 182,
-    deviceType: "com.fibaro.lightSensor",
-    propertyName: "value",
-    oldValue: 27.0,
-    newValue: 24.0,
-    icon: null,
-  ),
-  HistoryEventModel(
-    id: 1839390,
-    type: "DEVICE_PROPERTY_CHANGED",
-    timestamp: 1586679191,
-    deviceID: 182,
-    deviceType: "com.fibaro.lightSensor",
-    propertyName: "value",
-    oldValue: 27.0,
-    newValue: 24.0,
-    icon: null,
-  ),
-  HistoryEventModel(
-    id: 1839390,
-    type: "DEVICE_PROPERTY_CHANGED",
-    timestamp: 1586679191,
-    deviceID: 182,
-    deviceType: "com.fibaro.lightSensor",
-    propertyName: "value",
-    oldValue: 27.0,
-    newValue: 24.0,
-    icon: null,
-  ),
-  HistoryEventModel(
-    id: 1839390,
-    type: "DEVICE_PROPERTY_CHANGED",
-    timestamp: 1586679191,
-    deviceID: 182,
-    deviceType: "com.fibaro.lightSensor",
-    propertyName: "value",
-    oldValue: 27.0,
-    newValue: 24.0,
-    icon: null,
-  ),
-  HistoryEventModel(
-    id: 1839390,
-    type: "DEVICE_PROPERTY_CHANGED",
-    timestamp: 1586679191,
-    deviceID: 182,
-    deviceType: "com.fibaro.lightSensor",
-    propertyName: "value",
-    oldValue: 27.0,
-    newValue: 24.0,
-    icon: null,
-  ),
-  HistoryEventModel(
-    id: 1839390,
-    type: "DEVICE_PROPERTY_CHANGED",
-    timestamp: 1586679191,
-    deviceID: 182,
-    deviceType: "com.fibaro.lightSensor",
-    propertyName: "value",
-    oldValue: 27.0,
-    newValue: 24.0,
-    icon: null,
-  ),
-];
+
+  String get getValueInString {
+    String v;
+    switch(device.type) {
+      case 'com.fibaro.FGMS001v2':
+      case 'com.fibaro.FGSS001':
+      case 'com.fibaro.doorSensor':
+      case 'com.fibaro.binarySwitch':
+        v = newValue == 1.0 ? 'true' : 'false';
+        break;
+
+      default:
+        v = newValue.toString();
+        break;
+    }
+    return v;
+  }
+
+  String get getOldValue {
+    return _parseValue(oldValue);
+  }
+
+
+  String get getNewValue {
+    return _parseValue(newValue);
+  }
+
+
+  String _parseValue(double value) {
+    String v;
+    switch(device.type) {
+      case 'com.fibaro.doorSensor':
+        v = value.toString() + '%';
+        break;
+
+      case 'com.fibaro.FGMS001v2':
+      case 'com.fibaro.FGSS001':
+        v = value == 0.0 ? 'Breached' : 'Safe';
+        break;
+
+      case 'com.fibaro.binarySwitch':
+        v = value == 0.0 ? 'OFF' : 'ON';
+        break;
+
+      default:
+        v = newValue.toString();
+        break;
+    }
+    return v;
+  }
+}

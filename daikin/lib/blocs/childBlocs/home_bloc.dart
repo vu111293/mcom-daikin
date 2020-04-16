@@ -29,7 +29,8 @@ class HomeBloc {
 
   Function(List<Scene>) get scenesAction => _scenesSubject.sink.add;
 
-
+  List<Device> get getLatestDeviceList => _devicesSubject.stream.value;
+  List<Room> get getLatestRoomList => _roomsSubject.stream.value;
 
   Timer _timerUpdate;
   int _latestTick = 0;

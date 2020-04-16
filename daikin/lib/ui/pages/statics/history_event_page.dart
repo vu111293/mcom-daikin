@@ -1,4 +1,6 @@
 import 'package:daikin/apis/net/business_service.dart';
+import 'package:daikin/blocs/application_bloc.dart';
+import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/utils/hex_color.dart';
@@ -17,11 +19,13 @@ class HistoryEventPage extends StatefulWidget {
 
 class _HistoryEventPageState extends State<HistoryEventPage> {
 
+  ApplicationBloc _appBloc;
   final _historyDataSubject = BehaviorSubject<List<HistoryEventModel>>();
 
 
   @override
   void initState() {
+    _appBloc = BlocProvider.of<ApplicationBloc>(context);
     _loadData();
     super.initState();
   }
@@ -90,9 +94,11 @@ class _HistoryEventPageState extends State<HistoryEventPage> {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Icon(
-                                Icons.access_alarms,
-                                size: 28,
+                              Image.network(
+                                item.device.getDeviceIconURLByValue(item.getValueInString),
+                                width: 28,
+                                height: 28,
+                                fit: BoxFit.contain,
                               ),
                               // Image.network(
                               //   item.icon,
@@ -101,7 +107,7 @@ class _HistoryEventPageState extends State<HistoryEventPage> {
                               //   fit: BoxFit.contain,
                               // ),
                               Text(
-                                'P.Khách',
+                                item.device.name,
                                 // item.deviceID.toString(),
                                 style: ptBody1(context).copyWith(),
                                 textAlign: textAlign,
@@ -112,14 +118,16 @@ class _HistoryEventPageState extends State<HistoryEventPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                'P.Khách',
+                                item.device.name,
                                 // item.deviceID.toString(),
                                 style: ptBody1(context).copyWith(),
                                 textAlign: textAlign,
                               ),
-                              Icon(
-                                Icons.access_alarms,
-                                size: 28,
+                              Image.network(
+                                item.device.getDeviceIconURLByValue(item.getValueInString),
+                                width: 28,
+                                height: 28,
+                                fit: BoxFit.contain,
                               ),
                               // Image.network(
                               //   item.icon,
@@ -136,7 +144,7 @@ class _HistoryEventPageState extends State<HistoryEventPage> {
                       crossAxisAlignment: i % 2 == 0 ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                          'Monion_PK',
+                          item.room.name,
                           // item.deviceID.toString(),
                           style: ptBody1(context).copyWith(color: ptPrimaryColor(context)),
                           textAlign: textAlign,
@@ -148,11 +156,11 @@ class _HistoryEventPageState extends State<HistoryEventPage> {
                               textAlign: textAlign,
                               text: TextSpan(children: [
                                 TextSpan(
-                                  text: 'Breached' + " > ",
+                                  text: item.getOldValue + " > ",
                                   style: ptBody2(context).copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
-                                  text: 'Safe',
+                                  text: item.getNewValue,
                                   style: ptBody2(context).copyWith(fontWeight: FontWeight.bold),
                                 )
                               ])),
@@ -166,7 +174,7 @@ class _HistoryEventPageState extends State<HistoryEventPage> {
             ),
             position: i % 2 == 0 ? TimelineItemPosition.right : TimelineItemPosition.left,
             isFirst: i == 0,
-            isLast: i == historyEventModel.length,
+            isLast: i == items.length,
             iconBackground: ptPrimaryColor(context),
             icon: Icon(
               Icons.remove_red_eye,
@@ -182,6 +190,16 @@ class _HistoryEventPageState extends State<HistoryEventPage> {
 
   Future _loadData() async {
      List<HistoryEventModel> items = await BusinessService().fetchHistoryEventList();
+     items = items.map((item) {
+       Device device = _appBloc.homeBloc.getLatestDeviceList.firstWhere((d) => d.id == item.deviceID, orElse: ()=>null);
+       item.device = device;
+
+       if (device != null) {
+         Room room = _appBloc.homeBloc.getLatestRoomList.firstWhere((r) => r.id == device.roomID, orElse: ()=>null);
+         item.room = room;
+       }
+       return item;
+     }).where((item) => item.device != null).toList();
      _historyDataSubject.sink.add(items);
      return Future;
   }
