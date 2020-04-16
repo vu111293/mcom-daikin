@@ -1,10 +1,12 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
+import 'package:daikin/utils/logCode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gauge/flutter_gauge.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -17,16 +19,17 @@ class AirConditionerDevice extends StatefulWidget {
 
 class _AirConditionerDeviceState extends State<AirConditionerDevice> {
   bool currentStateDevice = false;
-  String name = "Motion";
+  String name = "Máy Lạnh";
   List<dynamic> listImage = [];
   int indexImage = 0;
 
   String modeActive = 'Auto';
   int fanSpeed = 1;
 
-  int valueLight = 20;
-  double min = 16.0;
-  double max = 30.0;
+  int valueTemp = 20;
+  double min = 17.0;
+  double max = 28.0;
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +37,12 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
 
   @override
   Widget build(BuildContext context) {
-    // logCode(widget.device.properties.rows[0]);
+    // logCode(widget.device.properties);
+    var isMode = widget.device.properties.rows[5].elements[0];
+    var isOptionMode = widget.device.properties.rows[6];
+    var isFan = widget.device.properties.rows[7].elements[0];
+    var isOptionFan = widget.device.properties.rows[8];
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -56,13 +64,13 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
-                        child: Text('Mode',
+                        child: Text(isMode.caption,
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.bold)),
                       ),
                       Padding(
                         padding: EdgeInsets.only(right: 16.0),
-                        child: Text(true ? 'Bật' : 'Tắt',
+                        child: Text(isMode.main ? 'Bật' : 'Tắt',
                             style: TextStyle(fontSize: 18.0)),
                       ),
                     ],
@@ -73,43 +81,55 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                   child: Wrap(
                     children: <Widget>[
                       UiButton(
-                        title: 'Auto',
-                        isActive: modeActive == 'Auto',
+                        title: isOptionMode?.elements[0]?.caption ?? 'Auto',
+                        isActive:
+                            modeActive == isOptionMode?.elements[0]?.caption ??
+                                'Auto',
                         onPress: () {
                           setState(() {
-                            modeActive = 'Auto';
+                            modeActive =
+                                isOptionMode?.elements[0]?.caption ?? 'Auto';
                           });
-                          BotToast.showText(text: 'Auto click thành công');
+                          onClickButton(isOptionMode?.elements[0]?.id);
                         },
                       ),
                       UiButton(
-                        title: 'Cold',
-                        isActive: modeActive == 'Cold',
+                        title: isOptionMode?.elements[1]?.caption ?? 'Cold',
+                        isActive:
+                            modeActive == isOptionMode?.elements[1]?.caption ??
+                                'Cold',
                         onPress: () {
                           setState(() {
-                            modeActive = 'Cold';
+                            modeActive =
+                                isOptionMode?.elements[1]?.caption ?? 'Cold';
                           });
-                          BotToast.showText(text: 'Cold click thành công');
+                          onClickButton(isOptionMode?.elements[1]?.id);
                         },
                       ),
                       UiButton(
-                        title: 'Dry',
-                        isActive: modeActive == 'Dry',
+                        title: isOptionMode?.elements[2]?.caption ?? 'Dry',
+                        isActive:
+                            modeActive == isOptionMode?.elements[2]?.caption ??
+                                'Dry',
                         onPress: () {
                           setState(() {
-                            modeActive = 'Dry';
+                            modeActive =
+                                isOptionMode?.elements[2]?.caption ?? 'Dry';
                           });
-                          BotToast.showText(text: 'Dry click thành công');
+                          onClickButton(isOptionMode?.elements[2]?.id);
                         },
                       ),
                       UiButton(
-                        title: 'Fan',
-                        isActive: modeActive == 'Fan',
+                        title: isOptionMode?.elements[3]?.caption ?? 'Fan',
+                        isActive:
+                            modeActive == isOptionMode?.elements[3]?.caption ??
+                                'Fan',
                         onPress: () {
                           setState(() {
-                            modeActive = 'Fan';
+                            modeActive =
+                                isOptionMode?.elements[3]?.caption ?? 'Fan';
                           });
-                          BotToast.showText(text: 'Fan click thành công');
+                          onClickButton(isOptionMode?.elements[3]?.id);
                         },
                       ),
                     ],
@@ -119,9 +139,41 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                 ///UI Fan
                 Container(
                   padding: EdgeInsets.all(16.0),
-                  child: Text('Fan speed',
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(isFan?.caption ?? 'Fan speed',
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold)),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (fanSpeed == 0) {
+                            setState(() {
+                              fanSpeed = 1;
+                            });
+                            onClickButton(isOptionFan?.elements[2]?.id);
+                          } else {
+                            setState(() {
+                              fanSpeed = 0;
+                            });
+                            onClickButton(isOptionFan?.elements[3]?.id);
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(right: 16.0),
+                          child: Text(
+                            fanSpeed == 0 ? 'Tắt tự động' : 'Bật tự động',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                color:
+                                    fanSpeed == 0 ? Colors.red : Colors.green),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Center(
                   child: Wrap(
@@ -133,7 +185,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                           setState(() {
                             fanSpeed = 1;
                           });
-                          BotToast.showText(text: 'Fan click thành công');
+                          onClickButton(isOptionFan?.elements[2]?.id);
                         },
                       ),
                       Ui3Button(
@@ -143,7 +195,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                           setState(() {
                             fanSpeed = 2;
                           });
-                          BotToast.showText(text: 'Fan click thành công');
+                          onClickButton(isOptionFan?.elements[1]?.id);
                         },
                       ),
                       Ui3Button(
@@ -153,7 +205,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                           setState(() {
                             fanSpeed = 3;
                           });
-                          BotToast.showText(text: 'Fan click thành công');
+                          onClickButton(isOptionFan?.elements[0]?.id);
                         },
                       ),
                     ],
@@ -176,7 +228,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                           widthCircle: 0,
                           width: deviceWidth(context) * 0.8,
                           index: 0,
-                          // index: (valueLight / 2).toDouble(),
+                          // index: (valueTemp / 2).toDouble(),
                           start: 0,
                           end: 50,
                           activeColor: currentStateDevice
@@ -195,13 +247,17 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                         alignment: Alignment.center,
                         child: SleekCircularSlider(
                           onChangeStart: (double value) {
+                            // 17 độ thì có id là 4 nên lấy value trừ 13
+                            onClickButton(value.toInt() - 13);
                             setState(() {
-                              valueLight = value.toInt();
+                              valueTemp = value.toInt();
                             });
                           },
                           onChangeEnd: (double value) {
+                            // 17 độ thì có id là 4 nên lấy value trừ 13
+                            onClickButton(value.toInt() - 13);
                             setState(() {
-                              valueLight = value.toInt();
+                              valueTemp = value.toInt();
                             });
                           },
                           appearance: CircularSliderAppearance(
@@ -230,7 +286,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                           ),
                           min: min,
                           max: max,
-                          initialValue: valueLight.toDouble(),
+                          initialValue: valueTemp.toDouble(),
                         ),
                       ),
                       Padding(
@@ -240,15 +296,13 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                           children: <Widget>[
                             RawMaterialButton(
                               onPressed: () {
-                                print(valueLight);
-
-                                if (valueLight.toInt() == min) {
+                                if (valueTemp.toInt() == min) {
                                   return;
                                 } else {
-                                  print(valueLight);
                                   setState(() {
-                                    valueLight = valueLight.toInt() - 1;
+                                    valueTemp = valueTemp.toInt() - 1;
                                   });
+                                  onClickButton(valueTemp.toInt() - 1 - 13);
                                 }
                               },
                               child: Icon(
@@ -261,13 +315,13 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                             ),
                             RawMaterialButton(
                               onPressed: () {
-                                if (valueLight.toInt() == max) {
+                                if (valueTemp.toInt() == max) {
                                   return;
                                 } else {
-                                  print(valueLight);
                                   setState(() {
-                                    valueLight = valueLight.toInt() + 1;
+                                    valueTemp = valueTemp.toInt() + 1;
                                   });
+                                  onClickButton(valueTemp.toInt() + 1 - 13);
                                 }
                               },
                               child: Icon(
@@ -288,6 +342,11 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
             ),
           ),
         ));
+  }
+
+  void onClickButton(int value) {
+    print('onClickButton $value');
+    BusinessService().pressButton(widget.device.id, value);
   }
 
   @override
