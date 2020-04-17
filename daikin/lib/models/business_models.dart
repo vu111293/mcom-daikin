@@ -97,7 +97,7 @@ class Device {
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
 
   DeviceType get getDeviceType {
-    if (type == 'virtual_device' && name.startsWith('AC_')) {
+    if (type == 'virtual_device' && name.toUpperCase().startsWith('AC_')) {
       return DeviceType.AIR_CONDITIONAL;
     }
 
