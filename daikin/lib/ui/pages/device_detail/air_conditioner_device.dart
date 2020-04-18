@@ -38,10 +38,29 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
   @override
   Widget build(BuildContext context) {
     // logCode(widget.device.properties);
-    var isMode = widget.device.properties.rows[5].elements[0];
-    var isOptionMode = widget.device.properties.rows[6];
-    var isFan = widget.device.properties.rows[7].elements[0];
-    var isOptionFan = widget.device.properties.rows[8];
+
+    ///mode
+    var isMode = widget?.device?.properties?.rows
+        ?.firstWhere((x) => x?.elements[0]?.caption
+            ?.toLowerCase()
+            ?.contains('mode'?.toLowerCase()))
+        ?.elements[0];
+    var isModeStatus = widget?.device?.properties?.rows?.firstWhere((x) =>
+        x?.elements[0]?.caption?.toLowerCase()?.contains('on'?.toLowerCase()));
+
+    var isOptionMode = widget?.device?.properties?.rows?.firstWhere((x) => x
+        ?.elements[0]?.caption
+        ?.toLowerCase()
+        ?.contains('auto'?.toLowerCase()));
+
+    ///fan
+    var isFan = widget?.device?.properties?.rows
+        ?.firstWhere((x) => x?.elements[0]?.caption
+            ?.toLowerCase()
+            ?.contains('fan mode'?.toLowerCase()))
+        ?.elements[0];
+    var isOptionFan = widget?.device?.properties?.rows?.firstWhere((x) =>
+        x?.elements[0]?.caption?.toLowerCase()?.contains('low'?.toLowerCase()));
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -64,14 +83,27 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
-                        child: Text(isMode.caption,
+                        child: Text(isMode.caption ?? 'Mode',
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.bold)),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 16.0),
-                        child: Text(isMode.main ? 'Bật' : 'Tắt',
-                            style: TextStyle(fontSize: 18.0)),
+                      GestureDetector(
+                        onTap: () {
+                          if (isMode.main) {
+                            onClickButton(isModeStatus?.elements[1]?.id);
+                          } else {
+                            onClickButton(isModeStatus?.elements[0]?.id);
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(right: 16.0),
+                          child: Text(
+                            isMode.main ? 'Tắt' : 'Bật',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                color: isMode.main ? Colors.red : Colors.green),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -185,7 +217,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                           setState(() {
                             fanSpeed = 1;
                           });
-                          onClickButton(isOptionFan?.elements[2]?.id);
+                          onClickButton(isOptionFan?.elements[0]?.id);
                         },
                       ),
                       Ui3Button(
@@ -205,7 +237,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                           setState(() {
                             fanSpeed = 3;
                           });
-                          onClickButton(isOptionFan?.elements[0]?.id);
+                          onClickButton(isOptionFan?.elements[2]?.id);
                         },
                       ),
                     ],
