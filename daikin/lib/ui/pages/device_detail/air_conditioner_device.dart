@@ -25,6 +25,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
 
   String modeActive = 'Auto';
   int fanSpeed = 1;
+  bool swingStatus = false;
 
   int valueTemp = 20;
   double min = 16.0;
@@ -63,6 +64,12 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
     var isOptionFan = widget?.device?.properties?.rows?.firstWhere((x) =>
         x?.elements[0]?.name?.toLowerCase()?.contains('btnLow'?.toLowerCase()));
 
+    ///Swing
+    var isSwing = widget?.device?.properties?.rows?.firstWhere(
+        (x) => x?.elements[0]?.name
+            ?.toLowerCase()
+            ?.contains('btnSwingOn'?.toLowerCase()),
+        orElse: () => null);
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -279,6 +286,36 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                             ),
                           ),
                         ],
+                      )
+                    : Container(),
+                isSwing != null
+                    ? Center(
+                        child: Wrap(
+                          children: <Widget>[
+                            UiButton(
+                              title:
+                                  isSwing?.elements[0]?.caption ?? 'Swing On',
+                              isActive: swingStatus,
+                              onPress: () {
+                                setState(() {
+                                  swingStatus = true;
+                                });
+                                onClickButton(isSwing?.elements[0]?.id);
+                              },
+                            ),
+                            UiButton(
+                              title:
+                                  isSwing?.elements[1]?.caption ?? 'Swing Off',
+                              isActive: !swingStatus,
+                              onPress: () {
+                                setState(() {
+                                  swingStatus = false;
+                                });
+                                onClickButton(isSwing?.elements[1]?.id);
+                              },
+                            ),
+                          ],
+                        ),
                       )
                     : Container(),
 
