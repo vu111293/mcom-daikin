@@ -27,8 +27,8 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
   int fanSpeed = 1;
 
   int valueTemp = 20;
-  double min = 17.0;
-  double max = 28.0;
+  double min = 16.0;
+  double max = 31.0;
 
   @override
   void initState() {
@@ -40,27 +40,28 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
     // logCode(widget.device.properties);
 
     ///mode
-    var isMode = widget?.device?.properties?.rows
-        ?.firstWhere((x) => x?.elements[0]?.caption
+    var isMode = widget?.device?.properties?.rows?.firstWhere(
+        (x) => x?.elements[0]?.name
             ?.toLowerCase()
-            ?.contains('mode'?.toLowerCase()))
-        ?.elements[0];
+            ?.contains('lblMode'?.toLowerCase()),
+        orElse: () => null);
     var isModeStatus = widget?.device?.properties?.rows?.firstWhere((x) =>
-        x?.elements[0]?.caption?.toLowerCase()?.contains('on'?.toLowerCase()));
+        x?.elements[0]?.name?.toLowerCase()?.contains('btnOn'?.toLowerCase()));
 
     var isOptionMode = widget?.device?.properties?.rows?.firstWhere((x) => x
-        ?.elements[0]?.caption
+        ?.elements[0]?.name
         ?.toLowerCase()
-        ?.contains('auto'?.toLowerCase()));
+        ?.contains('btnAuto'?.toLowerCase()));
 
     ///fan
-    var isFan = widget?.device?.properties?.rows
-        ?.firstWhere((x) => x?.elements[0]?.caption
+    var isFan = widget?.device?.properties?.rows?.firstWhere(
+        (x) => x?.elements[0]?.name
             ?.toLowerCase()
-            ?.contains('fan mode'?.toLowerCase()))
-        ?.elements[0];
+            ?.contains('lblFanMode'?.toLowerCase()),
+        orElse: () => null);
+
     var isOptionFan = widget?.device?.properties?.rows?.firstWhere((x) =>
-        x?.elements[0]?.caption?.toLowerCase()?.contains('low'?.toLowerCase()));
+        x?.elements[0]?.name?.toLowerCase()?.contains('btnLow'?.toLowerCase()));
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -77,172 +78,209 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                 SizedBox(
                   height: 16.0,
                 ),
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(isMode.caption ?? 'Mode',
-                            style: TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold)),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          if (isMode.main) {
-                            onClickButton(isModeStatus?.elements[1]?.id);
-                          } else {
-                            onClickButton(isModeStatus?.elements[0]?.id);
-                          }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(right: 16.0),
-                          child: Text(
-                            isMode.main ? 'Tắt' : 'Bật',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: isMode.main ? Colors.red : Colors.green),
+                isMode != null
+                    ? Column(
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                      isMode.elements[0].caption ?? 'Mode',
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    if (isMode.elements[0].main) {
+                                      onClickButton(
+                                          isModeStatus?.elements[1]?.id);
+                                    } else {
+                                      onClickButton(
+                                          isModeStatus?.elements[0]?.id);
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.only(right: 16.0),
+                                    child: Text(
+                                      isMode.elements[0].main ? 'Tắt' : 'Bật',
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          color: isMode.elements[0].main
+                                              ? Colors.red
+                                              : Colors.green),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Center(
-                  child: Wrap(
-                    children: <Widget>[
-                      UiButton(
-                        title: isOptionMode?.elements[0]?.caption ?? 'Auto',
-                        isActive:
-                            modeActive == isOptionMode?.elements[0]?.caption ??
-                                'Auto',
-                        onPress: () {
-                          setState(() {
-                            modeActive =
-                                isOptionMode?.elements[0]?.caption ?? 'Auto';
-                          });
-                          onClickButton(isOptionMode?.elements[0]?.id);
-                        },
-                      ),
-                      UiButton(
-                        title: isOptionMode?.elements[1]?.caption ?? 'Cold',
-                        isActive:
-                            modeActive == isOptionMode?.elements[1]?.caption ??
-                                'Cold',
-                        onPress: () {
-                          setState(() {
-                            modeActive =
-                                isOptionMode?.elements[1]?.caption ?? 'Cold';
-                          });
-                          onClickButton(isOptionMode?.elements[1]?.id);
-                        },
-                      ),
-                      UiButton(
-                        title: isOptionMode?.elements[2]?.caption ?? 'Dry',
-                        isActive:
-                            modeActive == isOptionMode?.elements[2]?.caption ??
-                                'Dry',
-                        onPress: () {
-                          setState(() {
-                            modeActive =
-                                isOptionMode?.elements[2]?.caption ?? 'Dry';
-                          });
-                          onClickButton(isOptionMode?.elements[2]?.id);
-                        },
-                      ),
-                      UiButton(
-                        title: isOptionMode?.elements[3]?.caption ?? 'Fan',
-                        isActive:
-                            modeActive == isOptionMode?.elements[3]?.caption ??
-                                'Fan',
-                        onPress: () {
-                          setState(() {
-                            modeActive =
-                                isOptionMode?.elements[3]?.caption ?? 'Fan';
-                          });
-                          onClickButton(isOptionMode?.elements[3]?.id);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                          Center(
+                            child: Wrap(
+                              children: <Widget>[
+                                UiButton(
+                                  title: isOptionMode?.elements[0]?.caption ??
+                                      'Auto',
+                                  isActive: modeActive ==
+                                          isOptionMode?.elements[0]?.caption ??
+                                      'Auto',
+                                  onPress: () {
+                                    setState(() {
+                                      modeActive =
+                                          isOptionMode?.elements[0]?.caption ??
+                                              'Auto';
+                                    });
+                                    onClickButton(
+                                        isOptionMode?.elements[0]?.id);
+                                  },
+                                ),
+                                UiButton(
+                                  title: isOptionMode?.elements[1]?.caption ??
+                                      'Cold',
+                                  isActive: modeActive ==
+                                          isOptionMode?.elements[1]?.caption ??
+                                      'Cold',
+                                  onPress: () {
+                                    setState(() {
+                                      modeActive =
+                                          isOptionMode?.elements[1]?.caption ??
+                                              'Cold';
+                                    });
+                                    onClickButton(
+                                        isOptionMode?.elements[1]?.id);
+                                  },
+                                ),
+                                UiButton(
+                                  title: isOptionMode?.elements[2]?.caption ??
+                                      'Dry',
+                                  isActive: modeActive ==
+                                          isOptionMode?.elements[2]?.caption ??
+                                      'Dry',
+                                  onPress: () {
+                                    setState(() {
+                                      modeActive =
+                                          isOptionMode?.elements[2]?.caption ??
+                                              'Dry';
+                                    });
+                                    onClickButton(
+                                        isOptionMode?.elements[2]?.id);
+                                  },
+                                ),
+                                UiButton(
+                                  title: isOptionMode?.elements[3]?.caption ??
+                                      'Fan',
+                                  isActive: modeActive ==
+                                          isOptionMode?.elements[3]?.caption ??
+                                      'Fan',
+                                  onPress: () {
+                                    setState(() {
+                                      modeActive =
+                                          isOptionMode?.elements[3]?.caption ??
+                                              'Fan';
+                                    });
+                                    onClickButton(
+                                        isOptionMode?.elements[3]?.id);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
 
                 ///UI Fan
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(isFan?.caption ?? 'Fan speed',
-                            style: TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold)),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          if (fanSpeed == 0) {
-                            setState(() {
-                              fanSpeed = 1;
-                            });
-                            onClickButton(isOptionFan?.elements[2]?.id);
-                          } else {
-                            setState(() {
-                              fanSpeed = 0;
-                            });
-                            onClickButton(isOptionFan?.elements[3]?.id);
-                          }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(right: 16.0),
-                          child: Text(
-                            fanSpeed == 0 ? 'Tắt tự động' : 'Bật tự động',
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color:
-                                    fanSpeed == 0 ? Colors.red : Colors.green),
+                isFan != null
+                    ? Column(
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                      isFan?.elements[0]?.caption ??
+                                          'Fan speed',
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    if (fanSpeed == 0) {
+                                      setState(() {
+                                        fanSpeed = 1;
+                                      });
+                                      onClickButton(
+                                          isOptionFan?.elements[2]?.id);
+                                    } else {
+                                      setState(() {
+                                        fanSpeed = 0;
+                                      });
+                                      onClickButton(
+                                          isOptionFan?.elements[3]?.id);
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.only(right: 16.0),
+                                    child: Text(
+                                      fanSpeed == 0
+                                          ? 'Tắt tự động'
+                                          : 'Bật tự động',
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          color: fanSpeed == 0
+                                              ? Colors.red
+                                              : Colors.green),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Center(
-                  child: Wrap(
-                    children: <Widget>[
-                      Ui3Button(
-                        mode: 1,
-                        isActive: fanSpeed == 1,
-                        onPress: () {
-                          setState(() {
-                            fanSpeed = 1;
-                          });
-                          onClickButton(isOptionFan?.elements[0]?.id);
-                        },
-                      ),
-                      Ui3Button(
-                        mode: 2,
-                        isActive: fanSpeed == 2,
-                        onPress: () {
-                          setState(() {
-                            fanSpeed = 2;
-                          });
-                          onClickButton(isOptionFan?.elements[1]?.id);
-                        },
-                      ),
-                      Ui3Button(
-                        mode: 3,
-                        isActive: fanSpeed == 3,
-                        onPress: () {
-                          setState(() {
-                            fanSpeed = 3;
-                          });
-                          onClickButton(isOptionFan?.elements[2]?.id);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                          Center(
+                            child: Wrap(
+                              children: <Widget>[
+                                Ui3Button(
+                                  mode: 1,
+                                  isActive: fanSpeed == 1,
+                                  onPress: () {
+                                    setState(() {
+                                      fanSpeed = 1;
+                                    });
+                                    onClickButton(isOptionFan?.elements[0]?.id);
+                                  },
+                                ),
+                                Ui3Button(
+                                  mode: 2,
+                                  isActive: fanSpeed == 2,
+                                  onPress: () {
+                                    setState(() {
+                                      fanSpeed = 2;
+                                    });
+                                    onClickButton(isOptionFan?.elements[1]?.id);
+                                  },
+                                ),
+                                Ui3Button(
+                                  mode: 3,
+                                  isActive: fanSpeed == 3,
+                                  onPress: () {
+                                    setState(() {
+                                      fanSpeed = 3;
+                                    });
+                                    onClickButton(isOptionFan?.elements[2]?.id);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
 
                 ///Ui Temp
                 Padding(
@@ -279,15 +317,13 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                         alignment: Alignment.center,
                         child: SleekCircularSlider(
                           onChangeStart: (double value) {
-                            // 17 độ thì có id là 4 nên lấy value trừ 13
-                            onClickButton(value.toInt() - 13);
+                            onClickButtonTemp(value.toInt());
                             setState(() {
                               valueTemp = value.toInt();
                             });
                           },
                           onChangeEnd: (double value) {
-                            // 17 độ thì có id là 4 nên lấy value trừ 13
-                            onClickButton(value.toInt() - 13);
+                            onClickButtonTemp(value.toInt());
                             setState(() {
                               valueTemp = value.toInt();
                             });
@@ -334,7 +370,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                                   setState(() {
                                     valueTemp = valueTemp.toInt() - 1;
                                   });
-                                  onClickButton(valueTemp.toInt() - 1 - 13);
+                                  onClickButtonTemp(valueTemp.toInt());
                                 }
                               },
                               child: Icon(
@@ -353,7 +389,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                                   setState(() {
                                     valueTemp = valueTemp.toInt() + 1;
                                   });
-                                  onClickButton(valueTemp.toInt() + 1 - 13);
+                                  onClickButtonTemp(valueTemp.toInt());
                                 }
                               },
                               child: Icon(
@@ -374,6 +410,56 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
             ),
           ),
         ));
+  }
+
+  void onClickButtonTemp(int value) {
+    if (value < 20) {
+      var idTemp = widget?.device?.properties?.rows
+          ?.firstWhere((x) => x?.elements[0]?.name
+              ?.toLowerCase()
+              ?.contains('btn16'?.toLowerCase()))
+          ?.elements
+          ?.firstWhere((test) => test.caption == value.toString())
+          ?.id;
+      print('phat: onClickButtonTemp độ $value có id là $idTemp');
+      BusinessService().pressButton(widget.device.id, idTemp);
+    } else {
+      if (value < 24) {
+        var idTemp = widget?.device?.properties?.rows
+            ?.firstWhere((x) => x?.elements[0]?.name
+                ?.toLowerCase()
+                ?.contains('btn20'?.toLowerCase()))
+            ?.elements
+            ?.firstWhere((test) => test.caption == value.toString())
+            ?.id;
+        print('phat: onClickButtonTemp độ $value có id là $idTemp');
+        BusinessService().pressButton(widget.device.id, idTemp);
+      } else {
+        if (value < 28) {
+          var idTemp = widget?.device?.properties?.rows
+              ?.firstWhere((x) => x?.elements[0]?.name
+                  ?.toLowerCase()
+                  ?.contains('btn24'?.toLowerCase()))
+              ?.elements
+              ?.firstWhere((test) => test.caption == value.toString())
+              ?.id;
+          print('phat: onClickButtonTemp độ $value có id là $idTemp');
+          BusinessService().pressButton(widget.device.id, idTemp);
+        } else {
+          if (value < 32) {
+            var idTemp = widget?.device?.properties?.rows
+                ?.firstWhere((x) => x?.elements[0]?.name
+                    ?.toLowerCase()
+                    ?.contains('btn28'?.toLowerCase()))
+                ?.elements
+                ?.firstWhere((test) => test.caption == value.toString())
+                ?.id;
+            print('phat: onClickButtonTemp độ $value có id là $idTemp');
+            BusinessService().pressButton(widget.device.id, idTemp);
+          } else {}
+        }
+      }
+    }
   }
 
   void onClickButton(int value) {
