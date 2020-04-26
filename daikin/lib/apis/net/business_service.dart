@@ -97,6 +97,41 @@ class BusinessService extends BaseLoopBackApi {
     return;
   }
 
+  Future<void> turnOnAlarmDevice(int id) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      id,
+      'action/setArmed'
+    ].join('/');
+    await this.request(
+      method: 'POST',
+      url: url,
+        postBody: {
+          'args': [true]
+        });
+    return;
+  }
+
+  Future<void> turnOffAlarmDevice(int id, String pin) async {
+    final url = [
+      LoopBackConfig.getPath(),
+      LoopBackConfig.getApiVersion(),
+      'devices',
+      id,
+      'action/setArmed'
+    ].join('/');
+    await this.request(
+      method: 'POST',
+      url: url,
+      postBody: {
+        'args': [false, pin]
+      });
+    return;
+  }
+
+
   Future<void> turnOffDevice(int id) async {
     final url = [
       LoopBackConfig.getPath(),

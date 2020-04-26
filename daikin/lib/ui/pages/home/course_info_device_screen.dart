@@ -338,15 +338,6 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
       ),
     );
   }
-
-  Future _showConverSelectionDialog() {
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return DialogExample();
-        });
-  }
 }
 
 class ImageBackdrop extends StatelessWidget {

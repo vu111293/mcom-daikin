@@ -44,21 +44,28 @@ class HomeBloc {
         _latestTick = ret['last'] as int;
       }
       if (ret.containsKey('changes')) {
-        List<Device> deviceList = _devicesSubject.stream.value;
-        (ret['changes'] as List).forEach((item) {
-          if (item['id'] != null && item['value'] != null) {
-            int id = item['id'] as int;
-            String value = item['value'] as String;
-
-            Device d = deviceList.firstWhere((item) => item.id == id, orElse: ()=>null);
-            if (d != null) {
-              d.properties.value = value;
+        try {
+          List<Device> deviceList = _devicesSubject.stream.value;
+          (ret['changes'] as List).forEach((item) {
+            if (item['id'] != null && (item['value'] != null || item['armed'] != null)) {
+              int id = item['id'] as int;
+              Device d = deviceList.firstWhere((item) => item.id == id, orElse: () => null);
+              if (d != null) {
+                if (item['value'] != null) {
+                  d.properties.value = item['value'] as String;
+                }
+                if (item['armed'] != null) {
+                  d.properties.armed = item['armed'] as String;
+                }
+              }
             }
-          }
-        });
-        _devicesSubject.sink.add(deviceList);
-        List<Device> activeDevice = deviceList.where((v) => v.properties.value == 'true').toList();
-        _activeDeviceSubject.sink.add(activeDevice);
+          });
+          _devicesSubject.sink.add(deviceList);
+          List<Device> activeDevice = deviceList.where((v) => v.properties.value == 'true').toList();
+          _activeDeviceSubject.sink.add(activeDevice);
+        } catch (e) {
+          print(e);
+        }
       }
     });
   }
@@ -107,7 +114,7 @@ class HomeBloc {
       }
 
       // Not support alarm device in this time
-      List<Device> sensorItems = devices.where((d) => d.properties.armed?.isNotEmpty == true).toList();
+      List<Device> sensorItems = devices.where((d) => d.getDeviceType == DeviceType.ALARM).toList();
       Room alarmRoom = Room(id: 0, name: 'Alarm', icon: 'alarm', category: 'alarm', devices: sensorItems);
       rooms.add(alarmRoom);
 

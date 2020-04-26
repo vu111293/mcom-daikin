@@ -1,13 +1,7 @@
-import 'dart:math';
-
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
-import 'package:daikin/constants/constants.dart';
-import 'package:daikin/constants/dataTest.dart';
-import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/pages/device_detail/device_view_item.dart';
-import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 
 class DeviceGridView extends StatefulWidget {

@@ -12,7 +12,7 @@ import 'package:flutter_gauge/flutter_gauge.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class AirConditionerDevice extends StatefulWidget {
-  Device device;
+  final Device device;
   AirConditionerDevice({this.device});
   _AirConditionerDeviceState createState() => _AirConditionerDeviceState();
 }

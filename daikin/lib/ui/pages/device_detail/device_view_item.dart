@@ -4,6 +4,7 @@ import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/models/business_models.dart';
+import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/ui/pages/dashboard/rgb_screen.dart';
 import 'package:daikin/ui/pages/device_detail/switch_multi_device.dart';
 import 'package:daikin/ui/pages/device_detail/virtual_device_screen.dart';
@@ -44,8 +45,15 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
   }
 
   Widget buildDevices() {
+    if (_localDevice.getDeviceType == DeviceType.ALARM) {
+      return buildDeviceInCell(
+          widget: widget,
+          defValue: _localDevice.properties.armed == 'true',
+          onAction: (v) {
+            onSwitchAlarmDevice(v, _localDevice);
+          });
     // Đen BTH
-    if (_localDevice.type == "com.fibaro.binarySwitch") {
+    } else if (_localDevice.type == "com.fibaro.binarySwitch") {
       return buildDeviceInCell(
           widget: widget,
           defValue: _localDevice.properties.value == 'true',
@@ -280,6 +288,40 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
       BotToast.showText(text: "Bật thiết bị thành công");
     }
     _appBloc.homeBloc.updateActiveDevice();
+  }
+
+  onSwitchAlarmDevice(bool val, Device device) {
+    if (val) {
+      showAlertWithTitleDialog(
+          context,
+          'Xác nhận', 'Cảm Biến ${device.name} đang mở, bạn có chắc sẽ bật An Ninh không?',
+          firstAction: 'CÓ',
+          secondAction: 'KHÔNG',
+          firstTap: () async {
+            await BusinessService().turnOnAlarmDevice(device.id);
+            Navigator.pop(context);
+            BotToast.showText(text: "Tắt thiết bị thành công");
+            setState(() {
+              device.properties.armed = val.toString();
+            });
+          },
+          secondTap: () {
+            Navigator.pop(context);
+          });
+    } else {
+      showPinCodeDialog(context, (pin) async {
+        try {
+          await BusinessService().turnOffAlarmDevice(device.id, pin);
+          Navigator.pop(context);
+          BotToast.showText(text: "Tắt thiết bị thành công");
+          setState(() {
+            device.properties.armed = val.toString();
+          });
+        } catch(e) {
+          showAlertDialog(context, 'Mã PIN không đúng');
+        }
+      });
+    }
   }
 
   onSwitchDevice(bool val, Device device) {

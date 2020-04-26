@@ -2,7 +2,9 @@ import 'package:daikin/apis/local/room_local_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/image_picker.dart';
+import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
+import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 enum DialogAction {
   cancel,
@@ -299,6 +301,57 @@ Future showChangeIconDialog(BuildContext context, String selectedId, {Function o
       builder: (context) => ChangeImageAssetsDialog(list: assetIconList, selectedId: selectedId, onSave: onSave, onCancel: onCancel));
 }
 
+
+Future<bool> showPinCodeDialog(BuildContext context, Function(String) onDone) async {
+  Color primaryColor = Theme.of(context).primaryColor;
+  return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+            Text('Vui lòng nhập PIN', style: TextStyle(fontSize: 18.0)),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 24.0),
+              child: PinCodeTextField(
+                  autofocus: true,
+                  hideCharacter: true,
+                  maskCharacter: "•",
+                  highlight: true,
+                  highlightColor: ptPrimaryColor(context),
+                  defaultBorderColor: HexColor(appBorderColor),
+                  hasTextBorderColor: ptPrimaryColor(context),
+                  maxLength: 4,
+                  onDone: onDone,
+                  pinBoxWidth: deviceWidth(context) / 8,
+                  pinBoxHeight: 50,
+                  wrapAlignment: WrapAlignment.center,
+                  pinBoxDecoration:
+                  ProvidedPinBoxDecoration.defaultPinBoxDecoration,
+                  pinBoxRadius: 5,
+                  pinTextStyle: ptHeadline(context),
+                  pinTextAnimatedSwitcherTransition:
+                  ProvidedPinBoxTextAnimation.scalingTransition,
+                  pinTextAnimatedSwitcherDuration:
+                  Duration(milliseconds: 300),
+                  keyboardType: TextInputType.number
+              ))
+          ],),
+          actions: <Widget>[
+            FlatButton(
+                child: Text('Cancel', style: TextStyle(color: primaryColor)),
+                onPressed: () => Navigator.pop(ctx, true)),
+//            FlatButton(
+//                child: Text(confirmLabel != null ? confirmLabel : 'Ok', style: TextStyle(color: primaryColor)),
+//                onPressed: confirmTap != null ? confirmTap : () => Navigator.pop(ctx, true)),
+          ],
+        );
+      });
+}
+
+
 //class TextFieldAlertDialog extends StatelessWidget {
 //  TextEditingController _textFieldController = TextEditingController();
 //
@@ -324,59 +377,4 @@ Future showChangeIconDialog(BuildContext context, String selectedId, {Function o
 //        });
 //  }
 //}
-
-
-class DialogExample extends StatefulWidget {
-  @override
-  _DialogExampleState createState() => new _DialogExampleState();
-}
-
-class _DialogExampleState extends State<DialogExample> {
-  String _text = "initial";
-  TextEditingController _c;
-  @override
-  initState() {
-    _c = new TextEditingController();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Center(
-          child: new Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          new Text(_text),
-          new RaisedButton(
-            onPressed: () {
-              showDialog(
-                  child: new Dialog(
-                    child: new Column(
-                      children: <Widget>[
-                        new TextField(
-                          decoration: new InputDecoration(hintText: "Update Info"),
-                          controller: _c,
-                        ),
-                        new FlatButton(
-                          child: new Text("Save"),
-                          onPressed: () {
-                            setState(() {
-                              this._text = _c.text;
-                            });
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  context: context);
-            },
-            child: new Text("Show Dialog"),
-          )
-        ],
-      )),
-    );
-  }
-}
 
