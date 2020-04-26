@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
@@ -8,24 +10,46 @@ import 'package:daikin/utils/logCode.dart';
 import 'package:flutter/material.dart';
 
 class VirtualDeviceScreen extends StatefulWidget {
-  Device device;
+  final Device device;
   VirtualDeviceScreen({this.device});
   _VirtualDeviceScreenState createState() => _VirtualDeviceScreenState();
 }
 
 class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
+
   bool currentStateDevice = false;
   String name = "Motion";
   List<dynamic> listImage = [];
   int indexImage = 0;
+
+  Device _device;
+  Timer _timer;
+
   @override
   void initState() {
+    _device = widget.device;
+    _autoRefreshDevice();
     super.initState();
+  }
+
+  _autoRefreshDevice() async {
+    _timer = Timer.periodic(Duration(seconds: 5), (t) async {
+      Device d = await BusinessService().getDeviceDetail(_device.id);
+      setState(() {
+        _device = d;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // logCode(widget.device.properties.rows[0]);
+    // logCode(_device.properties.rows[0]);
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -36,12 +60,12 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
               children: <Widget>[
                 BaseHeaderScreen(
                   isBack: true,
-                  title: upFirstText(widget.device.name),
+                  title: upFirstText(_device.name),
                 ),
                 // BaseHeaderScreen(
                 //     hideProfile: true,
                 //     isSubHeader: true,
-                //     title: upFirstText(widget.device.name),
+                //     title: upFirstText(_device.name),
                 //     // subTitle: currentStateDevice
                 //     //     ? "Thiết bị của bạn đang hoạt động"
                 //     //     : "Thiết bị chưa hoạt động" //: widget.item.subTitle,
@@ -49,7 +73,7 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
                 SizedBox(
                   height: 16.0,
                 ),
-                getRowUI(widget.device.properties.rows),
+                getRowUI(_device.properties.rows),
               ],
             ),
           ),
@@ -123,7 +147,7 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
         child: InkWell(
           splashColor: Colors.white24,
           onTap: () {
-            BusinessService().pressButton(widget.device.id, element.id);
+            BusinessService().pressButton(_device.id, element.id);
             BotToast.showText(text: 'Click thành công');
           },
           child: Container(
@@ -147,10 +171,5 @@ class _VirtualDeviceScreenState extends State<VirtualDeviceScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

@@ -61,7 +61,7 @@ class HomeBloc {
             }
           });
           _devicesSubject.sink.add(deviceList);
-          List<Device> activeDevice = deviceList.where((v) => v.properties.value == 'true').toList();
+          List<Device> activeDevice = deviceList.where((v) => v.getDeviceType != DeviceType.ALARM && v.properties.value == 'true').toList();
           _activeDeviceSubject.sink.add(activeDevice);
         } catch (e) {
           print(e);

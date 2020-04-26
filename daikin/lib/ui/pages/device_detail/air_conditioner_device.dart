@@ -1,4 +1,5 @@
-import 'package:bot_toast/bot_toast.dart';
+import 'dart:async';
+
 import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
@@ -6,7 +7,6 @@ import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
-import 'package:daikin/utils/logCode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gauge/flutter_gauge.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -31,45 +31,66 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
   double min = 16.0;
   double max = 31.0;
 
+  Device _device;
+  Timer _timer;
+
   @override
   void initState() {
+    _device = widget.device;
+    _autoRefreshDevice();
     super.initState();
+  }
+
+  _autoRefreshDevice() async {
+    _timer = Timer.periodic(Duration(seconds: 5), (t) async {
+      Device d = await BusinessService().getDeviceDetail(_device.id);
+      setState(() {
+        _device = d;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // logCode(widget.device.properties);
+    // logCode(_device.properties);
 
     ///mode
-    var isMode = widget?.device?.properties?.rows?.firstWhere(
+    var isMode = _device?.properties?.rows?.firstWhere(
         (x) => x?.elements[0]?.name
             ?.toLowerCase()
             ?.contains('lblMode'?.toLowerCase()),
         orElse: () => null);
-    var isModeStatus = widget?.device?.properties?.rows?.firstWhere((x) =>
+    var isModeStatus = _device?.properties?.rows?.firstWhere((x) =>
         x?.elements[0]?.name?.toLowerCase()?.contains('btnOn'?.toLowerCase()));
 
-    var isOptionMode = widget?.device?.properties?.rows?.firstWhere((x) => x
+    var isOptionMode = _device?.properties?.rows?.firstWhere((x) => x
         ?.elements[0]?.name
         ?.toLowerCase()
         ?.contains('btnAuto'?.toLowerCase()));
 
     ///fan
-    var isFan = widget?.device?.properties?.rows?.firstWhere(
+    var isFan = _device?.properties?.rows?.firstWhere(
         (x) => x?.elements[0]?.name
             ?.toLowerCase()
             ?.contains('lblFanMode'?.toLowerCase()),
         orElse: () => null);
 
-    var isOptionFan = widget?.device?.properties?.rows?.firstWhere((x) =>
+    var isOptionFan = _device?.properties?.rows?.firstWhere((x) =>
         x?.elements[0]?.name?.toLowerCase()?.contains('btnLow'?.toLowerCase()));
 
     ///Swing
-    var isSwing = widget?.device?.properties?.rows?.firstWhere(
+    var isSwing = _device?.properties?.rows?.firstWhere(
         (x) => x?.elements[0]?.name
             ?.toLowerCase()
             ?.contains('btnSwingOn'?.toLowerCase()),
         orElse: () => null);
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -80,11 +101,36 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
               children: <Widget>[
                 BaseHeaderScreen(
                   isBack: true,
-                  title: upFirstText(widget.device.name),
+                  title: upFirstText(_device.name),
                 ),
                 SizedBox(
                   height: 16.0,
                 ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                  child: Column(children: <Widget>[
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(padding: EdgeInsets.only(right: 12.0), child: Text('Actual', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))),
+                          Expanded(child: Text(_device.properties.lblActual ?? '', textAlign: TextAlign.end, style: TextStyle(fontSize: 18.0)))
+                        ]),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(padding: EdgeInsets.only(right: 12.0), child: Text('Status', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))),
+                          Expanded(child: Text(_device.properties.lblStatus ?? '', textAlign: TextAlign.end, style: TextStyle(fontSize: 18.0)))
+                        ])
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(padding: EdgeInsets.only(right: 12.0), child: Text('Mode', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))),
+                        Expanded(child: Text(_device.properties.lblMode ?? '', textAlign: TextAlign.end, style: TextStyle(fontSize: 18.0)))
+                      ])
+                ],),),
                 isMode != null
                     ? Column(
                         children: <Widget>[
@@ -451,48 +497,44 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
 
   void onClickButtonTemp(int value) {
     if (value < 20) {
-      var idTemp = widget?.device?.properties?.rows
+      var idTemp = _device?.properties?.rows
           ?.firstWhere((x) => x?.elements[0]?.name
               ?.toLowerCase()
               ?.contains('btn16'?.toLowerCase()))
           ?.elements
           ?.firstWhere((test) => test.caption == value.toString())
           ?.id;
-      print('phat: onClickButtonTemp độ $value có id là $idTemp');
-      BusinessService().pressButton(widget.device.id, idTemp);
+      BusinessService().pressButton(_device.id, idTemp);
     } else {
       if (value < 24) {
-        var idTemp = widget?.device?.properties?.rows
+        var idTemp = _device?.properties?.rows
             ?.firstWhere((x) => x?.elements[0]?.name
                 ?.toLowerCase()
                 ?.contains('btn20'?.toLowerCase()))
             ?.elements
             ?.firstWhere((test) => test.caption == value.toString())
             ?.id;
-        print('phat: onClickButtonTemp độ $value có id là $idTemp');
-        BusinessService().pressButton(widget.device.id, idTemp);
+        BusinessService().pressButton(_device.id, idTemp);
       } else {
         if (value < 28) {
-          var idTemp = widget?.device?.properties?.rows
+          var idTemp = _device?.properties?.rows
               ?.firstWhere((x) => x?.elements[0]?.name
                   ?.toLowerCase()
                   ?.contains('btn24'?.toLowerCase()))
               ?.elements
               ?.firstWhere((test) => test.caption == value.toString())
               ?.id;
-          print('phat: onClickButtonTemp độ $value có id là $idTemp');
-          BusinessService().pressButton(widget.device.id, idTemp);
+          BusinessService().pressButton(_device.id, idTemp);
         } else {
           if (value < 32) {
-            var idTemp = widget?.device?.properties?.rows
+            var idTemp = _device?.properties?.rows
                 ?.firstWhere((x) => x?.elements[0]?.name
                     ?.toLowerCase()
                     ?.contains('btn28'?.toLowerCase()))
                 ?.elements
                 ?.firstWhere((test) => test.caption == value.toString())
                 ?.id;
-            print('phat: onClickButtonTemp độ $value có id là $idTemp');
-            BusinessService().pressButton(widget.device.id, idTemp);
+            BusinessService().pressButton(_device.id, idTemp);
           } else {}
         }
       }
@@ -500,13 +542,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
   }
 
   void onClickButton(int value) {
-    print('onClickButton $value');
-    BusinessService().pressButton(widget.device.id, value);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    BusinessService().pressButton(_device.id, value);
   }
 }
 

@@ -136,6 +136,9 @@ DeviceProperty _$DevicePropertyFromJson(Map<String, dynamic> json) {
     armed: json['armed'] as String,
     dead: json['dead'] as String,
     deadReason: json['deadReason'] as String,
+    lblMode: json['ui.lblMode.value'] as String,
+    lblActual: json['ui.lblActual.value'] as String,
+    lblStatus: json['ui.lblStatus.value'] as String,
   );
 }
 
@@ -202,6 +205,9 @@ Map<String, dynamic> _$DevicePropertyToJson(DeviceProperty instance) =>
       'isLight': instance.isLight,
       'lastColorSet': instance.lastColorSet,
       'armed': instance.armed,
+      'ui.lblMode.value': instance.lblMode,
+      'ui.lblStatus.value': instance.lblStatus,
+      'ui.lblActual.value': instance.lblActual,
     };
 
 DeviceAction _$DeviceActionFromJson(Map<String, dynamic> json) {

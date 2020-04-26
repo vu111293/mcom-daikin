@@ -243,10 +243,15 @@ class DeviceProperty {
 //  "lastColorSet": "100,255,50,255",
   String isLight;
   String lastColorSet;
-
-
   // For sensor only
   String armed;
+
+  @JsonKey(name: 'ui.lblMode.value')
+  String lblMode;
+  @JsonKey(name: 'ui.lblStatus.value')
+  String lblStatus;
+  @JsonKey(name: 'ui.lblActual.value')
+  String lblActual;
 
   DeviceProperty(
       {this.UIMessageSendTime,
@@ -308,7 +313,10 @@ class DeviceProperty {
       this.lastColorSet,
       this.armed,
       this.dead,
-      this.deadReason});
+      this.deadReason,
+      this.lblMode,
+      this.lblActual,
+      this.lblStatus});
 
   factory DeviceProperty.fromJson(Map<String, dynamic> json) {
     final item = _$DevicePropertyFromJson(json);

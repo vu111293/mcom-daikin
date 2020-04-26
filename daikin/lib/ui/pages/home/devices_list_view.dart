@@ -405,12 +405,17 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
           firstAction: 'CÓ',
           secondAction: 'KHÔNG',
           firstTap: () async {
-            await BusinessService().turnOnAlarmDevice(device.id);
-            Navigator.pop(context);
-            BotToast.showText(text: "Tắt thiết bị thành công");
-            setState(() {
-              device.properties.armed = val.toString();
-            });
+            try {
+              await BusinessService().turnOnAlarmDevice(device.id);
+              Navigator.pop(context);
+              BotToast.showText(text: "Tắt thiết bị thành công");
+              setState(() {
+                device.properties.armed = val.toString();
+              });
+            } catch(e) {
+              Navigator.pop(context);
+              showAlertDialog(context, 'Xảy ra lỗi, không thể bật an ninh.');
+            }
           },
           secondTap: () {
             Navigator.pop(context);
