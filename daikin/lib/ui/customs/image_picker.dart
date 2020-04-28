@@ -23,19 +23,19 @@ class ImagePickerWidget extends StatefulWidget {
   final Function onClick;
   final bool overrideBkg;
 
-  ImagePickerWidget({
-    Key key,
-    this.context,
-    this.size = 50,
-    this.resourceUrl,
-    this.circle = false,
-    this.isEdit = false,
-    this.isRemove = false,
-    this.avatar = false,
-    this.onFileChanged,
-    this.onClick,
-    this.overrideBkg = true
-  }) : super(key: key);
+  ImagePickerWidget(
+      {Key key,
+      this.context,
+      this.size = 50,
+      this.resourceUrl,
+      this.circle = false,
+      this.isEdit = false,
+      this.isRemove = false,
+      this.avatar = false,
+      this.onFileChanged,
+      this.onClick,
+      this.overrideBkg = true})
+      : super(key: key);
   final Function(String, String) onFileChanged;
 
   @override
@@ -126,7 +126,8 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   _handleUploadImage(localImage) async {
     var image0 = image;
     showWaitingDialog(context, message: "Đang tải ảnh lên...");
-    String link = await ImageService().uploadImageToImgur(localImage).then((onValue) {
+    String link =
+        await ImageService().uploadImageToImgur(localImage).then((onValue) {
       print('dasd $onValue');
       if (widget.onFileChanged != null) {
         widget.onFileChanged(onValue, 'image');
@@ -156,7 +157,10 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Future imageSelectorCamera() async {
     Navigator.pop(context);
     var cameraFile = await ImagePicker.pickImage(
-        source: ImageSource.camera, maxWidth: 800.0, maxHeight: 800.0, imageQuality: 80);
+        source: ImageSource.camera,
+        maxWidth: 500.0,
+        maxHeight: 500.0,
+        imageQuality: 80);
     _handleUploadImage(cameraFile);
   }
 
@@ -164,7 +168,10 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Future imageSelectorGallery() async {
     Navigator.pop(context);
     var galleryFile = await ImagePicker.pickImage(
-        source: ImageSource.gallery, maxWidth: 800.0, maxHeight: 800.0, imageQuality: 80);
+        source: ImageSource.gallery,
+        maxWidth: 500.0,
+        maxHeight: 500.0,
+        imageQuality: 80);
     _handleUploadImage(galleryFile);
   }
 
