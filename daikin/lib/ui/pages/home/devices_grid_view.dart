@@ -5,9 +5,11 @@ import 'package:daikin/ui/pages/device_detail/device_view_item.dart';
 import 'package:flutter/material.dart';
 
 class DeviceGridView extends StatefulWidget {
-  List<Device> devices = [];
 
-  DeviceGridView({this.devices});
+  List<Device> devices = [];
+  final bool isAlarm;
+
+  DeviceGridView({this.devices, this.isAlarm});
 
   @override
   DeviceGridViewState createState() => DeviceGridViewState();
@@ -64,6 +66,7 @@ class DeviceGridViewState extends State<DeviceGridView> with TickerProviderState
                 );
                 animationController.forward();
                 return DeviceViewItem(
+                  isAlarm: widget.isAlarm,
                   device: devices[index],
                   animation: animation,
                   animationController: animationController,

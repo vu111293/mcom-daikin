@@ -124,7 +124,7 @@ class Device {
         }
         return 'http://mhome-showroom.ddns.net/fibaro/n_vicons/$iconName.png';
 
-//      case 'com.fibaro.FGMS001':
+      case 'com.fibaro.FGMS001':
       case 'com.fibaro.FGMS001v2':
 //        iconName = 'motion_sensor';
 //        prefix = properties.value == 'true' ? 'motion_sensor100.png' : 'motion_sensor0.png';
@@ -472,6 +472,9 @@ class Room {
     if (category == 'alarm') return 'http://mhome-showroom.ddns.net/fibaro/icons/User1008/User1008100.png';
     return 'http://mhome-showroom.ddns.net/fibaro/icons/rooms/$icon.png';
   }
+
+
+  bool get isAlarmRoom => id == 0;
 }
 
 Map<String, dynamic> _defSensorToJson(RoomDefaultSensor item) => item.toJson();

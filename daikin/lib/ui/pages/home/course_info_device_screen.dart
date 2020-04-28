@@ -215,6 +215,7 @@ class _CourseInfoDeviceScreenState extends State<CourseInfoDeviceScreen>
                                         ),
                                         DeviceGridView(
                                           devices: widget.room.devices,
+                                          isAlarm: widget.room.isAlarmRoom
                                         ),
                                       ],
                                     ),

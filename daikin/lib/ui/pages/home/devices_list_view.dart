@@ -191,7 +191,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
   }
 
   Widget buildDevice(Device device) {
-    if (device.getDeviceType == DeviceType.ALARM) {
+    if (device.getDeviceType == DeviceType.ALARM && widget.room.isAlarmRoom) {
       return InkWell(
 //          onTap: () {
 //            routingToDevicePage(device);
@@ -221,7 +221,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
               ),
               title: Text(upFirstText(device.name)),
               trailing: Switch(
-                value: device.properties.armed == 'true' ? true : false,
+                value: device.properties.armed == 'true',
                 onChanged: (val) {
                   onSwitchAlarmDevice(val, device);
                 },
@@ -399,40 +399,51 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
 
   onSwitchAlarmDevice(bool val, Device device) {
     if (val) {
-      showAlertWithTitleDialog(
-          context,
-          'Xác nhận', 'Cảm Biến ${device.name} đang mở, bạn có chắc sẽ bật An Ninh không?',
-          firstAction: 'CÓ',
-          secondAction: 'KHÔNG',
-          firstTap: () async {
-            try {
-              await BusinessService().turnOnAlarmDevice(device.id);
+      if (device.properties.value == 'false') {
+        _switchOnAlarm(device);
+      } else {
+        showAlertWithTitleDialog(
+            context,
+            'Xác nhận', 'Cảm Biến ${device.name} đang mở, bạn có chắc sẽ bật An Ninh không?',
+            firstAction: 'CÓ',
+            secondAction: 'KHÔNG',
+            firstTap: () {
               Navigator.pop(context);
-              BotToast.showText(text: "Tắt thiết bị thành công");
-              setState(() {
-                device.properties.armed = val.toString();
-              });
-            } catch(e) {
+              _switchOnAlarm(device);
+            },
+            secondTap: () {
               Navigator.pop(context);
-              showAlertDialog(context, 'Xảy ra lỗi, không thể bật an ninh.');
-            }
-          },
-          secondTap: () {
-            Navigator.pop(context);
-          });
+            });
+      }
     } else {
       showPinCodeDialog(context, (pin) async {
-        try {
-          await BusinessService().turnOffAlarmDevice(device.id, pin);
-          Navigator.pop(context);
-          BotToast.showText(text: "Tắt thiết bị thành công");
-          setState(() {
-            device.properties.armed = val.toString();
-          });
-        } catch(e) {
-          showAlertDialog(context, 'Mã PIN không đúng');
-        }
+        _switchOffAlarm(device, pin);
       });
+    }
+  }
+
+  _switchOnAlarm(Device device) async {
+    try {
+      await BusinessService().turnOnAlarmDevice(device.id);
+      BotToast.showText(text: "Bật an ninh thành công");
+      setState(() {
+        device.properties.armed = 'true';
+      });
+    } catch(e) {
+      showAlertDialog(context, 'Xảy ra lỗi, không thể bật an ninh.');
+    }
+  }
+
+  _switchOffAlarm(Device device, String pin) async {
+    try {
+      await BusinessService().turnOffAlarmDevice(device.id, pin);
+      Navigator.pop(context);
+      BotToast.showText(text: "Tắt thiết bị thành công");
+      setState(() {
+        device.properties.armed = 'false';
+      });
+    } catch(e) {
+      showAlertDialog(context, 'Mã PIN không đúng');
     }
   }
 

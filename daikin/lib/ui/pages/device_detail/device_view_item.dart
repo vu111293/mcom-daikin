@@ -17,11 +17,13 @@ import 'air_conditioner_device.dart';
 import 'blinds_device_screen.dart';
 
 class DeviceViewItem extends StatefulWidget {
-  const DeviceViewItem({Key key, this.device, this.animationController, this.animation}) : super(key: key);
 
   final Device device;
+  final bool isAlarm;
   final AnimationController animationController;
   final Animation<dynamic> animation;
+
+  const DeviceViewItem({Key key, this.isAlarm, this.device, this.animationController, this.animation}) : super(key: key);
 
   @override
   _DeviceViewItemState createState() => _DeviceViewItemState();
@@ -45,10 +47,11 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
   }
 
   Widget buildDevices() {
-    if (_localDevice.getDeviceType == DeviceType.ALARM) {
+    if (_localDevice.getDeviceType == DeviceType.ALARM && widget.isAlarm) {
       return buildDeviceInCell(
           widget: widget,
-          defValue: _localDevice.properties.armed == 'true',
+          armed: _localDevice.properties.armed == 'true',
+          defValue: _localDevice.properties.value == 'true',
           onAction: (v) {
             onSwitchAlarmDevice(v, _localDevice);
           });
@@ -128,7 +131,7 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
     );
   }
 
-  Widget buildDeviceInCell({DeviceViewItem widget, bool defValue, Function onAction, Function onTap}) {
+  Widget buildDeviceInCell({DeviceViewItem widget, bool defValue, bool armed, Function onAction, Function onTap}) {
     bool isDead = widget.device.properties.dead == "true";
 
     return AnimatedBuilder(
@@ -189,7 +192,7 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
                                         child: Transform.scale(
                                           scale: 1.0,
                                           child: Switch(
-                                            value: defValue,
+                                            value: armed ?? defValue,
                                             onChanged: (value) {
                                               onAction(value);
                                               // setState(() {
@@ -292,40 +295,51 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
 
   onSwitchAlarmDevice(bool val, Device device) {
     if (val) {
-      showAlertWithTitleDialog(
-          context,
-          'Xác nhận', 'Cảm Biến ${device.name} đang mở, bạn có chắc sẽ bật An Ninh không?',
-          firstAction: 'CÓ',
-          secondAction: 'KHÔNG',
-          firstTap: () async {
-            try {
-              await BusinessService().turnOnAlarmDevice(device.id);
+      if (device.properties.value == 'false') {
+        _switchOnAlarm(device);
+      } else {
+        showAlertWithTitleDialog(
+            context,
+            'Xác nhận', 'Cảm Biến ${device.name} đang mở, bạn có chắc sẽ bật An Ninh không?',
+            firstAction: 'CÓ',
+            secondAction: 'KHÔNG',
+            firstTap: () {
               Navigator.pop(context);
-              BotToast.showText(text: "Tắt thiết bị thành công");
-              setState(() {
-                device.properties.armed = val.toString();
-              });
-            } catch(e) {
+              _switchOnAlarm(device);
+            },
+            secondTap: () {
               Navigator.pop(context);
-              showAlertDialog(context, 'Xảy ra lỗi, không thể bật an ninh.');
-            }
-          },
-          secondTap: () {
-            Navigator.pop(context);
-          });
+            });
+      }
     } else {
       showPinCodeDialog(context, (pin) async {
-        try {
-          await BusinessService().turnOffAlarmDevice(device.id, pin);
-          Navigator.pop(context);
-          BotToast.showText(text: "Tắt thiết bị thành công");
-          setState(() {
-            device.properties.armed = val.toString();
-          });
-        } catch(e) {
-          showAlertDialog(context, 'Mã PIN không đúng');
-        }
+        _switchOffAlarm(device, pin);
       });
+    }
+  }
+
+  _switchOnAlarm(Device device) async {
+    try {
+      await BusinessService().turnOnAlarmDevice(device.id);
+      BotToast.showText(text: "Bật an ninh thành công");
+      setState(() {
+        device.properties.armed = 'true';
+      });
+    } catch(e) {
+      showAlertDialog(context, 'Xảy ra lỗi, không thể bật an ninh.');
+    }
+  }
+
+  _switchOffAlarm(Device device, String pin) async {
+    try {
+      await BusinessService().turnOffAlarmDevice(device.id, pin);
+      Navigator.pop(context);
+      BotToast.showText(text: "Tắt thiết bị thành công");
+      setState(() {
+        device.properties.armed = 'false';
+      });
+    } catch(e) {
+      showAlertDialog(context, 'Mã PIN không đúng');
     }
   }
 
