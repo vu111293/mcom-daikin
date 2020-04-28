@@ -25,6 +25,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
 
   String modeActive = 'Auto';
   int fanSpeed = 1;
+  bool powerStatus = false;
   bool swingStatus = false;
 
   int valueTemp = 20;
@@ -107,30 +108,70 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                   height: 16.0,
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                  child: Column(children: <Widget>[
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(padding: EdgeInsets.only(right: 12.0), child: Text('Actual', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))),
-                          Expanded(child: Text(_device.properties.lblActual ?? '', textAlign: TextAlign.end, style: TextStyle(fontSize: 18.0)))
-                        ]),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(padding: EdgeInsets.only(right: 12.0), child: Text('Status', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))),
-                          Expanded(child: Text(_device.properties.lblStatus ?? '', textAlign: TextAlign.end, style: TextStyle(fontSize: 18.0)))
-                        ])
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Padding(
+                                padding: EdgeInsets.only(right: 12.0),
+                                child: Text('Actual',
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold))),
+                            Expanded(
+                                child: Text(_device.properties.lblActual ?? '',
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(fontSize: 18.0)))
+                          ]),
+                      Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Padding(
+                                    padding: EdgeInsets.only(right: 12.0),
+                                    child: Text('Status',
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold))),
+                                Expanded(
+                                    child: Text(
+                                        _device.properties.lblStatus ?? '',
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(fontSize: 18.0)))
+                              ])),
+                    ],
                   ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Padding(padding: EdgeInsets.only(right: 12.0), child: Text('Mode', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))),
-                        Expanded(child: Text(_device.properties.lblMode ?? '', textAlign: TextAlign.end, style: TextStyle(fontSize: 18.0)))
-                      ])
-                ],),),
+                ),
+                Center(
+                  child: Wrap(
+                    children: <Widget>[
+                      UiButton(
+                        title: isModeStatus?.elements[0]?.caption ?? 'On',
+                        isActive: powerStatus,
+                        onPress: () {
+                          setState(() {
+                            powerStatus = true;
+                          });
+                          onClickButton(isModeStatus?.elements[0]?.id);
+                        },
+                      ),
+                      UiButton(
+                        title: isModeStatus?.elements[1]?.caption ?? 'Off',
+                        isActive: !powerStatus,
+                        onPress: () {
+                          setState(() {
+                            powerStatus = false;
+                          });
+                          onClickButton(isModeStatus?.elements[1]?.id);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
                 isMode != null
                     ? Column(
                         children: <Widget>[
@@ -146,28 +187,28 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold)),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    if (isMode.elements[0].main) {
-                                      onClickButton(
-                                          isModeStatus?.elements[1]?.id);
-                                    } else {
-                                      onClickButton(
-                                          isModeStatus?.elements[0]?.id);
-                                    }
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.only(right: 16.0),
-                                    child: Text(
-                                      isMode.elements[0].main ? 'Tắt' : 'Bật',
-                                      style: TextStyle(
-                                          fontSize: 18.0,
-                                          color: isMode.elements[0].main
-                                              ? Colors.red
-                                              : Colors.green),
-                                    ),
-                                  ),
-                                ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     if (isMode.elements[0].main) {
+                                //       onClickButton(
+                                //           isModeStatus?.elements[1]?.id);
+                                //     } else {
+                                //       onClickButton(
+                                //           isModeStatus?.elements[0]?.id);
+                                //     }
+                                //   },
+                                //   child: Container(
+                                //     padding: EdgeInsets.only(right: 16.0),
+                                //     child: Text(
+                                //       isMode.elements[0].main ? 'Tắt' : 'Bật',
+                                //       style: TextStyle(
+                                //           fontSize: 18.0,
+                                //           color: isMode.elements[0].main
+                                //               ? Colors.red
+                                //               : Colors.green),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
