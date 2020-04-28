@@ -21,7 +21,8 @@ void main() {
       statusBarIconBrightness: Brightness.dark,
     ));
     runApp(MyApp(
-      appConf: AppConfig(appName: 'Daikin SmartHome', appType: AppType.PRODUCTION),
+      appConf:
+          AppConfig(appName: 'Daikin SmartHome', appType: AppType.PRODUCTION),
     ));
   }, onError: Crashlytics.instance.recordError);
 }
