@@ -155,13 +155,18 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
   //display image selected from camera
   Future imageSelectorCamera() async {
-    Navigator.pop(context);
-    var cameraFile = await ImagePicker.pickImage(
-        source: ImageSource.camera,
-        maxWidth: 500.0,
-        maxHeight: 500.0,
-        imageQuality: 80);
-    _handleUploadImage(cameraFile);
+    try {
+      Navigator.pop(context);
+      var cameraFile = await ImagePicker.pickImage(
+          source: ImageSource.camera,
+          maxWidth: 500.0,
+          maxHeight: 500.0,
+          imageQuality: 80);
+      _handleUploadImage(cameraFile);
+    } catch(e) {
+      print(e);
+      showAlertDialog(context, 'Xãy ra lỗi khi tải ảnh. ${e.toString()}');
+    }
   }
 
   //display image selected from gallery

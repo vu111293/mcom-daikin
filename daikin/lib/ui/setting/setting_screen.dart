@@ -6,6 +6,7 @@ import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/models/user.dart';
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/ui/customs/image_picker.dart';
 import 'package:daikin/ui/pages/login/login_screen.dart';
 import 'package:daikin/ui/pages/statics/history_event_page.dart';

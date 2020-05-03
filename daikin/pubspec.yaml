@@ -11,7 +11,7 @@ description: mcom-daikin flutter project
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.12.1+27
+version: 1.13.2+29
 
 environment:
   sdk: ">=2.2.0 <3.0.0"
@@ -28,7 +28,7 @@ dependencies:
   extended_image: ^0.5.3
   rflutter_alert: ^1.0.2
   device_info: ^0.4.2+1
-  image_picker: 0.6.3+1
+  image_picker: 0.6.3+3
   json_annotation: ^3.0.1
   firebase_auth: ^0.15.3
   firebase_core: ^0.4.0+8
