@@ -174,7 +174,7 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Text(
-                                '${upFirstText(widget.device.name)}',
+                                '${upFirstText(widget.device.getName)}',
                                 textAlign: TextAlign.left,
                                 style: ptBody1(context).copyWith(color: defValue ? HexColor(appColor) : HexColor(appBorderColor)),
                                 maxLines: 1,
@@ -300,7 +300,7 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
       } else {
         showAlertWithTitleDialog(
             context,
-            'Xác nhận', 'Cảm Biến ${device.name} đang mở, bạn có chắc sẽ bật An Ninh không?',
+            'Xác nhận', 'Cảm Biến ${device.getName} đang mở, bạn có chắc sẽ bật An Ninh không?',
             firstAction: 'CÓ',
             secondAction: 'KHÔNG',
             firstTap: () {

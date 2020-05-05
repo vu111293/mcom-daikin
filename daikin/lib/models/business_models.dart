@@ -96,6 +96,13 @@ class Device {
 
   Map<String, dynamic> toJson() => _$DeviceToJson(this);
 
+  String get getName {
+    if (name?.toUpperCase()?.startsWith('AC_') == true) {
+      return name.substring(3);
+    }
+    return name;
+  }
+
   DeviceType get getDeviceType {
     if (properties.armed != null) {
       return DeviceType.ALARM;

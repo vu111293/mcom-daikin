@@ -283,7 +283,7 @@ class DeviceView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 16),
                         child: Text(
-                          upFirstText(device.name),
+                          upFirstText(device.getName),
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,

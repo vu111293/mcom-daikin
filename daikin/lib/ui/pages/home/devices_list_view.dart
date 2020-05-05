@@ -219,7 +219,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
                   )
                 ],
               ),
-              title: Text(upFirstText(device.name)),
+              title: Text(upFirstText(device.getName)),
               trailing: Switch(
                 value: device.properties.armed == 'true',
                 onChanged: (val) {
@@ -261,7 +261,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
                         )
                 ],
               ),
-              title: Text(upFirstText(device.name)),
+              title: Text(upFirstText(device.getName)),
               trailing: Switch(
                 value: device.properties.value == 'true' ? true : false,
                 onChanged: (val) {
@@ -298,7 +298,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
                         )
                 ],
               ),
-              title: Text(upFirstText(device.name)),
+              title: Text(upFirstText(device.getName)),
               trailing: Switch(
                 value: device.properties.value == '1' ? true : false,
                 onChanged: (val) {
@@ -340,7 +340,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
                         )
                 ],
               ),
-              title: Text(upFirstText(device.name)),
+              title: Text(upFirstText(device.getName)),
               trailing: Switch(
                 value: int.parse(device.properties.value) > 0 ? true : false,
                 onChanged: (val) {
@@ -383,7 +383,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
                     )
             ],
           ),
-          title: Text(upFirstText(device.name)),
+          title: Text(upFirstText(device.getName)),
           // trailing: Switch(
           //   value: true,
           //   onChanged: (val) {
@@ -404,7 +404,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
       } else {
         showAlertWithTitleDialog(
             context,
-            'Xác nhận', 'Cảm Biến ${device.name} đang mở, bạn có chắc sẽ bật An Ninh không?',
+            'Xác nhận', 'Cảm Biến ${device.getName} đang mở, bạn có chắc sẽ bật An Ninh không?',
             firstAction: 'CÓ',
             secondAction: 'KHÔNG',
             firstTap: () {

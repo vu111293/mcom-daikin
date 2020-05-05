@@ -102,7 +102,7 @@ class _AirConditionerDeviceState extends State<AirConditionerDevice> {
               children: <Widget>[
                 BaseHeaderScreen(
                   isBack: true,
-                  title: upFirstText(_device.name),
+                  title: upFirstText(_device.getName),
                 ),
                 SizedBox(
                   height: 16.0,
