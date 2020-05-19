@@ -22,7 +22,7 @@ void main() {
     ));
     runApp(MyApp(
       appConf:
-          AppConfig(appName: 'Daikin SmartHome', appType: AppType.PRODUCTION),
+          AppConfig(appName: 'Daikin Smart Living', appType: AppType.PRODUCTION),
     ));
   }, onError: Crashlytics.instance.recordError);
 }

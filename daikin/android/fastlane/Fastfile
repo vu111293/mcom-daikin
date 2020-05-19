@@ -1,0 +1,44 @@
+
+fastlane_version "2.68.0"
+default_platform :android
+
+platform :android do
+    desc "Submit a new Beta Build to Firebase app distribution"
+    lane :beta do
+        # build the release variant
+        # sh "./build-android.sh"
+        # build_android_app(task: "assembleRelease")
+
+        # # changelog from a txt file is passed as the release note
+        changelog = File.read("../../changelog.txt")
+
+        # submit build to firebase app distribution
+        firebase_app_distribution(
+            app: "1:747360359366:android:85da7dafc270db13b598c7",
+            # testers: "tester1@company.com, tester2@company.com",
+            release_notes: changelog,
+            groups: "mcom",
+            firebase_cli_path: "/usr/local/bin/firebase",
+            apk_path: "/Users/vulequoc/Projects/home/mcom-daikin/daikin/build/app/outputs/apk/release/app-release.apk"
+        )
+
+        # send slack success notification after distribution completes
+        # slack(
+        #   slack_url: "https://hooks.slack.com/services/...",
+        #   message: "New build is available for testing",
+        #   success: true,
+        #   default_payloads: [:git_branch, :last_git_commit_message]
+        # )
+    end
+
+    # # handle exception
+    # error do |lane, exception, options|
+    #     # send slack failure notification
+    #     slack(
+    #         message: "Build failed with exception: #{exception}",
+    #         slack_url: "https://hooks.slack.com/services/...",
+    #         success: false,
+    #         default_payloads: [:git_branch, :last_git_commit_message]
+    #     )
+    # end
+end
