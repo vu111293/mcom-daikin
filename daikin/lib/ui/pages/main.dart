@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
@@ -11,6 +12,7 @@ import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/ui/setting/profile_screen.dart';
 import 'package:daikin/ui/setting/setting_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -31,8 +33,9 @@ class _MainScreenState extends State<MainScreen>
   void initState() {
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
     _appBloc.fetchUserData();
-    super.initState();
     _tabController = TabController(vsync: this, length: tabLength);
+    _registerFireBaseMessage();
+    super.initState();
   }
 
   @override
@@ -97,5 +100,11 @@ class _MainScreenState extends State<MainScreen>
         ),
       ),
     );
+  }
+
+  _registerFireBaseMessage() async {
+    String token = await FirebaseMessaging().getToken();
+    print('fcm token $token');
+    UserService().registerNotify(_appBloc.authBloc.currentUser.id, token);
   }
 }

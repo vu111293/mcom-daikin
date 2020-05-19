@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:daikin/apis/core/auth_service.dart';
+import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
@@ -44,9 +45,14 @@ class SettingScreenState extends State<SettingScreen>
   }
 
   handleLogout() {
+    _unregisterFireBaseMessage();
     LoopBackAuth().clear();
     Routing().popToRoot(context);
     Routing().navigate2(context, LoginScreen(), replace: true);
+  }
+
+  _unregisterFireBaseMessage() async {
+    UserService().unregisterNotify(_appBloc.authBloc.currentUser.id);
   }
 
   @override

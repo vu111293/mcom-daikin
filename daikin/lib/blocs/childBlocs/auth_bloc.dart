@@ -8,7 +8,7 @@ class AuthBloc {
   AuthService _authService;
   LUser currentUser;
   final _authSubject = new BehaviorSubject<LUser>();
-  Observable get authObservable => _authSubject.stream;
+  ValueStream get authObservable => _authSubject.stream;
 
   // signal
   Function(LUser) get updateUserAction => _authSubject.sink.add;

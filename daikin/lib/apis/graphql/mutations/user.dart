@@ -31,3 +31,38 @@ String updateUser = r'''
     }
   }
 ''';
+
+String registerNotify = r'''
+  mutation RegisterNoti($id: ID!, $deviceToken: String!) {
+    registerNotify (_id: $id, deviceToken: $deviceToken){   
+      _id,
+      uid,
+      fullName,
+      phone,
+      email,
+      avatar, 
+      role,
+      permissions,
+      deviceToken
+    }
+  }
+''';
+
+String unregisterNotify = r'''
+  mutation UnregisterNoti($id: ID!) {
+    unregisterNotify (_id: $id){   
+      _id,
+      uid,
+      fullName,
+      phone,
+      email,
+      avatar, 
+      role,
+      permissions,
+      deviceToken
+    }
+  }
+''';
+
+
+

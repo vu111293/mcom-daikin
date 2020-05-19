@@ -15,7 +15,7 @@ class ApplicationBloc implements BlocBase {
 
   int countChangedMonney = 1;
 
-  Observable<Exception> setupExceptionStream;
+  ValueStream<Exception> setupExceptionStream;
 
   final _deviceIdSubject = BehaviorSubject<String>();
 

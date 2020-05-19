@@ -27,7 +27,7 @@ class UserService extends BaseLoopBackApi {
   }
 
   Future<LUser> login(String fbToken) async {
-    final result = await graphqlAPI.login(fbToken);
+    final result = await graphQLAPI.login(fbToken);
     String token = (result.data as dynamic)['login']['token'];
     print('Access token: $token');
 
@@ -40,17 +40,38 @@ class UserService extends BaseLoopBackApi {
   }
 
   Future<LUser> me() async {
-    final result = await graphqlAPI.me();
+    final result = await graphQLAPI.me();
     print(jsonEncode((result.data as dynamic)['me']));
     var user = LUser.fromJson((result.data as dynamic)['me']);
     return user;
   }
 
-  Future<LUser> updateUser(
-      String _id, String fullName, String email, String avatar) async {
+  Future<LUser> updateUser(String _id, String fullName, String email, String avatar) async {
     try {
-      final result = await graphqlAPI.updateUser(_id, fullName, email, avatar);
+      final result = await graphQLAPI.updateUser(_id, fullName, email, avatar);
       var user = LUser.fromJson((result.data as dynamic)['updateUser']);
+      return user;
+    } catch (err) {
+      print(err);
+      throw err;
+    }
+  }
+
+  Future<LUser> registerNotify(String _id, String deviceToken) async {
+    try {
+      final result = await graphQLAPI.registerNotify(_id, deviceToken);
+      var user = LUser.fromJson((result.data as dynamic)['registerNotify']);
+      return user;
+    } catch (err) {
+      print(err);
+      throw err;
+    }
+  }
+
+  Future<LUser> unregisterNotify(String _id) async {
+    try {
+      final result = await graphQLAPI.unregisterNotify(_id);
+      var user = LUser.fromJson((result.data as dynamic)['unregisterNotify']);
       return user;
     } catch (err) {
       print(err);

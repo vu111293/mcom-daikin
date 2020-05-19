@@ -7,10 +7,6 @@ import 'package:flutter/material.dart';
 
 import 'dart:async';
 
-import 'package:graphql/src/link/link.dart';
-import 'package:graphql/src/link/operation.dart';
-import 'package:graphql/src/link/fetch_result.dart';
-
 typedef GetToken = FutureOr<String> Function();
 
 class AuthLink extends Link {
@@ -38,7 +34,6 @@ class AuthLink extends Link {
             }
 
             controller = StreamController<FetchResult>(onListen: onListen);
-
             return controller.stream;
           },
         );
@@ -47,7 +42,7 @@ class AuthLink extends Link {
 }
 
 
-class GraphqlConfig {
+class GraphQLConfig {
   static String _path = 'https://daikin.mcom.app/graphql';
 
   static GraphQLClient client() {

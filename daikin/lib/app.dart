@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/pages/splash/splash_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,7 +24,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   ApplicationBloc _appBloc;
-//  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 //  var _primaryColor = HexColor(appColor); // This will hold the value of the app main color
   double fontSize = 15.0;
 
@@ -32,7 +35,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     PaintingBinding.instance.imageCache.maximumSizeBytes = 10485760 * 20; // 2
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-//    initFCM();
+    initFCM();
   }
 
   @override
@@ -88,31 +91,34 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   // FCM session
 
-//  void initFCM() async {
-//    await _firebaseMessaging.subscribeToTopic("main");
-//
-//    _firebaseMessaging.configure(
-//      onMessage: (Map<String, dynamic> message) async {
-//        print("bambi FCM onMessage: $message");
+  void initFCM() async {
+    await _firebaseMessaging.subscribeToTopic("main");
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("bambi FCM onMessage: $message");
+        String msg = getMessageFromNotify(message);
+        showToast(msg);
 //        _handleMessageOnLaunch(message, AppStartMode.LIVE);
-//      },
-//      onLaunch: (Map<String, dynamic> message) async {
-//        print("phat onLaunch: $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("phat onLaunch: $message");
 //        _handleMessageOnLaunch(message, AppStartMode.LAUNCH);
-//      },
-//      onResume: (Map<String, dynamic> message) async {
-//        print("bambi FCM onResume: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("bambi FCM onResume: $message");
+        String msg = getMessageFromNotify(message);
+        showToast(msg);
 //        _handleMessageOnLaunch(message, AppStartMode.RESUME);
-//      },
-//    );
-//
-//    _firebaseMessaging
-//        .requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true));
-//    _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
-//      print("bambi FCM Settings registered: $settings");
-//    });
-//  }
-//
+      },
+    );
+
+    _firebaseMessaging.requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
+      print("bambi FCM Settings registered: $settings");
+    });
+  }
+
 //  _handleMessageOnLaunch(Map<String, dynamic> message, AppStartMode startMode) {
 //    String type = Platform.isAndroid ? message['data']['type'] : message['type'];
 //    print('type $type ');
@@ -202,20 +208,32 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 //    }
 //  }
 //
-//  String getMessageFromNotify(Map<String, dynamic> message) {
-//    String title = Platform.isAndroid ? message['notification']['title'] : message['aps']['alert']['title'];
-//    String content = Platform.isAndroid ? message['notification']['body'] : message['aps']['alert']['body'];
-//    if (title != null && title.isNotEmpty && content != null && content.isNotEmpty) {
-//      return '$title: $content';
-//    }
-//    if (title != null && title.isNotEmpty) {
-//      return title;
-//    }
-//    if (content != null && content.isNotEmpty) {
-//      return content;
-//    }
-//    return null;
-//  }
+  String getMessageFromNotify(Map<String, dynamic> message) {
+    String title = Platform.isAndroid ? message['notification']['title'] : message['aps']['alert']['title'];
+    String content = Platform.isAndroid ? message['notification']['body'] : message['aps']['alert']['body'];
+    if (title != null && title.isNotEmpty && content != null && content.isNotEmpty) {
+      return '$title: $content';
+    }
+    if (title != null && title.isNotEmpty) {
+      return title;
+    }
+    if (content != null && content.isNotEmpty) {
+      return content;
+    }
+    return null;
+  }
+
+  void showToast(String msg) {
+      var cancelToastFuc = BotToast.showSimpleNotification(
+      title: 'Thông báo',
+      subTitle: msg,
+      duration: Duration(seconds: 5),
+      onTap: () async {
+//        _openQuestion(id);
+//        cancelToastFuc();
+      });
+  }
+
 //
 //  String getQuestionIdFromMessage(Map<String, dynamic> message) {
 //    return Platform.isAndroid ? message['data']['id'] : message['id'];
@@ -248,6 +266,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 //      });
 //    }
 //  }
+
+
 }
 
 enum AppStartMode { RESUME, LAUNCH, LIVE }

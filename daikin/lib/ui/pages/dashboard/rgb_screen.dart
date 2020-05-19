@@ -38,7 +38,7 @@ class RgbScreenState extends State<RgbScreen> {
 //  int get _latestBlue => _redColorSubject.stream.value;
   StreamSubscription _rgbChangedSub;
 
-  Stream<List<int>> get combineRGBChangedEvent => Observable.combineLatest3(
+  Stream<List<int>> get combineRGBChangedEvent => Rx.combineLatest3(
           _redColorSubject.debounceTime(Duration(milliseconds: 500)),
           _greenColorSubject.debounceTime(Duration(milliseconds: 500)),
           _blueColorSubject.debounceTime(Duration(milliseconds: 500)),
