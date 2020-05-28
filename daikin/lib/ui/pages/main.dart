@@ -4,12 +4,10 @@ import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
-import 'package:daikin/ui/pages/analytics/analytic_screen.dart';
+import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/ui/pages/dashboard/dashboard_screen.dart';
-import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/home/home_screen.dart';
 import 'package:daikin/ui/route/route/routing.dart';
-import 'package:daikin/ui/setting/profile_screen.dart';
 import 'package:daikin/ui/setting/setting_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -31,11 +29,26 @@ class _MainScreenState extends State<MainScreen>
   int tabLength = 3;
   @override
   void initState() {
-    _appBloc = BlocProvider.of<ApplicationBloc>(context);
-    _appBloc.fetchUserData();
-    _tabController = TabController(vsync: this, length: tabLength);
-    _registerFireBaseMessage();
+      _appBloc = BlocProvider.of<ApplicationBloc>(context);
+      _tabController = TabController(vsync: this, length: tabLength);
+      _registerFireBaseMessage();
+      prepareAppData();
     super.initState();
+  }
+
+  prepareAppData() async {
+    await Future.delayed(Duration(seconds: 1));
+    showWaitingDialog(context);
+    try {
+      await _appBloc.fetchUserData();
+    } catch (e) {
+      Navigator.pop(context);
+      showAlertDialog(context, 'Không thể lấy dữ liệu từ server. Vui lòng thử lại sau.\nLỗi ${e.toString()}', confirmTap: () {
+        exit(0);
+      });
+    } finally {
+      Navigator.pop(context);
+    }
   }
 
   @override

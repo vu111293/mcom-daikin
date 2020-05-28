@@ -46,6 +46,7 @@ class HomeBloc {
       if (ret.containsKey('changes')) {
         try {
           List<Device> deviceList = _devicesSubject.stream.value;
+          if (deviceList == null) deviceList = [];
           (ret['changes'] as List).forEach((item) {
             if (item['id'] != null && (item['value'] != null || item['armed'] != null)) {
               int id = item['id'] as int;
@@ -70,14 +71,14 @@ class HomeBloc {
     });
   }
 
+  Future fetchHomeData({int tryTime = 10}) async {
+    try {
+      var results = await Future.wait([
+        _businessService.getRoomList(),
+        _businessService.getDeviceList(),
+        _businessService.getSceneList(),
+        _businessService.getDeviceIcons()]);
 
-  Future fetchHomeData() {
-    return Future.wait([
-      _businessService.getRoomList(),
-      _businessService.getDeviceList(),
-      _businessService.getSceneList(),
-      _businessService.getDeviceIcons()
-    ]).then((results) {
       List<Room> rooms = results[0];
       List<Device> devices = results[1];
       List<Scene> scenes = results[2];
@@ -86,15 +87,13 @@ class HomeBloc {
       devices = devices.where((item) => item.name?.startsWith('A_') == false).toList();
       rooms = rooms.where((item) => item.name?.startsWith('A_') == false).toList();
       scenes = scenes.where((item) => item.name?.startsWith('A_') == false).toList();
-      
+
       // map device icon to device
       devices.forEach((d) {
         String iconId = d.properties.deviceIcon?.toString();
-        DeviceIcon dIcon = (d.type == 'virtual_device' ? mIcons['virtualDevice'] : mIcons['device'])
-            .firstWhere((i) =>  i.id.toString() == iconId, orElse: ()=>null);
+        DeviceIcon dIcon = (d.type == 'virtual_device' ? mIcons['virtualDevice'] : mIcons['device']).firstWhere((i) => i.id.toString() == iconId, orElse: () => null);
         d.iconName = d.type == 'virtual_device' ? dIcon?.iconName : dIcon?.iconSetName;
       });
-
 
       devices = devices.where((v) => v.visible).toList();
       List<Device> activeDevice = devices.where((v) => v.properties.value == 'true').toList();
@@ -124,13 +123,13 @@ class HomeBloc {
         RoomDefaultSensor defSensors = r.defaultSensors;
         if (defSensors != null) {
           if (defSensors.temperature > 0) {
-            r.temperature = devices.firstWhere((d) => d.id == defSensors.temperature, orElse: ()=>null);
+            r.temperature = devices.firstWhere((d) => d.id == defSensors.temperature, orElse: () => null);
           }
           if (defSensors.humidity > 0) {
-            r.humidity = devices.firstWhere((d) => d.id == defSensors.humidity, orElse: ()=>null);
+            r.humidity = devices.firstWhere((d) => d.id == defSensors.humidity, orElse: () => null);
           }
           if (defSensors.light > 0) {
-            r.light = devices.firstWhere((d) => d.id == defSensors.light, orElse: ()=>null);
+            r.light = devices.firstWhere((d) => d.id == defSensors.light, orElse: () => null);
           }
         }
 
@@ -138,9 +137,7 @@ class HomeBloc {
       });
 
       // Parse camera devices
-      List<Device> cameraDevices = devices
-          .where((item) => item.getDeviceType == DeviceType.CAMERA_IP)
-          .toList();
+      List<Device> cameraDevices = devices.where((item) => item.getDeviceType == DeviceType.CAMERA_IP).toList();
 
       cameraDevices = cameraDevices.map((c) {
         c.devices = devices.where((item) => item.roomID == c.roomID).toList();
@@ -154,9 +151,20 @@ class HomeBloc {
       _activeDeviceSubject.sink.add(activeDevice);
       _devicesSubject.sink.add(devices);
       // _devicesSubject.sink.add(results[1]);
-    }).catchError((e) {
-      print('Fetch home data error: $e');
-    });
+      return Future;
+    } catch (e) {
+      return _handleErrorExp(e: e, tryTime: tryTime);
+    }
+  }
+
+  _handleErrorExp({e, int tryTime}) async {
+    print('Fetch home data error: $e');
+    if (tryTime > 0) {
+      await Future.delayed(Duration(seconds: 2));
+      return fetchHomeData(tryTime: tryTime - 1);
+    } else {
+      throw e;
+    }
   }
 
   updateActiveDevice() {

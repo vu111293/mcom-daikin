@@ -11,6 +11,7 @@
 //"viewXml":false,
 //"configXml":false,
 
+import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/apis/local/room_local_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -127,9 +128,9 @@ class Device {
     switch(type) {
       case 'virtual_device':
         if (iconName == null) {
-          return 'http://mhome-showroom.ddns.net/fibaro/n_vicons/light.png';
+          return '${LoopBackAuth().staticIconPath}/fibaro/n_vicons/light.png';
         }
-        return 'http://mhome-showroom.ddns.net/fibaro/n_vicons/$iconName.png';
+        return '${LoopBackAuth().staticIconPath}/fibaro/n_vicons/$iconName.png';
 
       case 'com.fibaro.FGMS001':
       case 'com.fibaro.FGMS001v2':
@@ -145,10 +146,10 @@ class Device {
         break;
 
       case 'com.fibaro.sonosSpeaker':
-        return 'http://mhome-showroom.ddns.net/plugins/com.fibaro.sonosSpeaker/img/xhdpi/icon.png';
+        return '${LoopBackAuth().staticIconPath}/plugins/com.fibaro.sonosSpeaker/img/xhdpi/icon.png';
 
       case 'com.fibaro.FGRGBW441M':
-        return 'http://mhome-showroom.ddns.net/fibaro/en/img/rgb/rgb_19.png';
+        return '${LoopBackAuth().staticIconPath}/fibaro/en/img/rgb/rgb_19.png';
 
       case 'com.fibaro.FGKF601':
         prefix = '${iconName}-locked.png';
@@ -176,8 +177,8 @@ class Device {
 
     }
 
-    print('http://mhome-showroom.ddns.net/fibaro/icons/$iconName/$prefix');
-    return 'http://mhome-showroom.ddns.net/fibaro/icons/$iconName/$prefix';
+    print('${LoopBackAuth().staticIconPath}/fibaro/icons/$iconName/$prefix');
+    return '${LoopBackAuth().staticIconPath}/fibaro/icons/$iconName/$prefix';
   }
 }
 
@@ -476,8 +477,8 @@ class Room {
   }
 
   String get getRoomIconURL {
-    if (category == 'alarm') return 'http://mhome-showroom.ddns.net/fibaro/icons/User1008/User1008100.png';
-    return 'http://mhome-showroom.ddns.net/fibaro/icons/rooms/$icon.png';
+    if (category == 'alarm') return '${LoopBackAuth().staticIconShowRoomPath}/fibaro/icons/User1008/User1008100.png';
+    return '${LoopBackAuth().staticIconPath}/fibaro/icons/rooms/$icon.png';
   }
 
 

@@ -36,9 +36,10 @@ class CenterBloc {
     this.getCenter();
   }
 
-  setCurrentCenter(dynamic data) async {
-    changeCurrentCenter(data['name']);
+  Future setCurrentCenter(dynamic data) async {
+    await changeCurrentCenter(data['name']);
     _loopBackAuth.setCurrentCenter(data);
+    return Future;
   }
 
   getCurrentCenter() async {

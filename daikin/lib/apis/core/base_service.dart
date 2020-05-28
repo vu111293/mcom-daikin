@@ -19,19 +19,11 @@ abstract class BaseLoopBackApi {
     String method,
     String url,
     Map<String, dynamic> urlParams,
-//        Map<String, dynamic> routeParams,
-//        LoopBackFilter filter,
     Map<String, dynamic> postBody,
     bool isWrapBaseResponse = false,
     isUsingAdminToken = false,
+    String customToken = ''
   }) async {
-//    if (routeParams != null) {
-//      routeParams.keys.forEach((String key) {
-//        url = url.replaceAll(
-//            new RegExp(":" + key, caseSensitive: false), routeParams[key]);
-//      });
-//    }
-
     _httpClient.idleTimeout = new Duration(seconds: 60);
     var uri = Uri.parse(url);
     if (urlParams != null && urlParams.length > 0) {
@@ -42,45 +34,22 @@ abstract class BaseLoopBackApi {
       });
       uri = uri.replace(queryParameters: urlParams);
     }
-    HttpClientRequest request =
-        await _httpClient.openUrl(method, uri).catchError((e) {
+    HttpClientRequest request = await _httpClient.openUrl(method, uri).catchError((e) {
       print("request error: " + e.toString());
-      throw NetServiceError(
-          type: ErrorType.NETWORK_ERROR, message: 'Net error');
+      throw NetServiceError(type: ErrorType.NETWORK_ERROR, message: 'Net error');
     })
           ..headers.contentType = ContentType.json
           ..headers.chunkedTransferEncoding = false;
 
-    if (auth?.accessToken != null && auth?.accessToken?.isNotEmpty == true) {
-      request.headers.add('x-token', auth.accessToken);
-    }
+//    if (auth?.accessToken != null && auth?.accessToken?.isNotEmpty == true) {
+//      request.headers.add('x-token', auth.accessToken);
+//    }
 
-    if (auth?.bearToken?.isNotEmpty == true) {
+    if (customToken?.isNotEmpty == true) {
+      request.headers.add(HttpHeaders.authorizationHeader, customToken);
+    } else if (auth?.bearToken?.isNotEmpty == true) {
       request.headers.add(HttpHeaders.authorizationHeader, auth.bearToken);
     }
-
-//    if (this.auth != null &&
-//        this.auth.accessToken() != null &&
-//        this.auth.accessToken().id != null &&
-//        this.auth.accessToken().id.isNotEmpty &&
-//        !isUsingAdminToken) {
-//      var tokenId = "Bearer " + this.auth.accessToken().id;
-//      print("Phat TOKEN " + tokenId);
-//      if (tokenId != null) {
-//        request.headers.add(HttpHeaders.authorizationHeader, tokenId);
-//      }
-//    } else if (isUsingAdminToken) {
-//      var tokenId =
-//          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXlsb2FkIjp7ImVtcGxveWVlX2lkIjoiMDJkMWMxZDAtN2I5Ny0xMWU5LTgzN2EtZWQ3ZDVhNjRkMTI2Iiwicm9sZSI6IlNVUEVSQURNSU4ifSwicm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOiIyMDE5LTEwLTEwVDA2OjIxOjQ4LjQ5NVoifQ.P2K7uE6mlEtxNUQIVbdc3c_PqNc6fweBbCGsaT3cTmw";
-//      print("Phat admin token " + tokenId);
-//      if (tokenId != null) {
-//        request.headers.add(HttpHeaders.authorizationHeader, tokenId);
-//      }
-//    }
-
-//    if (filter != null) {
-//      request.headers.add('filter', json.encode(filter));
-//    }
 
     if (postBody != null) {
       var stringBody = json.encode(postBody);
@@ -89,13 +58,13 @@ abstract class BaseLoopBackApi {
     }
 
     HttpClientResponse response = await request.close().catchError((e) {
+      print(e);
       throw new NetServiceError(
           type: ErrorType.NETWORK_ERROR,
           message: 'Connection error, please try later.');
     });
 
-    print(
-        'Phat API: ${url.toString()} -> ${response.statusCode.toString()} -> ${response.reasonPhrase.toString()}');
+    print('Phat API: ${url.toString()} -> ${response.statusCode.toString()} -> ${response.reasonPhrase.toString()}');
     if (postBody != null) {
       postBody.keys.forEach((k) {
         print('$k : ${postBody[k]}');
@@ -116,8 +85,7 @@ abstract class BaseLoopBackApi {
         ContentType.json.toString()) {
       throw new NetServiceError(
           type: ErrorType.UNSUPPORT_TYPE,
-          message: 'Server returned an unsupported content type: '
-              '${response.headers.contentType} from ${request.uri}');
+          message: 'Server returned an unsupported content type: ''${response.headers.contentType} from ${request.uri}');
     }
 
     if (response.statusCode == HttpStatus.noContent) {

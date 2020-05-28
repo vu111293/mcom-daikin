@@ -25,10 +25,12 @@ class ImageService extends BaseLoopBackApi {
     try {
       print("Start Upload");
       Dio dio = new Dio();
-      FormData formdata = new FormData(); // just like JS
-      formdata.add("image", new UploadFileInfo(image, image.path));
+      String name = image.path.split('/').last;
+      FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(image.path, filename: name),
+      });
       var response = await dio.post(LoopBackConfig.getApiImgur(),
-          data: formdata,
+          data: formData,
           options: Options(
               headers: {"Authorization": LoopBackConfig.getSecretImgur()},
               method: 'POST',

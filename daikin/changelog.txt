@@ -1,0 +1,9 @@
+
+Change logs
+
+# 1.14.0+35
+Support try again when fetch home data
+Change default center device define
+
+# 1.13.6+33
+Fix load new center device

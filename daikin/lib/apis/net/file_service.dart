@@ -46,13 +46,13 @@ class FileService extends BaseLoopBackApi {
       'Authorization':
           "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXlsb2FkIjp7ImVtcGxveWVlX2lkIjoiMDJkMWMxZDAtN2I5Ny0xMWU5LTgzN2EtZWQ3ZDVhNjRkMTI2Iiwicm9sZSI6IlNVUEVSQURNSU4ifSwicm9sZSI6IlNVUEVSQURNSU4iLCJleHAiOiIyMDE5LTEwLTEwVDA2OjIxOjQ4LjQ5NVoifQ.P2K7uE6mlEtxNUQIVbdc3c_PqNc6fweBbCGsaT3cTmw"
     };
-    FormData formdata = new FormData(); // just like JS
-    formdata.add(type, new UploadFileInfo(file, basename(file.path)));
-    //print("FormData: " + formdata.toString());
-    print("URL: " + url);
+    String name = file.path.split('/').last;
+    FormData formData = FormData.fromMap({
+      "image": await MultipartFile.fromFile(file.path, filename: name),
+    });
     try {
       var response = await dio.post(url,
-          data: formdata,
+          data: formData,
           options: Options(method: 'POST', responseType: ResponseType.json // or ResponseType.JSON
               ));
 

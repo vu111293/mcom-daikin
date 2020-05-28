@@ -551,18 +551,25 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                 padding: EdgeInsets.only(left: 8.0),
                 child: RaisedButton(
                   child: Text(
-                    "kích hoạt".toUpperCase(),
+                    'KÍCH HOẠT',
                     style: ptButton(context).copyWith(color: Colors.white),
                   ),
                   textColor: Colors.white,
                   color: ptPrimaryColor(context),
-                  onPressed: () {
-                    _appBloc.setCurrentCenter(data);
-                    Navigator.pop(context);
-                    showAlertDialog(context, "Kích hoạt thiết bị thành công!", confirmTap: () {
+                  onPressed: () async {
+                    try {
+                      showWaitingDialog(context);
+                      await _appBloc.setCurrentCenter(data);
                       Navigator.pop(context);
-//                      SystemNavigator.pop();
-                    });
+                      showAlertDialog(context, "Kích hoạt thiết bị thành công!", confirmTap: () {
+                        Navigator.pop(context);
+                      });
+                    } catch(e) {
+                      Navigator.pop(context);
+                      showAlertDialog(context, "Kích hoạt thiết bị thất bại!\n Lỗi ${e?.toString()}", confirmTap: () {
+                        Navigator.pop(context);
+                      });
+                    }
                   },
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),

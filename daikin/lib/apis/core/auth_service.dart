@@ -25,6 +25,22 @@ class LoopBackAuth {
     return _instance;
   }
 
+  var defaultCenterInfo = {
+    "id": "1",
+    "name": "Demo",
+    "ip": "https://daikin.mcom.app",
+    "username": "username",
+    "password": "password"
+  };
+
+//  var defaultCenterInfo = {
+//    "id": "1",
+//    "name": "NhaMau",
+//    "ip": "http://mhome-nhamau.ddns.net:8888",
+//    "username": "Kythuat@kimsontien.com",
+//    "password": "Chotronniemvui1"
+//  };
+
   LoopBackAuth._internal();
 
   Future<AccessStatus> loadAccessToken() async {
@@ -86,7 +102,14 @@ class LoopBackAuth {
   String get bearToken => _bearToken;
   String get fbToken => _fbToken;
   String get userId => _userId;
-  String get host => _host;
+  String get  host => _host;
+
+  String get staticIconShowRoomPath => Uri.encodeFull('http://kythuat%40kimsontien.com:Chotronniemvui1@mhome-showroom.ddns.net');
+
+  String get staticIconPath {
+    if (host.startsWith('https://daikin.mcom.app')) return Uri.encodeFull('http://kythuat%40kimsontien.com:Chotronniemvui1@mhome-showroom.ddns.net');
+    return host;
+  }
 
   // Persist
   void save() {
@@ -134,13 +157,7 @@ class LoopBackAuth {
     var result = await this._getPersist(key);
     if (result == null) {
       result = [
-        {
-          "id": "1",
-          "name": "Demo",
-          "ip": "https://daikin.mcom.app",
-          "username": "username",
-          "password": "password"
-        }
+        defaultCenterInfo
       ];
 
       this.setCenter("center", jsonEncode(result));
@@ -173,13 +190,7 @@ class LoopBackAuth {
   dynamic getCurrentCenter() async {
     dynamic result = await this._getPersist("current_center");
     if (result == null) {
-      result = {
-        "id": "1",
-        "name": "Demo",
-        "ip": "https://daikin.mcom.app",
-        "username": "username",
-        "password": "password"
-      };
+      result = defaultCenterInfo;
 
       this.setCenter("center", jsonEncode([result]));
       this.setCurrentCenter(result);

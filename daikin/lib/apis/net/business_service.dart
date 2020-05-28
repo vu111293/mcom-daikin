@@ -1,5 +1,6 @@
 import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/apis/core/base_service.dart';
+import 'package:daikin/apis/net/auth_service.dart';
 import 'package:daikin/blocs/childBlocs/home_bloc.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/models/user.dart';
@@ -22,7 +23,7 @@ class BusinessService extends BaseLoopBackApi {
   }
 
   Future<List<HistoryEventModel>> fetchHistoryEventList() async {
-    final result = await this.request(method: 'GET', url: 'http://mhome-showroom.ddns.net/api/panels/event?last=100&type=id');
+    final result = await this.request(method: 'GET', url: '${LoopBackAuth().host}/api/panels/event?last=100&type=id');
     if (result is List) {
       return result.map((item) => HistoryEventModel.fromJson(item)).toList();
     }
@@ -30,12 +31,21 @@ class BusinessService extends BaseLoopBackApi {
   }
 
   Future<Map<String, dynamic>> fetchDeviceState(int tick) async {
-    final result = await this.request(method: 'GET', url: 'http://mhome-showroom.ddns.net:80/api/refreshStates?last=$tick');
+    String host = LoopBackAuth().host;
+    if (host.startsWith('https://daikin.mcom.app')) return {};
+    final result = await this.request(method: 'GET', url: '$host/api/refreshStates?last=$tick');
     return result;
   }
 
   Future<Map<String, List<DeviceIcon>>> getDeviceIcons() async {
-    final result = await this.request(method: 'GET', url: 'http://mhome-showroom.ddns.net/api/icons');
+    String host = LoopBackAuth().host;
+    String token;
+    // Get icons from showroom if
+    if (host.startsWith('https://daikin.mcom.app')) {
+      host = 'http://mhome-showroom.ddns.net';
+      token = LoopBackAuth().generateBasicToken('kythuat@kimsontien.com', 'Chotronniemvui1');
+    }
+    final result = await this.request(method: 'GET', url: '$host/api/icons', customToken: token);
     List<DeviceIcon> dIcons = (result['device'] as List).map((item) => DeviceIcon.fromJson(item)).toList();
     List<DeviceIcon> vIcons = (result['virtualDevice'] as List).map((item) => DeviceIcon.fromJson(item)).toList();
     return {

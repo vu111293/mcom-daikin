@@ -57,15 +57,10 @@ class UserService extends BaseLoopBackApi {
     }
   }
 
-  Future<LUser> registerNotify(String _id, String deviceToken) async {
-    try {
+  Future registerNotify(String _id, String deviceToken) async {
       final result = await graphQLAPI.registerNotify(_id, deviceToken);
-      var user = LUser.fromJson((result.data as dynamic)['registerNotify']);
-      return user;
-    } catch (err) {
-      print(err);
-      throw err;
-    }
+//      var user = LUser.fromJson((result.data as dynamic)['registerNotify']);
+      return result;
   }
 
   Future<LUser> unregisterNotify(String _id) async {

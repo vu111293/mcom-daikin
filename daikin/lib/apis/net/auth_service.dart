@@ -61,7 +61,6 @@ class AuthService extends BaseLoopBackApi {
   Future<bool> uploadUserInformationToServer(UserModel userModel) async {
     final url = [LoopBackConfig.getPath(), LoopBackConfig.getApiVersion(), 'user', userModel.id].join('/');
     print('bambi user model before post to server: ${userModel.toJson()}');
-    ;
 
     try {
       final result = await this.request(

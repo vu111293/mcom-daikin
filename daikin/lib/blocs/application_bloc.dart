@@ -46,16 +46,16 @@ class ApplicationBloc implements BlocBase {
 
   String get deviceId => _deviceIdSubject.stream.value;
 
-  setCurrentCenter(dynamic data) async {
+  Future setCurrentCenter(dynamic data) async {
     await _centerBloc.setCurrentCenter(data);
-    this.fetchUserData();
+    await this.fetchUserData();
+    return Future;
   }
 
-  fetchUserData() async {
-    await _homeBloc.fetchHomeData().then((r) {
-      print('fetch user data done');
-    });
+  Future fetchUserData() async {
+    await _homeBloc.fetchHomeData();
     _homeBloc.registerTickUpdate();
+    return Future;
   }
 
   loadBaseData() {
