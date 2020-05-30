@@ -1,10 +1,7 @@
 import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/apis/core/base_service.dart';
-import 'package:daikin/apis/net/auth_service.dart';
-import 'package:daikin/blocs/childBlocs/home_bloc.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/models/user.dart';
-
 import '../loopback_config.dart';
 
 class BusinessService extends BaseLoopBackApi {
@@ -34,6 +31,11 @@ class BusinessService extends BaseLoopBackApi {
     String host = LoopBackAuth().host;
     if (host.startsWith('https://daikin.mcom.app')) return {};
     final result = await this.request(method: 'GET', url: '$host/api/refreshStates?last=$tick');
+//    Response res = await Dio().get('$host/api/refreshStates?last=$tick', options: Options(
+//        headers: {
+//          'Authorization': LoopBackAuth().bearToken
+//        }
+//    ));
     return result;
   }
 
@@ -45,6 +47,12 @@ class BusinessService extends BaseLoopBackApi {
       host = 'http://mhome-showroom.ddns.net';
       token = LoopBackAuth().generateBasicToken('kythuat@kimsontien.com', 'Chotronniemvui1');
     }
+
+//    Response res = await Dio().get('$host/api/icons', options: Options(
+//        headers: {
+//          'Authorization': token?.isNotEmpty == true ? token : LoopBackAuth().bearToken
+//        }
+//    ));
     final result = await this.request(method: 'GET', url: '$host/api/icons', customToken: token);
     List<DeviceIcon> dIcons = (result['device'] as List).map((item) => DeviceIcon.fromJson(item)).toList();
     List<DeviceIcon> vIcons = (result['virtualDevice'] as List).map((item) => DeviceIcon.fromJson(item)).toList();
@@ -60,6 +68,12 @@ class BusinessService extends BaseLoopBackApi {
       LoopBackConfig.getApiVersion(),
       'rooms'
     ].join('/');
+
+//    Response res = await Dio().get(url, options: Options(
+//      headers: {
+//        'Authorization': LoopBackAuth().bearToken
+//      }
+//    ));
     final result = await this.request(method: 'GET', url: url);
     return (result as List).map((item) => Room.fromJson(item)).toList();
   }
@@ -70,6 +84,12 @@ class BusinessService extends BaseLoopBackApi {
       LoopBackConfig.getApiVersion(),
       'devices'
     ].join('/');
+
+//    Response res = await Dio().get(url, options: Options(
+//        headers: {
+//          'Authorization': LoopBackAuth().bearToken
+//        }
+//    ));
     final result = await this.request(method: 'GET', url: url);
     return (result as List).map((item) => Device.fromJson(item)).toList();
   }
@@ -80,6 +100,12 @@ class BusinessService extends BaseLoopBackApi {
       LoopBackConfig.getApiVersion(),
       'scenes'
     ].join('/');
+
+//    Response res = await Dio().get(url, options: Options(
+//        headers: {
+//          'Authorization': LoopBackAuth().bearToken
+//        }
+//    ));
     final result = await this.request(method: 'GET', url: url);
     return (result as List).map((item) => Scene.fromJson(item)).toList();
   }
@@ -196,7 +222,7 @@ class BusinessService extends BaseLoopBackApi {
       LoopBackConfig.getApiVersion(),
       'callAction'
     ].join('/');
-    await this.request(method: 'GET', url: url, urlParams: {
+    await this.request(method: 'GET', url: url, queryParams: {
       'name': 'setColor',
       'deviceID': id.toString(),
       'arg1': r.toString(),

@@ -4,6 +4,11 @@ import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:flutter/material.dart';
 
+// CENTER devices
+const String DEFAULT_CENTER_ID = '10105000@100';
+
+
+
 ///AppColor
 const String appColor = "#27AAE1";
 const String appColor2 = "#EE4B6E";

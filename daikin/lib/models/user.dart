@@ -66,6 +66,8 @@ class LUser {
         address: address ?? this.address,
         avatar: avatar ?? this.avatar);
   }
+
+  bool get needToUpdateProfile => fullName == null || fullName.isEmpty;
 }
 
 // this is model for only my account

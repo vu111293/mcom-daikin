@@ -29,34 +29,6 @@ class AuthBloc {
     });
   }
 
-//  Future<UserModel> loginWithFacebookAccounntKit(String token) async {
-//    UserModel temp = await _authService.loginWithFacebookAccounntKit(token);
-//    _authSubject.sink.add(temp);
-//    return temp;
-//  }
-//
-//  Future<UserModel> loginWithEmailAndPassword(String email, String password) async {
-//    UserModel temp = await _authService.loginWithEmailAndPassword(email, password);
-//    _authSubject.sink.add(temp);
-//    return temp;
-//  }
-
-  // Future<UserModel> registerWithEmailAndPassword(
-  //     String email, String password) async {
-  //   LUser temp =
-  //       await _authService.registerWithEmailAndPassword(email, password);
-  //   print("Temp ne: " + temp.toString());
-  //   currentUser = temp;
-  //   print("Current ne: " + currentUser.toString());
-  //   _authSubject.sink.add(currentUser);
-  //   return temp;
-  // }
-
-  Future<bool> forgetPassword(String email) async {
-    bool temp = await _authService.forgetPassword(email);
-    return temp;
-  }
-
   Future<AccessToken> getAccessToken() async {
 //    AccessToken temp = await _authService.getAccessToken();
 //    if (currentUser == null) {
@@ -69,11 +41,6 @@ class AuthBloc {
   Future<bool> isLoggedIn() async {
     AccessToken temp = await getAccessToken();
     return temp != null && temp.id != null && temp.id.isNotEmpty;
-  }
-
-  Future<bool> updateUserData(AccessToken accessToken, String id) async {
-    bool updateSucces = await _authService.updateUserData(accessToken, id);
-    return updateSucces;
   }
 
   void logout() {

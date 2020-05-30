@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/models/user.dart';
 import 'package:daikin/ui/customs/base_screen.dart';
+import 'package:daikin/ui/setting/profile_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:device_info/device_info.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -75,8 +76,13 @@ class _SplashScreenState extends State<SplashScreen> {
             } else {
               LUser user = await UserService().me();
               _appBloc.authBloc.updateUserAction(user);
-              Routing().navigate2(context, MainScreen());
               _setupStateStream.cancel();
+
+              if (user.needToUpdateProfile) {
+                Routing().navigate2(context, ProfileScreen(isLogin: true), replace: true);
+              } else {
+                Routing().navigate2(context, MainScreen(), replace: true);
+              }
             }
           } catch (e) {
             print(e);

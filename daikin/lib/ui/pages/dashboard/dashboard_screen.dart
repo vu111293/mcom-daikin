@@ -1,51 +1,43 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:daikin/apis/local/local_setting.dart';
 import 'package:daikin/apis/local/room_local_service.dart';
 import 'package:daikin/apis/net/business_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
-import 'package:daikin/constants/dataTest.dart';
 import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
+import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/ui/pages/dashboard/active_device_view.dart';
-import 'package:daikin/ui/pages/dashboard/category_list_view.dart';
 import 'package:daikin/ui/pages/dashboard/camera_screen.dart';
 import 'package:daikin/ui/pages/dashboard/camera_list_view.dart';
 import 'package:daikin/ui/pages/home/course_info_device_screen.dart';
-import 'package:daikin/ui/pages/home/home_screen.dart';
-import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/ui/setting/my_center_screen.dart';
 import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
-
-final List<String> imgList = [
-  "https://q-ec.bstatic.com/images/hotel/max1024x768/133/133782872.jpg",
-  "https://r-cf.bstatic.com/images/hotel/max1024x768/157/157746542.jpg",
-  "https://sites.google.com/site/hyattdanangresort/_/rsrc/1538973313583/phong/three-bedroom-ocean-villa/Hyatt-Regency-Danang-Resort-and-Spa-P031-Ocean-Villa-Living-Area.adapt.16x9.1280.720.jpg", // phòng khách
-  "https://tmshotel.vn/uploads/images/5_1.jpg",
-  "https://nhadatmientrung24h.com/upload/1/products/l_1473106134_couplesuite.jpg",
-  "https://q-ec.bstatic.com/images/hotel/max1024x768/449/44952708.jpg",
-];
+import 'package:after_layout/after_layout.dart';
 
 enum CategoryType { ui, coding, basic, game, chill }
 
 class DashBoardScreen extends StatefulWidget {
-  final TabController tabController;
-  DashBoardScreen({this.tabController});
+  DashBoardScreen();
   @override
   DashBoardScreenState createState() => DashBoardScreenState();
 }
 
-class DashBoardScreenState extends State<DashBoardScreen> {
+class DashBoardScreenState extends State<DashBoardScreen> with AfterLayoutMixin<DashBoardScreen> {
   final _carouselIndexBehavior = BehaviorSubject.seeded(0);
   ApplicationBloc _appBloc;
+//  StreamSubscription _switchPageStreamSub;
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
@@ -59,12 +51,42 @@ class DashBoardScreenState extends State<DashBoardScreen> {
   void initState() {
     super.initState();
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
+//    _switchPageStreamSub = _appBloc.mainScreenBloc.requestSwitchPageEvent.listen((pageIndex) {
+//      if (pageIndex == 0) {
+//        print('switch to first page');
+//      }
+//    });
   }
 
   @override
   void dispose() {
     _carouselIndexBehavior.close();
+//    _switchPageStreamSub.cancel();
     super.dispose();
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) async {
+    bool isDemo = await _appBloc.centerBloc.isDemoCenterDevice;
+    bool askRecommend = await LocalSetting().getRequireAddDevice();
+    if (isDemo && askRecommend) {
+      showAlertWithTitleDialog(
+        context,
+        'THÔNG BÁO',
+        'Bạn đang sử dụng thiết bị trung tâm Demo, vui lòng thêm thiết bị trung tâm!',
+        secondAction: 'ĐỂ SAU',
+        secondTap: () {
+          LocalSetting().setRequireAddDevice(false);
+          Navigator.pop(context);
+        },
+        firstAction: 'THÊM THIẾT BỊ',
+        firstTap: () {
+          Navigator.pop(context);
+          _appBloc.mainScreenBloc.requestNeedToAddCenterDevice();
+          Routing().navigate2(context, MyCenterScreen(), routeName: '/mycenterscreen');
+        }
+      );
+    }
   }
 
   @override

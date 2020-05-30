@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:daikin/apis/net/user_service.dart';
@@ -25,12 +26,16 @@ class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
   ApplicationBloc _appBloc;
   TabController _tabController;
+  StreamSubscription _switchPageStreamSub;
 
   int tabLength = 3;
   @override
   void initState() {
       _appBloc = BlocProvider.of<ApplicationBloc>(context);
       _tabController = TabController(vsync: this, length: tabLength);
+      _switchPageStreamSub = _appBloc.mainScreenBloc.requestSwitchPageEvent.listen((pageIndex) {
+        _tabController.animateTo(pageIndex);
+      });
       _registerFireBaseMessage();
       prepareAppData();
     super.initState();
@@ -52,6 +57,12 @@ class _MainScreenState extends State<MainScreen>
   }
 
   @override
+  void dispose() {
+    _switchPageStreamSub.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Routing().setContext(context);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -64,7 +75,7 @@ class _MainScreenState extends State<MainScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                DashBoardScreen(tabController: _tabController),
+                DashBoardScreen(),
                 HomeScreen(),
                 SettingScreen(),
                 // Container(

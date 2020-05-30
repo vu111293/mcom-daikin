@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:daikin/blocs/childBlocs/center_bloc.dart';
+import 'package:daikin/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum AccessStatus {
@@ -26,7 +27,7 @@ class LoopBackAuth {
   }
 
   var defaultCenterInfo = {
-    "id": "1",
+    "id": DEFAULT_CENTER_ID,
     "name": "Demo",
     "ip": "https://daikin.mcom.app",
     "username": "username",
@@ -103,7 +104,7 @@ class LoopBackAuth {
   String get fbToken => _fbToken;
   String get userId => _userId;
   String get  host => _host;
-
+//  String get  host => Uri.encodeFull('http://Kythuat%40kimsontien.com:Chotronniemvui1@mhome-nhamau.ddns.net');
   String get staticIconShowRoomPath => Uri.encodeFull('http://kythuat%40kimsontien.com:Chotronniemvui1@mhome-showroom.ddns.net');
 
   String get staticIconPath {

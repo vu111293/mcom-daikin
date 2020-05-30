@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/apis/net/auth_service.dart';
 import 'package:daikin/blocs/childBlocs/home_bloc.dart';
+import 'package:daikin/constants/constants.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -52,6 +53,11 @@ class CenterBloc {
     List<dynamic> result = await _loopBackAuth.getCenter("center");
     _centerSubject.sink.add(result);
     return result;
+  }
+
+  Future<bool> get isDemoCenterDevice async {
+    var center = await _loopBackAuth.getCurrentCenter();
+    return center['id'] == DEFAULT_CENTER_ID;
   }
 
   removeCenter(String id) async {

@@ -96,7 +96,12 @@ class ConfirmNumberPhoneScreenState extends State<ConfirmNumberPhoneScreen> {
         _appBloc.authBloc.currentUser = user;
         _authStream?.cancel();
         Routing().popToRoot(context);
-        Routing().navigate2(context, MainScreen());
+
+        if (user.needToUpdateProfile) {
+          Routing().navigate2(context, ProfileScreen(isLogin: true), replace: true);
+        } else {
+          Routing().navigate2(context, MainScreen(), replace: true);
+        }
       } else if (result.status == AuthStatus.Timeout) {
         print('TIME OUT');
       } else {

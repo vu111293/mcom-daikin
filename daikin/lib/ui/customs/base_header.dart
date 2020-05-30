@@ -13,7 +13,9 @@ class BaseHeaderScreen extends StatelessWidget {
   final bool isBack;
   final bool hideProfile;
   final bool isSubHeader;
+  final bool isTitleOnly;
   final Function onTitleTap;
+
   ApplicationBloc _appBloc;
 
   BaseHeaderScreen(
@@ -22,6 +24,7 @@ class BaseHeaderScreen extends StatelessWidget {
       this.isBack = false,
       this.hideProfile = false,
       this.isSubHeader = false,
+      this.isTitleOnly = false,
       this.onTitleTap});
 
   @override
@@ -38,7 +41,7 @@ class BaseHeaderScreen extends StatelessWidget {
           left: 16,
           right: 16,
           bottom: 4),
-      height: isBack ? 72 : null,
+      height: isBack || isTitleOnly ? 72 : null,
       child: Row(
         children: <Widget>[
           isBack
@@ -55,7 +58,7 @@ class BaseHeaderScreen extends StatelessWidget {
               : Container(),
           Expanded(
             child: InkWell(
-                child: isBack
+                child: isBack || isTitleOnly
                     ? Center(
                         child: Text(
                           upFirstText(title) ?? '',
@@ -65,7 +68,7 @@ class BaseHeaderScreen extends StatelessWidget {
                         ),
                       )
                     : Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
@@ -74,22 +77,22 @@ class BaseHeaderScreen extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Padding(
+                          subTitle?.isNotEmpty == true ? Padding(
                             padding: EdgeInsets.only(top: 4),
                             child: Text(
-                              upFirstText(subTitle) ?? "",
+                              upFirstText(subTitle),
                               style: ptSubtitle(context),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                          )
+                          ) : Container()
                         ],
                       ),
                 onTap: onTitleTap),
           ),
           hideProfile
               ? Container(
-                  width: 40,
+                  width: isTitleOnly ? 0 : 40,
                   height: 40,
                 )
               : isBack

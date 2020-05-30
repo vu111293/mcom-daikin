@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:after_layout/after_layout.dart';
+import 'package:daikin/apis/local/local_setting.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
@@ -20,9 +22,9 @@ class MyCenterScreen extends StatefulWidget {
   MyCenterScreenState createState() => MyCenterScreenState();
 }
 
-const _DEBUG_MYCENTER = false;
+const DEBUG_MY_CENTER = false;
 
-class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProviderStateMixin {
+class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProviderStateMixin, AfterLayoutMixin<MyCenterScreen> {
   ApplicationBloc _appBloc;
   final FocusNode myFocusNode = FocusNode();
   final _nameController = TextEditingController();
@@ -43,6 +45,15 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
     _appBloc.centerBloc.getCenter();
     super.initState();
+  }
+
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    if (_appBloc.mainScreenBloc.needToShowAddCenterDevice) {
+      _appBloc.mainScreenBloc.disableAddCenterDeviceRequest();
+      _settingModalBottomSheet(context);
+    }
   }
 
   void _settingModalBottomSheet(context) {
@@ -468,10 +479,15 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                   textColor: Colors.white,
                   color: ptPrimaryColor(context),
                   onPressed: () {
-                    if (_DEBUG_MYCENTER) {
-                      name = 'DEBUG CENTER';
-                      ip = 'http://mhome-showroom.ddns.net';
-                      username = 'kythuat@kimsontien.com';
+                    if (DEBUG_MY_CENTER) {
+//                      name = 'SHOWROOM';
+//                      ip = 'http://mhome-showroom.ddns.net';
+//                      username = 'kythuat@kimsontien.com';
+//                      password = 'Chotronniemvui1';
+
+                      name = 'NHA MAU';
+                      ip = 'http://mhome-nhamau.ddns.net';
+                      username = 'Kythuat@kimsontien.com';
                       password = 'Chotronniemvui1';
                     }
 
@@ -560,9 +576,12 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                     try {
                       showWaitingDialog(context);
                       await _appBloc.setCurrentCenter(data);
+                      if (await _appBloc.centerBloc.isDemoCenterDevice) {
+                        LocalSetting().setRequireAddDevice(true);
+                      }
                       Navigator.pop(context);
                       showAlertDialog(context, "Kích hoạt thiết bị thành công!", confirmTap: () {
-                        Navigator.pop(context);
+                        Navigator.popUntil(context, ModalRoute.withName('/mycenterscreen'));
                       });
                     } catch(e) {
                       Navigator.pop(context);

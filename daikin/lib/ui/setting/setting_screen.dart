@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:after_layout/after_layout.dart';
 import 'package:daikin/apis/core/auth_service.dart';
 import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
@@ -29,8 +30,7 @@ class SettingScreen extends StatefulWidget {
   SettingScreenState createState() => SettingScreenState();
 }
 
-class SettingScreenState extends State<SettingScreen>
-    with SingleTickerProviderStateMixin {
+class SettingScreenState extends State<SettingScreen> with SingleTickerProviderStateMixin {
   ApplicationBloc _appBloc;
 
   @override
@@ -92,12 +92,9 @@ class SettingScreenState extends State<SettingScreen>
                   ),
                   title: Text(
                     _appBloc.authBloc.getUser.fullName,
-                    style: ptSubtitle(context)
-                        .copyWith(color: ptPrimaryColor(context)),
+                    style: ptSubtitle(context).copyWith(color: ptPrimaryColor(context)),
                   ),
-                  subtitle: Text('',
-                      style: ptTitle(context)
-                          .copyWith(color: ptPrimaryColor(context))),
+                  subtitle: Text('', style: ptTitle(context).copyWith(color: ptPrimaryColor(context))),
                   trailing: Container(
                     width: 32,
                     height: 32,
@@ -113,108 +110,6 @@ class SettingScreenState extends State<SettingScreen>
                     ),
                   ),
                 ),
-//                SizedBox(
-//                  height: 20,
-//                ),
-//                Row(
-//                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                  children: <Widget>[
-//                    Column(
-//                      children: <Widget>[
-//                        Container(
-//                          width: deviceWidth(context) / 4,
-//                          height: deviceWidth(context) / 4,
-//                          child: Material(
-//                            borderRadius: BorderRadius.all(Radius.circular(8)),
-//                            elevation: 8,
-//                            shadowColor: Colors.black26,
-//                            color: Colors.red,
-//                            child: Padding(
-//                              padding:
-//                                  EdgeInsets.all(deviceWidth(context) / 16),
-//                              child: Image.asset(
-//                                'assets/icons/Turn_off.png',
-//                                color: Colors.white,
-//                              ),
-//                            ),
-//                          ),
-//                        ),
-//                        Padding(
-//                          padding: EdgeInsets.only(top: 8.0),
-//                          child: Text(
-//                            "Tắt hết thiết bị",
-//                            style: ptBody1(context)
-//                                .copyWith(color: ptPrimaryColor(context)),
-//                            textAlign: TextAlign.center,
-//                          ),
-//                        )
-//                      ],
-//                    ),
-//                    Column(
-//                      children: <Widget>[
-//                        Container(
-//                          width: deviceWidth(context) / 4,
-//                          height: deviceWidth(context) / 4,
-//                          child: Material(
-//                            borderRadius: BorderRadius.all(Radius.circular(8)),
-//                            elevation: 8,
-//                            shadowColor: Colors.black26,
-//                            color: Colors.white,
-//                            child: Padding(
-//                              padding:
-//                                  EdgeInsets.all(deviceWidth(context) / 16),
-//                              child: Image.asset(
-//                                'assets/icons/O_khoa.png',
-//                                color: HexColor(appBorderColor),
-//                              ),
-//                            ),
-//                          ),
-//                        ),
-//                        Padding(
-//                          padding: EdgeInsets.only(top: 8.0),
-//                          child: Text(
-//                            "Rời khỏi nhà",
-//                            style: ptBody1(context)
-//                                .copyWith(color: ptPrimaryColor(context)),
-//                            textAlign: TextAlign.center,
-//                          ),
-//                        )
-//                      ],
-//                    ),
-//                    Column(
-//                      children: <Widget>[
-//                        Container(
-//                          width: deviceWidth(context) / 4,
-//                          height: deviceWidth(context) / 4,
-//                          child: Material(
-//                            borderRadius: BorderRadius.all(Radius.circular(8)),
-//                            elevation: 8,
-//                            shadowColor: Colors.black26,
-//                            color: Colors.white,
-//                            child: Padding(
-//                              padding:
-//                                  EdgeInsets.all(deviceWidth(context) / 16),
-//                              child: Image.asset(
-//                                'assets/icons/Chia_khoa.png',
-//                                color: HexColor(appBorderColor),
-//                              ),
-//                            ),
-//                          ),
-//                        ),
-//                        Padding(
-//                          padding: EdgeInsets.only(top: 8.0),
-//                          child: Text(
-//                            "Về nhà",
-//                            style: ptBody1(context)
-//                                .copyWith(color: ptPrimaryColor(context)),
-//                            textAlign: TextAlign.center,
-//                          ),
-//                        )
-//                      ],
-//                    ),
-//                  ],
-//                ),
-
                 ///
                 Container(
                   margin: EdgeInsets.only(top: 16, bottom: 10),
@@ -223,7 +118,7 @@ class SettingScreenState extends State<SettingScreen>
                 ),
                 ListTile(
                   onTap: () {
-                    Routing().navigate2(context, MyCenterScreen());
+                    Routing().navigate2(context, MyCenterScreen(), routeName: '/mycenterscreen');
                   },
                   leading: Text(
                     "Thiết bị trung tâm",

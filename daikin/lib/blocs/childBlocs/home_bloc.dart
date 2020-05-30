@@ -71,13 +71,18 @@ class HomeBloc {
     });
   }
 
-  Future fetchHomeData({int tryTime = 10}) async {
+  Future fetchHomeData({int tryTime = 3}) async {
     try {
       var results = await Future.wait([
         _businessService.getRoomList(),
         _businessService.getDeviceList(),
         _businessService.getSceneList(),
         _businessService.getDeviceIcons()]);
+
+//      List<Room> rooms = await _businessService.getRoomList();
+//      List<Device> devices = await _businessService.getDeviceList();
+//      List<Scene> scenes = await _businessService.getSceneList();
+//      Map<String, List<DeviceIcon>> mIcons = await _businessService.getDeviceIcons();
 
       List<Room> rooms = results[0];
       List<Device> devices = results[1];

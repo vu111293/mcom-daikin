@@ -46,6 +46,15 @@ class LocalSetting {
     sortBy = val;
   }
 
+  setRequireAddDevice(bool request) {
+    _setPersist('addNewDevice', request);
+  }
+
+  Future<bool> getRequireAddDevice() async {
+    var ret = await _getPersist('addNewDevice');
+    return ret ?? true;
+  }
+
   setCurrentLocale(String code) {
     _setPersist('locale', code);
     locale = code;

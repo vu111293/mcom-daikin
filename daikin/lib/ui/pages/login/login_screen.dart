@@ -4,20 +4,16 @@ import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/ui/pages/login/confirm_number_phone_screen.dart';
 import 'package:daikin/ui/pages/main.dart';
 import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/ui/setting/profile_screen.dart';
 import 'package:daikin/utils/phone_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/models/user.dart';
 import 'package:daikin/ui/customs/base_screen.dart';
 import 'package:daikin/ui/customs/dialog.dart';
-// import 'package:daikin/ui/pages/home_screen.dart';
-// import 'package:daikin/ui/pages/login/confirm_number_phone_screen.dart';
-// import 'package:daikin/ui/pages/login/update_info_login_screen.dart';
-// import 'package:daikin/ui/route/routing.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:daikin/utils/scale_util.dart';
 
@@ -65,8 +61,13 @@ class LoginScreenState extends State<LoginScreen> {
         _phoneAuthStream?.cancel();
         isVerified = true;
         Routing().popToRoot(context);
-        Routing().navigate2(context, MainScreen(), replace: true);
-      } 
+
+        if (user.needToUpdateProfile) {
+          Routing().navigate2(context, ProfileScreen(isLogin: true), replace: true);
+        } else {
+          Routing().navigate2(context, MainScreen(), replace: true);
+        }
+      }
       // else if (result.status == AuthStatus.Timeout && !isVerified) {
       //   showAlertDialog(
       //       context, 'Lỗi khi kết nối với máy chủ. Vui lòng thử lại');

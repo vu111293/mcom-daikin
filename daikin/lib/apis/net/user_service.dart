@@ -73,41 +73,4 @@ class UserService extends BaseLoopBackApi {
       throw err;
     }
   }
-
-  Future<List<UserModel>> getListUser() async {
-    final url = [
-      LoopBackConfig.getPath(),
-      LoopBackConfig.getApiVersion(),
-      getModelPath() + '?fields=["\$all"]',
-    ].join('/');
-
-    final result =
-        await this.request(method: 'GET', url: url, isWrapBaseResponse: false);
-    final jsonRows = result["results"]["objects"]["rows"] as List;
-
-    final items = (jsonRows).map((item) {
-      return UserModel.fromJson(item);
-    }).toList();
-    CacheUtils.saveJsonDB('user.dat', json.encode(result));
-    return items;
-  }
-
-  Future<List<UserModel>> getListTelesalesWithEmail(String email) async {
-    final url = [
-      LoopBackConfig.getPath(),
-      LoopBackConfig.getApiVersion(),
-      getModelPath() +
-          '?fields=["\$all"]&filter={"account_type": "TELESALE", "email": "$email"}',
-    ].join('/');
-
-    final result =
-        await this.request(method: 'GET', url: url, isWrapBaseResponse: false);
-    final jsonRows = result["results"]["objects"]["rows"] as List;
-
-    final items = (jsonRows).map((item) {
-      return UserModel.fromJson(item);
-    }).toList();
-    CacheUtils.saveJsonDB('user.dat', json.encode(result));
-    return items;
-  }
 }
