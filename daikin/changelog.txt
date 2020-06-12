@@ -1,5 +1,36 @@
-
 Change logs
+
+# 1.17.4+46
+Fix reload user profile when receive new notification
+
+# 1.17.3+45
+Fix cache user model from get user profile graphQL
+
+# 1.17.2+44
+Fix cache notification list (not refresh read status)
+
+# 1.17.1+43
+Reload unread count when make read
+
+# 1.17.0+42
+Add notification badge on dashboard/homepage
+Add counter on right side of Notification menu
+
+# 1.16.4+41
+Support make read
+
+# 1.16.3+40
+Add news detail page
+
+# 1.16.2+39
+Disable edit demo device
+Add notification screen
+Fix minor bugs
+
+# 1.16.1+38
+Support recommend add center device message
+Force update profile
+Update some good behavior
 
 # 1.14.0+35
 Support try again when fetch home data

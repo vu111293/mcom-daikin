@@ -73,7 +73,7 @@ class DashBoardScreenState extends State<DashBoardScreen> with AfterLayoutMixin<
       showAlertWithTitleDialog(
         context,
         'THÔNG BÁO',
-        'Bạn đang sử dụng thiết bị trung tâm Demo, vui lòng thêm thiết bị trung tâm!',
+        'Bạn đang sử dụng thiết bị trung tâm demo, vui lòng thêm thiết bị trung tâm.',
         secondAction: 'ĐỂ SAU',
         secondTap: () {
           LocalSetting().setRequireAddDevice(false);
@@ -104,7 +104,7 @@ class DashBoardScreenState extends State<DashBoardScreen> with AfterLayoutMixin<
                         _appBloc.authBloc.currentUser.fullName.trim() == null ||
                         _appBloc.authBloc.currentUser.fullName.trim() == ''
                     ? "Chào bạn !"
-                    : "Chào " + _appBloc.authBloc.currentUser.fullName,
+                    : "Chào " + uppercaseFirstInWord(_appBloc.authBloc.currentUser.fullName),
               ),
               Expanded(
                   child: ListView(

@@ -65,7 +65,19 @@ class _HistoryEventPageState extends State<HistoryEventPage> {
         child: StreamBuilder<List<HistoryEventModel>>(
           stream: _historyDataSubject.stream,
           builder: (context, snapshot) {
-            if (!snapshot.hasData) return Container(); // please show empty text here
+            if (!snapshot.hasData) {
+              return Container(
+                alignment: Alignment.center,
+                child: Text('Đang tải ...'),
+              );
+            }
+
+            if (snapshot.data == null || snapshot.data.isEmpty) {
+              return Container(
+                alignment: Alignment.center,
+                child: Text('Không có lịch sử sự kiện'),
+              );
+            }
             return buildTimelineModel(TimelinePosition.Center, snapshot.data);
           },
         ),
@@ -189,18 +201,23 @@ class _HistoryEventPageState extends State<HistoryEventPage> {
       );
 
   Future _loadData() async {
-     List<HistoryEventModel> items = await BusinessService().fetchHistoryEventList();
-     items = items.map((item) {
-       Device device = _appBloc.homeBloc.getLatestDeviceList.firstWhere((d) => d.id == item.deviceID, orElse: ()=>null);
-       item.device = device;
+    try {
+      List<HistoryEventModel> items = await BusinessService().fetchHistoryEventList();
+      items = items.map((item) {
+        Device device = _appBloc.homeBloc.getLatestDeviceList.firstWhere((d) => d.id == item.deviceID, orElse: () => null);
+        item.device = device;
 
-       if (device != null) {
-         Room room = _appBloc.homeBloc.getLatestRoomList.firstWhere((r) => r.id == device.roomID, orElse: ()=>null);
-         item.room = room;
-       }
-       return item;
-     }).where((item) => item.device != null).toList();
-     _historyDataSubject.sink.add(items);
-     return Future;
+        if (device != null) {
+          Room room = _appBloc.homeBloc.getLatestRoomList.firstWhere((r) => r.id == device.roomID, orElse: () => null);
+          item.room = room;
+        }
+        return item;
+      }).where((item) => item.device != null).toList();
+      _historyDataSubject.sink.add(items);
+      return Future;
+    } catch(e) {
+      _historyDataSubject.sink.add([]);
+      return Future;
+    }
   }
 }

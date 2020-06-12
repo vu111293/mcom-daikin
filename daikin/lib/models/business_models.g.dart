@@ -392,3 +392,38 @@ Map<String, dynamic> _$HistoryEventModelToJson(HistoryEventModel instance) =>
       'newValue': instance.newValue,
       'icon': instance.icon,
     };
+
+NewsModel _$NewsModelFromJson(Map<String, dynamic> json) {
+  return NewsModel(
+    id: json['_id'] as String,
+    title: json['title'] as String,
+    body: json['body'] as String,
+    image: json['image'] as String,
+    status: json['status'] as String,
+  );
+}
+
+Map<String, dynamic> _$NewsModelToJson(NewsModel instance) => <String, dynamic>{
+      '_id': instance.id,
+      'title': instance.title,
+      'body': instance.body,
+      'image': instance.image,
+      'status': instance.status,
+    };
+
+StatisticModel _$StatisticModelFromJson(Map<String, dynamic> json) {
+  return StatisticModel(
+    time: json['time'] as String,
+    name: json['name'] as String,
+    param: json['param'] as String,
+    value: json['value'] as String,
+  );
+}
+
+Map<String, dynamic> _$StatisticModelToJson(StatisticModel instance) =>
+    <String, dynamic>{
+      'time': instance.time,
+      'name': instance.name,
+      'param': instance.param,
+      'value': instance.value,
+    };

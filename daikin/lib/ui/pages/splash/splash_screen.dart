@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:daikin/apis/local/local_setting.dart';
 import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/models/user.dart';
 import 'package:daikin/ui/customs/base_screen.dart';
@@ -57,13 +58,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future prepareData() async {
+    await LocalSetting().setRequireAddDevice(true);
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
 //    await _cacheDeviceId();
     _setupStateStream = _appBloc.setupStateEvent.listen(
       (s) async {
         if (s == 'done') {
-          // Routing().navigate2(context, IntroductionScreen());
-          // Routing().navigate2(context, MainScreen());
           try {
             // make auto login or show login page
             AccessStatus tokenState = await LoopBackAuth().loadAccessToken();

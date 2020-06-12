@@ -17,6 +17,7 @@ LUser _$LUserFromJson(Map<String, dynamic> json) {
     phone: json['phone'] as String,
     role: json['role'] as String,
     uid: json['uid'] as String,
+    unreadNotifyCount: json['unreadNotifyCount'] as int,
   );
 }
 
@@ -29,6 +30,7 @@ Map<String, dynamic> _$LUserToJson(LUser instance) => <String, dynamic>{
       'address': instance.address,
       'avatar': instance.avatar,
       'role': instance.role,
+      'unreadNotifyCount': instance.unreadNotifyCount,
       'permissions': instance.permissions,
     };
 

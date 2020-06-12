@@ -17,13 +17,14 @@ class _AboutScreenState extends State<AboutScreen> {
           child: Column(
             children: <Widget>[
               BaseHeaderScreen(
-                title: toBeginningOfSentenceCase("Giới THiệu"),
+                title: toBeginningOfSentenceCase("Giới Thiệu"),
                 isBack: true,
                 hideProfile: true,
               ),
               Html(
                 padding: EdgeInsets.all(16.0),
-                data: """<div id="main_content" class="">
+                data: """
+<div id="main_content" class="">
 	<div class="heading">
 				<a href="">Trang chủ</a>&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i>&nbsp;<a href="cong-nghe-nha-thong-minh-den-tu-daikin">CÔNG NGHỆ NHÀ THÔNG MINH ĐẾN TỪ DAIKIN </a>
 		

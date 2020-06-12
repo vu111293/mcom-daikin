@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daikin/models/business_models.dart';
 import 'package:flutter/widgets.dart';
 import 'package:graphql/client.dart';
 import 'package:daikin/apis/graphql/mutations/mutations.dart' as mutations;
@@ -39,6 +40,7 @@ class GraphQLAPI {
   Future<QueryResult> me() async {
     final WatchQueryOptions _options = WatchQueryOptions(
       documentNode: gql(queries.me),
+      fetchPolicy: FetchPolicy.noCache,
       variables: <String, dynamic>{},
       // pollInterval: 4,
       // fetchResults: true,
@@ -60,6 +62,29 @@ class GraphQLAPI {
     );
 
     return await client.mutate(_options);
+  }
+
+  Future<QueryResult> getNotifications() async {
+    final QueryOptions _options = QueryOptions(
+      documentNode: gql(queries.notification),
+      fetchPolicy: FetchPolicy.noCache,
+      variables: <String, dynamic>{},
+      // pollInterval: 4,
+      // fetchResults: true,
+    );
+
+    return await client.query(_options);
+  }
+
+  Future<QueryResult> makeRead(String id) async {
+    final WatchQueryOptions _options = WatchQueryOptions(
+      documentNode: gql(queries.makeReadQuery),
+      variables: <String, dynamic>{
+        "id": id
+      },
+    );
+
+    return await client.query(_options);
   }
 
   Future<QueryResult> registerNotify(String id, String deviceToken) async {

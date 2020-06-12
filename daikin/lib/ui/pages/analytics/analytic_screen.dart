@@ -1,11 +1,8 @@
-import 'dart:io';
-
-import 'package:daikin/blocs/application_bloc.dart';
-import 'package:daikin/blocs/bloc_provider.dart';
-import 'package:daikin/constants/styleAppTheme.dart';
-import 'package:daikin/ui/route/route/routing.dart';
+import 'package:daikin/models/business_models.dart';
+import 'package:daikin/ui/customs/base_header.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 
 class AnalyticScreen extends StatefulWidget {
   @override
@@ -13,44 +10,71 @@ class AnalyticScreen extends StatefulWidget {
 }
 
 class AnalyticScreenState extends State<AnalyticScreen> with SingleTickerProviderStateMixin {
-  ApplicationBloc _appBloc;
+  final _newsStream = BehaviorSubject<List<NewsModel>>();
 
   @override
   void initState() {
+    preparePage();
     super.initState();
-    _appBloc = BlocProvider.of<ApplicationBloc>(context);
+  }
+
+
+  preparePage() {
+    // Load data here
+    _newsStream.sink.add([
+      NewsModel(title: 'Hệ thống bảo trì 1', body: 'Chúng tôi thành thật xin lỗi vì sự bất tiện này...', image: 'https://png.pngtree.com/element_our/png_detail/20181227/notification-vector-icon-png_295003.jpg', status: 'unread'),
+      NewsModel(title: 'Hệ thống bảo trì 1', body: 'Chúng tôi thành thật xin lỗi vì sự bất tiện này...', image: 'https://png.pngtree.com/element_our/png_detail/20181227/notification-vector-icon-png_295003.jpg', status: 'unread'),
+      NewsModel(title: 'Hệ thống bảo trì 1', body: 'Chúng tôi thành thật xin lỗi vì sự bất tiện này...', image: 'https://png.pngtree.com/element_our/png_detail/20181227/notification-vector-icon-png_295003.jpg', status: 'unread'),
+      NewsModel(title: 'Hệ thống bảo trì 1', body: 'Chúng tôi thành thật xin lỗi vì sự bất tiện này...', image: 'https://png.pngtree.com/element_our/png_detail/20181227/notification-vector-icon-png_295003.jpg', status: 'unread'),
+      NewsModel(title: 'Hệ thống bảo trì 1', body: 'Chúng tôi thành thật xin lỗi vì sự bất tiện này...', image: 'https://png.pngtree.com/element_our/png_detail/20181227/notification-vector-icon-png_295003.jpg', status: 'unread'),
+      NewsModel(title: 'Hệ thống bảo trì 1', body: 'Chúng tôi thành thật xin lỗi vì sự bất tiện này...', image: 'https://png.pngtree.com/element_our/png_detail/20181227/notification-vector-icon-png_295003.jpg', status: 'unread'),
+    ]);
+
+  }
+
+  @override
+  void dispose() {
+    _newsStream.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Routing().setContext(context);
-    return WillPopScope(
-      child: Container(
-        color: StyleAppTheme.nearlyWhite,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[Container(alignment: Alignment.center, child: Text('Analytics page'))],
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          BaseHeaderScreen(
+            title: toBeginningOfSentenceCase("Lịch sử sự kiện"),
+            isBack: true,
+            hideProfile: true,
           ),
-        ),
-      ),
-      onWillPop: () => showDialog<bool>(
-        context: context,
-        builder: (c) => AlertDialog(
-          title: Text('Thông báo'),
-          content: Text('Bạn có muốn thoát ứng dụng'),
-          actions: [
-            FlatButton(
-              child: Text('Đồng ý'),
-              onPressed: () => Platform.isIOS ? exit(0) : SystemNavigator.pop(),
+          Expanded(
+            child: StreamBuilder(
+              stream: _newsStream.stream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Container(
+                    alignment: Alignment.center,
+                    child: Text('Đang tải...'),
+                  );
+
+                List<NewsModel> items = snapshot.data;
+                return ListView.builder(
+                    padding: EdgeInsets.all(0),
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      NewsModel news = items[index];
+                      return ListTile(
+                        title: Text(news.title),
+                        subtitle: Text(news.body, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        leading: Image.network(news.image, width: 24, height: 24),
+                      );
+                    }
+                );
+              },
             ),
-            FlatButton(
-              child: Text('Hủy'),
-              onPressed: () => Navigator.pop(c, false),
-            ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:after_layout/after_layout.dart';
 import 'package:daikin/apis/core/auth_service.dart';
+import 'package:daikin/apis/local/local_setting.dart';
 import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/blocs/application_bloc.dart';
 import 'package:daikin/blocs/bloc_provider.dart';
@@ -11,6 +12,7 @@ import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/ui/customs/image_picker.dart';
 import 'package:daikin/ui/pages/login/login_screen.dart';
+import 'package:daikin/ui/pages/news/news_page.dart';
 import 'package:daikin/ui/pages/statics/history_event_page.dart';
 import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/ui/setting/my_center_screen.dart';
@@ -44,15 +46,35 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
     super.dispose();
   }
 
-  handleLogout() {
-    _unregisterFireBaseMessage();
+  handleLogout() async {
+    await _unregisterFireBaseMessage();
+    LocalSetting().setRequireAddDevice(true);
     LoopBackAuth().clear();
     Routing().popToRoot(context);
     Routing().navigate2(context, LoginScreen(), replace: true);
   }
 
-  _unregisterFireBaseMessage() async {
-    UserService().unregisterNotify(_appBloc.authBloc.currentUser.id);
+  Future _unregisterFireBaseMessage() {
+    return UserService().unregisterNotify(_appBloc.authBloc.currentUser.id);
+  }
+
+  Widget _buildBadgeWidget() {
+    return StreamBuilder<LUser>(
+        stream: _appBloc.authBloc.userEvent,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData || snapshot.data?.unreadNotifyCount == null) return SizedBox();
+          if (snapshot.data.unreadNotifyCount == 0) return SizedBox();
+          return Container(
+             width: 28,
+             height: 28,
+             alignment: Alignment.center,
+             decoration: BoxDecoration(
+                 borderRadius: BorderRadius.circular(90),
+                 color: Colors.redAccent
+             ),
+             child: Text('${snapshot.data.unreadNotifyCount > 100 ? '99+' : snapshot.data.unreadNotifyCount}', style: TextStyle(color: Colors.white, fontSize: 14))
+          );
+    });
   }
 
   @override
@@ -142,31 +164,6 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                   color: HexColor("#fafafa"),
                   height: 2.5,
                 ),
-                // ListTile(
-                //   leading: Text(
-                //     "Messages",
-                //     style: ptTitle(context).copyWith(color: ptPrimaryColor(context), fontWeight: FontWeight.w600),
-                //   ),
-                //   title: Container(
-                //     width: 30,
-                //     height: 30,
-                //     child: Align(
-                //       alignment: Alignment.centerLeft,
-                //       child: CircleAvatar(
-                //         backgroundColor: Colors.red,
-                //         child: Text(
-                //           "3",
-                //           style: ptCaption(context).copyWith(color: Colors.white),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // Container(
-                //   margin: EdgeInsets.symmetric(vertical: 5),
-                //   color: HexColor("#fafafa"),
-                //   height: 2.5,
-                // ),
                 ListTile(
                   onTap: () {
                     Routing().navigate2(context, AboutScreen());
@@ -177,6 +174,23 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                         color: ptPrimaryColor(context),
                         fontWeight: FontWeight.w600),
                   ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  color: HexColor("#fafafa"),
+                  height: 2.5,
+                ),
+                ListTile(
+                  onTap: () {
+                    Routing().navigate2(context, NewsPage());
+                  },
+                  leading: Text(
+                    "Thông báo",
+                    style: ptTitle(context).copyWith(
+                        color: ptPrimaryColor(context),
+                        fontWeight: FontWeight.w600),
+                  ),
+                  trailing: _buildBadgeWidget(),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
@@ -252,8 +266,7 @@ class SettingScreenState extends State<SettingScreen> with SingleTickerProviderS
                         FlatButton(
                           child: Text(
                             'Đồng ý',
-                            style: ptButton(context)
-                                .copyWith(color: ptPrimaryColor(context)),
+                            style: ptButton(context).copyWith(color: ptPrimaryColor(context)),
                           ),
                           onPressed: handleLogout,
                         ),

@@ -7,14 +7,11 @@ import 'package:daikin/constants/styleAppTheme.dart';
 import 'package:daikin/models/business_models.dart';
 import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/dialog.dart';
-import 'package:daikin/ui/pages/device_detail/device_on_off_detail_screen.dart';
 import 'package:daikin/ui/pages/home/devices_grid_view.dart';
-import 'package:daikin/ui/route/route/routing.dart';
 import 'package:daikin/utils/device_util.dart';
 import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 enum CategoryType { ui, coding, basic, game, chill }
 

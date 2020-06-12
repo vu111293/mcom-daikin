@@ -702,3 +702,42 @@ class HistoryEventModel {
     return v;
   }
 }
+
+@JsonSerializable(nullable: true)
+class NewsModel {
+  @JsonKey(name: '_id')
+  final String id;
+  final String title;
+  final String body;
+  final String image;
+  final String status;
+
+
+  NewsModel({this.id, this.title, this.body, this.image, this.status});
+
+  factory NewsModel.fromJson(Map<String, dynamic> json) {
+    final item = _$NewsModelFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$NewsModelToJson(this);
+
+  bool get isUnRead => status == 'unread';
+}
+
+@JsonSerializable(nullable: true)
+class StatisticModel {
+  final String time;
+  final String name;
+  final String param;
+  final String value;
+
+  StatisticModel({this.time, this.name, this.param, this.value});
+
+  factory StatisticModel.fromJson(Map<String, dynamic> json) {
+    final item = _$StatisticModelFromJson(json);
+    return item;
+  }
+
+  Map<String, dynamic> toJson() => _$StatisticModelToJson(this);
+}

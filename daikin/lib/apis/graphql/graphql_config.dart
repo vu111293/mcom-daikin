@@ -57,9 +57,7 @@ class GraphQLConfig {
     final Link _link = _authLink.concat(_httpLink);
 
     return GraphQLClient(
-      cache: OptimisticCache(
-        dataIdFromObject: typenameDataIdFromObject,
-      ),
+      cache: InMemoryCache(),
       link: _link,
     );
   }

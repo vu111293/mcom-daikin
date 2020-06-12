@@ -18,6 +18,7 @@ class LUser {
   final String address;
   final String avatar;
   final String role;
+  final int unreadNotifyCount;
   final List<String> permissions;
 
   LUser(
@@ -30,7 +31,8 @@ class LUser {
         this.permissions,
         this.phone,
         this.role,
-        this.uid
+        this.uid,
+        this.unreadNotifyCount
       });
 
   factory LUser.fromJson(Map<String, dynamic> json) {

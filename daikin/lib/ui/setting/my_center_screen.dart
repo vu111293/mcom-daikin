@@ -10,6 +10,7 @@ import 'package:daikin/ui/customs/base_header.dart';
 import 'package:daikin/ui/customs/dialog.dart';
 import 'package:daikin/utils/formatTextFirstUpCase.dart';
 import 'package:daikin/utils/hex_color.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +35,6 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
   final ScrollController _scrollController = ScrollController();
 
   String date;
-
   String name = '';
   String ip = '';
   String username = '';
@@ -173,7 +173,7 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                                 children: <Widget>[
                                   Flexible(
                                     child: TextField(
-//                                    obscureText: true,
+                                      obscureText: true,
                                       onChanged: (text) {
                                         setState(() {
                                           password = text;
@@ -208,10 +208,11 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))),
         isScrollControlled: true,
         builder: (BuildContext bc) {
+          bool isDemoDevice = data["id"] == DEFAULT_CENTER_ID;
+          bool enable = !isDemoDevice;
           return Container(
             height: MediaQuery.of(context).size.height * 0.95,
             child: SingleChildScrollView(
-//            autoScroll: false,
               child: Column(
                 children: <Widget>[
                   Container(
@@ -257,6 +258,7 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                             children: <Widget>[
                               Flexible(
                                 child: TextFormField(
+                                  enabled: enable,
                                   controller: _nameController,
                                   // onChanged: (text) {
                                   //   setState(() {
@@ -279,6 +281,7 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                             children: <Widget>[
                               Flexible(
                                 child: TextFormField(
+                                  enabled: enable,
                                   controller: _ipController,
                                 ),
                               ),
@@ -294,6 +297,7 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                             children: <Widget>[
                               Flexible(
                                 child: TextFormField(
+                                  enabled: enable,
                                   controller: _usernameController,
                                 ),
                               ),
@@ -310,6 +314,7 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                               Flexible(
                                 child: TextFormField(
                                   obscureText: true,
+                                  enabled: enable,
                                   controller: _passwordController,
                                 ),
                               ),
@@ -415,9 +420,11 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                       shrinkWrap: true,
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
+                        var centerDevice = snapshot.data[index];
+
                         return GestureDetector(
                             onTap: () {
-                              _settingModalBottomSheetEdit(context, snapshot.data[index]);
+                              _settingModalBottomSheetEdit(context, centerDevice);
                             },
                             child: ListTile(
                               leading: Container(
@@ -431,11 +438,11 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                                 ),
                               ),
                               title: Text(
-                                upFirstText(snapshot.data[index]["name"]),
+                                upFirstText(centerDevice["name"]),
                                 style: ptSubtitle(context),
                               ),
                               subtitle: Text(
-                                'IP: ' + snapshot.data[index]["ip"],
+                                'IP: ' + centerDevice["ip"],
                                 style: ptCaption(context),
                               ),
                               trailing: Icon(Icons.edit),
@@ -510,6 +517,7 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
   }
 
   Widget _getActionButtonEdit(dynamic data) {
+    bool isDemoDevice = data["id"] == DEFAULT_CENTER_ID;
     return Padding(
       padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 45.0),
       child: Row(
@@ -521,12 +529,12 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                 padding: EdgeInsets.only(right: 8.0),
                 child: RaisedButton(
                   child: Text(
-                    "xóa thiết bị".toUpperCase(),
+                    'XÓA THIẾT BỊ',
                     style: ptButton(context).copyWith(color: Colors.white),
                   ),
                   textColor: Colors.white,
-                  color: Colors.redAccent,
-                  onPressed: () {
+                  color:  Colors.redAccent,
+                  onPressed: isDemoDevice ? null : () {
                     showConfirmDialog(context, "Bạn có muốn xóa thiết bị này ?", confirmTap: () {
                       _appBloc.centerBloc.removeCenter(data["id"]);
                       Navigator.pop(context);
@@ -548,12 +556,12 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                 padding: EdgeInsets.only(left: 8.0),
                 child: RaisedButton(
                   child: Text(
-                    "lưu lại".toUpperCase(),
+                    'LƯU LẠI',
                     style: ptButton(context).copyWith(color: Colors.white),
                   ),
                   textColor: Colors.white,
                   color: ptPrimaryColor(context),
-                  onPressed: () {
+                  onPressed: isDemoDevice ? null : () {
                     _appBloc.centerBloc.updateCenter(data["id"], {"id": data["id"], "name": _nameController.text, "ip": _ipController.text, "username": _usernameController.text, "password": _passwordController.text});
                     Navigator.pop(context);
                   },
@@ -584,8 +592,9 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
                         Navigator.popUntil(context, ModalRoute.withName('/mycenterscreen'));
                       });
                     } catch(e) {
+                      print(e.toString());
                       Navigator.pop(context);
-                      showAlertDialog(context, "Kích hoạt thiết bị thất bại!\n Lỗi ${e?.toString()}", confirmTap: () {
+                      showAlertWithTitleDialog(context, "Xãy ra lỗi", "Kích hoạt thiết bị thất bại! \nVui lòng kiểm tra lại thông tin truy cập hoặc thử lại sau.", firstTap: () {
                         Navigator.pop(context);
                       });
                     }

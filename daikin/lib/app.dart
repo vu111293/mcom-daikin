@@ -1,17 +1,20 @@
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:daikin/apis/net/user_service.dart';
 import 'package:daikin/constants/constants.dart';
 import 'package:daikin/ui/pages/splash/splash_screen.dart';
 import 'package:daikin/utils/hex_color.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'blocs/application_bloc.dart';
 import 'blocs/bloc_provider.dart';
 import 'constants/styleAppTheme.dart';
+import 'models/user.dart';
 
 class MyApp extends StatefulWidget {
   final AppConfig appConf;
@@ -58,6 +61,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return BlocProvider<ApplicationBloc>(
       bloc: _appBloc,
       child: BotToastInit(
@@ -99,6 +106,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         print("bambi FCM onMessage: $message");
         String msg = getMessageFromNotify(message);
         showToast(msg);
+        _reloadNotiCountInUserProfile();
 //        _handleMessageOnLaunch(message, AppStartMode.LIVE);
       },
       onLaunch: (Map<String, dynamic> message) async {
@@ -109,6 +117,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         print("bambi FCM onResume: $message");
         String msg = getMessageFromNotify(message);
         showToast(msg);
+        _reloadNotiCountInUserProfile();
 //        _handleMessageOnLaunch(message, AppStartMode.RESUME);
       },
     );
@@ -117,6 +126,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
       print("bambi FCM Settings registered: $settings");
     });
+  }
+
+  _reloadNotiCountInUserProfile() async {
+    LUser me = await UserService().me();
+    _appBloc.authBloc.updateUserAction(me);
   }
 
 //  _handleMessageOnLaunch(Map<String, dynamic> message, AppStartMode startMode) {

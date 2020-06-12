@@ -9,7 +9,8 @@ String login = r'''
         email,
         avatar, 
         role,
-        permissions
+        permissions,
+        unreadNotifyCount
       }
       token
     }
@@ -27,7 +28,8 @@ String updateUser = r'''
       avatar,
       role,
       uid,
-      permissions
+      permissions,
+      unreadNotifyCount
     }
   }
 ''';
@@ -43,7 +45,8 @@ String registerNotify = r'''
       avatar, 
       role,
       permissions,
-      deviceToken
+      deviceToken,
+      unreadNotifyCount
     }
   }
 ''';
@@ -59,7 +62,8 @@ String unregisterNotify = r'''
       avatar, 
       role,
       permissions,
-      deviceToken
+      deviceToken,
+      unreadNotifyCount
     }
   }
 ''';

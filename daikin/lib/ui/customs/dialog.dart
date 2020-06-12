@@ -131,7 +131,7 @@ Future showAlertWithTitleDialog(
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
+          title: Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           content: Text(content, style: TextStyle(fontSize: 18.0)),
           actions: actions,
         );
@@ -387,29 +387,3 @@ Future<bool> showPinCodeDialog(
         );
       });
 }
-
-//class TextFieldAlertDialog extends StatelessWidget {
-//  TextEditingController _textFieldController = TextEditingController();
-//
-//  _displayDialog(BuildContext context) async {
-//    return showDialog(
-//        context: context,
-//        builder: (context) {
-//          return AlertDialog(
-//            title: Text('TextField in Dialog'),
-//            content: TextField(
-//              controller: _textFieldController,
-//              decoration: InputDecoration(hintText: "TextField in Dialog"),
-//            ),
-//            actions: <Widget>[
-//              new FlatButton(
-//                child: new Text('CANCEL'),
-//                onPressed: () {
-//                  Navigator.of(context).pop();
-//                },
-//              )
-//            ],
-//          );
-//        });
-//  }
-//}
