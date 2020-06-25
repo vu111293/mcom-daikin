@@ -165,6 +165,7 @@ class Device {
         break;
 
       case 'com.fibaro.FGRM222':
+      case 'com.fibaro.FGR223':
         int v = (int.parse(value)*1.0/10).toInt() * 10;
         prefix = '${iconName}$v.png';
         break;
@@ -478,7 +479,7 @@ class Room {
 
   String get getRoomIconURL {
     if (category == 'alarm') return '${LoopBackAuth().staticIconShowRoomPath}/fibaro/icons/User1008/User1008100.png';
-    return '${LoopBackAuth().staticIconPath}/fibaro/icons/rooms/$icon.png';
+    return '${LoopBackAuth().staticIconPath}/fibaro/icons/rooms/${icon?.isNotEmpty == true ? icon : "room_bedroom"}.png';
   }
 
 

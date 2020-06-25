@@ -29,7 +29,7 @@ class DeviceUtil {
       }
     } else if (d.type == "virtual_device") {
       // Rem cua
-    } else if (d.type == "com.fibaro.FGRM222") {
+    } else if (d.type == "com.fibaro.FGRM222" || d.type == "com.fibaro.FGR223") {
       // Den Chum
     } else if (d.type == "com.fibaro.FGD212") {
       int realValue;
@@ -57,6 +57,7 @@ class DeviceUtil {
       case "virtual_device":
         break;
       case "com.fibaro.FGRM222":
+      case "com.fibaro.FGR223":
         break;
 
       case "com.fibaro.FGD212":

@@ -88,7 +88,7 @@ class _DeviceViewItemState extends State<DeviceViewItem> {
             }
           });
       // Rem cua
-    } else if (_localDevice.type == "com.fibaro.FGRM222") {
+    } else if (_localDevice.type == "com.fibaro.FGRM222" || _localDevice.type == "com.fibaro.FGR223") {
       return buildDeviceInCell(
           widget: widget,
           defValue: int.parse(_localDevice.properties.value) > 0,

@@ -23,7 +23,7 @@ class MyCenterScreen extends StatefulWidget {
   MyCenterScreenState createState() => MyCenterScreenState();
 }
 
-const DEBUG_MY_CENTER = false;
+const DEBUG_MY_CENTER = true;
 
 class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProviderStateMixin, AfterLayoutMixin<MyCenterScreen> {
   ApplicationBloc _appBloc;
@@ -492,10 +492,15 @@ class MyCenterScreenState extends State<MyCenterScreen> with SingleTickerProvide
 //                      username = 'kythuat@kimsontien.com';
 //                      password = 'Chotronniemvui1';
 
-                      name = 'NHA MAU';
-                      ip = 'http://mhome-nhamau.ddns.net';
-                      username = 'Kythuat@kimsontien.com';
-                      password = 'Chotronniemvui1';
+//                      name = 'NHA-MAU';
+//                      ip = 'http://mhome-nhamau.ddns.net:8888';
+//                      username = 'Kythuat@kimsontien.com';
+//                      password = 'Chotronniemvui1';
+
+                        name = 'CSPACE';
+                        ip = 'http://daikin-cspace.ddns.net:8888';
+                        username = 'admin';
+                        password = 'admin';
                     }
 
                     _appBloc.centerBloc.setCenter({"name": name, "ip": ip, "username": username, "password": password});

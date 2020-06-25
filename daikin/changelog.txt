@@ -1,5 +1,8 @@
 Change logs
 
+#1.18.0+48
+Support REM device on CSPACE center device
+
 # 1.17.4+46
 Fix reload user profile when receive new notification
 

@@ -40,6 +40,7 @@ class CameraScreenState extends State<CameraScreen> {
   void initState() {
     super.initState();
     _appBloc = BlocProvider.of<ApplicationBloc>(context);
+    print('CameraIP: ${widget.item.properties.getCameraUrl}');
 
     widget.currentStateDevice = Random().nextBool();
     setState(() {
@@ -236,7 +237,7 @@ class CameraScreenState extends State<CameraScreen> {
       } else {
         Routing().navigate2(context, VirtualDeviceScreen(device: device));
       }
-    } else if (device.type == "com.fibaro.FGRM222") {
+    } else if (device.type == "com.fibaro.FGRM222" || device.type == "com.fibaro.FGR223") {
       Routing().navigate2(
           context,
           BlindsDeviceScreen(

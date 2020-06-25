@@ -163,7 +163,7 @@ class _CustomDeviceListState extends State<CustomDeviceList> {
       } else {
         Routing().navigate2(context, VirtualDeviceScreen(device: device));
       }
-    } else if (device.type == "com.fibaro.FGRM222") {
+    } else if (device.type == "com.fibaro.FGRM222" || device.type == "com.fibaro.FGR223") {
       Routing().navigate2(
           context,
           BlindsDeviceScreen(
